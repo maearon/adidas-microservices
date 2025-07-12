@@ -1,10 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useLockBodyScroll } from "@/hooks/useLockBodyScroll"
 
 export default function FullScreenLoader() {
-  useLockBodyScroll()
   return (
     <div
       className="fixed inset-0 z-[9999] bg-white flex justify-center"

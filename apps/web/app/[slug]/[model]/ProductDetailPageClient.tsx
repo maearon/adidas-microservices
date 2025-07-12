@@ -19,6 +19,7 @@ import { slugify } from "@/utils/slugtify"
 import { upperWords } from "@/utils/upper-words"
 import { Variant } from "@/types/product"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
+import { BaseButton } from "@/components/ui/base-button"
 
 export default function ProductDetailPageClient({ params }: { params: { slug: string; model: string } }) {
   const router = useRouter()
@@ -29,15 +30,10 @@ export default function ProductDetailPageClient({ params }: { params: { slug: st
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [expandedSections, setExpandedSections] = useState({ reviews: false, description: false, details: false })
   const [sizeError, setSizeError] = useState("")
-  const [isSticky, setIsSticky] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [currentVariant, setCurrentVariant] = useState<any>(null)
 
-  const leftColumnRef = useRef<HTMLDivElement>(null)
-  const rightColumnRef = useRef<HTMLDivElement>(null)
-  const [stickyMaxHeight, setStickyMaxHeight] = useState<number | undefined>(undefined)
-
-  const { data: product, isLoading } = useProductDetail(params.slug, params.model)
+  const { data: product, isLoading, error, refetch } = useProductDetail(params.slug, params.model)
 
   useEffect(() => {
     if (!product) return
@@ -127,7 +123,26 @@ export default function ProductDetailPageClient({ params }: { params: { slug: st
     ],
   }
 
-  if (isLoading || !product) return <FullScreenLoader />
+  // ⛔ Handle lỗi sớm trước
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4 text-center">
+        <h2 className="text-2xl font-semibold text-red-600 mb-2">Product not available</h2>
+        <p className="text-gray-600 mb-4">
+          We couldn’t load this product. Please check your connection or try again later.
+        </p>
+        <BaseButton onClick={() => refetch()}>Retry</BaseButton>
+        <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-sm text-gray-500">
+          ← Go Back
+        </BaseButton>
+      </div>
+    )
+  }
+
+  // ⏳ Loading thực sự (lần đầu hoặc đang loading dữ liệu mới)
+  if (isLoading || !product) {
+    return <FullScreenLoader />
+  }
 
   return (
     <main className="w-full max-w-[1600px] mx-auto px-6 py-6 lg:flex gap-12">

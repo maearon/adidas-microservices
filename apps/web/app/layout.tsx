@@ -18,6 +18,7 @@ import ReactQueryProvider from "./ReactQueryProvider"
 import RedirectListener from "@/components/RedirectListener" // ✅ THÊM DÒNG NÀY
 import { ToastContainer } from "react-toastify"
 import MaintenancePage from "@/_components/MaintenancePage"
+import { Toaster } from "@/components/ui/toaster"
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
                 <FeedbackWidget />
                 <ScrollToTop />
               </ReactQueryProvider>
+              <Toaster />
             </AuthProvider>
           </Providers>
         </GoogleOAuthProvider>

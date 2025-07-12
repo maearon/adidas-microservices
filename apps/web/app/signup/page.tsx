@@ -176,7 +176,7 @@ const SignupPage = () => {
                     <div className="mt-2 text-sm text-center">
                       Didn't get your activation email?{" "}
                       <Link
-                        href="https://funny-movies-pied.vercel.app/account_activations/new"
+                        href="/account_activations/new"
                         className="underline text-blue-600"
                         target="_blank"
                       >

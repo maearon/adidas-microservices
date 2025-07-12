@@ -57,15 +57,6 @@
   }
 }
 
-body {
-  font-family: "Barlow", Helvetica, Arial, sans-serif;
-}
-
-html.no-scroll,
-body.no-scroll {
-  overflow: hidden !important;
-}
-
 /* globals.css hoặc một file style được import vào app */
 .bg-hero {
   background-image: url('/assets/lib/promo_fw25_4july_bnr_m_b782140aa6.jpg?width=768');

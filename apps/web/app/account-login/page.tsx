@@ -113,8 +113,9 @@ const LoginPage: NextPage = () => {
       <div className="relative bg-gray-100 py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Left info box */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg">
+              <div className="bg-white p-8 rounded-lg shadow-sm">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-bold text-xl">a</span>
@@ -135,6 +136,7 @@ const LoginPage: NextPage = () => {
               </div>
             </div>
 
+            {/* Login form */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
@@ -205,6 +207,24 @@ const LoginPage: NextPage = () => {
                     >
                       CONTINUE
                     </Button>
+
+                    <div className="mt-4 text-sm text-gray-600 text-center">
+                      Don't have an account yet?{" "}
+                      <Link href="/signup" className="underline text-blue-600">
+                        Sign up
+                      </Link>
+                    </div>
+
+                    <div className="mt-2 text-sm text-center">
+                      Forgot your password?{" "}
+                      <Link
+                        href="/password_resets/new"
+                        className="underline text-blue-600"
+                        target="_blank"
+                      >
+                        Send Change your password link with token to your email
+                      </Link>
+                    </div>
                   </Form>
                 )}
               </Formik>

@@ -152,7 +152,28 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
     ? `${formatSlugTitle(params.slug)} | ${generateAppliedFiltersTitle()}`
     : formatSlugTitle(params.slug)
 
-  if (isLoading || isPlaceholderData) return <FullScreenLoader />
+  // ⛔ Handle lỗi sớm trước
+  if (error  || !products) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4 text-center">
+        <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
+        <p className="text-gray-600 mb-4">
+          There was a problem fetching products. Please check your internet connection or try again later.
+        </p>
+        <BaseButton onClick={() => refetch()} variant="default">
+          Retry
+        </BaseButton>
+        <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-sm text-gray-500">
+          ← Go Back
+        </BaseButton>
+      </div>
+    )
+  }
+
+  // ⏳ Loading thực sự (lần đầu hoặc đang loading dữ liệu mới)
+  if (isLoading || isPlaceholderData) {
+    return <FullScreenLoader />
+  }
 
   return (
     <div className="min-h-screen bg-white">

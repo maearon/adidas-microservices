@@ -5,15 +5,15 @@ import { NextPage } from 'next'
 
 const importantLinks = [
   {
-    href: 'https://funny-movies-pied.vercel.app/password_resets/new',
+    href: '/password_resets/new',
     text: '🔐 Reset Your Password',
   },
   {
-    href: 'https://funny-movies-pied.vercel.app/account_activations/new',
+    href: '/account_activations/new',
     text: '✅ Resend Activation Email',
   },
   {
-    href: 'https://funny-movies-pied.vercel.app/signup',
+    href: '/signup',
     text: '📝 Create a New Account',
   },
 ]

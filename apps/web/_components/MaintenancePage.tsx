@@ -2,10 +2,8 @@
 
 import { useEffect } from "react"
 import Image from "next/image"
-import { useLockBodyScroll } from "@/hooks/useLockBodyScroll"
 
 export default function MaintenancePage() {
-  useLockBodyScroll()
   return (
     <div className="fixed inset-0 z-[1000] w-screen h-screen bg-black text-white overflow-hidden">
       <Image
