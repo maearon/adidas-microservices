@@ -59,11 +59,9 @@ export default function CartPage() {
             <p className="text-gray-600 mb-8">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
-            <Link href="/">
-              <Button theme="black" shadow={true} pressEffect={true}>
-                GET STARTED
-              </Button>
-            </Link>
+            <Button href="/" theme="black" shadow={true} pressEffect={true}>
+              GET STARTED
+            </Button>
           </div>
         </main>
         {/* <Footer /> */}
@@ -206,11 +204,9 @@ export default function CartPage() {
                 </div>
 
                 {/* Checkout buttons */}
-                <Link href="/checkout">
-                  <Button theme="black" shadow={true} pressEffect={true}>
-                    CHECKOUT
-                  </Button>
-                </Link>
+                <Button href="/checkout" theme="black" shadow={true} pressEffect={true}>
+                  CHECKOUT
+                </Button>
               </div>
             </div>
           </div>
