@@ -7,9 +7,9 @@ import * as Yup from "yup"
 import flashMessage from "@/components/shared/flashMessages"
 import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
 import Link from "next/link"
-import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { Button } from "@/components/ui/button"
-import { handleNetworkError } from "@/components/shared/handleNetworkError"
+import { useLoginMutation } from "@/api/hooks/useLoginMutation"
+import { handleApiError } from "@/components/shared/handleApiError"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,35 +21,37 @@ const LoginPage = () => {
   const loginMutation = useLoginMutation()
   const [errors, setErrors] = useState<ErrorMessageType>({})
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: { email: string; password: string }) => {
     setErrors({})
 
-    loginMutation.mutate(
-      {
-        email: values.email,
-        password: values.password,
-        remember_me: values.rememberMe === "1",
+    loginMutation.mutate(values, {
+      onSuccess: () => {
+        flashMessage("success", "Login successful.")
+        router.push("/")
       },
-      {
-        onSuccess: (response) => {
-          if (response?.user) {
-            flashMessage("success", "Logged in successfully.")
-            router.push("/")
-          }
-        },
-        onError: (error: any) => {
-          handleNetworkError(error)
-          const res = error.response?.data
-          if (res?.error) {
-            setErrors({ email: [res.error] })
-          } else if (res?.message) {
-            setErrors({ general: [res.message] })
-          } else {
-            flashMessage("error", "Login failed. Please try again.")
-          }
-        },
-      }
-    )
+      onError: (error: any) => {
+        if (error.code === "ERR_NETWORK") {
+          flashMessage("error", "Cannot connect to the server. Please try again later.")
+          return
+        }
+        setErrors(handleApiError(error))
+        const res = error.response?.data
+        if (Array.isArray(res?.errors)) {
+          const fieldErrors: ErrorMessageType = {}
+          res.errors.forEach((err: any) => {
+            const field = err?.cause?.field || "general"
+            const message = err.defaultMessage || "Invalid input"
+            if (!fieldErrors[field]) fieldErrors[field] = []
+            fieldErrors[field].push(message)
+          })
+          setErrors(fieldErrors)
+        } else if (res?.message) {
+          setErrors({ general: [res.message] })
+        } else {
+          flashMessage("error", "Something went wrong during login.")
+        }
+      },
+    })
   }
 
   return (
@@ -61,31 +63,31 @@ const LoginPage = () => {
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-lg shadow-sm">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-bold text-xl">a</span>
                   </div>
-                  <h2 className="text-2xl font-bold">LOG IN TO YOUR ADICLUB</h2>
+                  <h2 className="text-2xl font-bold">WELCOME BACK TO ADICLUB</h2>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  Sign in to unlock your adiClub benefits, access your order history, track your orders, and more.
+                  Log in to access exclusive member benefits:
                 </p>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> 15% welcome voucher</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Free shipping</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Member-only promotions</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Track your orders</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Access your wishlist</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Get exclusive offers</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Fast checkout</li>
                 </ul>
               </div>
             </div>
 
             {/* Login form */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h1 className="text-xl font-bold mb-6 text-center">LOG IN TO CONTINUE</h1>
+              <h1 className="text-xl font-bold mb-6 text-center">SIGN IN TO YOUR ACCOUNT</h1>
 
               <Formik
                 initialValues={{
                   email: "",
                   password: "",
-                  rememberMe: "1",
                 }}
                 validationSchema={LoginSchema}
                 onSubmit={handleSubmit}
@@ -98,7 +100,7 @@ const LoginPage = () => {
                       <Field
                         name="email"
                         type="email"
-                        placeholder="EMAIL ADDRESS *"
+                        placeholder="EMAIL *"
                         className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
@@ -114,25 +116,22 @@ const LoginPage = () => {
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
-                    <div className="flex items-center mb-4">
-                      <Field type="checkbox" name="rememberMe" value="1" className="mr-2" />
-                      <label className="text-sm text-gray-700">
-                        Keep me logged in.
-                      </label>
-                    </div>
-
                     <Button
+                      theme={"black"}
+                      showArrow={true}
+                      pressEffect={true}
+                      shadow={true}
                       type="submit"
                       loading={isSubmitting || loginMutation.isPending}
-                      className="w-full py-3 font-semibold transition-transform shadow-md hover:shadow-xl hover:scale-[1.01] focus:ring-2 focus:ring-black rounded-md bg-black text-white"
+                      className="w-full py-3 font-semibold transition-colors"
                     >
-                      CONTINUE
+                      SIGN IN
                     </Button>
 
-                    <div className="mt-4 text-sm text-gray-600 text-center">
-                      New to adiClub?{" "}
-                      <Link href="/signup" className="underline text-blue-600">
-                        Create account
+                    <div className="mt-4 text-sm text-center text-gray-600">
+                      Don’t have an account?{" "}
+                      <Link href="/account-signup" className="underline text-blue-600">
+                        Create one
                       </Link>
                     </div>
 
@@ -141,8 +140,9 @@ const LoginPage = () => {
                       <Link
                         href="/password_resets/new"
                         className="underline text-blue-600"
+                        target="_blank"
                       >
-                        Reset here
+                        Reset it here
                       </Link>
                     </div>
                   </Form>
