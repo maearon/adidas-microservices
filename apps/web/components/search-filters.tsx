@@ -82,7 +82,7 @@ export default function SearchFilters({
 
           {/* Sort By */}
           <div className="mb-6">
-            <BaseButton onClick={() => toggleSection("sort")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton variant="ghost" onClick={() => toggleSection("sort")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SORT BY</h3>
               {expandedSections.sort ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </BaseButton>
@@ -115,7 +115,7 @@ export default function SearchFilters({
 
           {/* Shipping */}
           <div className="mb-6">
-            <BaseButton onClick={() => toggleSection("shipping")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton variant="ghost" onClick={() => toggleSection("shipping")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SHIPPING</h3>
               {expandedSections.shipping ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </BaseButton>
@@ -129,7 +129,7 @@ export default function SearchFilters({
 
           {/* Gender */}
           <div className="mb-6">
-            <BaseButton onClick={() => toggleSection("gender")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton variant="ghost" onClick={() => toggleSection("gender")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">GENDER</h3>
               {expandedSections.gender ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </BaseButton>
@@ -155,7 +155,7 @@ export default function SearchFilters({
 
           {/* Category */}
           <div className="mb-6">
-            <BaseButton onClick={() => toggleSection("category")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton variant="ghost" onClick={() => toggleSection("category")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">CATEGORY</h3>
               {expandedSections.category ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </BaseButton>
@@ -181,7 +181,7 @@ export default function SearchFilters({
 
           {/* Sport */}
           <div className="mb-6">
-            <BaseButton onClick={() => toggleSection("sport")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton variant="ghost" onClick={() => toggleSection("sport")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SPORT</h3>
               {expandedSections.sport ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </BaseButton>
@@ -228,12 +228,12 @@ export default function SearchFilters({
 
           {/* Apply Button */}
           <div className="pt-6 border-t">
-            <BaseButton onClick={applyFilters} className="w-full bg-black text-white hover:bg-gray-800 mb-3">
+            <Button shadow={true} pressEffect={true} onClick={applyFilters} fullWidth={true} className="w-full bg-black text-white hover:bg-gray-800 mb-3">
               APPLY ({totalResults})
-            </BaseButton>
-            <BaseButton onClick={clearFilters} variant="outline" className="w-full">
+            </Button>
+            <Button shadow={true} pressEffect={true} onClick={clearFilters} variant="outline" fullWidth={true} className="w-full">
               Clear All Filters
-            </BaseButton>
+            </Button>
           </div>
         </div>
       </div>

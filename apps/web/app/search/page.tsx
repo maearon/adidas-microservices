@@ -141,20 +141,20 @@ function SearchPageContent() {
         </div>
 
         {/* Search Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-8">
+          <div className="flex-grow min-w-0">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2 truncate">
               Search for: "{query.toUpperCase()}" [{totalResults}]
             </h1>
             {totalResults > 0 && (
-              <p className="text-gray-600">
+              <p className="text-gray-600 truncate">
                 Showing {products.length} of {totalResults} results
               </p>
             )}
           </div>
 
           {/* Filter Buttons */}
-          <div className="flex items-center">
+          <div className="flex-shrink-0 flex items-center">
             {/* Button for sm and up */}
             <BaseButton
               variant="outline"

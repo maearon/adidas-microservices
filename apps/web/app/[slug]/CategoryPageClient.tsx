@@ -178,76 +178,35 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-            <BaseButton variant="ghost" size="sm" onClick={() => router.back()} className="p-0 h-auto font-normal">
-              <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
-            </BaseButton>
-            {breadcrumbs ? (
-              breadcrumbs.map((crumb, index) => (
-                <span key={index} className="flex items-center">
-                  {index > 0 && <span className="mx-2">/</span>}
-                  <Link href={crumb.href} className="hover:underline">
-                    {crumb.label}
-                  </Link>
-                </span>
-              ))
-            ) : (
-              <BreadcrumbSkeleton />
-            )}
-          </div>
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-6">
+        <div className="flex-grow min-w-0">
+          <h1 className="text-3xl font-bold mb-2 truncate">
+            {pageTitle}
+            <span className="text-gray-500 ml-2 text-lg font-normal whitespace-nowrap">
+              ({meta.total_count})
+            </span>
+          </h1>
+          {Object.keys(queryParams).length === 1 && (
+            <p className="text-gray-600 max-w-4xl truncate">{config.description}</p>
+          )}
+        </div>
 
-          {/* Title + Filter Button */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">
-                {pageTitle}
-                <span className="text-gray-500 ml-2 text-lg font-normal">({meta.total_count})</span>
-              </h1>
-              {Object.keys(queryParams).length === 1 && (
-                <p className="text-gray-600 max-w-4xl">{config.description}</p>
-              )}
-            </div>
-
-            {/* Responsive Filter Button */}
-            <div className="flex items-center">
-              <BaseButton
-                variant="outline"
-                onClick={() => setShowFilters(true)}
-                className="hidden sm:flex items-center gap-2 ml-4"
-              >
-                FILTER & SORT
-                <SlidersHorizontal className="w-4 h-4" />
-              </BaseButton>
-              <BaseButton
-                variant="outline"
-                onClick={() => setShowFilters(true)}
-                className="flex sm:hidden items-center justify-center p-2 ml-2"
-              >
-                <SlidersHorizontal className="w-5 h-5" />
-              </BaseButton>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-hide pb-1 -mx-2 px-2">
-            {config.tabs.map((tab) => (
-              <button
-                key={tab.slug}
-                onClick={() => handleTabChange(tab.href)}
-                className={`whitespace-nowrap pb-2 border-b-2 transition-colors ${
-                  currentTab === tab.slug || params.slug === tab.slug
-                    ? "border-black text-black font-medium"
-                    : "border-transparent text-gray-600 hover:text-black"
-                }`}
-              >
-                {tab.name}
-              </button>
-            ))}
-          </div>
+        <div className="flex-shrink-0 flex items-center">
+          <BaseButton
+            variant="outline"
+            onClick={() => setShowFilters(true)}
+            className="hidden sm:flex items-center gap-2 ml-4"
+          >
+            FILTER & SORT
+            <SlidersHorizontal className="w-4 h-4" />
+          </BaseButton>
+          <BaseButton
+            variant="outline"
+            onClick={() => setShowFilters(true)}
+            className="flex sm:hidden items-center justify-center p-2 ml-2"
+          >
+            <SlidersHorizontal className="w-5 h-5" />
+          </BaseButton>
         </div>
       </div>
 
