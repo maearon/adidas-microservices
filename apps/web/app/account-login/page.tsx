@@ -13,6 +13,7 @@ import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
 import Image from "next/image"
 import { Eye, EyeOff } from "lucide-react"
+import AdidasSpinner from "@/components/ui/AdidasSpinner"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -69,7 +70,11 @@ const LoginPage = () => {
     })
   }
 
-  if (!hasMounted || isLoading) return <FullScreenLoader />
+  if (!hasMounted || isLoading) return (
+    <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
+      <AdidasSpinner />
+    </div>
+  )
 
   if (isError) {
     flashMessage("error", "Session expired or unauthorized. Please login again.")
