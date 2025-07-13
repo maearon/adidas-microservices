@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { useMemo } from "react"
 
 interface ButtonProps extends BaseButtonProps {
   href?: string
@@ -43,36 +42,39 @@ export function Button({
     ? "border-black"
     : "border-white group-hover:border-gray-400"
 
-  // ⏱ Render nội dung cố định (kể cả loading) để tránh nhảy layout
-  const content = useMemo(() => (
-    <>
-      <span className="flex items-center justify-center gap-2">
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin shrink-0" />
-        ) : (
-          <span className="-translate-y-[1px]">{children}</span>
-        )}
-        {/* Giữ chỗ cho arrow kể cả khi loading */}
-        {showArrow && (
-          <span
-            className={cn(
-              "text-[22px] font-thin leading-none transition-opacity",
-              loading ? "opacity-0" : "opacity-100"
-            )}
-          >
-            ⟶
-          </span>
-        )}
+  const ButtonContent = (
+    <div className="relative flex items-center justify-center gap-2">
+      {/* Actual content always rendered to reserve space */}
+      <span className={cn(loading && "invisible", "-translate-y-[1px]")}>
+        {children}
       </span>
-    </>
-  ), [loading, children, showArrow])
+
+      {showArrow && (
+        <span
+          className={cn(
+            "text-[22px] font-thin leading-none transition-opacity",
+            loading && "invisible"
+          )}
+        >
+          ⟶
+        </span>
+      )}
+
+      {/* Loader overlaps center */}
+      {loading && (
+        <span className="absolute inset-0 flex items-center justify-center">
+          <Loader2 className="h-5 w-5 animate-spin shrink-0" />
+        </span>
+      )}
+    </div>
+  )
 
   return (
     <div className={cn("relative inline-block group", fullWidth && "w-full")}>
       {shadow && (
         <span
           className={cn(
-            "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border box-border",
+            "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none border box-border transition-all z-0",
             shadowBorderClass
           )}
         />
@@ -101,10 +103,10 @@ export function Button({
             onClick={(e) => loading && e.preventDefault()}
             className="w-full h-full flex items-center justify-center"
           >
-            {content}
+            {ButtonContent}
           </Link>
         ) : (
-          content
+          ButtonContent
         )}
       </BaseButton>
     </div>
