@@ -1,42 +1,26 @@
 "use client"
 
-import type { NextPage } from "next"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { type MutableRefObject, useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
-import flashMessage from "@/components/shared/flashMessages"
-import { ErrorMessage, Field, Form, Formik } from "formik"
+import { useEffect, useState } from "react"
+import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
+import Link from "next/link"
+import { useLoginMutation } from "@/api/hooks/useLoginMutation"
+import { Button } from "@/components/ui/button"
+import flashMessage from "@/components/shared/flashMessages"
 import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
-import { fetchUser, selectUser } from "@/store/sessionSlice"
-import type { AppDispatch } from "@/store/store"
-import { useAppSelector } from "@/store/hooks"
-import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
-import { Button } from "@/components/ui/button"
 
-const initialValues = {
-  email: "",
-  password: "",
-  rememberMe: "1",
-  errors: [] as string[],
-}
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+})
 
-interface MyFormValues {
-  email: string
-  password: string
-  rememberMe: string
-  errors: string[]
-}
-
-const LoginPage: NextPage = () => {
+const LoginPage = () => {
   const router = useRouter()
-  const inputEl = useRef<HTMLButtonElement>(null)
+  const loginMutation = useLoginMutation()
   const [errors, setErrors] = useState<ErrorMessageType>({})
-  const dispatch = useDispatch<AppDispatch>()
-  const userData = useAppSelector(selectUser)
   const { data: user, isLoading, isError, isFetched } = useCurrentUser()
   const [hasMounted, setHasMounted] = useState(false)
 
@@ -52,40 +36,17 @@ const LoginPage: NextPage = () => {
     }
   }, [isFetched, user, router])
 
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().required("Required"),
-  })
-
-  const {
-    mutateAsync: loginMutation,
-    isPending,
-    status,
-    error,
-  } = useLoginMutation()
-
-  const onSubmit = async (values: MyFormValues) => {
-    try {
-      const response = await loginMutation({
-        email: values.email,
-        password: values.password,
-        remember_me: values.rememberMe === "1",
-      })
-
-      
-      if (response.tokens) { flashMessage("Logged in successfully", "success"); router.push("/") }
-    } catch (error) {
-      console.error("Login error", error)
-      setErrors({ email: ["or password incorrect"] })
-    }
-  }
-
-  const handleGoogleLogin = () => {
-    const clientId = "588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com"
-    const redirectUri = `${window.location.origin}/oauth/callback`
-    const scope = "openid email profile"
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`
-    window.location.href = authUrl
+  const handleSubmit = async (values: { email: string; password: string; rememberMe?: boolean }) => {
+    setErrors({})
+    loginMutation.mutate(values, {
+      onSuccess: () => {
+        flashMessage("success", "Login successful.")
+        router.push("/")
+      },
+      onError: (error: any) => {
+        setErrors({ email: ["or password incorrect"] })
+      },
+    })
   }
 
   if (!hasMounted || isLoading) return <FullScreenLoader />
@@ -96,11 +57,10 @@ const LoginPage: NextPage = () => {
 
   if (user?.email) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8 text-center">
-          <h1 className="text-2xl font-bold mb-4">Welcome back!</h1>
-          <p className="text-gray-600 mb-8">You are already logged in.</p>
-          <Link href="/my-account" className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800">
+      <div className="min-h-screen bg-white">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold mb-4">You're already logged in</h1>
+          <Link href="/my-account" className="underline text-blue-600">
             Go to My Account
           </Link>
         </div>
@@ -123,8 +83,7 @@ const LoginPage: NextPage = () => {
                   <h2 className="text-2xl font-bold">JOIN ADICLUB. GET A 15% DISCOUNT.</h2>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and
-                  receive immediate access to these Level 1 benefits:
+                  As an adiClub member you get rewarded with what you love for doing what you love. Sign in now and enjoy:
                 </p>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Free shipping</li>
@@ -138,33 +97,18 @@ const LoginPage: NextPage = () => {
 
             {/* Login form */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <span className="text-blue-600 font-bold text-2xl">adiclub</span>
-                </div>
-                <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-                <p className="text-gray-600 text-sm">
-                  Get free shipping, discount vouchers and members only products when you're in adiClub.
-                </p>
-              </div>
+              <h1 className="text-xl font-bold mb-6 text-center">SIGN IN TO YOUR ACCOUNT</h1>
 
-              <p className="font-medium mb-4">Log in or sign up (it's free)</p>
-
-              <div className="grid grid-cols-4 gap-2 mb-6">
-                {[{ name: "apple" }, { name: "facebook" }, { name: "google", onClick: handleGoogleLogin }, { name: "yahoo" }].map(({ name, onClick }) => (
-                  <button
-                    key={name}
-                    onClick={onClick}
-                    className="border border-gray-300 p-3 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    aria-label={`Login with ${name}`}
-                  >
-                    <img src={`/icons/${name}.svg`} alt={name} className="h-5" />
-                  </button>
-                ))}
-              </div>
-
-              <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-                {({ values, errors: formErrors, touched }) => (
+              <Formik
+                initialValues={{
+                  email: "",
+                  password: "",
+                  rememberMe: true,
+                }}
+                validationSchema={LoginSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting, values }) => (
                   <Form className="space-y-4">
                     {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
 
@@ -172,12 +116,10 @@ const LoginPage: NextPage = () => {
                       <Field
                         name="email"
                         type="email"
-                        placeholder="EMAIL ADDRESS *"
-                        className={`w-full border p-3 rounded ${formErrors.email && touched.email ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-none`}
+                        placeholder="EMAIL *"
+                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="email">
-                        {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}
-                      </ErrorMessage>
+                      <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
                     <div>
@@ -185,33 +127,34 @@ const LoginPage: NextPage = () => {
                         name="password"
                         type="password"
                         placeholder="PASSWORD *"
-                        className={`w-full border p-3 rounded ${formErrors.password && touched.password ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-none`}
+                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="password">
-                        {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}
-                      </ErrorMessage>
+                      <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
                     <div className="flex items-start space-x-2">
-                      <Field type="checkbox" name="rememberMe" value="1" className="mt-1" checked={values.rememberMe === "1"} />
+                      <Field type="checkbox" name="rememberMe" checked={values.rememberMe} />
                       <label className="text-sm text-gray-600">
-                        Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
+                        Keep me logged in
                       </label>
                     </div>
 
                     <Button
-                      loading={isPending}
+                      theme="black"
+                      showArrow
+                      pressEffect
+                      shadow
+                      loading={isSubmitting || loginMutation.isPending}
                       type="submit"
-                      // ref={inputEl}
-                      className="w-full bg-black text-white py-3 font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center"
+                      className="w-full py-3 font-semibold transition-colors"
                     >
-                      CONTINUE
+                      SIGN IN
                     </Button>
 
                     <div className="mt-4 text-sm text-gray-600 text-center">
-                      Don't have an account yet?{" "}
-                      <Link href="/signup" className="underline text-blue-600">
-                        Sign up
+                      Don’t have an account?{" "}
+                      <Link href="/account-signup" className="underline text-blue-600">
+                        Create one
                       </Link>
                     </div>
 
@@ -222,7 +165,7 @@ const LoginPage: NextPage = () => {
                         className="underline text-blue-600"
                         target="_blank"
                       >
-                        Send Change your password link with token to your email
+                        Reset it here
                       </Link>
                     </div>
                   </Form>
@@ -230,10 +173,7 @@ const LoginPage: NextPage = () => {
               </Formik>
 
               <div className="mt-6 text-xs text-gray-500">
-                <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
-                <p>
-                  By clicking the "Continue" button, you are joining adiClub and agree to the <Link href="#" className="text-blue-600 underline">TERMS OF USE</Link>, <Link href="#" className="text-blue-600 underline">ADICLUB TERMS</Link>, and <Link href="#" className="text-blue-600 underline">PRIVACY POLICY</Link>.
-                </p>
+                <p className="mb-2">By logging in, you accept the <Link href="#" className="underline">TERMS OF USE</Link> and <Link href="#" className="underline">PRIVACY POLICY</Link>.</p>
               </div>
             </div>
           </div>
