@@ -13,7 +13,7 @@ import FullScreenLoader from '@/components/ui/FullScreenLoader';
 import { fetchUser, selectUser } from '@/store/sessionSlice';
 import { AppDispatch } from '@/store/store';
 import { useAppSelector } from '@/store/hooks';
-import { useLoginMutation } from "@/hooks/useLoginMutation"; // ✅ add
+import { useLoginMutation } from "@/api/hooks/useLoginMutation";
 import { Nullable } from '@/types/common';
 import { Button } from "@/components/ui/button";
 
