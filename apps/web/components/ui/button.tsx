@@ -16,6 +16,7 @@ interface ButtonProps extends BaseButtonProps {
   fullWidth?: boolean
   className?: string
   theme?: "white" | "black"
+  border?: boolean
 }
 
 export function Button({
@@ -29,6 +30,7 @@ export function Button({
   variant = "default",
   className,
   theme = "white",
+  border = false,
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
@@ -37,44 +39,17 @@ export function Button({
   const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
   const text = isBlack ? "text-white" : "text-black"
   const hoverText = isBlack ? "hover:text-gray-500" : "hover:text-black"
-  const borderColor = isBlack ? "border-black" : "border-white"
   const shadowBorderClass = isBlack
     ? "border-black"
     : "border-white group-hover:border-gray-400"
-
-  const ButtonContent = (
-    <div className="relative flex items-center justify-center gap-2">
-      {/* Actual content always rendered to reserve space */}
-      <span className={cn(loading && "invisible", "-translate-y-[1px]")}>
-        {children}
-      </span>
-
-      {showArrow && (
-        <span
-          className={cn(
-            "text-[22px] font-thin leading-none transition-opacity",
-            loading && "invisible"
-          )}
-        >
-          ⟶
-        </span>
-      )}
-
-      {/* Loader overlaps center */}
-      {loading && (
-        <span className="absolute inset-0 flex items-center justify-center z-10">
-          <Loader2 className="h-5 w-5 animate-spin shrink-0" />
-        </span>
-      )}
-    </div>
-  )
+  const defaultBorder = isBlack ? "border-white" : "border-black"
 
   return (
-    <div className={cn("relative inline-block group", fullWidth && "w-full")}>
+    <div className={cn("relative group", fullWidth && "w-full")}>
       {shadow && (
         <span
           className={cn(
-            "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none border box-border transition-all z-0",
+            "absolute inset-0 translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border",
             shadowBorderClass
           )}
         />
@@ -85,15 +60,15 @@ export function Button({
         disabled={loading}
         variant={variant}
         className={cn(
-          "relative z-10 inline-flex items-center justify-center px-4 h-12 font-bold text-base uppercase tracking-wide rounded-none transition-all border whitespace-nowrap",
+          "relative z-10 inline-flex items-center justify-center px-4 h-12 font-bold text-base uppercase tracking-wide rounded-none transition-all",
           bg,
           hoverBg,
           text,
           hoverText,
-          borderColor,
+          border !== false && "border", // apply `border` class only if true or undefined
+          border !== false && defaultBorder,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
           fullWidth && "w-full",
-          loading && "opacity-100", // đảm bảo không bị mờ khi disabled
           className
         )}
         {...props}
@@ -104,10 +79,26 @@ export function Button({
             onClick={(e) => loading && e.preventDefault()}
             className="w-full h-full flex items-center justify-center"
           >
-            {ButtonContent}
+            {loading ? (
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            ) : (
+              <span className="mr-2 -translate-y-[1px]">{children}</span>
+            )}
+            {showArrow && (
+              <span className="text-[22px] font-thin leading-none">⟶</span>
+            )}
           </Link>
         ) : (
-          ButtonContent
+          <>
+            {loading ? (
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            ) : (
+              <span className="mr-2 -translate-y-[1px]">{children}</span>
+            )}
+            {showArrow && !loading && (
+              <span className="text-[22px] font-thin leading-none">⟶</span>
+            )}
+          </>
         )}
       </BaseButton>
     </div>
