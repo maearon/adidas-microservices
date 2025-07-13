@@ -174,10 +174,16 @@ const LoginPage: NextPage = () => {
               </label>
             </div>
 
-            <button
+            <Button
+              theme={"black"}
+              showArrow={true}
+              pressEffect={true}
+              shadow={true}
               type="submit"
+              loading={isSubmitting || signupMutation.isPending}
+              fullWidth={true}
               ref={inputEl}
-              className="w-full bg-black text-white py-2 font-semibold hover:bg-gray-800 transition"
+              className="w-full py-3 font-semibold transition-colors"
             >
               CONTINUE →
             </button>
