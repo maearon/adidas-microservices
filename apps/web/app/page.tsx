@@ -18,6 +18,7 @@ import HistoryView from "@/components/HistoryView"
 import PageFooter from "@/components/page-footer"
 import TileCard from "@/components/tile-card"
 import ResourceCard from "@/components/resource-card"
+import HeroBannerVideo from "@/components/home/HeroBannerVideo"
 
 export default function HomePage() {
   const router = useRouter()
@@ -63,7 +64,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* <PromoBanner /> */}
-      <HeroBanner
+      {/* <HeroBanner
         backgroundClassName="bg-hero"
         content={{
           title: "SAVE UP TO 40% NOW",
@@ -74,9 +75,11 @@ export default function HomePage() {
             { href: "/kids-sale", buttonLabel: "SHOP KIDS" }
           ],
         }}
-      />
+      /> */}
 
       {/* <HeroBannerSecond /> */}
+
+      <HeroBannerVideo />
       
       {/* History Products Section */}
       <HistoryView

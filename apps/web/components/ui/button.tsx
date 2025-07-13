@@ -62,7 +62,7 @@ export function Button({
 
       {/* Loader overlaps center */}
       {loading && (
-        <span className="absolute inset-0 flex items-center justify-center">
+        <span className="absolute inset-0 flex items-center justify-center z-10">
           <Loader2 className="h-5 w-5 animate-spin shrink-0" />
         </span>
       )}
@@ -93,6 +93,7 @@ export function Button({
           borderColor,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
           fullWidth && "w-full",
+          loading && "opacity-100", // đảm bảo không bị mờ khi disabled
           className
         )}
         {...props}
