@@ -1,4 +1,5 @@
 "use client";
+
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -12,11 +13,9 @@ import FullScreenLoader from '@/components/ui/FullScreenLoader';
 import { fetchUser, selectUser } from '@/store/sessionSlice';
 import { AppDispatch } from '@/store/store';
 import { useAppSelector } from '@/store/hooks';
-import javaService from '@/api/services/javaService';
+import { useLoginMutation } from "@/hooks/useLoginMutation"; // ✅ add
 import { Nullable } from '@/types/common';
-if (typeof window !== "undefined") {
-const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-}
+import { Button } from "@/components/ui/button";
 
 const initialValues = {
   email: '',
@@ -40,82 +39,56 @@ const LoginPage: NextPage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const userData = useAppSelector(selectUser)
 
+  const { mutate: login, isPending } = useLoginMutation() // ✅ dùng hook login
+
   useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          setLoading(false)
-          let token: Nullable<string> = null;
-          if (typeof window !== "undefined") {
-            token = localStorage.getItem("token") || sessionStorage.getItem("token");
-          }
-          if (token) {
-            const resultAction = await dispatch(fetchUser())
-            if (fetchUser.fulfilled.match(resultAction) && resultAction.payload?.user?.email) {
-              router.push("/")
-            } else if (fetchUser.rejected.match(resultAction)) {
-              setLoading(false)
-            }
-          }
-          setLoading(false)
-        } catch (error) {
-          console.error("Failed to fetch user:", error)
-          setLoading(false)
-        } finally {
-          setLoading(false)
+    const fetchUserData = async () => {
+      try {
+        let token: Nullable<string> = null;
+        if (typeof window !== "undefined") {
+          token = localStorage.getItem("token") || sessionStorage.getItem("token");
         }
+
+        if (token) {
+          const resultAction = await dispatch(fetchUser())
+          if (fetchUser.fulfilled.match(resultAction) && resultAction.payload?.user?.email) {
+            router.push("/")
+          }
+        }
+
+        setLoading(false)
+      } catch (error) {
+        console.error("Failed to fetch user:", error)
+        setLoading(false)
       }
-  
-      fetchUserData()
-    }, [dispatch, router])
+    }
+
+    fetchUserData()
+  }, [dispatch, router])
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email format')
-      .required('Required'),
+    email: Yup.string().email('Invalid email format').required('Required'),
     password: Yup.string().required('Required')
   })
 
   const onSubmit = (values: MyFormValues) => {
-    flashMessage("error", "User or password incorrect")
-    javaService.login({
-      session: {
+    login(
+      {
         email: values.email,
         password: values.password,
+        remember_me: values.rememberMe === '1',
+      },
+      {
+        onSuccess: () => {
+          inputEl.current?.blur()
+          router.push("/")
+        },
+        onError: (error: any) => {
+          flashMessage("error", "User or password incorrect")
+          setErrors({ email: ["or password incorrect"] })
+        },
       }
-    })
-    .then(response => {
-      if (response.user) {
-        inputEl.current.blur()
-        const { token } = response.tokens.access
-        if (values.rememberMe === '1') {
-          if (typeof window !== "undefined") {
-          localStorage.setItem("token", token)
-          localStorage.setItem("refresh_token", response.tokens.refresh.token)
-          }
-        } else {
-          // sessionStorage.setItem("token", token)
-          // sessionStorage.setItem("refresh_token", response.tokens.refresh.token)
-          if (typeof window !== "undefined") {
-          localStorage.setItem("token", token)
-          localStorage.setItem("refresh_token", response.tokens.refresh.token)
-          localStorage.setItem("guest_cart_id", '123-xyz')
-          }
-        }
-        if (token) {
-        dispatch(fetchUser())
-        }
-        router.push("/")
-      }
-      // if (response.flash) flashMessage(...response.flash)
-      // Handle possible error messages if present in response
-      if ('errors' in response && Array.isArray((response as any).errors) && (response as any).errors.length > 0) {
-        setErrors((response as any).errors)
-      }
-    })
-    .catch(error => {
-      flashMessage("error", error.toString())
-      setErrors({ email: ["or password incorrect"] })
-    })
+    )
   }
 
   if (loading) return <FullScreenLoader />
@@ -147,47 +120,49 @@ const LoginPage: NextPage = () => {
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          <Form>
-            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
+          {({ isSubmitting }) => (
+            <Form>
+              {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
 
-            <Field
-              name="email"
-              type="email"
-              placeholder="EMAIL ADDRESS *"
-              className="w-full border p-2 mb-2"
-            />
+              <Field
+                name="email"
+                type="email"
+                placeholder="EMAIL ADDRESS *"
+                className="w-full border p-2 mb-2"
+              />
 
-            <Field
-              name="password"
-              type="password"
-              placeholder="PASSWORD *"
-              className="w-full border p-2 mb-2"
-            />
-            <ErrorMessage name='password'>
-              {error => <div className='text-red-600 text-sm mb-2'>{error}</div>}
-            </ErrorMessage>
+              <Field
+                name="password"
+                type="password"
+                placeholder="PASSWORD *"
+                className="w-full border p-2 mb-2"
+              />
+              <ErrorMessage name='password'>
+                {error => <div className='text-red-600 text-sm mb-2'>{error}</div>}
+              </ErrorMessage>
 
-            <div className="flex items-center mb-2">
-              <Field type="checkbox" name="rememberMe" value="1" className="mr-2" />
-              <label className="text-sm">
-                Keep me logged in. Applies to all options. <Link href="#" className="underline ml-1">More info</Link>
-              </label>
-            </div>
+              <div className="flex items-center mb-2">
+                <Field type="checkbox" name="rememberMe" value="1" className="mr-2" />
+                <label className="text-sm">
+                  Keep me logged in. Applies to all options. <Link href="#" className="underline ml-1">More info</Link>
+                </label>
+              </div>
 
-            <Button
-              theme={"black"}
-              showArrow={true}
-              pressEffect={true}
-              shadow={true}
-              type="submit"
-              loading={isSubmitting || signupMutation.isPending}
-              fullWidth={true}
-              ref={inputEl}
-              className="w-full py-3 font-semibold transition-colors"
-            >
-              CONTINUE
-            </Button>
-          </Form>
+              <Button
+                theme={"black"}
+                showArrow={true}
+                pressEffect={true}
+                shadow={true}
+                type="submit"
+                loading={isSubmitting || isPending}
+                fullWidth={true}
+                ref={inputEl}
+                className="w-full py-3 font-semibold transition-colors"
+              >
+                CONTINUE
+              </Button>
+            </Form>
+          )}
         </Formik>
 
         <p className="text-xs text-gray-600 mt-4">
