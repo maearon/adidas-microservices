@@ -47,7 +47,7 @@ export function Button({
       {shadow && (
       <span
         className={cn(
-          "absolute inset-0 translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border group-active:translate-x-[3px] group-active:translate-y-[3px]",
+          "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border"
           shadowBorderClass
         )}
       />
