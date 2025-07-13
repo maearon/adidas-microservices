@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { BaseButton, BaseButtonProps } from "@/components/ui/base-button"
 import { Loader2 } from "lucide-react"
@@ -39,19 +39,19 @@ export function Button({
   const hoverText = isBlack ? "hover:text-gray-500" : "hover:text-black"
   const borderColor = isBlack ? "border-black" : "border-white"
   const shadowBorderClass = isBlack
-  ? "border-black"
-  : "border-white group-hover:border-gray-400"
+    ? "border-black"
+    : "border-white group-hover:border-gray-400"
 
   return (
-    <div className={cn("relative group", fullWidth && "w-full")}>
+    <div className={cn("relative inline-block group", fullWidth && "w-full")}>
       {shadow && (
-      <span
-        className={cn(
-          "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border",
-          shadowBorderClass
-        )}
-      />
-    )}
+        <span
+          className={cn(
+            "absolute top-0 left-0 w-full h-full translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border box-border",
+            shadowBorderClass
+          )}
+        />
+      )}
 
       <BaseButton
         asChild={!!href}
@@ -64,7 +64,7 @@ export function Button({
           text,
           hoverText,
           borderColor,
-          pressEffect && "active:translate-x-[3px] active:translate-y-[3px]", // 👈 active pseudo-class toggle
+          pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
           fullWidth && "w-full",
           className
         )}
