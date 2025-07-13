@@ -180,6 +180,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
       {/* Header */}
       <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
+          {/* Breadcrumbs */}
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
             <BaseButton variant="ghost" size="sm" onClick={() => router.back()} className="p-0 h-auto font-normal">
               <ArrowLeft className="w-4 h-4 mr-1" />
@@ -198,27 +199,41 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
               <BreadcrumbSkeleton />
             )}
           </div>
-          {/* <Breadcrumb items={buildBreadcrumbFromProductItem(products[0])} /> */}
-          <div className="flex items-center justify-between mb-6">
+
+          {/* Title + Filter Button */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">
                 {pageTitle}
-                <span className="text-gray-500 ml-2 text-lg font-normal">
-                  ({meta.total_count})
-                </span>
+                <span className="text-gray-500 ml-2 text-lg font-normal">({meta.total_count})</span>
               </h1>
               {Object.keys(queryParams).length === 1 && (
                 <p className="text-gray-600 max-w-4xl">{config.description}</p>
               )}
             </div>
-            <BaseButton variant="outline" onClick={() => setShowFilters(true)} className="flex items-center gap-2 ml-4">
-              FILTER & SORT
-              <SlidersHorizontal className="w-4 h-4" />
-            </BaseButton>
+
+            {/* Responsive Filter Button */}
+            <div className="flex items-center">
+              <BaseButton
+                variant="outline"
+                onClick={() => setShowFilters(true)}
+                className="hidden sm:flex items-center gap-2 ml-4"
+              >
+                FILTER & SORT
+                <SlidersHorizontal className="w-4 h-4" />
+              </BaseButton>
+              <BaseButton
+                variant="outline"
+                onClick={() => setShowFilters(true)}
+                className="flex sm:hidden items-center justify-center p-2 ml-2"
+              >
+                <SlidersHorizontal className="w-5 h-5" />
+              </BaseButton>
+            </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex items-center gap-8 overflow-x-auto">
+          <div className="flex items-center gap-6 overflow-x-auto scrollbar-hide pb-1 -mx-2 px-2">
             {config.tabs.map((tab) => (
               <button
                 key={tab.slug}
@@ -269,11 +284,6 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 relative">
-        {/* {isLoading && (
-          <div className="absolute inset-0 bg-white/60 flex justify-center items-start z-10">
-            <Loading />
-          </div>
-        )} */}
         <ProductGrid
           products={products}
           loading={isLoading}
@@ -283,7 +293,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
         />
       </div>
 
-      {/* Sidebar */}
+      {/* Filters Sidebar */}
       <FiltersSidebar
         isOpen={showFilters}
         onClose={() => setShowFilters(false)}

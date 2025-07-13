@@ -24,7 +24,8 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      // variant: "default",
+      variant: "ghost", // ✅ tránh tự động màu nền đen
       size: "default",
     },
   }

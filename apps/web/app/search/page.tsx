@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Filter } from "lucide-react"
+import { ArrowLeft, Filter, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ProductGrid from "@/components/product-grid"
 import SearchFilters from "@/components/search-filters"
@@ -11,6 +11,7 @@ import { Product } from "@/types/product/product"
 import { SearchFilters as SearchFiltersType } from "@/types/search"
 import javaService from "@/api/services/javaService"
 import { Nullable } from "@/types/common"
+import { BaseButton } from "@/components/ui/base-button"
 
 function SearchPageContent() {
   const searchParams = useSearchParams()
@@ -140,10 +141,10 @@ function SearchPageContent() {
         </div>
 
         {/* Search Header */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
-              search for: "{query.toUpperCase()}" [{totalResults}]
+              Search for: "{query.toUpperCase()}" [{totalResults}]
             </h1>
             {totalResults > 0 && (
               <p className="text-gray-600">
@@ -151,10 +152,29 @@ function SearchPageContent() {
               </p>
             )}
           </div>
-          <Button variant="outline" onClick={() => setIsFiltersOpen(true)} className="flex items-center gap-2">
-            <Filter size={16} />
-            FILTER & SORT
-          </Button>
+
+          {/* Filter Buttons */}
+          <div className="flex items-center">
+            {/* Button for sm and up */}
+            <BaseButton
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)}
+              className="hidden sm:flex items-center gap-2"
+            >
+              <Filter size={16} />
+              FILTER & SORT
+              <SlidersHorizontal className="w-4 h-4" />
+            </BaseButton>
+
+            {/* Icon-only button for mobile */}
+            <BaseButton
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)}
+              className="flex sm:hidden items-center justify-center p-2"
+            >
+              <SlidersHorizontal className="w-5 h-5" />
+            </BaseButton>
+          </div>
         </div>
 
         {/* Error State */}
