@@ -60,8 +60,8 @@ export default function CartPage() {
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <Link href="/">
-              <Button className="bg-black text-white hover:bg-gray-800 px-8 py-6 h-auto">
-                GET STARTED <span className="ml-2">→</span>
+              <Button shadow={true} pressEffect={true}>
+                GET STARTED
               </Button>
             </Link>
           </div>
@@ -207,7 +207,7 @@ export default function CartPage() {
 
                 {/* Checkout buttons */}
                 <Link href="/checkout">
-                  <Button pressEffect={true} shadow={true} className="w-full bg-black text-white hover:bg-gray-800 mb-4 py-6 h-auto">
+                  <Button shadow={true} pressEffect={true}>
                     CHECKOUT
                   </Button>
                 </Link>
