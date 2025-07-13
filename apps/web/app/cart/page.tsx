@@ -207,8 +207,8 @@ export default function CartPage() {
 
                 {/* Checkout buttons */}
                 <Link href="/checkout">
-                  <Button className="w-full bg-black text-white hover:bg-gray-800 mb-4 py-6 h-auto">
-                    CHECKOUT <span className="ml-2">→</span>
+                  <Button pressEffect={true} shadow={true} className="w-full bg-black text-white hover:bg-gray-800 mb-4 py-6 h-auto">
+                    CHECKOUT
                   </Button>
                 </Link>
               </div>
