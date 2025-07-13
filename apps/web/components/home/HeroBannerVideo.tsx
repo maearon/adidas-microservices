@@ -13,8 +13,19 @@ export default function HeroBannerVideo() {
   const [showVideo, setShowVideo] = useState(false)
 
   const MAX_LOOP_COUNT: number | "forever" = "forever"
-  const SLOW_RATE = 5
+  const SLOW_RATE = 0.125
+//   ✅ Giải thích:
+// video.playbackRate = 1 → tốc độ bình thường.
 
+// video.playbackRate = 2 → nhanh gấp 2 lần.
+
+// video.playbackRate = 0.5 → chậm gấp 2 lần.
+
+// video.playbackRate = 0.125 → chậm gấp 8 lần.
+
+
+
+  // Tự động phát và lặp video
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -44,6 +55,7 @@ export default function HeroBannerVideo() {
     }
   }, [MAX_LOOP_COUNT])
 
+  // Toggle play/pause
   const handleToggle = () => {
     const video = videoRef.current
     if (!video) return
@@ -60,7 +72,7 @@ export default function HeroBannerVideo() {
 
   return (
     <section className="relative h-[80vh] mb-10 overflow-hidden bg-white">
-      {/* Background video */}
+      {/* Video nền */}
       <video
         ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
@@ -87,11 +99,13 @@ export default function HeroBannerVideo() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Toggle play/pause button */}
+      {/* Nút play/pause */}
       <Button
         onClick={handleToggle}
         size="icon"
         variant="ghost"
+        shadow={false}
+        fullWidth={false}
         className="absolute top-5 right-5 z-10 bg-white/70 hover:bg-white text-black rounded-full p-2 transition"
       >
         {isPlaying ? (
@@ -101,21 +115,21 @@ export default function HeroBannerVideo() {
         )}
       </Button>
 
-      {/* Content block */}
+      {/* Khối nội dung phía dưới */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
         <div className="w-full max-w-md text-left">
           <div className="flex flex-col gap-2 sm:gap-3">
-            {/* Heading */}
+            {/* Tiêu đề */}
             <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
               SUPERSTAR
             </h1>
 
-            {/* Description */}
+            {/* Mô tả */}
             <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
               Because icons wear the original icon.
             </p>
 
-            {/* Buttons */}
+            {/* Nhóm nút CTA */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 pt-1">
               {[
                 { label: "MEN'S SUPERSTAR", href: "/men-superstar" },
@@ -127,34 +141,37 @@ export default function HeroBannerVideo() {
                   theme="white"
                   size="sm"
                   border
+                  shadow={false}
+                  fullWidth={false} // 👈 không cho full ngang dưới sm
                   variant="outline"
                   href={href}
                   showArrow
-                  className="border border-black text-black font-bold px-2 py-1 text-xs sm:text-xs rounded-none hover:bg-gray-100 transition w-fit"
+                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-fit"
                 >
                   {label}
                 </Button>
               ))}
 
-              {/* WATCH VIDEO */}
+              {/* Nút WATCH VIDEO: có icon + text cùng dòng */}
               <Button
                 theme="white"
                 size="sm"
                 border
+                shadow={false}
+                fullWidth={false}
                 variant="outline"
                 onClick={() => setShowVideo(true)}
-                className="border border-black text-black font-bold px-2 py-1 text-xs sm:text-xs rounded-none hover:bg-gray-100 transition w-fit inline-flex items-center"
+                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-fit inline-flex items-center gap-1"
               >
-                <Play className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
                 WATCH VIDEO
-                <span aria-hidden className="px-2">→</span>
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Popup video modal */}
+      {/* Popup video */}
       {showVideo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
           <div className="relative max-w-4xl w-full mx-4">
