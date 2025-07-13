@@ -11,6 +11,8 @@ import flashMessage from "@/components/shared/flashMessages"
 import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
+import Image from "next/image"
+import { Eye, EyeOff } from "lucide-react"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,9 +22,11 @@ const LoginSchema = Yup.object().shape({
 const LoginPage = () => {
   const router = useRouter()
   const loginMutation = useLoginMutation()
-  const [errors, setErrors] = useState<ErrorMessageType>({})
   const { data: user, isLoading, isError, isFetched } = useCurrentUser()
+
+  const [errors, setErrors] = useState<ErrorMessageType>({})
   const [hasMounted, setHasMounted] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     setHasMounted(true)
@@ -30,9 +34,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isFetched && user?.email) {
-      setTimeout(() => {
-        router.replace("/my-account")
-      }, 0)
+      setTimeout(() => router.replace("/my-account"), 0)
     }
   }, [isFetched, user, router])
 
@@ -44,7 +46,25 @@ const LoginPage = () => {
         router.push("/")
       },
       onError: (error: any) => {
-        setErrors({ email: ["or password incorrect"] })
+        if (error.code === "ERR_NETWORK") {
+          flashMessage("error", "Cannot connect to the server. Please try again later.")
+          return
+        }
+        const res = error.response?.data
+        if (Array.isArray(res?.errors)) {
+          const fieldErrors: ErrorMessageType = {}
+          res.errors.forEach((err: any) => {
+            const field = err?.cause?.field || "general"
+            const message = err.defaultMessage || "Invalid input"
+            if (!fieldErrors[field]) fieldErrors[field] = []
+            fieldErrors[field].push(message)
+          })
+          setErrors(fieldErrors)
+        } else if (res?.message) {
+          setErrors({ general: [res.message] })
+        } else {
+          setErrors({ email: ["Incorrect email/password – please check and retry."] })
+        }
       },
     })
   }
@@ -70,45 +90,40 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative bg-gray-100 py-16">
+      <div className="relative py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 items-start">
-            {/* Left info box */}
-            <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-sm">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold text-xl">a</span>
-                  </div>
-                  <h2 className="text-2xl font-bold">JOIN ADICLUB. GET A 15% DISCOUNT.</h2>
-                </div>
-                <p className="text-gray-600 mb-6">
-                  As an adiClub member you get rewarded with what you love for doing what you love. Sign in now and enjoy:
-                </p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Free shipping</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> A 15% off voucher</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Members Only sales</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Access to adidas apps</li>
-                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Special promotions</li>
+            {/* Left visual & benefits */}
+            <div>
+              <Image
+                src="/placeholder.png"
+                alt="Adiclub Benefits"
+                width={600}
+                height={600}
+                className="w-full h-auto object-cover mb-6 rounded"
+              />
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">JOIN ADICLUB TO UNLOCK MORE REWARDS</h2>
+                <ul className="text-sm text-gray-700 space-y-1 mt-2">
+                  <li>✓ Welcome Bonus Voucher for 15% off</li>
+                  <li>✓ Free Shipping and Returns</li>
+                  <li>✓ Members-Only Products</li>
+                  <li>✓ Early Access to Sales</li>
+                  <li>✓ Access to Limited Editions</li>
                 </ul>
               </div>
             </div>
 
             {/* Login form */}
             <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h1 className="text-xl font-bold mb-6 text-center">SIGN IN TO YOUR ACCOUNT</h1>
+              <h1 className="text-xl font-bold mb-6">LOGIN TO ADICLUB</h1>
 
               <Formik
-                initialValues={{
-                  email: "",
-                  password: "",
-                  rememberMe: true,
-                }}
+                initialValues={{ email: "", password: "", rememberMe: true }}
                 validationSchema={LoginSchema}
                 onSubmit={handleSubmit}
               >
-                {({ isSubmitting, values }) => (
+                {({ isSubmitting, values, setFieldValue }) => (
                   <Form className="space-y-4">
                     {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
 
@@ -122,21 +137,36 @@ const LoginPage = () => {
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
-                    <div>
+                    <div className="relative">
                       <Field
                         name="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="PASSWORD *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className={
+                          "w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black pr-12"
+                        }
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute top-3 right-3 text-gray-600 text-xs"
+                      >
+                        {showPassword ? (
+                          <>
+                            <EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="inline-block w-4 h-4 mr-1" /> SHOW
+                          </>
+                        )}
+                      </button>
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
-                    <div className="flex items-start space-x-2">
+                    <div className="flex items-center space-x-2">
                       <Field type="checkbox" name="rememberMe" checked={values.rememberMe} />
-                      <label className="text-sm text-gray-600">
-                        Keep me logged in
-                      </label>
+                      <label className="text-sm text-gray-600">Keep me logged in</label>
                     </div>
 
                     <Button
@@ -152,29 +182,27 @@ const LoginPage = () => {
                     </Button>
 
                     <div className="mt-4 text-sm text-gray-600 text-center">
-                      Don’t have an account?{" "}
+                      Don’t have an account?{' '}
                       <Link href="/account-signup" className="underline text-blue-600">
                         Create one
                       </Link>
                     </div>
 
                     <div className="mt-2 text-sm text-center">
-                      Forgot your password?{" "}
-                      <Link
-                        href="/password_resets/new"
-                        className="underline text-blue-600"
-                        target="_blank"
-                      >
+                      Forgot your password?{' '}
+                      <Link href="/password_resets/new" className="underline text-blue-600" target="_blank">
                         Reset it here
                       </Link>
+                    </div>
+
+                    <div className="mt-6 text-xs text-gray-500 text-center">
+                      By clicking 'Log In' you agree to our website's{' '}
+                      <Link href="#" className="underline">Terms & Conditions</Link> and{' '}
+                      <Link href="#" className="underline">Privacy Policy</Link>.
                     </div>
                   </Form>
                 )}
               </Formik>
-
-              <div className="mt-6 text-xs text-gray-500">
-                <p className="mb-2">By logging in, you accept the <Link href="#" className="underline">TERMS OF USE</Link> and <Link href="#" className="underline">PRIVACY POLICY</Link>.</p>
-              </div>
             </div>
           </div>
         </div>
