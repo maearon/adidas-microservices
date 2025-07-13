@@ -7,7 +7,7 @@ import * as Yup from "yup"
 import flashMessage from "@/components/shared/flashMessages"
 import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
 import Link from "next/link"
-import { useLoginMutation } from "@/hooks/useLoginMutation"
+import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { Button } from "@/components/ui/button"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
 
