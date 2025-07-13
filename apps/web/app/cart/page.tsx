@@ -60,7 +60,7 @@ export default function CartPage() {
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <Link href="/">
-              <Button shadow={true} pressEffect={true}>
+              <Button theme="black" shadow={true} pressEffect={true}>
                 GET STARTED
               </Button>
             </Link>
@@ -207,7 +207,7 @@ export default function CartPage() {
 
                 {/* Checkout buttons */}
                 <Link href="/checkout">
-                  <Button shadow={true} pressEffect={true}>
+                  <Button theme="black" shadow={true} pressEffect={true}>
                     CHECKOUT
                   </Button>
                 </Link>
