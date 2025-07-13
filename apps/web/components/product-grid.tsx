@@ -8,15 +8,16 @@ import type { Product } from "@/types/product" // ✅ dùng chung type đã khai
 
 interface ProductGridProps {
   products: Product[]
-  loading: boolean
-  pagination: {
+  loading?: boolean
+  pagination?: {
     current_page: number
     total_pages: number
     total_count: number
     per_page: number
   }
-  onPageChange: (page: number) => void
-  slug: string
+  onPageChange?: (page: number) => void
+  slug?: string
+  columns?: number
 }
 
 export default function ProductGrid({
@@ -25,6 +26,7 @@ export default function ProductGrid({
   pagination,
   onPageChange,
   slug,
+  columns = 4,
 }: ProductGridProps) {
   if (loading) {
     return (

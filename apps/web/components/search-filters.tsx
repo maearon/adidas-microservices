@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { SearchFilters as SearchFiltersType } from "@/types/search"
+import { BaseButton } from "./ui/base-button"
 
 interface SearchFiltersProps {
   isOpen: boolean
@@ -74,17 +75,17 @@ export default function SearchFilters({
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Filter & Sort</h2>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <BaseButton variant="ghost" size="sm" onClick={onClose}>
               <X size={20} />
-            </Button>
+            </BaseButton>
           </div>
 
           {/* Sort By */}
           <div className="mb-6">
-            <button onClick={() => toggleSection("sort")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton onClick={() => toggleSection("sort")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SORT BY</h3>
               {expandedSections.sort ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+            </BaseButton>
             {expandedSections.sort && (
               <div className="space-y-3">
                 {[
@@ -114,10 +115,10 @@ export default function SearchFilters({
 
           {/* Shipping */}
           <div className="mb-6">
-            <button onClick={() => toggleSection("shipping")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton onClick={() => toggleSection("shipping")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SHIPPING</h3>
               {expandedSections.shipping ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+            </BaseButton>
             {expandedSections.shipping && (
               <div className="flex items-center gap-2">
                 <span className="text-blue-600 font-bold text-sm">prime</span>
@@ -128,10 +129,10 @@ export default function SearchFilters({
 
           {/* Gender */}
           <div className="mb-6">
-            <button onClick={() => toggleSection("gender")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton onClick={() => toggleSection("gender")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">GENDER</h3>
               {expandedSections.gender ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+            </BaseButton>
             {expandedSections.gender && (
               <div className="space-y-3">
                 {["Men", "Women", "Kids"].map((gender) => (
@@ -154,10 +155,10 @@ export default function SearchFilters({
 
           {/* Category */}
           <div className="mb-6">
-            <button onClick={() => toggleSection("category")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton onClick={() => toggleSection("category")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">CATEGORY</h3>
               {expandedSections.category ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+            </BaseButton>
             {expandedSections.category && (
               <div className="space-y-3">
                 {["Shoes", "Clothing", "Accessories"].map((category) => (
@@ -180,10 +181,10 @@ export default function SearchFilters({
 
           {/* Sport */}
           <div className="mb-6">
-            <button onClick={() => toggleSection("sport")} className="flex justify-between items-center w-full mb-4">
+            <BaseButton onClick={() => toggleSection("sport")} className="flex justify-between items-center w-full mb-4">
               <h3 className="font-semibold">SPORT</h3>
               {expandedSections.sport ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+            </BaseButton>
             {expandedSections.sport && (
               <div className="space-y-3">
                 {["Running", "Training", "Lifestyle", "Soccer", "Basketball"].map((sport) => (
@@ -227,12 +228,12 @@ export default function SearchFilters({
 
           {/* Apply Button */}
           <div className="pt-6 border-t">
-            <Button onClick={applyFilters} className="w-full bg-black text-white hover:bg-gray-800 mb-3">
+            <BaseButton onClick={applyFilters} className="w-full bg-black text-white hover:bg-gray-800 mb-3">
               APPLY ({totalResults})
-            </Button>
-            <Button onClick={clearFilters} variant="outline" className="w-full">
+            </BaseButton>
+            <BaseButton onClick={clearFilters} variant="outline" className="w-full">
               Clear All Filters
-            </Button>
+            </BaseButton>
           </div>
         </div>
       </div>
