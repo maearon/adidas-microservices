@@ -185,8 +185,8 @@ const LoginPage: NextPage = () => {
               ref={inputEl}
               className="w-full py-3 font-semibold transition-colors"
             >
-              CONTINUE →
-            </button>
+              CONTINUE
+            </Button>
           </Form>
         </Formik>
 
