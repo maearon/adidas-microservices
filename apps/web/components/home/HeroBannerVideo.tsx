@@ -116,12 +116,12 @@ export default function HeroBannerVideo() {
         )}
       </Button>
 
-      {/* Loop counter */}
-      {MAX_LOOP_COUNT !== "forever" && (
-        <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
-          🔁 Played: {loopCount} / {MAX_LOOP_COUNT}
-        </div>
-      )}
+      {/* Loop counter */}    
+      <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
+        {MAX_LOOP_COUNT !== "forever"
+          ? <>🔁 Played: {loopCount} / {MAX_LOOP_COUNT}</>
+          : <>🔁 Played: {loopCount} / ∞</>}
+      </div>
 
       {/* Overlay nội dung */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
