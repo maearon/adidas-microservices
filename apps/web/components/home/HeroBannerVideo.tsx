@@ -13,19 +13,8 @@ export default function HeroBannerVideo() {
   const [showVideo, setShowVideo] = useState(false)
 
   const MAX_LOOP_COUNT: number | "forever" = "forever"
-  const SLOW_RATE = 0.125
-//   ✅ Giải thích:
-// video.playbackRate = 1 → tốc độ bình thường.
+  const SLOW_RATE = 0.125 // chậm gấp 8 lần
 
-// video.playbackRate = 2 → nhanh gấp 2 lần.
-
-// video.playbackRate = 0.5 → chậm gấp 2 lần.
-
-// video.playbackRate = 0.125 → chậm gấp 8 lần.
-
-
-
-  // Tự động phát và lặp video
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -33,7 +22,7 @@ export default function HeroBannerVideo() {
     video.playbackRate = SLOW_RATE
     if (MAX_LOOP_COUNT === "forever") video.loop = true
 
-    video.play().catch(() => setIsPlaying(false))
+    video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
 
     if (MAX_LOOP_COUNT !== "forever") {
       const handleEnded = () => {
@@ -55,7 +44,6 @@ export default function HeroBannerVideo() {
     }
   }, [MAX_LOOP_COUNT])
 
-  // Toggle play/pause
   const handleToggle = () => {
     const video = videoRef.current
     if (!video) return
@@ -106,6 +94,7 @@ export default function HeroBannerVideo() {
         variant="ghost"
         shadow={false}
         fullWidth={false}
+        showArrow={false}
         className="absolute top-5 right-5 z-10 bg-white/70 hover:bg-white text-black rounded-full p-2 transition"
       >
         {isPlaying ? (
@@ -115,7 +104,7 @@ export default function HeroBannerVideo() {
         )}
       </Button>
 
-      {/* Khối nội dung phía dưới */}
+      {/* Nội dung overlay */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
         <div className="w-full max-w-md text-left">
           <div className="flex flex-col gap-2 sm:gap-3">
@@ -129,7 +118,7 @@ export default function HeroBannerVideo() {
               Because icons wear the original icon.
             </p>
 
-            {/* Nhóm nút CTA */}
+            {/* Các nút CTA */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 pt-1">
               {[
                 { label: "MEN'S SUPERSTAR", href: "/men-superstar" },
@@ -142,7 +131,7 @@ export default function HeroBannerVideo() {
                   size="sm"
                   border
                   shadow={false}
-                  fullWidth={false} // 👈 không cho full ngang dưới sm
+                  fullWidth={false}
                   variant="outline"
                   href={href}
                   showArrow
@@ -152,7 +141,7 @@ export default function HeroBannerVideo() {
                 </Button>
               ))}
 
-              {/* Nút WATCH VIDEO: có icon + text cùng dòng */}
+              {/* Nút WATCH VIDEO */}
               <Button
                 theme="white"
                 size="sm"
@@ -160,10 +149,11 @@ export default function HeroBannerVideo() {
                 shadow={false}
                 fullWidth={false}
                 variant="outline"
+                showArrow={false}
                 onClick={() => setShowVideo(true)}
                 className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-fit inline-flex items-center gap-1"
               >
-                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
+                <Play className="h-4 w-4" />
                 WATCH VIDEO
               </Button>
             </div>
@@ -171,7 +161,7 @@ export default function HeroBannerVideo() {
         </div>
       </div>
 
-      {/* Popup video */}
+      {/* Modal video khi click WATCH VIDEO */}
       {showVideo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
           <div className="relative max-w-4xl w-full mx-4">
