@@ -63,8 +63,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* <PromoBanner /> */}
-      {/* <HeroBanner
+      <PromoBanner />
+      <HeroBanner
         backgroundClassName="bg-hero"
         content={{
           title: "SAVE UP TO 40% NOW",
@@ -75,9 +75,9 @@ export default function HomePage() {
             { href: "/kids-sale", buttonLabel: "SHOP KIDS" }
           ],
         }}
-      /> */}
+      />
 
-      {/* <HeroBannerSecond /> */}
+      <HeroBannerSecond />
 
       <HeroBannerVideo />
       

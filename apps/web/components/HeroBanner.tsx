@@ -23,28 +23,39 @@ export default function HeroBanner({
 }: HeroBannerProps) {
   const router = useRouter()
 
-
   return (
-    <section className={cn("relative h-[83vh] bg-cover bg-top text-white mb-10", backgroundClassName)}>
-      <div className="relative z-10 container mx-auto px-1 sm:px-20 h-full flex items-end pb-1 sm:pb-20">
+    <section
+      className={cn(
+        "relative h-[83vh] bg-cover bg-top text-white mb-10",
+        backgroundClassName
+      )}
+    >
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 sm:pb-20">
         <div className="max-w-xl">
-          {/* Title */}
-          <h1 className="block w-fit bg-white text-black text-base sm:text-lg md:text-xl font-bold px-1.5 py-0.5 mb-2 tracking-tight">
+          {/* Tiêu đề */}
+          <h1 className="block w-fit bg-white text-black text-base sm:text-lg md:text-xl font-bold px-1.5 py-0.5 mb-2 tracking-tight uppercase">
             {content.title}
           </h1>
 
-          {/* Description */}
+          {/* Mô tả */}
           <p className="block w-fit bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 mb-4 leading-snug">
             {content.description}
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-4 sm:gap-6">
+          {/* Nút CTA */}
+          <div className="flex flex-wrap items-start gap-2">
             {content.buttons.map((btn, idx) => (
               <Button
                 key={`${btn.href}-${idx}`}
+                theme="white"
+                size="sm"
+                border
+                shadow={false}
+                fullWidth={false}
+                variant="outline"
                 href={btn.href}
-                shadow
+                showArrow
+                className="border border-black text-black font-bold px-2 py-1 text-xs sm:text-sm rounded-none hover:bg-gray-100 transition w-auto h-9"
               >
                 {btn.buttonLabel || "SHOP NOW"}
               </Button>
