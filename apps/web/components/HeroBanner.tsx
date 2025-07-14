@@ -26,7 +26,7 @@ export default function HeroBanner({
   return (
     <section
       className={cn(
-        "relative h-[83vh] bg-cover bg-top text-white mb-10",
+        "relative h-[83vh] bg-cover bg-top text-white",
         backgroundClassName
       )}
     >

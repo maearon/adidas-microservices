@@ -58,7 +58,7 @@ export default function HeroBannerVideo() {
   }
 
   return (
-    <section className="relative h-[80vh] mb-10 overflow-hidden bg-white">
+    <section className="relative h-[80vh] overflow-hidden bg-white">
       {/* Video nền */}
       <video
         ref={videoRef}

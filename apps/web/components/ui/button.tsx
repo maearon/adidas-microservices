@@ -50,7 +50,7 @@ export function Button({
     <div
       className={cn(
         "relative group",
-        fullWidth && !isIconButton && "w-full"
+        !isIconButton && (fullWidth ? "w-full" : "w-auto"),
       )}
     >
       {/* Shadow border */}
@@ -77,7 +77,7 @@ export function Button({
           border && !isIconButton && "border",
           border && !isIconButton && defaultBorder,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
-          fullWidth && !isIconButton && "w-full",
+          !isIconButton && (fullWidth ? "w-full" : "w-auto"),
           isIconButton && "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
           className
         )}
