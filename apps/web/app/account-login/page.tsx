@@ -79,7 +79,7 @@ const LoginPage = () => {
   )
 
   if (isError) {
-    flashMessage("error", "Session expired or unauthorized. Please login again.")
+    // flashMessage("error", "Session expired or unauthorized. Please login again.")
   }
 
   if (user?.email) {
