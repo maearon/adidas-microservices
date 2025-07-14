@@ -150,7 +150,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer */}
-      <footer className="bg-black text-white py-8 md:py-12">
+      <footer className="bg-black text-white md:py-12">
         <div className="container mx-auto">
           
           {/* Desktop Footer */}
@@ -197,23 +197,26 @@ export default function Footer() {
           </div>
 
           {/* Mobile Footer */}
-          <div className="sm:hidden py-6 space-y-6">
+          <div className="sm:hidden py-6 space-y-6 bg-black text-white">
 
-            {/* Hàng 1: 2 tiêu đề có padding ngang */}
-            <div className="grid grid-cols-2 gap-4 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
-              <Link
-                href={user?.email ? "/my-account" : "/account-login"}
-                className="font-bold text-sm"
-              >
-                {user?.email ? "My Account" : "Login"}
-              </Link>
-              
-              <Link
-                href="/cart"
-                className="font-bold text-sm"
-              >
-                Your bag ({cartItemsCount})
-              </Link>
+            {/* Hàng 1: 2 tiêu đề căn giữa cột */}
+            <div className="grid grid-cols-2">
+              <div className="flex justify-center">
+                <Link
+                  href={user?.email ? "/my-account" : "/account-login"}
+                  className="font-bold text-sm"
+                >
+                  {user?.email ? "My Account" : "Login"}
+                </Link>
+              </div>
+              <div className="flex justify-center">
+                <Link
+                  href="/cart"
+                  className="font-bold text-sm"
+                >
+                  Your bag ({cartItemsCount})
+                </Link>
+              </div>
             </div>
 
             {/* Hàng 2: CTA không có padding ngang */}
