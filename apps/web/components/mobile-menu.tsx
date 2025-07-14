@@ -1,8 +1,48 @@
+// {
+//         name: "Shop by Color",
+//         icon: "🌸",
+//         hasSubmenu: true,
+//         submenu: {
+//           title: "SHOP BY COLOR 🌸",
+//           items: [
+//             ...colorItems.map((color) => ({ name: color.name, href: `/men/color/${color.name.toLowerCase()}` })),
+//             { name: "All Men's", href: "/men" },
+//           ],
+//         },
+//       },
+
+// const colorItems = [
+//   { name: "Black", color: "bg-black" },
+//   { name: "Grey", color: "bg-gray-500" },
+//   { name: "White", color: "bg-white border border-gray-300" },
+//   { name: "Brown", color: "bg-amber-800" },
+//   { name: "Red", color: "bg-red-500" },
+//   { name: "Pink", color: "bg-pink-300" },
+//   { name: "Orange", color: "bg-orange-500" },
+//   { name: "Yellow", color: "bg-yellow-400" },
+//   { name: "Green", color: "bg-green-500" },
+//   { name: "Blue", color: "bg-blue-500" },
+//   { name: "Purple", color: "bg-purple-500" },
+// ]
+
+// Menu structure matching desktop mega menu
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { cn } from "@/lib/utils"
+import AdidasLogo from "./adidas-logo"
+
+// Import menu data
+import { menMenuData } from "@/data/mega-menu/men-mega-menu-data"
+import { womenMenuData } from "@/data/mega-menu/women-mega-menu-data"
+import { kidsMenuData } from "@/data/mega-menu/kids.mega-menu-data"
+import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-data"
+import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
+import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
+import type { MenuCategory } from "@/types/common"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -11,235 +51,198 @@ interface MobileMenuProps {
 
 interface MenuLevel {
   title: string
-  items: MenuItem[]
+  items: MenuCategory[]
+  parentTitle?: string
 }
 
-interface MenuItem {
-  name: string
-  href?: string
-  hasSubmenu?: boolean
-  icon?: string
-  submenu?: MenuLevel
+interface NavigationHistory {
+  level: MenuLevel
+  scrollPosition: number
 }
 
-const colorItems = [
-  { name: "Black", color: "bg-black" },
-  { name: "Grey", color: "bg-gray-500" },
-  { name: "White", color: "bg-white border border-gray-300" },
-  { name: "Brown", color: "bg-amber-800" },
-  { name: "Red", color: "bg-red-500" },
-  { name: "Pink", color: "bg-pink-300" },
-  { name: "Orange", color: "bg-orange-500" },
-  { name: "Yellow", color: "bg-yellow-400" },
-  { name: "Green", color: "bg-green-500" },
-  { name: "Blue", color: "bg-blue-500" },
-  { name: "Purple", color: "bg-purple-500" },
+// Color mapping for "Shop by Color" sections
+const colorMapping: Record<string, string> = {
+  black: "bg-black",
+  grey: "bg-gray-500",
+  gray: "bg-gray-500",
+  white: "bg-white border border-gray-300",
+  brown: "bg-amber-800",
+  red: "bg-red-500",
+  pink: "bg-pink-300",
+  orange: "bg-orange-500",
+  yellow: "bg-yellow-400",
+  green: "bg-green-500",
+  blue: "bg-blue-500",
+  purple: "bg-purple-500",
+}
+
+// Main menu structure
+const mainMenuData: Record<string, MenuCategory[]> = {
+  MEN: menMenuData,
+  WOMEN: womenMenuData,
+  KIDS: kidsMenuData,
+  "BACK TO SCHOOL": backToSchoolMenuData,
+  "NEW & TRENDING": trendingMenuData,
+  SALE: saleMenuData,
+}
+
+// Additional menu items (non-category items)
+const additionalMenuItems = [
+  { name: "My Account", href: "/account" },
+  { name: "Exchanges & Returns", href: "/returns" },
+  { name: "Order Tracker", href: "/orders" },
+  { name: "adiClub", href: "/adiclub" },
+  { name: "Gift Cards", href: "/gift-cards" },
+  { name: "Store Locator", href: "/stores" },
+  { name: "Mobile Apps", href: "/mobile-apps" },
 ]
 
-// Menu structure matching desktop mega menu
-const menuStructure: Record<string, MenuLevel> = {
-  MEN: {
-    title: "MEN",
-    items: [
-      {
-        name: "Shoes",
-        hasSubmenu: true,
-        submenu: {
-          title: "SHOES",
-          items: [
-            { name: "Lifestyle", href: "/men-lifestyle" },
-            { name: "Running", href: "/men-running" },
-            { name: "Football", href: "/men-football" },
-            { name: "Basketball", href: "/men-basketball" },
-            { name: "Tennis", href: "/men-tennis" },
-            { name: "Golf", href: "/men-golf" },
-            { name: "Slides & Sandals", href: "/men-slides" },
-          ],
-        },
-      },
-      {
-        name: "Clothing",
-        hasSubmenu: true,
-        submenu: {
-          title: "CLOTHING",
-          items: [
-            { name: "Tops & T-Shirts", href: "/men-tops" },
-            { name: "Hoodies & Sweatshirts", href: "/men-hoodies_sweatshirts" },
-            { name: "Jackets & Coats", href: "/men-jackets" },
-            { name: "Pants & Tights", href: "/men-pants" },
-            { name: "Shorts", href: "/men-shorts" },
-            { name: "Tracksuits", href: "/men-tracksuits" },
-            { name: "Swimwear", href: "/men-swimwear" },
-          ],
-        },
-      },
-      {
-        name: "Accessories",
-        hasSubmenu: true,
-        submenu: {
-          title: "ACCESSORIES",
-          items: [
-            { name: "Bags & Backpacks", href: "/men-bags" },
-            { name: "Caps & Hats", href: "/men-caps" },
-            { name: "Socks", href: "/men-socks" },
-            { name: "Gloves", href: "/men-gloves" },
-            { name: "Belts", href: "/men-belts" },
-            { name: "Watches", href: "/men-watches" },
-          ],
-        },
-      },
-      { name: "New & Trending", href: "/men/new-trending" },
-      {
-        name: "Shop by Sport",
-        hasSubmenu: true,
-        submenu: {
-          title: "SHOP BY SPORT",
-          items: [
-            { name: "Running", href: "/men-running" },
-            { name: "Football", href: "/men-football" },
-            { name: "Basketball", href: "/men-basketball" },
-            { name: "Tennis", href: "/men-tennis" },
-            { name: "Golf", href: "/men-golf" },
-            { name: "Training", href: "/men-training" },
-            { name: "Outdoor", href: "/men-outdoor" },
-          ],
-        },
-      },
-      {
-        name: "Shop by Collection",
-        hasSubmenu: true,
-        submenu: {
-          title: "SHOP BY COLLECTION",
-          items: [
-            { name: "Originals", href: "/men-originals" },
-            { name: "Sportswear", href: "/men-sportswear" },
-            { name: "Performance", href: "/men-performance" },
-            { name: "Y-3", href: "/men-y3" },
-            { name: "Stella McCartney", href: "/men-stella" },
-          ],
-        },
-      },
-      {
-        name: "Shop by Color",
-        icon: "🌸",
-        hasSubmenu: true,
-        submenu: {
-          title: "SHOP BY COLOR 🌸",
-          items: [
-            ...colorItems.map((color) => ({ name: color.name, href: `/men/color/${color.name.toLowerCase()}` })),
-            { name: "All Men's", href: "/men" },
-          ],
-        },
-      },
-      { name: "Sale", href: "/men/sale" },
-    ],
-  },
-  WOMEN: {
-    title: "WOMEN",
-    items: [
-      {
-        name: "Shoes",
-        hasSubmenu: true,
-        submenu: {
-          title: "SHOES",
-          items: [
-            { name: "Lifestyle", href: "/women-lifestyle" },
-            { name: "Running", href: "/women-running" },
-            { name: "Training", href: "/women-training" },
-            { name: "Tennis", href: "/women-tennis" },
-            { name: "Slides & Sandals", href: "/women-slides" },
-          ],
-        },
-      },
-      {
-        name: "Clothing",
-        hasSubmenu: true,
-        submenu: {
-          title: "CLOTHING",
-          items: [
-            { name: "Tops & T-Shirts", href: "/women-tops" },
-            { name: "Sports Bras", href: "/women-sports-bras" },
-            { name: "Hoodies & Sweatshirts", href: "/women-hoodies" },
-            { name: "Jackets & Coats", href: "/women-jackets" },
-            { name: "Pants & Tights", href: "/women-pants" },
-            { name: "Shorts", href: "/women-shorts" },
-            { name: "Dresses & Skirts", href: "/women-dresses" },
-          ],
-        },
-      },
-      { name: "Accessories", href: "/women-accessories" },
-      { name: "New & Trending", href: "/women-new-trending" },
-      { name: "Shop by Sport", href: "/women-sport" },
-      { name: "Sale", href: "/women-sale" },
-    ],
-  },
-  KIDS: {
-    title: "KIDS",
-    items: [
-      { name: "Boys", href: "/kids-boys" },
-      { name: "Girls", href: "/kids-girls" },
-      { name: "Infants & Toddlers", href: "/kids-infants" },
-      { name: "Shoes", href: "/kids-shoes" },
-      { name: "Clothing", href: "/kids-clothing" },
-      { name: "Accessories", href: "/kids-accessories" },
-      { name: "Sale", href: "/kids-sale" },
-    ],
-  },
-  SALE: {
-    title: "SALE",
-    items: [
-      { name: "Men's Sale", href: "/sale-men" },
-      { name: "Women's Sale", href: "/sale-women" },
-      { name: "Kids' Sale", href: "/sale-kids" },
-      { name: "Shoes Sale", href: "/sale-shoes" },
-      { name: "Clothing Sale", href: "/sale-clothing" },
-      { name: "Accessories Sale", href: "/sale-accessories" },
-    ],
-  },
-  "NEW & TRENDING": {
-    title: "NEW & TRENDING",
-    items: [
-      { name: "New Arrivals", href: "/trending/new-arrivals" },
-      { name: "Best Sellers", href: "/trending/best-sellers" },
-      { name: "Trending Now", href: "/trending/trending" },
-      { name: "Limited Edition", href: "/trending/limited" },
-      { name: "Collaborations", href: "/trending/collaborations" },
-    ],
-  },
-}
-
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const [currentLevel, setCurrentLevel] = useState<MenuLevel>(menuStructure.MEN)
-  const [menuHistory, setMenuHistory] = useState<MenuLevel[]>([])
+  const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
+    title: "MENU",
+    items: [],
+  })
+  const [navigationHistory, setNavigationHistory] = useState<NavigationHistory[]>([])
 
-  const handleSubmenuClick = (item: MenuItem) => {
-    if (item.submenu) {
-      setMenuHistory([...menuHistory, currentLevel])
-      setCurrentLevel(item.submenu)
+  useEffect(() => {
+    if (!isOpen) return
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)")
+
+    const handleResize = () => {
+      if (mediaQuery.matches) {
+        onClose()
+      }
+    }
+
+    mediaQuery.addEventListener("change", handleResize)
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize)
+    }
+  }, [isOpen, onClose])
+
+  // Initialize main menu
+  useEffect(() => {
+    if (isOpen) {
+      const mainCategories: MenuCategory[] = Object.keys(mainMenuData).map((key) => ({
+        title: key,
+        titleHref:
+          key === "BACK TO SCHOOL"
+            ? "/back_to_school"
+            : key === "NEW & TRENDING"
+              ? "/trending"
+              : `/${key.toLowerCase()}`,
+        items: [],
+      }))
+
+      setCurrentLevel({
+        title: "MENU",
+        items: mainCategories,
+      })
+      setNavigationHistory([])
+    }
+  }, [isOpen])
+
+  const handleCategoryClick = (category: MenuCategory) => {
+    const menuData = mainMenuData[category.title]
+
+    if (menuData && menuData.length > 0) {
+      // Save current scroll position
+      const scrollPosition = document.querySelector(".mobile-menu-content")?.scrollTop || 0
+
+      setNavigationHistory((prev) => [
+        ...prev,
+        {
+          level: currentLevel,
+          scrollPosition,
+        },
+      ])
+
+      setCurrentLevel({
+        title: category.title,
+        items: menuData,
+        parentTitle: currentLevel.title,
+      })
+    } else if (category.titleHref) {
+      // Direct navigation for categories without submenus
+      onClose()
+      window.location.href = category.titleHref
     }
   }
 
+  const handleSubcategoryClick = (subcategory: MenuCategory) => {
+    if (subcategory.items && subcategory.items.length > 0) {
+      // Save current scroll position
+      const scrollPosition = document.querySelector(".mobile-menu-content")?.scrollTop || 0
+
+      setNavigationHistory((prev) => [
+        ...prev,
+        {
+          level: currentLevel,
+          scrollPosition,
+        },
+      ])
+
+      setCurrentLevel({
+        title: subcategory.title,
+        items: subcategory.items.map((item) => ({
+          title: item.name,
+          titleHref: item.href,
+          items: [],
+        })),
+        parentTitle: currentLevel.title,
+      })
+    } else if (subcategory.titleHref) {
+      // Direct navigation
+      onClose()
+      window.location.href = subcategory.titleHref
+    }
+  }
+
+  const handleItemClick = (item: { name: string; href: string }) => {
+    onClose()
+    window.location.href = item.href
+  }
+
   const handleBackClick = () => {
-    if (menuHistory.length > 0) {
-      const previousLevel = menuHistory[menuHistory.length - 1]
-      setCurrentLevel(previousLevel)
-      setMenuHistory(menuHistory.slice(0, -1))
+    if (navigationHistory.length > 0) {
+      const previousLevel = navigationHistory[navigationHistory.length - 1]
+      setCurrentLevel(previousLevel.level)
+      setNavigationHistory((prev) => prev.slice(0, -1))
+
+      // Restore scroll position
+      setTimeout(() => {
+        const menuContent = document.querySelector(".mobile-menu-content")
+        if (menuContent) {
+          menuContent.scrollTop = previousLevel.scrollPosition
+        }
+      }, 0)
     }
   }
 
   const handleClose = () => {
-    setCurrentLevel(menuStructure.MEN)
-    setMenuHistory([])
+    setCurrentLevel({ title: "MENU", items: [] })
+    setNavigationHistory([])
     onClose()
   }
 
-  const handleMainCategoryClick = (categoryName: string) => {
-    const category = menuStructure[categoryName]
-    if (category) {
-      setCurrentLevel(category)
-      setMenuHistory([])
+  const getColorSwatch = (itemName: string, categoryTitle: string) => {
+    if (categoryTitle.toLowerCase().includes("color")) {
+      const colorName = itemName.toLowerCase()
+      const colorClass = colorMapping[colorName]
+      if (colorClass) {
+        return <div className={cn("w-4 h-4 rounded-full mr-3", colorClass)} />
+      }
     }
+    return null
   }
+
+  const hasSubmenu = (category: MenuCategory) => {
+    return category.items && category.items.length > 0
+  }
+
+  const isMainMenu = currentLevel.title === "MENU"
 
   if (!isOpen) return null
 
@@ -248,84 +251,125 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={handleClose} />
 
-      {/* Menu Panel - Full Width */}
-      <div
-        className={`
-        fixed top-0 left-0 h-full w-full bg-white z-50 
-        transform transition-transform duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-      `}
-      >
+      {/* Menu Panel */}
+      <div className="fixed inset-0 bg-white z-50 flex flex-col md:hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
-          {menuHistory.length > 0 && (
-            <button onClick={handleBackClick} className="p-2 hover:bg-gray-100 rounded">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 min-h-[60px]">
+          {navigationHistory.length > 0 && (
+            <button onClick={handleBackClick} className="p-2 hover:bg-gray-100 rounded-full -ml-2">
               <ChevronLeft className="w-6 h-6" />
             </button>
           )}
 
-          <h2 className="text-lg font-bold flex-1 text-center">{currentLevel.title}</h2>
+          {isMainMenu ? (
+            <div className="flex-1 flex justify-center">
+              <AdidasLogo />
+            </div>
+          ) : (
+            <h2 className="text-lg font-bold flex-1 text-center uppercase">{currentLevel.title}</h2>
+          )}
 
-          <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded">
+          <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-full -mr-2">
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Main Categories (if at root level) */}
-        {menuHistory.length === 0 && currentLevel.title === "MEN" && (
-          <div className="border-b">
-            <div className="flex overflow-x-auto p-4 space-x-4">
-              {Object.keys(menuStructure).map((category) => (
+        {/* Menu Content */}
+        <div className="flex-1 overflow-y-auto mobile-menu-content">
+          {isMainMenu ? (
+            // Main menu with categories and additional items
+            <div>
+              {/* Main Categories */}
+              {Object.keys(mainMenuData).map((categoryName) => (
                 <button
-                  key={category}
-                  onClick={() => handleMainCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium ${
-                    currentLevel.title === category ? "bg-black text-white" : "bg-gray-100 text-black hover:bg-gray-200"
-                  }`}
+                  key={categoryName}
+                  onClick={() =>
+                    handleCategoryClick({
+                      title: categoryName,
+                      titleHref:
+                        categoryName === "BACK TO SCHOOL"
+                          ? "/back_to_school"
+                          : categoryName === "NEW & TRENDING"
+                            ? "/trending"
+                            : `/${categoryName.toLowerCase()}`,
+                      items: [],
+                    })
+                  }
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-gray-100 text-left"
                 >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Menu Items */}
-        <div className="flex-1 overflow-y-auto">
-          {currentLevel.items.map((item, index) => (
-            <div key={index}>
-              {item.hasSubmenu ? (
-                <button
-                  onClick={() => handleSubmenuClick(item)}
-                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b text-left"
-                >
-                  <div className="flex items-center space-x-3">
-                    {item.icon && <span className="text-lg">{item.icon}</span>}
-                    <span className="font-medium">{item.name}</span>
-                  </div>
+                  <span className="font-bold text-lg uppercase">{categoryName}</span>
                   <ChevronRight className="w-5 h-5 text-gray-400" />
                 </button>
-              ) : (
+              ))}
+
+              {/* Divider */}
+              <div className="h-2 bg-gray-50" />
+
+              {/* Additional Menu Items */}
+              {additionalMenuItems.map((item) => (
                 <Link
-                  href={item.href || "#"}
+                  key={item.name}
+                  href={item.href}
                   onClick={handleClose}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50 border-b"
+                  className="block p-4 hover:bg-gray-50 border-b border-gray-100"
                 >
-                  <div className="flex items-center space-x-3">
-                    {/* Color swatch for color items */}
-                    {currentLevel.title.includes("COLOR") && (
-                      <div
-                        className={`w-4 h-4 rounded-full ${
-                          colorItems.find((c) => c.name === item.name)?.color || "bg-gray-300"
-                        }`}
-                      />
-                    )}
-                    <span className="font-medium">{item.name}</span>
-                  </div>
+                  <span className="text-base">{item.name}</span>
                 </Link>
-              )}
+              ))}
+
+              {/* Country Selection */}
+              <div className="p-4 border-b border-gray-100">
+                <div className="flex items-center space-x-2">
+                  <Image src="/flag/us-show.svg" alt="United States" width={24} height={16} />
+                  <span className="text-base">United States</span>
+                </div>
+              </div>
             </div>
-          ))}
+          ) : (
+            // Submenu items
+            <div>
+              {currentLevel.items.map((item, index) => {
+                const isCategory = "items" in item && item.items && item.items.length > 0
+                const itemName = "title" in item ? item.title : item.name
+                const itemHref = "titleHref" in item ? item.titleHref : item.href
+
+                if (isCategory) {
+                  // Category with submenu
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleSubcategoryClick(item as MenuCategory)}
+                      className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-gray-100 text-left"
+                    >
+                      <div className="flex items-center">
+                        {getColorSwatch(itemName, currentLevel.title)}
+                        <span className="text-base">
+                          {itemName}
+                          {itemName.toLowerCase().includes("color") && " 🌸"}
+                        </span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                    </button>
+                  )
+                } else {
+                  // Direct link item
+                  return (
+                    <Link
+                      key={index}
+                      href={itemHref || "#"}
+                      onClick={handleClose}
+                      className="block p-4 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="flex items-center">
+                        {getColorSwatch(itemName, currentLevel.title)}
+                        <span className="text-base">{itemName}</span>
+                      </div>
+                    </Link>
+                  )
+                }
+              })}
+            </div>
+          )}
         </div>
       </div>
     </>

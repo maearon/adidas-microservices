@@ -3,6 +3,7 @@
 import { backToSchoolMenuData, kidsMenuData, menMenuData, saleMenuData, trendingMenuData, womenMenuData } from "@/data/mega-menu"
 import { MenuCategory, Nullable } from "@/types/common"
 import Link from "next/link"
+import Image from "next/image";
 
 type MegaMenuProps = {
   activeMenu: Nullable<string>
@@ -104,14 +105,21 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                   </li>
                 ))}
               </ul>
-              {activeMenu === "SALE" && menuData[0].title === "FEATURED SALE" && (
-                <div className="mt-4">
-                  <img
-                    src="/assets/nav/originals_fw25_superstar_topnav_launch_d_331db9ccb5.jpg?height=100&width=150"
-                    alt="Sale promotion"
-                    className="w-full h-auto"
-                  />
-                </div>
+              {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && menuData[0].title === "NEW & TRENDING" && (
+                <Link
+                  href={`/${activeMenu.toLowerCase()}-superstar`}
+                  className="text-blue-600 underline font-semibold"
+                >
+                  <div className="mt-4">
+                    <Image
+                      src="/assets/nav/originals_fw25_superstar_topnav_launch_d_331db9ccb5.jpg"
+                      alt="Sale promotion"
+                      width={150}
+                      height={100}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  </Link>
               )}
             </div>
           )}
