@@ -240,10 +240,16 @@ const LoginPage = () => {
                     <div className="mt-2 text-sm text-center">
                       Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" target="_blank">Reset it here</Link>
                     </div>
+                    {/* Terms */}
                     <div className="mt-6 text-xs text-gray-500">
                       <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
                       <p>
-                        By clicking the "Continue" button, you are joining adiClub and agree to the <Link href="#" className="text-blue-600 underline">TERMS OF USE</Link>, <Link href="#" className="text-blue-600 underline">ADICLUB TERMS</Link>, and <Link href="#" className="text-blue-600 underline">PRIVACY POLICY</Link>.
+                        By clicking the "Continue" button, you are joining adiClub, will receive emails with the latest news and
+                        updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
+                        <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
+                        <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the
+                        adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of
+                        our <button className="underline">CALIFORNIA PRIVACY NOTICE</button> for details.
                       </p>
                     </div>
                   </Form>
