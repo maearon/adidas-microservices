@@ -10,7 +10,7 @@ export default function HeroBannerVideo() {
   const [loopCount, setLoopCount] = useState(0)
   const [showVideo, setShowVideo] = useState(false)
 
-  const MAX_LOOP_COUNT: number | "forever" = 3 // chỉnh nếu muốn loop giới hạn
+  const MAX_LOOP_COUNT: number | "forever" = "forever" // chỉnh nếu muốn loop giới hạn
   const SLOW_RATE = 0.125 // phát chậm 8x
 
   // Callback để tránh recreate trong useEffect
