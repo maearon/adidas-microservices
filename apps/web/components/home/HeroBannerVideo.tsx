@@ -2,11 +2,9 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Pause, Play } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
 export default function HeroBannerVideo() {
-  const router = useRouter()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(true)
   const [loopCount, setLoopCount] = useState(0)
@@ -64,7 +62,7 @@ export default function HeroBannerVideo() {
       {/* Video nền */}
       <video
         ref={videoRef}
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none"
         muted
         playsInline
         preload="auto"
@@ -96,7 +94,7 @@ export default function HeroBannerVideo() {
         shadow={false}
         fullWidth={false}
         showArrow={false}
-        className="absolute top-5 right-5 z-10"
+        className="absolute top-5 right-5 z-20 bg-white/70 hover:bg-white text-black rounded-full p-2 transition"
       >
         {isPlaying ? (
           <Pause className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -120,8 +118,7 @@ export default function HeroBannerVideo() {
             </p>
 
             {/* Các nút CTA */}
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 pt-1">
-              {/* 3 nút chính */}
+            <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
               {[
                 { label: "MEN'S SUPERSTAR", href: "/men-superstar" },
                 { label: "WOMEN'S SUPERSTAR", href: "/women-superstar" },
@@ -137,7 +134,7 @@ export default function HeroBannerVideo() {
                   variant="outline"
                   href={href}
                   showArrow
-                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto"
+                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-9"
                 >
                   {label}
                 </Button>
@@ -153,9 +150,9 @@ export default function HeroBannerVideo() {
                 variant="outline"
                 showArrow={false}
                 onClick={() => setShowVideo(true)}
-                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto inline-flex items-center gap-1"
+                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-9 inline-flex items-center gap-1"
               >
-                <Play className="h-4 w-4" />
+                <Play className="h-3.5 w-3.5" />
                 WATCH VIDEO
               </Button>
             </div>
