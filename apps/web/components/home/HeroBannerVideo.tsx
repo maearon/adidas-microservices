@@ -106,7 +106,7 @@ export default function HeroBannerVideo() {
       {/* Loop counter visible to user */}
       <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded">
         🔁 Played:{" "}
-        {MAX_LOOP_COUNT === "forever" ? "∞" : `${loopCount} / ${MAX_LOOP_COUNT}`}
+        {MAX_LOOP_COUNT === "forever" ? `∞ / ${loopCount} / ${MAX_LOOP_COUNT}` : `${loopCount} / ${MAX_LOOP_COUNT}`}
       </div>
 
       {/* Nội dung overlay */}
