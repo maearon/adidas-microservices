@@ -102,7 +102,12 @@ export default function WomenPage() {
           title: "PAST, PRESENT, FUTURE",
           description: "Explore the Superstar, now updated for the next generation.",
           buttons: [
-            { href: "/women-superstar", buttonLabel: "SHOP NOW" }
+            { 
+              href: "/women-superstar", 
+              buttonLabel: "SHOP NOW",
+              border: false,
+              shadow: true,
+            }
           ],
         }}
       />

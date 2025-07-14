@@ -100,7 +100,12 @@ export default function MenPage() {
           title: "PAST, PRESENT, FUTURE",
           description: "Explore the Superstar, now updated for the next generation.",
           buttons: [
-            { href: "/men-superstar", buttonLabel: "SHOP NOW" }
+            { 
+              href: "/men-superstar", 
+              buttonLabel: "SHOP NOW",
+              border: false,
+              shadow: true,
+            }
           ],
         }}
       />

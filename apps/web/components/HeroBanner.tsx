@@ -9,7 +9,12 @@ interface HeroBannerProps {
   content?: {
     title: string
     description: string
-    buttons: Array<{ buttonLabel?: string; href: string }>
+    buttons: Array<{ 
+      buttonLabel?: string; 
+      border?: boolean;
+      href: string;
+      shadow?: boolean;
+    }>
   }
 }
 
@@ -18,7 +23,12 @@ export default function HeroBanner({
   content = {
     title: "A TRUE MIAMI ORIGINAL",
     description: "Dream big and live blue in the iconic Inter Miami CF 2025 Third Jersey.",
-    buttons: [{ href: "/inter-miami-cf", buttonLabel: "SHOP NOW" }],
+    buttons: [{ 
+      href: "/inter-miami-cf", 
+      buttonLabel: "SHOP NOW",
+      border: true,
+      shadow: false,
+    }],
   },
 }: HeroBannerProps) {
   const router = useRouter()
@@ -49,13 +59,13 @@ export default function HeroBanner({
                 key={`${btn.href}-${idx}`}
                 theme="white"
                 size="sm"
-                border
-                shadow={false}
+                border={btn.border}
+                shadow={btn.shadow}
                 fullWidth={false}
                 variant="outline"
                 href={btn.href}
                 showArrow
-                className="border border-black text-black font-bold px-2 py-1 text-xs sm:text-sm rounded-none hover:bg-gray-100 transition w-auto h-9"
+                className="text-black font-bold px-2 py-1 text-xs sm:text-sm rounded-none hover:bg-gray-100 transition w-auto h-9"
               >
                 {btn.buttonLabel || "SHOP NOW"}
               </Button>

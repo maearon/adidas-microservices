@@ -70,9 +70,24 @@ export default function HomePage() {
           title: "SAVE UP TO 40% NOW",
           description: "Shop to save on your favorite adidas items.",
           buttons: [
-            { href: "/men-sale", buttonLabel: "SHOP MEN" },
-            { href: "/women-sale", buttonLabel: "SHOP WOMEN" },
-            { href: "/kids-sale", buttonLabel: "SHOP KIDS" }
+            { 
+              href: "/men-sale", 
+              buttonLabel: "SHOP MEN",
+              border: true,
+              shadow: false,
+            },
+            { 
+              href: "/women-sale", 
+              buttonLabel: "SHOP WOMEN",
+              border: true,
+              shadow: false,
+            },
+            { 
+              href: "/kids-sale", 
+              buttonLabel: "SHOP KIDS",
+              border: true,
+              shadow: false,
+            }
           ],
         }}
       />

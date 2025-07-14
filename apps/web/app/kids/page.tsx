@@ -95,7 +95,12 @@ export default function KidsPage() {
           title: "WE ARE SO BACK",
           description: "Get their back to school looks down this year with tracksuits, sneakers, and more.",
           buttons: [
-            { href: "/kids-back_to_schools", buttonLabel: "SHOP NOW" }
+            { 
+              href: "/kids-back_to_schools", 
+              buttonLabel: "SHOP NOW",
+              border: false,
+              shadow: true,
+            }
           ],
         }}
       />

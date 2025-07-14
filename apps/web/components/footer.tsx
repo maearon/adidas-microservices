@@ -1,11 +1,18 @@
 "use client"
 
+import { useAppSelector } from "@/store/hooks"
+import { selectUser } from "@/store/sessionSlice"
 import { Facebook, Instagram, Twitter, Youtube, Music, MapPin, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import CcpaIcon from "@/assets/icons/ccpa-privacy-options.svg";
+import { Button } from "./ui/button";
 
 export default function Footer() {
+  const { value: user } = useAppSelector(selectUser)
+  const cartItemsCount = useAppSelector((state) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+  )
   const footerSections = {
     PRODUCTS: [
       "Shoes",
@@ -125,15 +132,20 @@ export default function Footer() {
       </section>
 
       {/* Bottom CTA */}
-      <div className="hidden sm:block bg-blue-600 text-white py-8">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold mb-2">JOIN OUR ADICLUB & GET 15% OFF</h3>
-          <Link
-            href="/signup"
-            className="bg-white text-blue-600 px-6 py-2 rounded font-semibold hover:bg-gray-100 transition-colors"
-          >
-            SIGN UP FOR FREE →
-          </Link>
+      <div className="bg-[#007cc3] text-white py-8 hidden sm:block">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
+            <h3 className="text-2xl font-extrabold tracking-wide">
+              JOIN OUR ADICLUB & GET 15% OFF
+            </h3>
+            <Button
+              href="/signup"
+              pressEffect={true}
+              className="bg-white text-black py-3 border border-[#007cc3] rounded-none font-semibold hover:bg-gray-100 transition-colors"
+            >
+              SIGN UP FOR FREE
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -189,19 +201,38 @@ export default function Footer() {
 
             {/* Hàng 1: 2 tiêu đề có padding ngang */}
             <div className="grid grid-cols-2 gap-4 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
-              <h3 className="font-bold text-sm">My account</h3>
-              <h3 className="font-bold text-sm">Your bag (2)</h3>
+              <Link
+                href={user?.email ? "/my-account" : "/account-login"}
+                className="font-bold text-sm"
+              >
+                {user?.email ? "My Account" : "Login"}
+              </Link>
+              
+              <Link
+                href="/cart"
+                className="font-bold text-sm"
+              >
+                Your bag ({cartItemsCount})
+              </Link>
             </div>
 
             {/* Hàng 2: CTA không có padding ngang */}
-            <div className="bg-blue-600 text-white py-5 text-center">
-              <h3 className="text-base font-bold mb-2">JOIN OUR ADICLUB & GET 15% OFF</h3>
-              <Link
-                href="/signup"
-                className="bg-white text-blue-600 px-4 py-1.5 rounded font-semibold text-sm hover:bg-gray-100 transition-colors inline-block"
-              >
-                SIGN UP FOR FREE →
-              </Link>
+            {/* Bottom CTA */}
+            <div className="bg-[#007cc3] text-white py-8 block sm:hidden">
+              <div className="container mx-auto px-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
+                  <h3 className="text-2xl font-extrabold tracking-wide">
+                    JOIN OUR ADICLUB & GET 15% OFF
+                  </h3>
+                  <Button
+                    href="/signup"
+                    pressEffect={true}
+                    className="bg-white text-black py-3 border border-[#007cc3] rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  >
+                    SIGN UP FOR FREE
+                  </Button>
+                </div>
+              </div>
             </div>
 
             {/* Hàng 3: 2 cột nội dung có padding ngang */}
