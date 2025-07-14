@@ -10,6 +10,28 @@ type MegaMenuProps = {
   onClose: () => void
 }
 
+const colorItems = [
+  { name: "Black", color: "bg-black" },
+  { name: "Grey", color: "bg-gray-500" },
+  { name: "White", color: "bg-white border border-gray-300" },
+  { name: "Brown", color: "bg-amber-800" },
+  { name: "Red", color: "bg-red-500" },
+  { name: "Pink", color: "bg-pink-300" },
+  { name: "Orange", color: "bg-orange-500" },
+  { name: "Yellow", color: "bg-yellow-400" },
+  { name: "Green", color: "bg-green-500" },
+  { name: "Blue", color: "bg-blue-500" },
+  { name: "Purple", color: "bg-purple-500" },
+]
+
+const getShopByColorItems = (gender: string) => [
+  ...colorItems.map((color) => ({
+    name: color.name,
+    href: `/${gender}-${color.name.toLowerCase()}`,
+  })),
+  { name: `All ${gender[0].toUpperCase() + gender.slice(1)}'s`, href: `/${gender}` },
+]
+
 export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
   if (!activeMenu) return null
 
@@ -121,6 +143,15 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                   </div>
                   </Link>
               )}
+              {/* {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && ["CLOTHING", "SHOP BY AGE"].includes(menuData[0].title) && (
+                {shopbycolor[0].items.map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    <Link href={item.href} className="text-sm hover:underline">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              )} */}
             </div>
           )}
 
@@ -146,8 +177,34 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                     </li>
                   ))}
                 </ul>
+
+                {/* Render Shop by Color ở cột có tiêu đề CLOTHING hoặc SHOP BY AGE */}
+                {["CLOTHING", "SHOP BY AGE"].includes(category.title.toUpperCase()) &&
+                  ["MEN", "WOMEN", "KIDS"].includes(activeMenu) && (
+                    <div className="pt-4">
+                      <h3 className="font-bold text-sm mb-2">
+                        <Link
+                          href={getShopByColorItems(activeMenu.toLowerCase())[0].href}
+                          className="hover:underline"
+                        >
+                          Shop by Color 🌸
+                        </Link>
+                      </h3>
+                      {/* <h4 className="text-sm font-semibold mb-2">Shop by Color 🌸</h4> */}
+                      {/* <ul className="space-y-1">
+                        {getShopByColorItems(activeMenu.toLowerCase()).map((colorItem, colorIndex) => (
+                          <li key={colorIndex}>
+                            <Link href={colorItem.href} className="text-sm hover:underline">
+                              {colorItem.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul> */}
+                    </div>
+                  )}
               </div>
             ))}
+
           </div>
         </div>
 

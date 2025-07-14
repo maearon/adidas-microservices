@@ -60,31 +60,92 @@ interface NavigationHistory {
   scrollPosition: number
 }
 
-// Color mapping for "Shop by Color" sections
-const colorMapping: Record<string, string> = {
-  black: "bg-black",
-  grey: "bg-gray-500",
-  gray: "bg-gray-500",
-  white: "bg-white border border-gray-300",
-  brown: "bg-amber-800",
-  red: "bg-red-500",
-  pink: "bg-pink-300",
-  orange: "bg-orange-500",
-  yellow: "bg-yellow-400",
-  green: "bg-green-500",
-  blue: "bg-blue-500",
-  purple: "bg-purple-500",
+// Shop by Color data
+const colorItems = [
+  { name: "Black", color: "bg-black" },
+  { name: "Grey", color: "bg-gray-500" },
+  { name: "White", color: "bg-white border border-gray-300" },
+  { name: "Brown", color: "bg-amber-800" },
+  { name: "Red", color: "bg-red-500" },
+  { name: "Pink", color: "bg-pink-300" },
+  { name: "Orange", color: "bg-orange-500" },
+  { name: "Yellow", color: "bg-yellow-400" },
+  { name: "Green", color: "bg-green-500" },
+  { name: "Blue", color: "bg-blue-500" },
+  { name: "Purple", color: "bg-purple-500" },
+]
+
+// Mapping for color swatch
+const colorMapping: Record<string, string> = Object.fromEntries(
+  colorItems.map((color) => [color.name.toLowerCase(), color.color])
+)
+
+// Shop by Color menu
+const getShopByColorMenu = (gender: string): MenuCategory => ({
+  title: "Shop by Color",
+  items: [
+    ...colorItems.map((color) => ({
+      name: color.name,
+      href: `/${gender}-${color.name.toLowerCase()}`
+    })),
+    {
+      name: `All ${gender.charAt(0).toUpperCase() + gender.slice(1)}'s`,
+      href: `/${gender}`,
+    },
+  ],
+})
+
+// Insert Shop by Color after a specific section
+const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[] => {
+  const index = menu.findIndex((item) =>
+    gender.toUpperCase() === "KIDS" ? item.title === "SHOP BY AGE" : item.title === "SHOP BY COLLECTION"
+  )
+  if (index === -1) return menu
+  const newMenu = [...menu]
+  newMenu.splice(index + 1, 0, getShopByColorMenu(gender))
+  return newMenu
 }
 
-// Main menu structure
+// Final menu with Shop by Color injected
+const menMenuDataWithColor = insertShopByColor(menMenuData, "men")
+const womenMenuDataWithColor = insertShopByColor(womenMenuData, "women")
+const kidsMenuDataWithColor = insertShopByColor(kidsMenuData, "kids")
+
+// Override main menu data
 const mainMenuData: Record<string, MenuCategory[]> = {
-  MEN: menMenuData,
-  WOMEN: womenMenuData,
-  KIDS: kidsMenuData,
+  MEN: menMenuDataWithColor,
+  WOMEN: womenMenuDataWithColor,
+  KIDS: kidsMenuDataWithColor,
   "BACK TO SCHOOL": backToSchoolMenuData,
   "NEW & TRENDING": trendingMenuData,
   SALE: saleMenuData,
 }
+
+// Color mapping for "Shop by Color" sections
+// const colorMapping: Record<string, string> = {
+//   black: "bg-black",
+//   grey: "bg-gray-500",
+//   gray: "bg-gray-500",
+//   white: "bg-white border border-gray-300",
+//   brown: "bg-amber-800",
+//   red: "bg-red-500",
+//   pink: "bg-pink-300",
+//   orange: "bg-orange-500",
+//   yellow: "bg-yellow-400",
+//   green: "bg-green-500",
+//   blue: "bg-blue-500",
+//   purple: "bg-purple-500",
+// }
+
+// Main menu structure
+// const mainMenuData: Record<string, MenuCategory[]> = {
+//   MEN: menMenuData,
+//   WOMEN: womenMenuData,
+//   KIDS: kidsMenuData,
+//   "BACK TO SCHOOL": backToSchoolMenuData,
+//   "NEW & TRENDING": trendingMenuData,
+//   SALE: saleMenuData,
+// }
 
 // Additional menu items (non-category items)
 const additionalMenuItems = [
@@ -368,6 +429,30 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   )
                 }
               })}
+
+              {/* Shop by Color - Conditional rendering */}
+                {["MEN", "WOMEN", "KIDS"].includes(currentLevel.title) &&
+                  currentLevel.items.length > 0 &&
+                  ["CLOTHING", "SHOP BY AGE"].includes(currentLevel.items[0]?.title || "") && (
+                    <div className="border-t border-gray-200 mt-4">
+                      <div className="p-4 bg-gray-50">
+                        <h3 className="font-semibold text-base mb-3 flex items-center">SHOP BY COLOR 🌸</h3>
+                        <div className="space-y-2">
+                          {shopByColorData[0].items.map((colorItem, itemIndex) => (
+                            <Link
+                              key={itemIndex}
+                              href={colorItem.href.replace("/men/", `/${currentLevel.title.toLowerCase()}/`)}
+                              onClick={handleClose}
+                              className="flex items-center p-2 hover:bg-white rounded text-sm"
+                            >
+                              {getColorSwatch(colorItem.name, currentLevel.title)}
+                              <span>{colorItem.name}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
             </div>
           )}
         </div>
