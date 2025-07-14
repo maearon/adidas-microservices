@@ -120,11 +120,11 @@ const LoginPage = () => {
                   Join adiClub for free and enjoy immediate access to these Level 1 rewards:
                 </p>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex items-center"><span className="text-blue-600 mr-2">✓</span>Welcome Bonus Voucher for 15% off</li>
-                  <li className="flex items-center"><span className="text-blue-600 mr-2">✓</span>Free Shipping and Returns</li>
-                  <li className="flex items-center"><span className="text-blue-600 mr-2">✓</span>Members-Only Products</li>
-                  <li className="flex items-center"><span className="text-blue-600 mr-2">✓</span>Early Access to Sales</li>
-                  <li className="flex items-center"><span className="text-blue-600 mr-2">✓</span>Access to Limited Editions</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Welcome Bonus Voucher for 15% off</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Free Shipping and Returns</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Members-Only Products</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Early Access to Sales</li>
+                  <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Access to Limited Editions</li>
                 </ul>
                 <p className="text-gray-600 mb-6">
                   Start earning adiClub points every time you shop, track a run on the adidas Running app and share a product review.
