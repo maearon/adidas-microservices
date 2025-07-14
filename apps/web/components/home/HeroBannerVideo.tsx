@@ -13,7 +13,7 @@ export default function HeroBannerVideo() {
   const [showVideo, setShowVideo] = useState(false)
 
   const MAX_LOOP_COUNT: number | "forever" = "forever"
-  const SLOW_RATE = 0.125 // chậm gấp 8 lần
+  const SLOW_RATE = 0.125 // chậm 8x
 
   useEffect(() => {
     const video = videoRef.current
@@ -22,7 +22,9 @@ export default function HeroBannerVideo() {
     video.playbackRate = SLOW_RATE
     if (MAX_LOOP_COUNT === "forever") video.loop = true
 
-    video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+    video.play()
+      .then(() => setIsPlaying(!video.paused))
+      .catch(() => setIsPlaying(false))
 
     if (MAX_LOOP_COUNT !== "forever") {
       const handleEnded = () => {
@@ -50,8 +52,7 @@ export default function HeroBannerVideo() {
 
     if (video.paused) {
       video.playbackRate = SLOW_RATE
-      video.play()
-      setIsPlaying(true)
+      video.play().then(() => setIsPlaying(true))
     } else {
       video.pause()
       setIsPlaying(false)
@@ -95,7 +96,7 @@ export default function HeroBannerVideo() {
         shadow={false}
         fullWidth={false}
         showArrow={false}
-        className="absolute top-5 right-5 z-10 bg-white/70 hover:bg-white text-black rounded-full p-2 transition"
+        className="absolute top-5 right-5 z-10"
       >
         {isPlaying ? (
           <Pause className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -120,6 +121,7 @@ export default function HeroBannerVideo() {
 
             {/* Các nút CTA */}
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 pt-1">
+              {/* 3 nút chính */}
               {[
                 { label: "MEN'S SUPERSTAR", href: "/men-superstar" },
                 { label: "WOMEN'S SUPERSTAR", href: "/women-superstar" },
@@ -135,7 +137,7 @@ export default function HeroBannerVideo() {
                   variant="outline"
                   href={href}
                   showArrow
-                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-fit"
+                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto"
                 >
                   {label}
                 </Button>
@@ -151,7 +153,7 @@ export default function HeroBannerVideo() {
                 variant="outline"
                 showArrow={false}
                 onClick={() => setShowVideo(true)}
-                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-fit inline-flex items-center gap-1"
+                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto inline-flex items-center gap-1"
               >
                 <Play className="h-4 w-4" />
                 WATCH VIDEO
@@ -161,7 +163,7 @@ export default function HeroBannerVideo() {
         </div>
       </div>
 
-      {/* Modal video khi click WATCH VIDEO */}
+      {/* Modal video YouTube */}
       {showVideo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
           <div className="relative max-w-4xl w-full mx-4">

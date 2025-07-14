@@ -30,10 +30,12 @@ export function Button({
   variant = "default",
   className,
   theme = "white",
-  border = false,
+  border = true,
+  size = "default", // fallback
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
+  const isIconButton = size === "icon"
 
   const bg = isBlack ? "bg-black" : "bg-white"
   const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
@@ -45,8 +47,14 @@ export function Button({
   const defaultBorder = isBlack ? "border-white" : "border-black"
 
   return (
-    <div className={cn("relative group", fullWidth && "w-full")}>
-      {shadow && (
+    <div
+      className={cn(
+        "relative group",
+        fullWidth && !isIconButton && "w-full"
+      )}
+    >
+      {/* Shadow border */}
+      {shadow && !isIconButton && (
         <span
           className={cn(
             "absolute inset-0 translate-x-[3px] translate-y-[3px] pointer-events-none z-0 transition-all border",
@@ -59,16 +67,18 @@ export function Button({
         asChild={!!href}
         disabled={loading}
         variant={variant}
+        size={size}
         className={cn(
           "relative z-10 inline-flex items-center justify-center px-4 h-12 font-bold text-base uppercase tracking-wide rounded-none transition-all",
           bg,
           hoverBg,
           text,
           hoverText,
-          border !== false && "border", // apply `border` class only if true or undefined
-          border !== false && defaultBorder,
+          border && !isIconButton && "border",
+          border && !isIconButton && defaultBorder,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
-          fullWidth && "w-full",
+          fullWidth && !isIconButton && "w-full",
+          isIconButton && "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
           className
         )}
         {...props}
@@ -84,7 +94,7 @@ export function Button({
             ) : (
               <span className="mr-2 -translate-y-[1px]">{children}</span>
             )}
-            {showArrow && (
+            {showArrow && !isIconButton && (
               <span className="text-[22px] font-thin leading-none">⟶</span>
             )}
           </Link>
@@ -93,9 +103,16 @@ export function Button({
             {loading ? (
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             ) : (
-              <span className="mr-2 -translate-y-[1px]">{children}</span>
+              <span
+                className={cn(
+                  "flex items-center",
+                  !isIconButton && "mr-2 -translate-y-[1px]"
+                )}
+              >
+                {children}
+              </span>
             )}
-            {showArrow && !loading && (
+            {showArrow && !isIconButton && !loading && (
               <span className="text-[22px] font-thin leading-none">⟶</span>
             )}
           </>
