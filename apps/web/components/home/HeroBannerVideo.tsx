@@ -103,6 +103,12 @@ export default function HeroBannerVideo() {
         )}
       </Button>
 
+      {/* Loop counter visible to user */}
+      <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded">
+        🔁 Played:{" "}
+        {MAX_LOOP_COUNT === "forever" ? "∞" : `${loopCount} / ${MAX_LOOP_COUNT}`}
+      </div>
+
       {/* Nội dung overlay */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
         <div className="w-full max-w-md text-left">
