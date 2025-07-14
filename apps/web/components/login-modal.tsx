@@ -65,7 +65,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
       setEmail(values.email)
       setKeepLoggedIn(values.keepLoggedIn)
-      if (response.exists) {
+      if (response?.exists) {
         if (response.user?.activated === false) {
           setStep("activate")
         } else {
@@ -84,7 +84,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   const handleLogin = async (password: string) => {
     try {
-      const res = await loginMutation({ email, password, remember_me: keepLoggedIn })
+      const res = await loginMutation({ email, password, keepLoggedIn })
       if (res) {
         await dispatch(fetchUser())
         flashMessage("success", "Login successful!")
@@ -109,7 +109,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     try {
       const name = email.split("@")[0]
       const res = await signupMutation(payload)
-      if (res.success) {
+      if (res?.success) {
         // flashMessage("success", "Account created!")
         // await dispatch(fetchUser())
         // onClose()

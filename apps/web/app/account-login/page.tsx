@@ -15,6 +15,7 @@ import Image from "next/image"
 import { Eye, EyeOff } from "lucide-react"
 import AdidasSpinner from "@/components/ui/AdidasSpinner"
 import { handleApiError } from "@/components/shared/handleApiError"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -25,7 +26,7 @@ const LoginPage = () => {
   const router = useRouter()
   const loginMutation = useLoginMutation()
   const { data: user, isLoading, isError, isFetched } = useCurrentUser()
-
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true)
   const [errors, setErrors] = useState<ErrorMessageType>({})
   const [hasMounted, setHasMounted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -38,9 +39,19 @@ const LoginPage = () => {
     }
   }, [isFetched, user, router])
 
-  const handleSubmit = async (values: { email: string; password: string; rememberMe?: boolean }) => {
+  const handleSubmit = async (values: { email: string; password: string; keepLoggedIn: boolean }) => {
     setErrors({})
-    loginMutation.mutate(values, {
+    setKeepLoggedIn(values.keepLoggedIn)
+
+    const { email, password } = values
+
+    loginMutation.mutate(
+    {
+      email,
+      password,
+      keepLoggedIn: keepLoggedIn
+    },
+    {
       onSuccess: () => {
         flashMessage("success", "Login successful.")
         router.push("/")
@@ -150,7 +161,7 @@ const LoginPage = () => {
               </div>
 
               <Formik
-                initialValues={{ email: "", password: "", rememberMe: true }}
+                initialValues={{ email: "", password: "", keepLoggedIn: true }}
                 validationSchema={LoginSchema}
                 onSubmit={handleSubmit}
               >
@@ -189,10 +200,25 @@ const LoginPage = () => {
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                       <Field type="checkbox" name="rememberMe" checked={values.rememberMe} />
                       <label className="text-sm text-gray-600">
                         Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
+                      </label>
+                    </div> */}
+
+                    {/* Keep me logged in */}
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="keepLoggedIn"
+                        checked={values.keepLoggedIn}
+                        onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
+                      />
+                      <label htmlFor="keepLoggedIn" className="text-sm">
+                        Keep me logged in. Applies to all options.{" "}
+                        <button type="button" className="underline">
+                          More info
+                        </button>
                       </label>
                     </div>
 

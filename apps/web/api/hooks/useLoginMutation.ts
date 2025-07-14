@@ -10,7 +10,7 @@ import { handleNetworkError } from "@/components/shared/handleNetworkError"
 interface LoginPayload {
   email: string
   password: string
-  remember_me?: boolean
+  keepLoggedIn?: boolean
 }
 
 export const useLoginMutation = () => {
@@ -19,7 +19,7 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationKey: ["login"],
-    mutationFn: async ({ email, password, remember_me = true }: LoginPayload) => {
+    mutationFn: async ({ email, password, keepLoggedIn = true }: LoginPayload) => {
       try {
         const response = await javaService.login({
           session: { email, password },
@@ -31,7 +31,7 @@ export const useLoginMutation = () => {
         }
 
         const { access, refresh } = response.tokens
-        setTokens(access.token, refresh.token, remember_me)
+        setTokens(access.token, refresh.token, keepLoggedIn)
 
         return response
       } catch (error: any) {

@@ -1,9 +1,9 @@
 import { Nullable } from "@/types/common"
 
 // 📦 apps/web/lib/token.ts
-export const setTokens = (access: string, refresh: string, remember: boolean) => {
+export const setTokens = (access: string, refresh: string, keepLoggedIn: boolean) => {
   if (typeof window !== "undefined") {
-    const storage = remember ? localStorage : sessionStorage
+    const storage = keepLoggedIn ? localStorage : sessionStorage
     storage.setItem("token", access)
     storage.setItem("refresh_token", refresh)
   }
