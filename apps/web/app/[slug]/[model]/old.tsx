@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
 import { toggleWishlist } from "@/store/wishlistSlice"
-import { MainButton } from "@/components/ui/main-button"
+import { Button } from "@/components/ui/button"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, ChevronDown, ChevronUp, Heart, ArrowLeft } from "lucide-react"
@@ -255,9 +255,9 @@ export default function ProductDetailPageClient({ params }: Props) {
 
   //           {/* Buttons */}
   //           <div className="flex gap-4 mb-6">
-  //             <MainButton onClick={handleAddToBag} fullWidth>
+  //             <Button onClick={handleAddToBag} fullWidth>
   //               ADD TO BAG
-  //             </MainButton>
+  //             </Button>
   //             <button onClick={handleToggleWishlist} className="w-12 h-12 border border-black">
   //               <Heart size={20} className={isWishlisted ? "fill-current" : ""} />
   //             </button>
@@ -490,12 +490,13 @@ export default function ProductDetailPageClient({ params }: Props) {
 
                 {/* Add to Bag & Wishlist - Side by Side */}
                 <div className="flex gap-4">
-                  <MainButton
+                  <Button
+                    pressEffect={true}
                     onClick={handleAddToBag}
                     fullWidth={true}
                   >
                     ADD TO BAG
-                  </MainButton>
+                  </Button>
 
                   <button
                     onClick={handleToggleWishlist}

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
 import { toggleWishlist } from "@/store/wishlistSlice"
-import { MainButton } from "@/components/ui/main-button"
+import { Button } from "@/components/ui/button"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, ChevronDown, ChevronUp, Heart } from "lucide-react"
@@ -397,12 +397,13 @@ export default function ProductDetailPageClient({ params }: { params: { slug: st
 
             {/* Add to Bag & Wishlist - Side by Side */}
             <div className="flex gap-4">
-              <MainButton
+              <Button
+                pressEffect={true}
                 onClick={handleAddToBag}
                 fullWidth={true}
               >
                 ADD TO BAG
-              </MainButton>
+              </Button>
 
               <button
                 onClick={handleToggleWishlist}

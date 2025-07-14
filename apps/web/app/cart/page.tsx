@@ -59,7 +59,7 @@ export default function CartPage() {
             <p className="text-gray-600 mb-8">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
-            <Button href="/" theme="black" shadow={true} pressEffect={true}>
+            <Button href="/" theme="black" shadow={true} pressEffect={true} fullWidth={false}>
               GET STARTED
             </Button>
           </div>

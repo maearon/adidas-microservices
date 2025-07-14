@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { X, ChevronDown, ChevronUp } from "lucide-react"
-import { MainButton } from "@/components/ui/main-button"
+import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 
@@ -388,12 +388,14 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
 
         {/* Apply Button */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
-          <MainButton
+          <Button
+            pressEffect={true}
+            fullWidth={false}
             onClick={applyFilters}
             className="w-full bg-black text-white hover:bg-gray-800 py-3 text-sm font-medium"
           >
             APPLY ({getAppliedFiltersCount()})
-          </MainButton>
+          </Button>
         </div>
       </div>
     </div>

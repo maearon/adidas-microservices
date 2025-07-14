@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { MainButton } from "@/components/ui/main-button"
+import { Button } from "@/components/ui/button"
 import { BaseButton } from "@/components/ui/base-button"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -205,13 +205,14 @@ export default function CheckoutPage() {
               </div>
 
               {/* Next Button */}
-              <MainButton
+              <Button
+                pressEffect={true}
                 onClick={handleNext}
                 fullWidth={true}
               >
                 NEXT
                 {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
-              </MainButton>
+              </Button>
             </div>
           </div>
 
