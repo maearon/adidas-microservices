@@ -43,7 +43,7 @@ import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-
 import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
-import { capitalizeWords } from "@/utils/upper-words"
+import { sanitizeMenuTitles } from "@/utils/sanitizeMenuTitleOnly"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -110,7 +110,7 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
 
   // Các mục cần thêm ở cuối menu
   const commonSale = {
-    title: "SALE",
+    title: "Sale",
     items: [
       { name: "Shoes", href: `/${gender}-shoes-sale` },
       { name: "Clothing", href: `/${gender}-clothing-sale` },
@@ -144,18 +144,18 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
 }
 
 // Final menu with Shop by Color injected
-const menMenuDataWithColor = insertShopByColor(menMenuData, "men")
-const womenMenuDataWithColor = insertShopByColor(womenMenuData, "women")
-const kidsMenuDataWithColor = insertShopByColor(kidsMenuData, "kids")
+const menMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(menMenuData), "men")
+const womenMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(womenMenuData), "women")
+const kidsMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(kidsMenuData), "kids")
 
 // Override main menu data
 const mainMenuData: Record<string, MenuCategory[]> = {
   MEN: menMenuDataWithColor,
   WOMEN: womenMenuDataWithColor,
   KIDS: kidsMenuDataWithColor,
-  "BACK TO SCHOOL": backToSchoolMenuData,
-  "NEW & TRENDING": trendingMenuData,
-  SALE: saleMenuData,
+  "BACK TO SCHOOL": sanitizeMenuTitles(backToSchoolMenuData),
+  "NEW & TRENDING": sanitizeMenuTitles(trendingMenuData),
+  SALE: sanitizeMenuTitles(saleMenuData),
 }
 
 // Color mapping for "Shop by Color" sections
@@ -186,7 +186,7 @@ const mainMenuData: Record<string, MenuCategory[]> = {
 
 // Additional menu items (non-category items)
 const additionalMenuItems = [
-  { name: "My Account", href: "/account" },
+  { name: "My Account", href: "/my-account" },
   { name: "Exchanges & Returns", href: "/returns" },
   { name: "Order Tracker", href: "/orders" },
   { name: "adiClub", href: "/adiclub" },
@@ -449,7 +449,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
                         <span className="text-base">
-                          {capitalizeWords(itemName)}
+                          {itemName}
                           {itemName.toLowerCase().includes("color") && " 🌸"}
                         </span>
                       </div>
@@ -467,7 +467,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
-                        <span className="text-base">{capitalizeWords(itemName)}</span>
+                        <span className="text-base">{itemName}</span>
                       </div>
                     </Link>
                   )
