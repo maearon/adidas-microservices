@@ -63,36 +63,24 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PromoBanner />
+      {/* <PromoBanner /> */}
       <HeroBanner
         backgroundClassName="bg-hero"
         content={{
-          title: "SAVE UP TO 40% NOW",
-          description: "Shop to save on your favorite adidas items.",
+          title: "CLIMACOOL LACED",
+          description: "The future now.",
           buttons: [
             { 
-              href: "/men-sale", 
-              buttonLabel: "SHOP MEN",
-              border: true,
-              shadow: false,
+              href: "/climacool-laced-shoes/JQ6637.html", 
+              buttonLabel: "SHOP NOW",
+              border: false,
+              shadow: true,
             },
-            { 
-              href: "/women-sale", 
-              buttonLabel: "SHOP WOMEN",
-              border: true,
-              shadow: false,
-            },
-            { 
-              href: "/kids-sale", 
-              buttonLabel: "SHOP KIDS",
-              border: true,
-              shadow: false,
-            }
           ],
         }}
       />
 
-      <HeroBannerSecond />
+      {/* <HeroBannerSecond /> */}
 
       <HeroBannerVideo />
       

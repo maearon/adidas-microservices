@@ -59,20 +59,20 @@
 
 /* globals.css hoặc một file style được import vào app */
 .bg-hero {
-  background-image: url('/assets/lib/promo_fw25_4july_bnr_m_b782140aa6.jpg?width=768');
+  background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_m_aae6e69ae1.jpg?width=768');
   background-size: cover;
   background-position: top;
 }
 
 @media (min-width: 768px) {
   .bg-hero {
-    background-image: url('/assets/lib/promo_fw25_4july_bnr_t_08599fc62e.jpg?width=1024');
+    background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_t_450f681dfa.jpg?width=1024');
   }
 }
 
 @media (min-width: 1024px) {
   .bg-hero {
-    background-image: url('/assets/lib/promo_fw25_4july_bnr_d_26cdc26d1a.jpg?width=1280');
+    background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_d_0b7560d877.jpg?width=1280');
   }
 }
 .bg-hero-women {

@@ -3,15 +3,17 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Pause, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"
 
 export default function HeroBannerVideo() {
+  const pathname = usePathname()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(true)
   const [loopCount, setLoopCount] = useState(0)
   const [showVideo, setShowVideo] = useState(false)
 
   const MAX_LOOP_COUNT: number | "forever" = "forever" // chỉnh nếu muốn loop giới hạn
-  const SLOW_RATE = 0.125 // phát chậm 8x
+  const SLOW_RATE = 1 // phát chậm 8x
 
   // Callback để tránh recreate trong useEffect
   const handleEnded = useCallback(() => {
@@ -73,6 +75,7 @@ export default function HeroBannerVideo() {
     <section className="relative h-[83vh] overflow-hidden bg-white">
       {/* Video nền */}
       <video
+        key={pathname}
         ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
         muted
