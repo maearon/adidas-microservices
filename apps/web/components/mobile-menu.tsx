@@ -100,9 +100,45 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
   const index = menu.findIndex((item) =>
     gender.toUpperCase() === "KIDS" ? item.title === "SHOP BY AGE" : item.title === "SHOP BY COLLECTION"
   )
-  if (index === -1) return menu
   const newMenu = [...menu]
-  newMenu.splice(index + 1, 0, getShopByColorMenu(gender))
+
+  // Chèn "Shop by Color" Chỉ khi tìm thấy (index !== -1), ta mới chèn mục "Shop by Color" vào ngay sau mục "SHOP BY AGE" hoặc "SHOP BY COLLECTION".
+  if (index !== -1) {
+    newMenu.splice(index + 1, 0, getShopByColorMenu(gender))
+  }
+
+  // Các mục cần thêm ở cuối menu
+  const commonSale = {
+    title: "SALE",
+    items: [
+      { name: "Shoes", href: `/${gender}-shoes-sale` },
+      { name: "Clothing", href: `/${gender}-clothing-sale` },
+      { name: "Accessories", href: `/${gender}-accessories-sale` },
+      { name: "Final Sale", href: `/${gender}-final-sale` },
+      { name: "All Sale", href: `/${gender}-sale` },
+    ],
+  }
+
+  if (gender === "men" || gender === "women") {
+    newMenu.push(
+      commonSale,
+      {
+        title: "Fast, free delivery with Prime",
+        titleHref: `/prime`,
+        items: [],
+      }
+    )
+  } else if (gender === "kids") {
+    newMenu.push(
+      commonSale,
+      {
+        title: "All Kids",
+        titleHref: "/kids?grid=true",
+        items: [],
+      }
+    )
+  }
+
   return newMenu
 }
 
