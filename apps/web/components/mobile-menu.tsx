@@ -358,7 +358,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   }
                   className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-gray-100 text-left"
                 >
-                  <span className="font-bold text-lg uppercase">{categoryName}</span>
+                  <span
+                    className={cn(
+                      "text-lg uppercase",
+                      ["MEN", "WOMEN", "KIDS"].includes(categoryName) ? "font-bold" : "font-medium"
+                    )}
+                  >
+                    {categoryName}
+                  </span>
                   <ChevronRight className="w-5 h-5 text-gray-400" />
                 </button>
               ))}
