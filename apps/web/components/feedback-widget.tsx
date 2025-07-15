@@ -19,7 +19,6 @@ export default function FeedbackWidget() {
     setIsOpen(false)
     setRating(null)
     toast({
-      title: "😊",
       description: "Thank you for feedback!",
     })
   }
