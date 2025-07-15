@@ -144,9 +144,9 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
 }
 
 // Final menu with Shop by Color injected
-const menMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(menMenuData), "men")
-const womenMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(womenMenuData), "women")
-const kidsMenuDataWithColor = insertShopByColor(sanitizeMenuTitles(kidsMenuData), "kids")
+const menMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(menMenuData, "men"))
+const womenMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(womenMenuData, "women"))
+const kidsMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(kidsMenuData, "kids"))
 
 // Override main menu data
 const mainMenuData: Record<string, MenuCategory[]> = {

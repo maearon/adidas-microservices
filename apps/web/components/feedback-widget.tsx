@@ -30,7 +30,7 @@ export default function FeedbackWidget() {
       <button
         onClick={togglePanel}
         className={cn(
-          "fixed right-0 top-1/2 z-50 -translate-y-1/2",
+          "fixed right-0 top-1/2 z-40 -translate-y-1/2",
           "bg-gray-200 hover:bg-gray-300 transition-colors",
           "px-2 py-6 text-xs font-bold tracking-wider",
           "border-l border-gray-300",
@@ -47,7 +47,7 @@ export default function FeedbackWidget() {
       {/* Sliding panel from right */}
       <div
         className={cn(
-          "fixed right-0 top-0 z-40 h-full w-96 bg-white shadow-2xl",
+          "fixed right-0 top-0 z-50 h-full w-96 bg-white shadow-2xl",
           "transform transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
