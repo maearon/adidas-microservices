@@ -25,7 +25,7 @@
 //   { name: "Purple", color: "bg-purple-500" },
 // ]
 
-// Menu structure matching desktop mega menu
+// Menu structure matching desktop mega menu import { mainMenuData, additionalMenuItems, colorMapping } from "@/lib/menu-utils" // bạn import từ nơi đã tách
 "use client"
 
 import { useState, useEffect } from "react"
@@ -352,22 +352,45 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       {/* Menu Panel */}
       <div className="fixed inset-0 bg-white z-50 flex flex-col md:hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 min-h-[60px]">
-          {navigationHistory.length > 0 && (
-            <button onClick={handleBackClick} className="p-2 hover:bg-gray-100 rounded-full -ml-2">
+        <div
+          className="h-10 flex items-center justify-between p-4 border-b border-gray-200 min-h-[60px]"
+          onClick={() => {
+            if (!isMainMenu) handleBackClick()
+          }}
+        >
+          {/* Back button (chỉ hiển thị nhưng không cần gán handler riêng nữa) */}
+          {navigationHistory.length > 0 ? (
+            <div className="p-2 rounded-full -ml-2">
               <ChevronLeft className="w-6 h-6" />
-            </button>
-          )}
-
-          {isMainMenu ? (
-            <Link href="/" className="flex-1 flex justify-center">
-              <AdidasLogo />
-            </Link>
+            </div>
           ) : (
-            <h2 className="text-lg font-bold flex-1 text-center uppercase">{currentLevel.title}</h2>
+            <div className="w-10" />
           )}
 
-          <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-full -mr-2">
+          {/* Center: Logo nếu là main menu, Title nếu submenu */}
+          <div className="flex-1 flex justify-center pointer-events-none">
+            {isMainMenu ? (
+              <Link
+                href="/"
+                aria-label="Home"
+                className="pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <AdidasLogo />
+              </Link>
+            ) : (
+              <h2 className="text-lg font-bold uppercase text-center">{currentLevel.title}</h2>
+            )}
+          </div>
+
+          {/* Close button – KHÔNG để handler onClick ở div cha ảnh hưởng đến nút này */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClose()
+            }}
+            className="p-2 hover:bg-gray-100 rounded-full -mr-2 z-10"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
