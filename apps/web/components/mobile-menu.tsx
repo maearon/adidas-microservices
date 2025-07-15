@@ -323,9 +323,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           )}
 
           {isMainMenu ? (
-            <div className="flex-1 flex justify-center">
+            <Link href="/" className="flex-1 flex justify-center">
               <AdidasLogo />
-            </div>
+            </Link>
           ) : (
             <h2 className="text-lg font-bold flex-1 text-center uppercase">{currentLevel.title}</h2>
           )}
