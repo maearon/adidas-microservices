@@ -467,7 +467,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
-                        <span className="text-base">{itemName}</span>
+                        <span className="text-base">{capitalizeWords(itemName)}</span>
                       </div>
                     </Link>
                   )
