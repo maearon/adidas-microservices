@@ -48,8 +48,9 @@ export default function FeedbackWidget() {
       <div
         className={cn(
           "fixed right-0 top-0 z-50 h-full w-96 bg-white shadow-2xl",
-          "transform transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "translate-x-full",
+          "transition-all duration-700 ease-in-out",
+          "will-change-transform transform-style-3d backface-hidden",
+          isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
         {/* Panel content */}
