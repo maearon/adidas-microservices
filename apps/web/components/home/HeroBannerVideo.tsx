@@ -70,7 +70,7 @@ export default function HeroBannerVideo() {
   }
 
   return (
-    <section className="relative h-[80vh] overflow-hidden bg-white">
+    <section className="relative h-[83vh] overflow-hidden bg-white">
       {/* Video nền */}
       <video
         ref={videoRef}
@@ -83,17 +83,17 @@ export default function HeroBannerVideo() {
         <source
           src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
           type="video/mp4"
-          media="(min-width: 1024px)"
+          media="(min-width: 1280px)"
         />
         <source
           src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_m_d995f0eb96.mp4"
           type="video/mp4"
-          media="(min-width: 768px)"
+          media="(min-width: 1024px)"
         />
         <source
           src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_t_950d8ded70.mp4"
           type="video/mp4"
-          media="(max-width: 767px)"
+          media="(max-width: 768px)"
         />
         Your browser does not support the video tag.
       </video>
