@@ -43,6 +43,7 @@ import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-
 import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
+import { capitalizeWords } from "@/utils/upper-words"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -448,7 +449,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
                         <span className="text-base">
-                          {itemName}
+                          {capitalizeWords(itemName)}
                           {itemName.toLowerCase().includes("color") && " 🌸"}
                         </span>
                       </div>
@@ -474,7 +475,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               })}
 
               {/* Shop by Color - Conditional rendering */}
-                {["MEN", "WOMEN", "KIDS"].includes(currentLevel.title) &&
+                {/* {["MEN", "WOMEN", "KIDS"].includes(currentLevel.title) &&
                   currentLevel.items.length > 0 &&
                   ["CLOTHING", "SHOP BY AGE"].includes(currentLevel.items[0]?.title || "") && (
                     <div className="border-t border-gray-200 mt-4">
@@ -495,7 +496,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
             </div>
           )}
         </div>
