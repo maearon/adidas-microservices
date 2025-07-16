@@ -67,11 +67,11 @@ export default function HomePage() {
       <HeroBanner
         backgroundClassName="bg-hero"
         content={{
-          title: "CLIMACOOL LACED",
-          description: "The future now.",
+          title: "LEGENDARY SINCE '96",
+          description: "adidas and MLS celebrate 10 iconic clubs with era authentic jersey designs.",
           buttons: [
             { 
-              href: "/climacool-laced-shoes/JQ6637.html", 
+              href: "/mls", 
               buttonLabel: "SHOP NOW",
               border: false,
               shadow: true,
@@ -83,7 +83,7 @@ export default function HomePage() {
 
       {/* <HeroBannerSecond /> */}
 
-      <HeroBannerVideo />
+      {/* <HeroBannerVideo /> */}
       
       {/* History Products Section */}
       <HistoryView

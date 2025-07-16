@@ -59,20 +59,20 @@
 
 /* globals.css hoặc một file style được import vào app */
 .bg-hero {
-  background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_m_aae6e69ae1.jpg?width=768');
+  background-image: url('/assets/lib/soccer_fw25_mls_archive_bnr_launch_m_c3f0006a93.jpg?width=768');
   background-size: cover;
   background-position: top;
 }
 
 @media (min-width: 768px) {
   .bg-hero {
-    background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_t_450f681dfa.jpg?width=1024');
+    background-image: url('/assets/lib/soccer_fw25_mls_archive_bnr_launch_t_1b288b50a8.jpg?width=1024');
   }
 }
 
 @media (min-width: 1024px) {
   .bg-hero {
-    background-image: url('/assets/lib/sportswear_fw25_climacool_bnr_launch_d_0b7560d877.jpg?width=1280');
+    background-image: url('/assets/lib/soccer_fw25_mls_archive_bnr_launch_d_84f1a5ddc1.jpg?width=1280');
   }
 }
 .bg-hero-women {

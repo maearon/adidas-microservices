@@ -73,7 +73,7 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative bg-gray-100 py-16">
+      <div className="relative bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left info box */}

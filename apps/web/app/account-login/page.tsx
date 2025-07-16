@@ -97,14 +97,14 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative bg-gray-100 py-16">
+      <div className="relative bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-lg shadow-sm">
                 <Image
-                  src="/assets/login/account-portal-page-inline.png"
+                  src="/assets/login/account-portal-page-inline.jpeg"
                   alt="Adiclub Benefits"
                   width={600}
                   height={600}
