@@ -168,10 +168,13 @@ export default function MenPage() {
 
 
       {/* Men's Description */}
-      <section className="container mx-auto px-2 py-4 text-center">
-        <h2 className="text-2xl font-bold mb-6">MEN'S SNEAKERS AND WORKOUT CLOTHES</h2>
-        <div className="max-w-4xl mx-auto text-gray-700 text-sm leading-relaxed space-y-4">
-          <p>
+      <section className="container mx-auto px-2 py-8 text-center">
+        <div className="container mx-auto px-8 text-center">
+          <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
+          MEN'S SNEAKERS AND WORKOUT CLOTHES
+        </h2>
+        <div className="max-w-4xl mx-auto text-sm sm:text-md leading-relaxed space-y-4">
+            <p>
             Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men's shoes and
             apparel that support your passion and define your style. Whether you're training for a marathon, playing
             pickup basketball or just hanging out with friends, adidas men's clothing and shoes are designed to keep you
@@ -182,6 +185,7 @@ export default function MenPage() {
             designed to perform. From our adidas Boost technology that returns energy with every step, to our activewear
             that fits and feels as great as it looks. Experience the adidas difference.
           </p>
+        </div>
         </div>
       </section>
 

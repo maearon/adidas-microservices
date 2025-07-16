@@ -151,12 +151,15 @@ export default function KidsPage() {
 
 
       {/* Men's Description */}
-      <section className="container mx-auto px-2 py-4 text-center">
-        <h2 className="text-2xl font-bold mb-6">Kids' Shoes and Activewear</h2>
-        <div className="max-w-4xl mx-auto text-gray-700 text-sm leading-relaxed space-y-4">
+      <section className="container mx-auto px-2 py-8 text-center">
+        <div className="container mx-auto px-8 text-center">
+          <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
+          Kids' Shoes and Activewear</h2>
+        <div className="max-w-4xl mx-auto text-sm sm:text-md leading-relaxed space-y-4">
           <p>
             Aspiring sports stars and busy kids deserve the best. Explore kids' sneakers and sportswear for active girls and boys. Fulfill their sports dreams with matching kids' activewear and warm-ups that fit and feel great from the classroom to the playground, the gym, and home. Enjoy the best selection of comfy kids' clothes and sneakers to keep your young athlete excited to exercise and play their best. Discover the latest trends and heritage adidas styles in kids' athletic clothes, sneakers, cleats and accessories.
           </p>
+        </div>
         </div>
       </section>
 

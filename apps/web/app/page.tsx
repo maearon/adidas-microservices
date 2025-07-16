@@ -247,30 +247,48 @@ export default function HomePage() {
       {/* Footer Categories */}
       <PageFooter currentPage="home" />
 
-      {/* Desktop Black section with white text */}
-      <section className="bg-black text-white pt-8">
+      {/* Desktop-only black section with white text and centered content */}
+      <section className="hidden lg:block bg-black text-white pt-14 pb-16">
         <div className="container mx-auto px-8 text-center">
-          <h2 className="text-2xl font-bold mb-8">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
-          <div className="max-w-6xl mx-auto text-sm leading-relaxed space-y-4">
+          <h2 className="max-w-2xl text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
+            SNEAKERS, ACTIVEWEAR AND SPORTING GOODS
+          </h2>
+
+          <div className="max-w-2xl mx-auto text-sm sm:text-md leading-relaxed space-y-4 text-left">
             <p>
-              Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes keep you feeling your best. Find sport-specific sneakers to support your passion, and shop versatile activewear and accessories that support everyday comfort. adidas has you covered with world-class performance, quality and unmatched comfort to fit your style. Explore the full range of adidas gear today.
-              <br /><br />
-              Founded on performance, adidas sporting goods equipment supports athletes at all levels. Men, women and kids will find their best form in sneakers and activewear made to perform under pressure. adidas sportswear breathes, manages sweat and helps support working muscles. Explore sport-specific clothes and gear for basketball, soccer, or the yoga studio. Runners will find a range of sneakers for training, racing and trail runs. Gym users will find tops, tees and tanks that support focused efforts with adidas CLIMACOOL to feel cool and dry. Explore warm-ups featuring four-way stretch to support mobility. Find a new outdoor jacket that helps protect against wind and rain. Lace up new athletic shoes that energize every step with adidas Boost cushioning. With sizes and styles for all ages, we have sporting goods for the whole family. Dedicated training demands dedicated workout clothes. Experience the latest performance fabrics and sneaker technologies to get the most out of your next training session.
+              Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for
+              men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes
+              keep you feeling your best. Find sport-specific sneakers to support your passion, and shop versatile
+              activewear and accessories that support everyday comfort. adidas has you covered with world-class
+              performance, quality and unmatched comfort to fit your style. Explore the full range of adidas gear today.
+            </p>
+            <p>
+              Founded on performance, adidas sporting goods equipment supports athletes at all levels. Men,
+              women and kids will find their best form in sneakers and activewear made to perform under pressure.
+              adidas sportswear breathes, manages sweat and helps support working muscles. Explore sport-specific
+              clothes and gear for basketball, soccer, or the yoga studio. Runners will find a range of sneakers
+              for training, racing and trail runs. Gym users will find tops, tees and tanks that support focused
+              efforts with adidas CLIMACOOL to feel cool and dry.
+            </p>
+            <p>
+              Explore warm-ups featuring four-way stretch to support mobility. Find a new outdoor jacket that
+              helps protect against wind and rain. Lace up new athletic shoes that energize every step with
+              adidas Boost cushioning. With sizes and styles for all ages, we have sporting goods for the whole
+              family. Dedicated training demands dedicated workout clothes. Experience the latest performance
+              fabrics and sneaker technologies to get the most out of your next training session.
             </p>
           </div>
 
           <div className="mt-12">
-            <Image
+            <img
               src="/logo-white.png"
-              alt="Logo"
-              width={100}
-              height={40}
-              className="mx-auto"
-              priority
+              alt="Adidas Logo"
+              className="mx-auto w-20"
             />
           </div>
         </div>
       </section>
+
     </div>
   )
 }
