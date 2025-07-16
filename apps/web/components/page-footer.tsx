@@ -144,7 +144,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
 
   return (
     typeMobileResponsive === "accordion1x4" ? (
-      <section className="bg-white container mx-auto px-4 xl:px-20 py-4 mb-1 sm:mb-4">
+      <section className="bg-white container mx-auto px-4 xl:px-20 py-2 mb-2">
         {/* Mobile - Accordion 1x4 */}
         <div className="block sm:hidden divide-y divide-gray-200">
           {Object.entries(selectedCategories).map(([category, items]) => (
