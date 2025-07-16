@@ -11,7 +11,7 @@ export function useLocationModal() {
     let savedLocation: Nullable<string> = null;
     let hasSeenModal: Nullable<string> = null;
     if (typeof window !== "undefined") {
-      savedLocation = localStorage.getItem("delivery-location");
+      savedLocation = localStorage.getItem("NEXT_LOCALE");
       hasSeenModal = localStorage.getItem("location-modal-seen");
     }
 
@@ -36,7 +36,7 @@ export function useLocationModal() {
 
   const selectLocation = (location: string) => {
     if (typeof window !== "undefined") {
-    localStorage.setItem("delivery-location", location)
+    localStorage.setItem("NEXT_LOCALE", location)
     localStorage.setItem("location-modal-seen", "true")
     }
     setIsOpen(false)

@@ -9,12 +9,10 @@ import { usePathname, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Search, ShoppingBag, User, Heart, MenuIcon, LogOut, LogIn, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useAppSelector } from "@/store/hooks"
 import MegaMenu from "./mega-menu"
 import LoginModal from "./login-modal"
 import UserAccountSlideout from "./user-account-slideout"
 import AdidasLogo from "./adidas-logo"
-import type { AppDispatch } from "@/store/store"
 import TopBarDropdown from "./top-bar-dropdown"
 import MobileMenu from "./mobile-menu"
 import MobileAppBanner from "./mobile-app-banner"
@@ -25,13 +23,15 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectUser } from "@/store/sessionSlice"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { Nullable } from "@/types/common"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { setLocale, selectLocale, type SupportedLocale } from "@/store/localeSlice"
 
 export default function Header() {
-  const dispatch = useDispatch<AppDispatch>()
   const { value: user, status } = useSelector(selectUser)
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
-
+  const dispatch = useAppDispatch()
+  const locale = useAppSelector(selectLocale)
   const [showCountrySelect, setShowCountrySelect] = useState(false)
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -177,46 +177,36 @@ export default function Header() {
                 className="flex items-center"
               >
                 <Image
-                  src={country === "US" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
+                  src={locale === "united-states" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
                   alt="Country Flag"
                   width={20}
                   height={14}
                 />
               </button>
 
+              {/* Dropdown */}
               {showCountrySelect && (
-                <div className="absolute right-0 mt-2 w-60 bg-white shadow-xl border border-gray-300 p-4 z-50">
-                  <p className="font-semibold mb-4">Choose your country</p>
-
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-2">
+                <div className="absolute right-0 mt-2 w-60 bg-white shadow-xl border p-4 z-50">
+                  {['united-states', 'vietnam'].map((c) => (
+                    <label key={c} className="flex items-center gap-2 mb-3">
                       <input
                         type="radio"
                         name="country"
-                        checked={country === "US"}
-                        onChange={() => setCountry("US")}
+                        checked={locale === c}
+                        onChange={() => dispatch(setLocale(c as SupportedLocale))}
                       />
-                      <Image src="/flag/us.svg" alt="US" width={24} height={16} />
-                      <span className="font-semibold">United States</span>
+                      <Image src={c === 'united-states' ? '/flag/us.svg' : '/flag/vn.svg'} alt={c} width={24} height={16}/>
+                      <span className="font-semibold">
+                        {c === 'united-states' ? 'United States' : 'Việt Nam'}
+                      </span>
                     </label>
-
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name="country"
-                        checked={country === "VN"}
-                        onChange={() => setCountry("VN")}
-                      />
-                      <Image src="/flag/vn.svg" alt="Vietnam" width={24} height={16} />
-                      <span>Viet Nam</span>
-                    </label>
-                  </div>
+                  ))}
 
                   <button
                     onClick={() => setShowCountrySelect(false)}
-                    className="mt-4 w-full bg-black text-white text-sm font-bold py-2 flex items-center justify-center gap-1 hover:opacity-90"
+                    className="mt-2 w-full bg-black text-white py-2 font-bold"
                   >
-                    Save <span aria-hidden>→</span>
+                    Save
                   </button>
                 </div>
               )}

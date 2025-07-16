@@ -44,7 +44,9 @@ import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
 import { sanitizeMenuTitles } from "@/utils/sanitizeMenuTitleOnly"
-import { capitalizeWords } from "@/utils/upper-words"
+import { capitalizeWords, capitalizeWordsCountry } from "@/utils/upper-words"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { selectLocale, setLocale, SupportedLocale } from "@/store/localeSlice"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -199,14 +201,24 @@ const additionalMenuItems = [
   { name: "Gift Cards", href: "/gift-cards" },
   { name: "Store Locator", href: "/stores" },
   { name: "Mobile Apps", href: "/mobile-apps" },
+  {
+    name: "Language",
+    hasSubmenu: true,
+    items: [
+      { name: "English", code: "en" },
+      { name: "Tiếng Việt", code: "vi" },
+    ],
+  },
 ]
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const dispatch = useAppDispatch()
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
   })
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistory[]>([])
+  const locale = useAppSelector(selectLocale)
 
   useEffect(() => {
     if (!isOpen) return
@@ -440,7 +452,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <div className="h-2 bg-gray-50" />
 
               {/* Additional Menu Items */}
-              {additionalMenuItems.map((item) => (
+              {/* {additionalMenuItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -449,13 +461,59 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 >
                   <span className="text-base">{item.name}</span>
                 </Link>
-              ))}
+              ))} */}
+              {additionalMenuItems.map((item) => {
+                if (item.hasSubmenu) {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        const scrollPosition = document.querySelector(".mobile-menu-content")?.scrollTop || 0
+                        setNavigationHistory((prev) => [
+                          ...prev,
+                          { level: currentLevel, scrollPosition },
+                        ])
+                        setCurrentLevel({
+                          title: item.name,
+                          items: item.items.map((lang) => ({
+                            title: lang.name,
+                            onClick: () => {
+                              localStorage.setItem("NEXT_LOCALE", lang.code)
+                              dispatch(setLocale(lang.code as SupportedLocale))
+                            },
+                            items: [],
+                          })),
+                        })
+                      }}
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <span className="text-base">{item.name}</span>
+                    </button>
+                  )
+                }
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={handleClose}
+                    className="block p-4 hover:bg-gray-50 border-b border-gray-100"
+                  >
+                    <span className="text-base">{item.name}</span>
+                  </Link>
+                )
+              })}
 
               {/* Country Selection */}
               <div className="p-4 border-b border-gray-100">
                 <div className="flex items-center space-x-2">
-                  <Image src="/flag/us-show.svg" alt="United States" width={24} height={16} />
-                  <span className="text-base">United States</span>
+                  <Image 
+                    src={locale === "united-states" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
+                    alt={capitalizeWordsCountry(locale)}
+                    width={24} 
+                    height={16} 
+                  />
+                  <span className="text-base">{capitalizeWordsCountry(locale)}</span>
                 </div>
               </div>
             </div>
@@ -466,6 +524,25 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 const isCategory = "items" in item && item.items && item.items.length > 0
                 const itemName = "title" in item ? item.title : item.name
                 const itemHref = "titleHref" in item ? item.titleHref : item.href
+
+                // ✅ Trường hợp có onClick: ví dụ chọn ngôn ngữ
+                if ("onClick" in item && typeof item.onClick === "function") {
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        item.onClick?.()
+                        handleClose()
+                      }}
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100"
+                    >
+                      <div className="flex items-center">
+                        {getColorSwatch?.(itemName, currentLevel.title)}
+                        <span className="text-base">{itemName}</span>
+                      </div>
+                    </button>
+                  )
+                }
 
                 if (isCategory) {
                   // Category with submenu
@@ -501,6 +578,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     </Link>
                   )
                 }
+                
               })}
 
               {/* Shop by Color - Conditional rendering */}

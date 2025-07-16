@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { useAppDispatch } from "@/store/hooks"
+import { setLocale, type SupportedLocale } from "@/store/localeSlice"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -11,7 +13,8 @@ interface LocationModalProps {
 }
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
-  const [selectedLocation, setSelectedLocation] = useState<string>("vietnam")
+  const dispatch = useAppDispatch()
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vietnam")
 
   const locations = [
     {
@@ -26,20 +29,26 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
     },
   ]
 
-  const handleLocationSelect = (locationId: string) => {
+  const handleLocationSelect = (locationId: SupportedLocale) => {
     setSelectedLocation(locationId)
   }
 
   const handleConfirm = () => {
+    // Gọi callback được truyền vào props
     onLocationSelect(selectedLocation)
+
+    // Lưu localStorage (dự phòng)
     if (typeof window !== "undefined") {
-    localStorage.setItem("delivery-location", selectedLocation)
+      localStorage.setItem("NEXT_LOCALE", selectedLocation)
     }
+
+    // Cập nhật locale vào Redux + cookie
+    dispatch(setLocale(selectedLocation))
+
     onClose()
   }
 
   const handleViewAllLocations = () => {
-    // TODO: Implement view all locations
     console.log("View all locations")
   }
 
@@ -62,7 +71,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
                   name="location"
                   value={location.id}
                   checked={selectedLocation === location.id}
-                  onChange={() => handleLocationSelect(location.id)}
+                  onChange={() => handleLocationSelect(location.id as SupportedLocale)}
                   className="w-5 h-5 text-black border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
                 <span className="text-lg font-medium text-black group-hover:underline">{location.name}</span>
@@ -81,10 +90,12 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
           {/* GO button */}
           <Button
-            pressEffect={true}
+            pressEffect
             fullWidth={false}
             onClick={handleConfirm}
-            className="w-full bg-black text-white hover:bg-gray-800 font-bold py-4 text-lg" theme="black" shadow={true}
+            className="w-full bg-black text-white hover:bg-gray-800 font-bold py-4 text-lg"
+            theme="black"
+            shadow
           >
             GO
           </Button>

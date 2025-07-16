@@ -4,6 +4,9 @@ import ProductTabs from "@/components/product-tabs"
 import PromoCarousel from "@/components/promo-carousel"
 import { Button } from "@/components/ui/button"
 import HeroBanner from "@/components/HeroBanner"
+import { useAppSelector } from "@/store/hooks"
+import { selectLocale } from "@/store/localeSlice"
+import { getTranslations } from "@/lib/locale"
 import HeroBannerSecond from "@/components/home/HeroBannerSecond"
 import { useState, useEffect } from "react"
 import PromoBanner from "@/components/home/PromoBanner"
@@ -21,7 +24,8 @@ import ResourceCard from "@/components/resource-card"
 import HeroBannerVideo from "@/components/home/HeroBannerVideo"
 
 export default function HomePage() {
-  const router = useRouter()
+  const locale = useAppSelector(selectLocale)
+  const t = getTranslations(locale, "hero")
   const [newArrivalProductsTab, setNewArrivalProductsTab] = useState<Product[]>([])
 
   useEffect(() => {
@@ -67,12 +71,12 @@ export default function HomePage() {
       <HeroBanner
         backgroundClassName="bg-hero"
         content={{
-          title: "LEGENDARY SINCE '96",
-          description: "adidas and MLS celebrate 10 iconic clubs with era authentic jersey designs.",
+          title: t?.heroTitle ?? "A TRUE MIAMI ORIGINAL",
+          description: t?.heroDesc ?? "Dream big and live blue in the iconic Inter Miami CF 2025 Third Jersey.",
           buttons: [
-            { 
-              href: "/mls", 
-              buttonLabel: "SHOP NOW",
+            {
+              href: "/mls",
+              buttonLabel: t?.shopNow ?? "SHOP NOW",
               border: false,
               shadow: true,
             },

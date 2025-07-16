@@ -6,6 +6,10 @@ export const capitalizeWords = (str: string) => {
   return str.split(' ').map(w => capitalize(w)).join(' ')
 }
 
+export const capitalizeWordsCountry = (str: string) => {
+  return str.split('-').map(w => capitalize(w)).join(' ')
+}
+
 /**
  * Capitalize the first character
  */
