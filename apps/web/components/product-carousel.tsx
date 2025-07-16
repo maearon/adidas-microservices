@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 import ProductCard from "@/components/product-card"
 import { motion } from "framer-motion"
@@ -31,18 +31,20 @@ export default function ProductCarousel({
   const [currentSlide, setCurrentSlide] = useState(0)
   const [hovering, setHovering] = useState(false)
   const [itemsPerView, setItemsPerView] = useState(4)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const updateItemsPerView = () => {
+    const update = () => {
       const w = window.innerWidth
+      setIsMobile(w < 768)
       if (w < 640) setItemsPerView(carouselModeInMobile ? 2 : 8)
       else if (w < 768) setItemsPerView(2)
       else if (w < 1024) setItemsPerView(3)
       else setItemsPerView(4)
     }
-    updateItemsPerView()
-    window.addEventListener("resize", updateItemsPerView)
-    return () => window.removeEventListener("resize", updateItemsPerView)
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
   }, [carouselModeInMobile])
 
   const totalSlides = Math.ceil(products.length / itemsPerView)
@@ -73,7 +75,7 @@ export default function ProductCarousel({
           <div className="col-span-full mt-4 flex justify-center">
             <BaseButton
               variant="outline"
-              className="rounded-none border-black text-black font-bold hover:bg-gray-100"
+              className="rounded-none border-black text-black font-bold hover:bg-gray-100 whitespace-nowrap"
               onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
             >
               VIEW ALL
@@ -128,30 +130,30 @@ export default function ProductCarousel({
           </motion.div>
         </div>
 
-        {hovering && totalSlides > 1 && (
-          <>
-            {currentSlide > 0 && (
-              <BaseButton
-                variant="outline"
-                size="icon"
-                className="w-12 h-12 absolute -left-6 md:-left-8 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none z-10"
-                onClick={prevSlide}
-              >
-                <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
-              </BaseButton>
-            )}
-            {currentSlide < totalSlides - 1 && (
-              <BaseButton
-                variant="outline"
-                size="icon"
-                className="w-12 h-12 absolute -right-6 md:-right-8 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none z-10"
-                onClick={nextSlide}
-              >
-                <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
-              </BaseButton>
-            )}
-          </>
-        )}
+        {(isMobile || hovering) && totalSlides > 1 && (
+        <>
+          {currentSlide > 0 && (
+            <BaseButton
+              variant="outline"
+              size="icon"
+              className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+              onClick={prevSlide}
+            >
+              <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
+            </BaseButton>
+          )}
+          {currentSlide < totalSlides - 1 && (
+            <BaseButton
+              variant="outline"
+              size="icon"
+              className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+              onClick={nextSlide}
+            >
+              <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
+            </BaseButton>
+          )}
+        </>
+      )}
 
         {showIndicators && totalSlides > 1 && (
           <div className="mt-6 mx-auto w-full h-1 bg-gray-200 flex overflow-hidden">

@@ -40,12 +40,12 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
       {/* Tabs & View All */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
         {/* Tabs */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 border text-sm font-semibold transition-all
+              className={`px-4 py-2 border text-sm font-semibold whitespace-nowrap transition-all
                 ${
                   activeTab === tab.id
                     ? "bg-black text-white border-black"
