@@ -72,10 +72,10 @@ export default function ProductCarousel({
           {products.slice(0, 6).map((product) => (
             <ProductCard key={product.id} product={product} minimalMobile={minimalMobileForProductCard} />
           ))}
-          <div className="col-span-full mt-4 flex justify-center">
+          <div className="col-span-full flex justify-center">
             <BaseButton
               variant="outline"
-              className="rounded-none border-black text-black font-bold hover:bg-gray-100 whitespace-nowrap"
+              className="rounded-none border-black text-black font-bold hover:bg-gray-100 text-sm px-6 py-0 leading-none"
               onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
             >
               VIEW ALL

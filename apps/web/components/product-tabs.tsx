@@ -36,7 +36,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
   const viewMoreHref = tabs.find((tab) => tab.id === activeTab)?.endpoint
 
   return (
-    <section className="container mx-auto px-4 py-10">
+    <section className="container mx-auto px-4">
       {/* Tabs & View All */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
         {/* Tabs */}
@@ -59,7 +59,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
 
         {/* View All */}
         <button
-          className="text-sm font-bold underline mt-4 sm:mt-0"
+          className="hidden sm:inline-block text-sm font-bold underline underline-offset-[4px] mt-4 sm:mt-0"
           onClick={() => {
             if (viewMoreHref) window.location.href = `/${viewMoreHref}`
           }}
@@ -87,7 +87,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
           Failed to load products. Please try again.
         </div>
       ) : (
-        <div className="text-center text-gray-500 py-10">
+        <div className="text-center text-gray-500">
           No products available.
         </div>
       )}
