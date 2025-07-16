@@ -79,7 +79,7 @@ export default function HomePage() {
           ],
         }}
       />
-      <div className="mb-4"></div>
+      <div className="mb-2"></div>
 
       {/* <HeroBannerSecond /> */}
 

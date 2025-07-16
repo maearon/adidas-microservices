@@ -98,7 +98,7 @@ export default function KidsPage() {
           ],
         }}
       />
-      <div className="mb-4"></div>
+      <div className="mb-2"></div>
       
       {/* Promo Tiles */}
       <KidsPromoCarousel items={promoTiles} />
