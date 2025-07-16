@@ -48,8 +48,8 @@ export default function RootLayout({
                 <Header />
                 <ToastContainer
                   position="bottom-right"
-                  autoClose={6000}
-                  hideProgressBar={true}
+                  autoClose={4000}
+                  hideProgressBar={false}
                 />
                 <main>{isMaintenance ? <MaintenancePage /> : children}</main>
                 <Footer />
