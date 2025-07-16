@@ -41,7 +41,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
   return (
     <section className="container  mx-auto px-2 py-0 mb-10">
       {/* Tabs Navigation */}
-      <div className="flex flex-wrap justify-between items-start gap-4 mb-8 sm:flex-nowrap sm:items-center">
+      <div className="flex flex-wrap sm:flex-nowrap justify-start sm:justify-between items-center gap-2 mb-8">
         {/* Tabs */}
         <div className="flex flex-wrap gap-1">
           {tabs.map((tab) => (

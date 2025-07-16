@@ -7,6 +7,7 @@ import ProductCard from "@/components/product-card"
 import { motion } from "framer-motion"
 import { Product } from "@/types/product"
 import { Optional } from "@/types/common"
+import { cn } from "@/lib/utils"
 
 interface ProductCarouselProps {
   products: Product[]
@@ -88,7 +89,7 @@ export default function ProductCarousel({
   const offset = `-${(100 / products.length) * itemsPerView * currentSlide}%`
 
   return (
-    <section className="container mx-auto px-2 py-0 mb-10">
+    <section className="container mx-auto py-0 mb-10">
       {title && (
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
@@ -145,13 +146,20 @@ export default function ProductCarousel({
         )}
 
         {showIndicators && totalSlides > 1 && (
-          <div className="mt-6 mx-auto w-full max-w-md h-1 bg-gray-200 overflow-hidden hidden sm:block">
-            <div
-              className="h-full bg-black transition-all duration-300"
-              style={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
-            />
+          <div className="mt-6 mx-auto w-full h-1 bg-gray-200 flex overflow-hidden">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <div
+                key={index}
+                className={cn("h-full transition-all duration-300", {
+                  "bg-black": index === currentSlide,
+                  "bg-gray-300": index !== currentSlide,
+                })}
+                style={{ width: `${100 / totalSlides}%` }}
+              />
+            ))}
           </div>
         )}
+
       </div>
     </section>
   )

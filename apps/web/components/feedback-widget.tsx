@@ -17,7 +17,8 @@ export default function FeedbackWidget() {
     console.log("Feedback rating:", rating)
     setIsOpen(false)
     setRating(null)
-    toast("😊Thank you for feedback!")
+    // toast("😊Thank you for feedback!")
+    toast("Thank you for feedback!")
   }
 
   return (
