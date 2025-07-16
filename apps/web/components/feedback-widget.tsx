@@ -4,12 +4,11 @@ import * as React from "react"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "@/components/adidas-logo"
-import { useToast } from "@/components/ui/use-toast"
+import { ToastContainer, toast } from 'react-toastify'
 
 export default function FeedbackWidget() {
   const [isOpen, setIsOpen] = React.useState(false)
   const [rating, setRating] = React.useState<number | null>(null)
-  const { toast } = useToast()
 
   const togglePanel = () => setIsOpen(!isOpen)
 
@@ -18,9 +17,7 @@ export default function FeedbackWidget() {
     console.log("Feedback rating:", rating)
     setIsOpen(false)
     setRating(null)
-    toast({
-      description: "Thank you for feedback!",
-    })
+    toast("😊Thank you for feedback!")
   }
 
   return (
