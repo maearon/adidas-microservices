@@ -248,7 +248,7 @@ export default function HomePage() {
       <PageFooter currentPage="home" />
 
       {/* Desktop Black section with white text */}
-      <section className="bg-black text-white py-4">
+      <section className="bg-black text-white pt-8">
         <div className="container mx-auto px-8 text-center">
           <h2 className="text-2xl font-bold mb-8">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
           <div className="max-w-6xl mx-auto text-sm leading-relaxed space-y-4">

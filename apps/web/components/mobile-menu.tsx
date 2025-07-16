@@ -44,6 +44,7 @@ import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
 import { sanitizeMenuTitles } from "@/utils/sanitizeMenuTitleOnly"
+import { capitalizeWords } from "@/utils/upper-words"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -123,6 +124,11 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
   if (gender === "men" || gender === "women") {
     newMenu.push(
       commonSale,
+      {
+        title: `All ${capitalizeWords(gender)}`,
+        titleHref: `/${gender}?grid=true`,
+        items: [],
+      },
       {
         title: "Fast, free delivery with Prime",
         titleHref: `/prime`,
