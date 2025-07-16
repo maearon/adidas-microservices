@@ -34,7 +34,7 @@ export default function WishlistPage() {
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-2">MY WISHLIST</h1>
             <p className="text-gray-600 mb-2">0 ITEMS</p>
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-600 mb-4">
               You haven't saved any items to your wishlist yet. Start shopping and add your favorite items to your
               wishlist.
             </p>
@@ -42,7 +42,7 @@ export default function WishlistPage() {
             {/* App promotion section */}
             <div className="bg-gray-100 p-8 rounded-lg">
               <h2 className="text-2xl font-bold mb-6">Get more from your wishlist through the app</h2>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-4">
                 <li className="flex items-center">
                   <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
                   Instant notifications on items on sale or low in stock
@@ -79,7 +79,7 @@ export default function WishlistPage() {
       <main className="flex-grow container mx-auto px-2 py-12">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold mb-2">MY WISHLIST</h1>
-          <p className="text-gray-600 mb-8">{wishlistItems.length} ITEMS</p>
+          <p className="text-gray-600 mb-4">{wishlistItems.length} ITEMS</p>
 
           {/* Wishlist items grid */}
           <div className="grid grid-cols-4 gap-6 mb-12">
@@ -110,7 +110,7 @@ export default function WishlistPage() {
           {/* App promotion section */}
           <div className="bg-gray-100 p-8 rounded-lg">
             <h2 className="text-2xl font-bold mb-6">Get more from your wishlist through the app</h2>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-3 mb-4">
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
                 Instant notifications on items on sale or low in stock

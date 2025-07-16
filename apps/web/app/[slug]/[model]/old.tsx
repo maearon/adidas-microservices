@@ -642,7 +642,7 @@ export default function ProductDetailPageClient({ params }: Props) {
 
         {/* Complete The Look */}
         <div className="mt-16">
-          {/* <h2 className="text-2xl font-bold mb-8">COMPLETE THE LOOK</h2> */}
+          {/* <h2 className="text-2xl font-bold mb-4">COMPLETE THE LOOK</h2> */}
           {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {relatedProducts.map((item) => (
               <Card key={item.id} className="border-none shadow-none">
@@ -679,7 +679,7 @@ export default function ProductDetailPageClient({ params }: Props) {
 
         {/* You May Also Like */}
         <div className="mt-16">
-          {/* <h2 className="text-2xl font-bold mb-8">YOU MAY ALSO LIKE</h2> */}
+          {/* <h2 className="text-2xl font-bold mb-4">YOU MAY ALSO LIKE</h2> */}
           {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {youMayAlsoLike.map((item) => (
               <Card key={item.id} className="border-none shadow-none">

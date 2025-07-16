@@ -66,7 +66,7 @@ export default function ProfilePage() {
   return (
     <div className="bg-white border rounded-lg p-8">
       <h1 className="text-2xl font-bold mb-6">PERSONAL INFORMATION</h1>
-      <p className="text-gray-600 mb-8">Update your personal details here.</p>
+      <p className="text-gray-600 mb-4">Update your personal details here.</p>
 
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} enableReinitialize>
         {({ isSubmitting }) => (

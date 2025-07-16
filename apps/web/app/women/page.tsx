@@ -150,7 +150,7 @@ export default function WomenPage() {
 
       {/* Top Picks */}
       {/* <section className="container mx-auto px-2 py-12">
-        <h2 className="text-xl font-bold mb-8">TOP PICKS FOR YOU</h2>
+        <h2 className="text-xl font-bold mb-4">TOP PICKS FOR YOU</h2>
         <div className="grid grid-cols-4 gap-6">
           {topPicks.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -160,7 +160,7 @@ export default function WomenPage() {
       {/* Top Picks */}
       {/* Top Picks */}
       <section className="container mx-auto px-2">
-        <h2 className="text-xl font-bold mb-8">TOP PICKS FOR YOU</h2>
+        <h2 className="text-xl font-bold mb-4">TOP PICKS FOR YOU</h2>
 
         <ProductCarousel
           products={newArrivalProductsTab}
@@ -180,7 +180,7 @@ export default function WomenPage() {
 
       {/* Recently Viewed */}
       {/* <section className="container mx-auto px-2 py-12">
-        <h2 className="text-xl font-bold mb-8">RECENTLY VIEWED ITEMS</h2>
+        <h2 className="text-xl font-bold mb-4">RECENTLY VIEWED ITEMS</h2>
         <div className="grid grid-cols-4 gap-6">
           {recentlyViewed.map((product) => (
             <ProductCard key={product.id} product={product} />

@@ -99,7 +99,7 @@ const LoginPage: NextPage = () => {
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Welcome back!</h1>
-          <p className="text-gray-600 mb-8">You are already logged in.</p>
+          <p className="text-gray-600 mb-4">You are already logged in.</p>
           <Link href="/my-account" className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800">
             Go to My Account
           </Link>

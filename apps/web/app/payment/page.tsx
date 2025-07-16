@@ -114,7 +114,7 @@ export default function CheckoutPaymentPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Payment Form */}
         <div>
-          <h1 className="text-2xl font-bold mb-8">PAYMENT</h1>
+          <h1 className="text-2xl font-bold mb-4">PAYMENT</h1>
 
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ values, setFieldValue }) => (

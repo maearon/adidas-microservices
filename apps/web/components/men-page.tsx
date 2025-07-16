@@ -176,7 +176,7 @@ export default function MenPage({ onNavigate }: Props) {
 
       {/* Top Picks */}
       <section className="container mx-auto px-2 py-12">
-        <h2 className="text-2xl font-bold mb-8">TOP PICKS FOR YOU</h2>
+        <h2 className="text-2xl font-bold mb-4">TOP PICKS FOR YOU</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {topPicks.map((product) => (
             <Card key={product.id} className="border-none shadow-none">

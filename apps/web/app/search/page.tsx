@@ -109,7 +109,7 @@ function SearchPageContent() {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-            <div className="h-12 bg-gray-200 rounded w-1/2 mb-8"></div>
+            <div className="h-12 bg-gray-200 rounded w-1/2 mb-4"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="space-y-4">
@@ -141,7 +141,7 @@ function SearchPageContent() {
         </div>
 
         {/* Search Header */}
-        <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
           <div className="flex-grow min-w-0">
             <h1 className="text-2xl md:text-3xl font-bold mb-2 truncate">
               Search for: "{query.toUpperCase()}" [{totalResults}]

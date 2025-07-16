@@ -56,7 +56,7 @@ export default function CartPage() {
         <main className="flex-grow container mx-auto px-2 py-12">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-6">YOUR BAG IS EMPTY</h1>
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-600 mb-4">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <Button href="/" theme="black" shadow={true} pressEffect={true} fullWidth={false}>

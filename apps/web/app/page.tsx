@@ -102,7 +102,7 @@ export default function HomePage() {
 
       {/* New Products Section */}
       {/* <section className="container mx-auto px-2 py-12">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
             <Badge className="bg-black text-white">New Arrivals</Badge>
             <span className="text-sm text-gray-600">Best Sellers</span>
@@ -249,7 +249,7 @@ export default function HomePage() {
       {/* Desktop Black section with white text */}
       <section className="bg-black text-white py-12">
         <div className="container mx-auto px-8 text-center">
-          <h2 className="text-2xl font-bold mb-8">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
+          <h2 className="text-2xl font-bold mb-4">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
           <div className="max-w-6xl mx-auto text-sm leading-relaxed space-y-4">
             <p>
               Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes keep you feeling your best. Find sport-specific sneakers to support your passion, and shop versatile activewear and accessories that support everyday comfort. adidas has you covered with world-class performance, quality and unmatched comfort to fit your style. Explore the full range of adidas gear today.

@@ -149,7 +149,7 @@ export default function Homepage({ onNavigate }: Props) {
 
       {/* Product Grid */}
       <section className="container mx-auto px-2 py-12">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-4">
             <Badge variant="secondary">New Arrivals</Badge>
             <Badge variant="outline">Best Sellers</Badge>
@@ -210,7 +210,7 @@ export default function Homepage({ onNavigate }: Props) {
 
       {/* Popular Categories */}
       <section className="container mx-auto px-2 py-12">
-        <h2 className="text-2xl font-bold mb-8">Popular right now</h2>
+        <h2 className="text-2xl font-bold mb-4">Popular right now</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {popularCategories.map((category, index) => (
             <Button key={index} variant="outline" className="h-12 text-lg font-medium hover:bg-gray-50">

@@ -87,7 +87,7 @@ export default function OrderPage({ params }: OrderPageProps) {
       <Breadcrumbs items={breadcrumbs} />
 
       <div className="mt-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold">Đơn hàng #{orderId}</h1>
             <p className="text-gray-600 mt-1">Đặt ngày {order.date}</p>

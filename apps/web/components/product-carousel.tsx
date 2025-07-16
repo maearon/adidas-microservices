@@ -62,7 +62,7 @@ export default function ProductCarousel({
     return (
       <section className="container mx-auto px-0 py-0">
         {title && (
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
               {title}
             </h2>
@@ -93,7 +93,7 @@ export default function ProductCarousel({
   return (
     <section className="container mx-auto py-0">
       {title && (
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
             {title}
           </h2>

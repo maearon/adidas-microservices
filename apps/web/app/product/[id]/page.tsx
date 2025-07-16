@@ -416,7 +416,7 @@ const ProductDetailPage = () => {
 
         {/* Complete the Look */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-8">COMPLETE THE LOOK</h2>
+          <h2 className="text-2xl font-bold mb-4">COMPLETE THE LOOK</h2>
           <div className="grid grid-cols-4 gap-6">
             {relatedProducts.map((item) => (
               <Card key={item.id} className="border-none shadow-none">
@@ -437,7 +437,7 @@ const ProductDetailPage = () => {
 
         {/* You May Also Like */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-8">YOU MAY ALSO LIKE</h2>
+          <h2 className="text-2xl font-bold mb-4">YOU MAY ALSO LIKE</h2>
           <div className="grid grid-cols-4 gap-6">
             {youMayLike.map((item) => (
               <Card key={item.id} className="border-none shadow-none">
