@@ -210,7 +210,7 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
+      <div className="mb-4"></div>
 
       {/* Related Resources */}
       {/* <section className="container mx-auto px-1 sm:px-2 md:px-3 lg:px-10 xl:px-20 2xl:px-20 py-0">
