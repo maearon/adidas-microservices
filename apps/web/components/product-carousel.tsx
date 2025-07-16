@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 import ProductCard from "@/components/product-card"
 import { motion } from "framer-motion"
@@ -58,7 +58,7 @@ export default function ProductCarousel({
 
   if (!carouselModeInMobile && itemsPerView >= 6 && viewMoreHref) {
     return (
-      <section className="container mx-auto px-2 py-0 mb-10">
+      <section className="container mx-auto px-0 py-0 mb-10">
         {title && (
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
@@ -106,15 +106,23 @@ export default function ProductCarousel({
         <div className="relative">
           <motion.div
             ref={containerRef}
-            className="flex gap-6 transition-transform duration-700 ease-in-out will-change-transform"
+            className="flex gap-0 md:gap-0 transition-transform duration-700 ease-in-out will-change-transform px-0 md:px-0"
             style={{
               width: trackWidth,
               transform: `translateX(${offset})`,
             }}
           >
             {products.map((product) => (
-              <div key={product.id} style={{ width: itemWidth }}>
-                <ProductCard product={product} showAddToBag={showAddToBag} />
+              <div
+                key={product.id}
+                style={{ width: itemWidth }}
+                className="px-0 md:px-0"
+              >
+                <ProductCard
+                  product={product}
+                  showAddToBag={showAddToBag}
+                  minimalMobile={minimalMobileForProductCard}
+                />
               </div>
             ))}
           </motion.div>
@@ -126,20 +134,20 @@ export default function ProductCarousel({
               <BaseButton
                 variant="outline"
                 size="icon"
-                className="absolute left-2 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none"
+                className="w-12 h-12 absolute -left-6 md:-left-8 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none z-10"
                 onClick={prevSlide}
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
               </BaseButton>
             )}
             {currentSlide < totalSlides - 1 && (
               <BaseButton
                 variant="outline"
                 size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none"
+                className="w-12 h-12 absolute -right-6 md:-right-8 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none z-10"
                 onClick={nextSlide}
               >
-                <ChevronRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
               </BaseButton>
             )}
           </>
@@ -159,7 +167,6 @@ export default function ProductCarousel({
             ))}
           </div>
         )}
-
       </div>
     </section>
   )
