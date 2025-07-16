@@ -72,7 +72,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
       {/* <h2 className="text-2xl font-bold mb-6">{activeTabLabel}</h2> */}
 
       {/* Product Carousel or Loading/Error */}
-      <div className="min-h-[570px] sm:min-h-[500px]">
+      <div className="min-h-[610px] sm:min-h-[500px]">
       {isLoading ? (
         <Loading />
       ) : products.length > 0 ? (
