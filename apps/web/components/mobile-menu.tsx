@@ -508,12 +508,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <div className="p-4 border-b border-gray-100">
                 <div className="flex items-center space-x-2">
                   <Image 
-                    src={locale === "united-states" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
-                    alt={capitalizeWordsCountry(locale)}
+                    src={locale === "en" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
+                    alt={capitalizeWordsCountry(locale === "en" ? "united-states" : "Việt-Nam")}
                     width={24} 
                     height={16} 
                   />
-                  <span className="text-base">{capitalizeWordsCountry(locale)}</span>
+                  <span className="text-base">{capitalizeWordsCountry(locale === "en" ? "united-states" : "Việt-Nam")}</span>
                 </div>
               </div>
             </div>
