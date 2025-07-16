@@ -46,7 +46,11 @@ export default function RootLayout({
               <ReactQueryProvider>
                 <RedirectListener /> {/* ✅ THÊM VÀO BODY */}
                 <Header />
-                <ToastContainer position="top-right" autoClose={3000} />
+                <ToastContainer
+                  position="bottom-right"
+                  autoClose={6000}
+                  hideProgressBar={true}
+                />
                 <main>{isMaintenance ? <MaintenancePage /> : children}</main>
                 <Footer />
                 <ChatWidget />
