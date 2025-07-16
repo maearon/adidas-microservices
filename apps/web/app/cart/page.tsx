@@ -53,7 +53,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen flex flex-col">
         {/* <Header /> */}
-        <main className="flex-grow container mx-auto px-2 py-12">
+        <main className="flex-grow container mx-auto px-2 py-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-6">YOUR BAG IS EMPTY</h1>
             <p className="text-gray-600 mb-4">

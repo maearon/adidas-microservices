@@ -102,7 +102,7 @@ export default function HomePage() {
       }} />
 
       {/* New Products Section */}
-      {/* <section className="container mx-auto px-2 py-12">
+      {/* <section className="container mx-auto px-2 py-4">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
             <Badge className="bg-black text-white">New Arrivals</Badge>
@@ -161,7 +161,7 @@ export default function HomePage() {
       />
 
       {/* Prime Section */}
-      <section className="bg-black text-white py-12 mb-0">
+      <section className="bg-black text-white py-4 mb-0">
         <div className="container mx-auto px-4 flex flex-col items-center text-center gap-0">
           <Image
             src="/assets/resource/Prime_logo_d_c8da1e6868.png"
@@ -248,7 +248,7 @@ export default function HomePage() {
       <PageFooter currentPage="home" />
 
       {/* Desktop Black section with white text */}
-      <section className="bg-black text-white py-12">
+      <section className="bg-black text-white py-4">
         <div className="container mx-auto px-8 text-center">
           <h2 className="text-2xl font-bold mb-8">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
           <div className="max-w-6xl mx-auto text-sm leading-relaxed space-y-4">

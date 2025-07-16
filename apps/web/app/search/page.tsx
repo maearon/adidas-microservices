@@ -179,7 +179,7 @@ function SearchPageContent() {
 
         {/* Error State */}
         {error && (
-          <div className="text-center py-12">
+          <div className="text-center py-4">
             <h3 className="text-lg font-semibold mb-2 text-red-600">Search Error</h3>
             <p className="text-gray-600 mb-4">{error}</p>
             <Button shadow={false} theme="black" onClick={() => performSearch(filters)}>Try Again</Button>
@@ -188,7 +188,7 @@ function SearchPageContent() {
 
         {/* No Results */}
         {!loading && !error && products.length === 0 && query && (
-          <div className="text-center py-12">
+          <div className="text-center py-4">
             <h3 className="text-lg font-semibold mb-2">No results found</h3>
             <p className="text-gray-600 mb-4">
               We couldn't find any products matching "{query}". Try adjusting your search terms or filters.

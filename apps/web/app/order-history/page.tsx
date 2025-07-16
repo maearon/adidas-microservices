@@ -52,7 +52,7 @@ export default function OrderHistoryPage() {
       <h1 className="text-2xl font-bold mb-6">ORDER HISTORY</h1>
 
       {orders.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-4">
           <div className="text-6xl mb-4">📦</div>
           <h2 className="text-xl font-bold mb-4">NO ORDERS YET</h2>
           <p className="text-gray-600 mb-6">Once you place an order, it will appear here.</p>

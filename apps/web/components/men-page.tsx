@@ -133,7 +133,7 @@ export default function MenPage({ onNavigate }: Props) {
       </section>
 
       {/* Category Tiles */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {categoryTiles.map((category, index) => (
             <Card
@@ -155,7 +155,7 @@ export default function MenPage({ onNavigate }: Props) {
       </section>
 
       {/* Promo Tiles */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {promoTiles.map((tile, index) => (
             <Card key={index} className="relative overflow-hidden h-80">
@@ -175,7 +175,7 @@ export default function MenPage({ onNavigate }: Props) {
       </section>
 
       {/* Top Picks */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <h2 className="text-2xl font-bold mb-4">TOP PICKS FOR YOU</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {topPicks.map((product) => (
@@ -200,7 +200,7 @@ export default function MenPage({ onNavigate }: Props) {
       </section>
 
       {/* Men's Description */}
-      <section className="container mx-auto px-2 py-12 text-center">
+      <section className="container mx-auto px-2 py-4 text-center">
         <h2 className="text-3xl font-bold mb-6">MEN'S SNEAKERS AND WORKOUT CLOTHES</h2>
         <div className="max-w-4xl mx-auto text-gray-600 space-y-4">
           <p>
@@ -213,7 +213,7 @@ export default function MenPage({ onNavigate }: Props) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-100 py-12">
+      <footer className="bg-gray-100 py-4">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>

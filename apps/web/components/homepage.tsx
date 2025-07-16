@@ -148,7 +148,7 @@ export default function Homepage({ onNavigate }: Props) {
       </section>
 
       {/* Product Grid */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-4">
             <Badge variant="secondary">New Arrivals</Badge>
@@ -183,7 +183,7 @@ export default function Homepage({ onNavigate }: Props) {
       </section>
 
       {/* Promo Tiles */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {promoTiles.map((tile, index) => (
             <Card key={index} className="relative overflow-hidden h-64">
@@ -209,7 +209,7 @@ export default function Homepage({ onNavigate }: Props) {
       </section>
 
       {/* Popular Categories */}
-      <section className="container mx-auto px-2 py-12">
+      <section className="container mx-auto px-2 py-4">
         <h2 className="text-2xl font-bold mb-4">Popular right now</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {popularCategories.map((category, index) => (
@@ -221,7 +221,7 @@ export default function Homepage({ onNavigate }: Props) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-100 py-12">
+      <footer className="bg-gray-100 py-4">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>

@@ -150,7 +150,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer */}
-      <footer className="bg-black text-white md:py-12">
+      <footer className="bg-black text-white md:py-4">
         <div className="container mx-auto">
           
           {/* Desktop Footer */}

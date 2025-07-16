@@ -149,7 +149,7 @@ export default function WomenPage() {
       />
 
       {/* Top Picks */}
-      {/* <section className="container mx-auto px-2 py-12">
+      {/* <section className="container mx-auto px-2 py-4">
         <h2 className="text-xl font-bold mb-4">TOP PICKS FOR YOU</h2>
         <div className="grid grid-cols-4 gap-6">
           {topPicks.map((product) => (
@@ -169,7 +169,7 @@ export default function WomenPage() {
 
 
       {/* Men's Description */}
-      <section className="container mx-auto px-2 py-12 text-center">
+      <section className="container mx-auto px-2 py-4 text-center">
         <h2 className="text-2xl font-bold mb-6">Women's Sneakers and Workout Clothes</h2>
         <div className="max-w-4xl mx-auto text-gray-700 text-sm leading-relaxed space-y-4">
           <p>
@@ -179,7 +179,7 @@ export default function WomenPage() {
       </section>
 
       {/* Recently Viewed */}
-      {/* <section className="container mx-auto px-2 py-12">
+      {/* <section className="container mx-auto px-2 py-4">
         <h2 className="text-xl font-bold mb-4">RECENTLY VIEWED ITEMS</h2>
         <div className="grid grid-cols-4 gap-6">
           {recentlyViewed.map((product) => (
@@ -197,7 +197,7 @@ export default function WomenPage() {
       />
 
       {/* Men's Categories Footer */}
-      {/* <section className="bg-gray-50 py-12">
+      {/* <section className="bg-gray-50 py-4">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-4 gap-8">
             {Object.entries(menCategories).map(([category, items]) => (

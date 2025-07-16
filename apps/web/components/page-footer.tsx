@@ -144,7 +144,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
 
   return (
     typeMobileResponsive === "accordion1x4" ? (
-      <section className="bg-white container mx-auto px-2 py-12">
+      <section className="bg-white container mx-auto px-4 py-4">
         {/* Mobile - Accordion 1x4 */}
         <div className="block sm:hidden divide-y divide-gray-200">
           {Object.entries(selectedCategories).map(([category, items]) => (
@@ -190,7 +190,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
     ) : (
       <>
       {/* Desktop layout (≥sm) */}
-      <section className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 bg-white container mx-auto px-2 py-12">
+      <section className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 bg-white container mx-auto px-4 py-4">
         {sectionEntries.map(([section, items]) => (
           <div key={section}>
             <h3 className="font-bold mb-4 text-md capitalize">{section}</h3>
@@ -208,7 +208,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
       </section>
 
       {/* Mobile layout (<sm)  - Accordion 2x2 */}
-      <section className="sm:hidden bg-white container mx-auto px-2 py-12 space-y-6">
+      <section className="sm:hidden bg-white container mx-auto px-4 py-4 space-y-6">
         {rows.map((pair, rowIndex) => (
           <div key={rowIndex} className="flex gap-4">
             {pair.map(([section, items]) => (
