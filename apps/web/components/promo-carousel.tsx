@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useMemo } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 
 export interface Slide {
@@ -96,20 +96,20 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
           <BaseButton
             variant="outline"
             size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none"
+            className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
             onClick={prevSlide}
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
           </BaseButton>
         )}
         {currentIndex < totalSlides - 1 && (
           <BaseButton
             variant="outline"
             size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 border border-black bg-gray-50 hover:bg-white rounded-none"
+            className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
             onClick={nextSlide}
           >
-            <ChevronRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" strokeWidth={1.5} />
           </BaseButton>
         )}
 
