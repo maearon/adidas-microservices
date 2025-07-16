@@ -40,15 +40,16 @@ export default function HeroBanner({
         backgroundClassName
       )}
     >
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 sm:pb-20">
-        <div className="max-w-xl">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
+        <div className="w-full max-w-md text-left">
+          <div className="flex flex-col gap-2 sm:gap-3">
           {/* Tiêu đề */}
-          <h1 className="block w-fit bg-white text-black text-base sm:text-lg md:text-xl font-bold px-1.5 py-0.5 mb-2 tracking-tight uppercase">
+          <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
             {content.title}
           </h1>
 
           {/* Mô tả */}
-          <p className="block w-fit bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 mb-4 leading-snug">
+          <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
             {content.description}
           </p>
 
@@ -65,12 +66,13 @@ export default function HeroBanner({
                 variant="outline"
                 href={btn.href}
                 showArrow
-                className="text-black font-bold px-2 py-1 text-xs sm:text-sm rounded-none hover:bg-gray-100 transition w-auto h-9"
+                className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
               >
                 {btn.buttonLabel || "SHOP NOW"}
               </Button>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </section>

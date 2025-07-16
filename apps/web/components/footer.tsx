@@ -103,7 +103,7 @@ export default function Footer() {
   return (
     <>
       {/* Mobile Opinion Section */}
-      {/* <section className="sm:hidden bg-white py-8 border-t">
+      {/* <section className="sm:hidden bg-white py-6 border-t">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-lg font-bold mb-2">YOUR OPINION COUNTS</h2>
           <p className="text-sm text-gray-600 mb-6">We strive to serve you better and appreciate your feedback</p>
@@ -132,7 +132,7 @@ export default function Footer() {
       </section>
 
       {/* Bottom CTA */}
-      <div className="bg-[#007cc3] text-white py-8 hidden sm:block">
+      <div className="bg-[#007cc3] text-white py-6 hidden sm:block">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
             <h3 className="text-2xl font-extrabold tracking-wide">
@@ -141,7 +141,7 @@ export default function Footer() {
             <Button
               href="/signup"
               pressEffect={true}
-              className="bg-white text-black py-3 border border-[#007cc3] rounded-none font-semibold hover:bg-gray-100 transition-colors"
+              className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
             >
               SIGN UP FOR FREE
             </Button>
@@ -221,7 +221,7 @@ export default function Footer() {
 
             {/* Hàng 2: CTA không có padding ngang */}
             {/* Bottom CTA */}
-            <div className="bg-[#007cc3] text-white py-8 block sm:hidden">
+            <div className="bg-[#007cc3] text-white py-6 block sm:hidden">
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
                   <h3 className="text-2xl font-extrabold tracking-wide">
@@ -230,7 +230,7 @@ export default function Footer() {
                   <Button
                     href="/signup"
                     pressEffect={true}
-                    className="bg-white text-black py-3 border border-[#007cc3] rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                    className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
                   >
                     SIGN UP FOR FREE
                   </Button>

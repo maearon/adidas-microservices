@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { newArrivalProducts } from "@/data/fake-new-arrival-products"
 import { Product } from "@/types/product"
 import TileCard from "@/components/tile-card"
+import PromoCarousel, { Slide } from "@/components/promo-carousel"
 
 export default function MenPage() {
   const [newArrivalProductsTab, setNewArrivalProductsTab] = useState<Product[]>([])
@@ -31,7 +32,7 @@ export default function MenPage() {
     { title: "PANTS", image: "/assets/men/zip-off-cargo-pants.jpg?height=200&width=300", href: "/men-pants" },
   ]
 
-  const promoTiles = [
+  const promoTiles: Slide[] = [
     {
       title: "ADIZERO EVO SL",
       description: "Feel fast. In all aspects of life.",
@@ -138,35 +139,12 @@ export default function MenPage() {
       </section>
 
       {/* Promo Tiles */}
-      {/* Promo Tiles */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {promoTiles.map((tile, index) => (
-            <TileCard tile={tile} index={index} />
-            // <a
-            //   key={index}
-            //   href={tile.href}
-            //   className="group border border-transparent hover:border-black transition duration-300"
-            // >
-            //   {/* Image section */}
-            //   <div className="aspect-[3/4] w-full overflow-hidden">
-            //     <img
-            //       src={tile.image}
-            //       alt={tile.title}
-            //       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            //     />
-            //   </div>
-
-            //   {/* Text section */}
-            //   <div className="p-4">
-            //     <h3 className="font-bold text-sm md:text-base uppercase mb-1">{tile.title}</h3>
-            //     <p className="text-sm text-gray-700 mb-3">{tile.description}</p>
-            //     <span className="text-sm font-bold underline">SHOP NOW</span>
-            //   </div>
-            // </a>
-          ))}
-        </div>
-      </section>
+      <PromoCarousel
+        items={promoTiles}
+        renderItem={(slide, i) => (
+          <TileCard tile={slide} index={i} />
+        )}
+      />
 
       {/* Top Picks */}
       {/* <section className="container mx-auto px-2 py-12">
@@ -179,7 +157,7 @@ export default function MenPage() {
       </section> */}
       {/* Top Picks */}
       {/* Top Picks */}
-      <section className="container mx-auto px-2 mb-10">
+      <section className="container mx-auto px-2">
         <h2 className="text-xl font-bold mb-8">TOP PICKS FOR YOU</h2>
 
         <ProductCarousel

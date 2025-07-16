@@ -38,14 +38,14 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
   return (
     <section className="container mx-auto px-4">
       {/* Tabs & View All */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4"> {/* 4 x 4 = 16px margin bottom*/}
         {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 border text-sm font-semibold whitespace-nowrap transition-all
+              className={`px-4 py-2 border text-sm whitespace-nowrap transition-all
                 ${
                   activeTab === tab.id
                     ? "bg-black text-white border-black"
@@ -72,7 +72,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
       {/* <h2 className="text-2xl font-bold mb-6">{activeTabLabel}</h2> */}
 
       {/* Product Carousel or Loading/Error */}
-      <div className="min-h-[500px]">
+      <div className="min-h-[800px] sm:min-h-[500px]">
       {isLoading ? (
         <Loading />
       ) : products.length > 0 ? (

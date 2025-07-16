@@ -138,9 +138,9 @@ export default function HeroBannerVideo() {
             </p>
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
               {[
-                { label: "MEN'S SUPERSTAR", href: "/men-superstar" },
-                { label: "WOMEN'S SUPERSTAR", href: "/women-superstar" },
-                { label: "KIDS' SUPERSTAR", href: "/kids-superstar" },
+                { label: "MEN", href: "/men-superstar" },
+                { label: "WOMEN", href: "/women-superstar" },
+                { label: "KIDS", href: "/kids-superstar" },
               ].map(({ label, href }) => (
                 <Button
                   key={label}
@@ -152,12 +152,12 @@ export default function HeroBannerVideo() {
                   variant="outline"
                   href={href}
                   showArrow
-                  className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-9"
+                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
                 >
                   {label}
                 </Button>
               ))}
-              <Button
+              {/* <Button
                 theme="white"
                 size="sm"
                 border
@@ -170,7 +170,7 @@ export default function HeroBannerVideo() {
               >
                 <Play className="h-3.5 w-3.5" />
                 WATCH VIDEO
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

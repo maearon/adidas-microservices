@@ -4,6 +4,15 @@ import { useState, useEffect, useRef, useMemo } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 
+export interface Slide {
+  title: string
+  subtitle?: string
+  description?: string
+  image: string
+  cta?: string
+  href?: string
+}
+
 interface PromoCarouselProps<T> {
   items: T[]
   renderItem: (item: T, index: number) => React.ReactNode
@@ -70,7 +79,7 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
           >
             {items.map((item, index) => (
               <div
-                key={index}
+                key={`${item.title}-${index}`}
                 className="shrink-0 relative"
                 style={{
                   width: `${100 / items.length}%`,

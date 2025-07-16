@@ -127,7 +127,7 @@ export default function HomePage() {
       </section> */}
 
       {/* Promo Tiles */}
-      {/* <section className="container mx-auto px-1 sm:px-2 md:px-3 lg:px-10 xl:px-20 2xl:px-20 mb-10">
+      {/* <section className="container mx-auto px-1 sm:px-2 md:px-3 lg:px-10 xl:px-20 2xl:px-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {mockSlides.map((title, index) => (
             <Card key={`${title}-${index}`} className="relative overflow-hidden h-80 border-0 rounded-none">
@@ -160,7 +160,7 @@ export default function HomePage() {
       />
 
       {/* Prime Section */}
-      <section className="bg-black text-white py-1 sm:py-1 md:py-0 lg:py-1 xl:py-1 2xl:py-1 mb-0">
+      <section className="bg-black text-white py-12 mb-0">
         <div className="container mx-auto px-4 flex flex-col items-center text-center gap-0">
           <Image
             src="/assets/resource/Prime_logo_d_c8da1e6868.png"
@@ -176,12 +176,19 @@ export default function HomePage() {
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide pb-6">
             with Prime at adidas
           </h3>
-          <Button href="/prime" loading={false} shadow>SHOP NOW</Button>
+          <Button 
+            href="/prime" 
+            loading={false} 
+            shadow
+            className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+          >
+            SHOP NOW
+          </Button>
         </div>
       </section>
 
       {/* Popular Categories */}
-      <section className="container mx-auto px-2 py-0 mb-10">
+      <section className="container mx-auto px-2 py-0">
         <h2 className="text-[32px] font-bold mb-4">Popular right now</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6">
@@ -205,7 +212,7 @@ export default function HomePage() {
 
 
       {/* Related Resources */}
-      {/* <section className="container mx-auto px-1 sm:px-2 md:px-3 lg:px-10 xl:px-20 2xl:px-20 py-0 mb-10">
+      {/* <section className="container mx-auto px-1 sm:px-2 md:px-3 lg:px-10 xl:px-20 2xl:px-20 py-0">
         <h4 className="text-[24px] font-bold mb-2">RELATED RESOURCES</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {relatedResources.map((resource, index) => (
@@ -240,7 +247,7 @@ export default function HomePage() {
       <PageFooter currentPage="home" />
 
       {/* Desktop Black section with white text */}
-      <section className="bg-black text-white py-16">
+      <section className="bg-black text-white py-12">
         <div className="container mx-auto px-8 text-center">
           <h2 className="text-2xl font-bold mb-8">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</h2>
           <div className="max-w-6xl mx-auto text-sm leading-relaxed space-y-4">

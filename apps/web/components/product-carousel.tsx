@@ -60,7 +60,7 @@ export default function ProductCarousel({
 
   if (!carouselModeInMobile && itemsPerView >= 6 && viewMoreHref) {
     return (
-      <section className="container mx-auto px-0 py-0 mb-10">
+      <section className="container mx-auto px-0 py-0">
         {title && (
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
@@ -91,7 +91,7 @@ export default function ProductCarousel({
   const offset = `-${(100 / products.length) * itemsPerView * currentSlide}%`
 
   return (
-    <section className="container mx-auto py-0 mb-10">
+    <section className="container mx-auto py-0">
       {title && (
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
@@ -108,7 +108,7 @@ export default function ProductCarousel({
         <div className="relative">
           <motion.div
             ref={containerRef}
-            className="flex gap-0 md:gap-0 transition-transform duration-700 ease-in-out will-change-transform px-0 md:px-0"
+            className="flex gap-0 md:gap-2 transition-transform duration-700 ease-in-out will-change-transform px-0 md:px-0"
             style={{
               width: trackWidth,
               transform: `translateX(${offset})`,

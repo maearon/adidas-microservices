@@ -1,16 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import ProductCard from "@/components/product-card"
-import MenFooter from "@/components/page-footer"
+import KidsPromoCarousel from "@/app/kids/KidsPromoCarousel"
 import HeroBanner from "@/components/HeroBanner"
 import ProductCarousel from "@/components/product-carousel"
 import { newArrivalProducts } from "@/data/fake-new-arrival-products"
-import { Product } from "@/types/product"
 import HistoryView from "@/components/HistoryView"
 import PageFooter from "@/components/page-footer"
-import TileCard from "@/components/tile-card"
+import { Slide } from "@/components/promo-carousel"
 
 // app/kids/page.tsx
 export const metadata = {
@@ -26,7 +20,7 @@ export default function KidsPage() {
     { title: "ALL KIDS", image: "/assets/kids/samba-og-shoes-kids.jpg?height=200&width=300", href: "/men-pants" },
   ]
 
-  const promoTiles = [
+  const promoTiles: Slide[] = [
     {
       title: "NEW ARRIVALS",
       description: "",
@@ -107,34 +101,7 @@ export default function KidsPage() {
 
       
       {/* Promo Tiles */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {promoTiles.map((tile, index) => (
-            <TileCard tile={tile} index={index} />
-            // <a
-            //   key={index}
-            //   href={tile.href}
-            //   className="group border border-transparent hover:border-black transition duration-300"
-            // >
-            //   {/* Image section */}
-            //   <div className="aspect-[3/4] w-full overflow-hidden">
-            //     <img
-            //       src={tile.image}
-            //       alt={tile.title}
-            //       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            //     />
-            //   </div>
-
-            //   {/* Text section */}
-            //   <div className="p-4">
-            //     <h3 className="font-bold text-sm md:text-base uppercase mb-1">{tile.title}</h3>
-            //     <p className="text-sm text-gray-700 mb-3">{tile.description}</p>
-            //     <span className="text-sm font-bold underline">SHOP NOW</span>
-            //   </div>
-            // </a>
-          ))}
-        </div>
-      </section>
+      <KidsPromoCarousel items={promoTiles} />
 
       {/* Category Tiles */}
       <section className="container mx-auto px-4 py-8">
@@ -174,7 +141,7 @@ export default function KidsPage() {
       </section> */}
       {/* Top Picks */}
       {/* Top Picks */}
-      <section className="container mx-auto px-2 mb-10">
+      <section className="container mx-auto px-2">
         <h2 className="text-xl font-bold mb-8">TOP PICKS FOR YOU</h2>
 
         <ProductCarousel

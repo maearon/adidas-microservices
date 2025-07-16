@@ -11,15 +11,16 @@ export default function HeroBannerSecond() {
 
   return (
     <section className="relative h-[83vh] bg-hero-women bg-cover bg-top text-white">
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11">
-        <div className="max-w-md">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
+        <div className="w-full max-w-md text-left">
+          <div className="flex flex-col gap-2 sm:gap-3">
           {/* Tiêu đề */}
-          <h1 className="inline-block bg-white text-black text-base sm:text-lg font-bold px-1.5 py-0.5 mb-2 tracking-tight uppercase">
+          <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
             PAST, PRESENT, FUTURE
           </h1>
 
           {/* Mô tả */}
-          <p className="inline-block bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 mb-4 leading-snug">
+          <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
             Explore the Superstar, now updated for the next generation.
           </p>
 
@@ -62,6 +63,7 @@ export default function HeroBannerSecond() {
               WATCH VIDEO
             </Button>
           </div>
+        </div>
         </div>
       </div>
 

@@ -33,8 +33,8 @@ export default function HistoryView({
   }, [])
 
   return (
-    <section className="container mx-auto px-4 py-0 mb-10">
-        <div className="flex justify-between items-center mb-8">
+    <section className="container mx-auto px-4 py-0">
+        <div className="flex justify-between items-center mb-4"> {/* 4 x 4 = 16px margin bottom*/}
             <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
               {title}
             </h2>
