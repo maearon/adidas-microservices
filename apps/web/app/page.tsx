@@ -248,7 +248,7 @@ export default function HomePage() {
       <PageFooter currentPage="home" />
 
       {/* Desktop-only black section with white text and centered content */}
-      <section className="hidden lg:block bg-black text-white pt-14 pb-16">
+      <section className="block bg-black text-white pt-14 pb-16">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-2xl text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
             SNEAKERS, ACTIVEWEAR AND SPORTING GOODS
