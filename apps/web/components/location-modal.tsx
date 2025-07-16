@@ -4,7 +4,8 @@ import { useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
-import { setLocale, type SupportedLocale } from "@/store/localeSlice"
+import { SupportedLocale } from "@/lib/constants/localeOptions"
+import { setLocale } from "@/store/localeSlice"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -14,24 +15,24 @@ interface LocationModalProps {
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
-  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vietnam")
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vi-VN");
 
   const locations = [
     {
-      id: "vietnam",
-      name: "Viet Nam",
+      id: "vi-VN",
+      name: "Vietnam",
       flag: "🇻🇳",
     },
     {
-      id: "united-states",
+      id: "en-US",
       name: "United States",
       flag: "🇺🇸",
     },
-  ]
+  ] as const;
 
   const handleLocationSelect = (locationId: SupportedLocale) => {
-    setSelectedLocation(locationId)
-  }
+    setSelectedLocation(locationId);
+  };
 
   const handleConfirm = () => {
     // Gọi callback được truyền vào props
@@ -71,7 +72,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
                   name="location"
                   value={location.id}
                   checked={selectedLocation === location.id}
-                  onChange={() => handleLocationSelect(location.id as SupportedLocale)}
+                  onChange={() => handleLocationSelect(location.id)}
                   className="w-5 h-5 text-black border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
                 <span className="text-lg font-medium text-black group-hover:underline">{location.name}</span>

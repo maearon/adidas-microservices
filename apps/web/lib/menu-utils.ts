@@ -6,8 +6,12 @@ import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-
 import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
+import { capitalizeWords } from "@/utils/upper-words"
 
-// Color items & mapping
+//
+// COLOR ITEMS & MAPPING
+//
+// Shop by Color data
 export const colorItems = [
   { name: "Black", color: "bg-black" },
   { name: "Grey", color: "bg-gray-500" },
@@ -22,16 +26,22 @@ export const colorItems = [
   { name: "Purple", color: "bg-purple-500" },
 ]
 
+
+// Mapping for color swatch
 export const colorMapping: Record<string, string> = Object.fromEntries(
-  colorItems.map((c) => [c.name.toLowerCase(), c.color])
+  colorItems.map((color) => [color.name.toLowerCase(), color.color])
 )
 
-const getShopByColorMenu = (gender: string): MenuCategory => ({
+//
+// SHOP BY COLOR
+//
+// Shop by Color menu
+export const getShopByColorMenu = (gender: string): MenuCategory => ({
   title: "Shop by Color",
   items: [
     ...colorItems.map((color) => ({
       name: color.name,
-      href: `/${gender}-${color.name.toLowerCase()}`,
+      href: `/${gender}-${color.name.toLowerCase()}`
     })),
     {
       name: `All ${gender.charAt(0).toUpperCase() + gender.slice(1)}'s`,
@@ -40,15 +50,19 @@ const getShopByColorMenu = (gender: string): MenuCategory => ({
   ],
 })
 
-const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[] => {
+// Insert Shop by Color after a specific section
+export const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[] => {
   const index = menu.findIndex((item) =>
     gender.toUpperCase() === "KIDS" ? item.title === "SHOP BY AGE" : item.title === "SHOP BY COLLECTION"
   )
   const newMenu = [...menu]
+
+  // Chèn "Shop by Color" Chỉ khi tìm thấy (index !== -1), ta mới chèn mục "Shop by Color" vào ngay sau mục "SHOP BY AGE" hoặc "SHOP BY COLLECTION".
   if (index !== -1) {
     newMenu.splice(index + 1, 0, getShopByColorMenu(gender))
   }
 
+  // Các mục cần thêm ở cuối menu
   const commonSale = {
     title: "Sale",
     items: [
@@ -61,26 +75,42 @@ const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[]
   }
 
   if (gender === "men" || gender === "women") {
-    newMenu.push(commonSale, {
-      title: "Fast, free delivery with Prime",
-      titleHref: `/prime`,
-      items: [],
-    })
-  } else {
-    newMenu.push(commonSale, {
-      title: "All Kids",
-      titleHref: "/kids?grid=true",
-      items: [],
-    })
+    newMenu.push(
+      commonSale,
+      {
+        title: `All ${capitalizeWords(gender)}`,
+        titleHref: `/${gender}?grid=true`,
+        items: [],
+      },
+      {
+        title: "Fast, free delivery with Prime",
+        titleHref: `/prime`,
+        items: [],
+      }
+    )
+  } else if (gender === "kids") {
+    newMenu.push(
+      commonSale,
+      {
+        title: "All Kids",
+        titleHref: "/kids?grid=true",
+        items: [],
+      }
+    )
   }
 
   return newMenu
 }
 
+//
+// FINAL SANITIZED MENUS
+//
+// Final menu with Shop by Color injected
 export const menMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(menMenuData, "men"))
 export const womenMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(womenMenuData, "women"))
 export const kidsMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(kidsMenuData, "kids"))
 
+// Override main menu data
 export const mainMenuData: Record<string, MenuCategory[]> = {
   MEN: menMenuDataWithColor,
   WOMEN: womenMenuDataWithColor,
@@ -90,6 +120,9 @@ export const mainMenuData: Record<string, MenuCategory[]> = {
   SALE: sanitizeMenuTitles(saleMenuData),
 }
 
+//
+// FOOTER MENU ITEMS
+//
 export const additionalMenuItems = [
   { name: "My Account", href: "/my-account" },
   { name: "Exchanges & Returns", href: "/returns" },
@@ -98,4 +131,12 @@ export const additionalMenuItems = [
   { name: "Gift Cards", href: "/gift-cards" },
   { name: "Store Locator", href: "/stores" },
   { name: "Mobile Apps", href: "/mobile-apps" },
+  {
+    name: "Language",
+    hasSubmenu: true,
+    items: [
+      { name: "English", value: "en-US", flag: "/flag/us-show.svg" },
+      { name: "Tiếng Việt", value: "vi-VN", flag: "/flag/vn-show.svg" },
+    ],
+  },
 ]

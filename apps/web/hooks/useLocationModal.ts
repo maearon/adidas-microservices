@@ -1,22 +1,18 @@
 "use client"
 
-import { Nullable } from "@/types/common";
+import { Nullable } from "@/types/common"
 import { useState, useEffect } from "react"
 
 export function useLocationModal() {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
-    // Check if user has already selected a location
-    let savedLocation: Nullable<string> = null;
-    let hasSeenModal: Nullable<string> = null;
-    if (typeof window !== "undefined") {
-      savedLocation = localStorage.getItem("NEXT_LOCALE");
-      hasSeenModal = localStorage.getItem("location-modal-seen");
-    }
+    if (typeof window === "undefined") return
 
-    if (!savedLocation && !hasSeenModal) {
-      // Show modal after a short delay
+    const savedLocation: Nullable<string> = localStorage.getItem("NEXT_LOCALE")
+
+    // Nếu chưa chọn địa điểm thì sau 1 giây hiện modal
+    if (!savedLocation) {
       const timer = setTimeout(() => {
         setIsOpen(true)
       }, 1000)
@@ -27,17 +23,16 @@ export function useLocationModal() {
 
   const closeModal = () => {
     setIsOpen(false)
-    {
-      if (typeof window !== "undefined") {
-    localStorage.setItem("location-modal-seen", "true")
-      }
-   }
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("location-modal-seen", "true")
+    }
   }
 
   const selectLocation = (location: string) => {
     if (typeof window !== "undefined") {
-    localStorage.setItem("NEXT_LOCALE", location)
-    localStorage.setItem("location-modal-seen", "true")
+      localStorage.setItem("NEXT_LOCALE", location)
+      localStorage.setItem("location-modal-seen", "true")
     }
     setIsOpen(false)
   }

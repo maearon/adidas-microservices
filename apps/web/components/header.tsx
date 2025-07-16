@@ -24,14 +24,15 @@ import { selectUser } from "@/store/sessionSlice"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { Nullable } from "@/types/common"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { setLocale, selectLocale, type SupportedLocale } from "@/store/localeSlice"
+import { setLocale } from "@/store/localeSlice"
+import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 
 export default function Header() {
   const { value: user, status } = useSelector(selectUser)
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const dispatch = useAppDispatch()
-  const locale = useAppSelector(selectLocale)
+  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English  
   const [showCountrySelect, setShowCountrySelect] = useState(false)
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -176,28 +177,48 @@ export default function Header() {
                 onClick={() => setShowCountrySelect((prev) => !prev)}
                 className="flex items-center"
               >
-                <Image
+                {/* <Image
                   src={locale === "united-states" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
                   alt="Country Flag"
                   width={20}
                   height={14}
-                />
+                /> */}
+                {(() => {
+                  const activeLocale = localeOptions.find((opt) => opt.value === locale)
+                  return (
+                    <>
+                      <Image
+                        src={activeLocale?.flag || "/flag/us-show.svg"}
+                        alt={activeLocale?.label || "Country Flag"}
+                        width={20}
+                        height={14}
+                      />
+                      {/* <span className="text-base">{activeLocale?.label || "United States"}</span> */}
+                    </>
+                  )
+                })()}
               </button>
 
               {/* Dropdown */}
               {showCountrySelect && (
                 <div className="absolute right-0 mt-2 w-60 bg-white shadow-xl border p-4 z-50">
-                  {['united-states', 'vietnam'].map((c) => (
-                    <label key={c} className="flex items-center gap-2 mb-3">
+                  {localeOptions.map(({ value, label, flag }, index) => (
+                    <label key={`${value}-${index}`} className="flex items-center gap-2 mb-3">
                       <input
                         type="radio"
                         name="country"
-                        checked={locale === c}
-                        onChange={() => dispatch(setLocale(c as SupportedLocale))}
+                        checked={locale === value}
+                        onChange={() => {
+                          dispatch(setLocale(value as SupportedLocale));
+                          document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000`
+                          localStorage.setItem("NEXT_LOCALE", value)
+                          setCountry(value === "en-US" ? "US" : "VN") // Cập nhật country dựa trên locale
+                          setShowCountrySelect(false)
+                        }}
                       />
-                      <Image src={c === 'united-states' ? '/flag/us.svg' : '/flag/vn.svg'} alt={c} width={24} height={16}/>
+                      <Image src={flag} alt={label} width={24} height={16} />
                       <span className="font-semibold">
-                        {c === 'united-states' ? 'United States' : 'Việt Nam'}
+                        {label}
                       </span>
                     </label>
                   ))}

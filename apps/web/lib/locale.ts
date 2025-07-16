@@ -1,13 +1,22 @@
-import en from "@/locales/en/hero.json"
-import vi from "@/locales/vi/hero.json"
+import heroEn from "@/locales/en-US/hero.json"
+import heroVi from "@/locales/vi-VN/hero.json"
+import headerEn from "@/locales/en-US/header.json"
+import headerVi from "@/locales/vi-VN/header.json"
 
 const locales = {
-  en,
-  vi,
-  "united-states": en,
-  "vietnam": vi,
+  "en-US": {
+    hero: heroEn,
+    header: headerEn,
+  },
+  "vi-VN": {
+    hero: heroVi,
+    header: headerVi,
+  },
 }
 
-export function getTranslations(locale: string, namespace: "hero") {
-  return locales[locale as keyof typeof locales]
+type Locale = keyof typeof locales
+type Namespace = keyof typeof locales["en-US"]
+
+export function getTranslations(locale: Locale, namespace: Namespace) {
+  return locales[locale][namespace]
 }

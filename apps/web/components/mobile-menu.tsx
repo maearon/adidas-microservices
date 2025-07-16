@@ -1,30 +1,3 @@
-// {
-//         name: "Shop by Color",
-//         icon: "🌸",
-//         hasSubmenu: true,
-//         submenu: {
-//           title: "SHOP BY COLOR 🌸",
-//           items: [
-//             ...colorItems.map((color) => ({ name: color.name, href: `/men/color/${color.name.toLowerCase()}` })),
-//             { name: "All Men's", href: "/men" },
-//           ],
-//         },
-//       },
-
-// const colorItems = [
-//   { name: "Black", color: "bg-black" },
-//   { name: "Grey", color: "bg-gray-500" },
-//   { name: "White", color: "bg-white border border-gray-300" },
-//   { name: "Brown", color: "bg-amber-800" },
-//   { name: "Red", color: "bg-red-500" },
-//   { name: "Pink", color: "bg-pink-300" },
-//   { name: "Orange", color: "bg-orange-500" },
-//   { name: "Yellow", color: "bg-yellow-400" },
-//   { name: "Green", color: "bg-green-500" },
-//   { name: "Blue", color: "bg-blue-500" },
-//   { name: "Purple", color: "bg-purple-500" },
-// ]
-
 // Menu structure matching desktop mega menu import { mainMenuData, additionalMenuItems, colorMapping } from "@/lib/menu-utils" // bạn import từ nơi đã tách
 "use client"
 
@@ -34,19 +7,16 @@ import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "./adidas-logo"
-
-// Import menu data
-import { menMenuData } from "@/data/mega-menu/men-mega-menu-data"
-import { womenMenuData } from "@/data/mega-menu/women-mega-menu-data"
-import { kidsMenuData } from "@/data/mega-menu/kids.mega-menu-data"
-import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-data"
-import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
-import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
-import { sanitizeMenuTitles } from "@/utils/sanitizeMenuTitleOnly"
-import { capitalizeWords, capitalizeWordsCountry } from "@/utils/upper-words"
+import { capitalizeWordsCountry } from "@/utils/upper-words"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { selectLocale, setLocale, SupportedLocale } from "@/store/localeSlice"
+import { localeDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
+import { usePathname, useRouter } from "next/navigation"
+import { setLocale } from "@/store/localeSlice"
+import { getTranslations } from "@/lib/locale";
+import { RadioGroup } from "@/components/ui/radio-group"
+import { RadioGroupItem } from "@/components/ui/radio-group"
+import { colorMapping, mainMenuData } from "@/lib/menu-utils"
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -64,161 +34,37 @@ interface NavigationHistory {
   scrollPosition: number
 }
 
-// Shop by Color data
-const colorItems = [
-  { name: "Black", color: "bg-black" },
-  { name: "Grey", color: "bg-gray-500" },
-  { name: "White", color: "bg-white border border-gray-300" },
-  { name: "Brown", color: "bg-amber-800" },
-  { name: "Red", color: "bg-red-500" },
-  { name: "Pink", color: "bg-pink-300" },
-  { name: "Orange", color: "bg-orange-500" },
-  { name: "Yellow", color: "bg-yellow-400" },
-  { name: "Green", color: "bg-green-500" },
-  { name: "Blue", color: "bg-blue-500" },
-  { name: "Purple", color: "bg-purple-500" },
-]
-
-// Mapping for color swatch
-const colorMapping: Record<string, string> = Object.fromEntries(
-  colorItems.map((color) => [color.name.toLowerCase(), color.color])
-)
-
-// Shop by Color menu
-const getShopByColorMenu = (gender: string): MenuCategory => ({
-  title: "Shop by Color",
-  items: [
-    ...colorItems.map((color) => ({
-      name: color.name,
-      href: `/${gender}-${color.name.toLowerCase()}`
-    })),
-    {
-      name: `All ${gender.charAt(0).toUpperCase() + gender.slice(1)}'s`,
-      href: `/${gender}`,
-    },
-  ],
-})
-
-// Insert Shop by Color after a specific section
-const insertShopByColor = (menu: MenuCategory[], gender: string): MenuCategory[] => {
-  const index = menu.findIndex((item) =>
-    gender.toUpperCase() === "KIDS" ? item.title === "SHOP BY AGE" : item.title === "SHOP BY COLLECTION"
-  )
-  const newMenu = [...menu]
-
-  // Chèn "Shop by Color" Chỉ khi tìm thấy (index !== -1), ta mới chèn mục "Shop by Color" vào ngay sau mục "SHOP BY AGE" hoặc "SHOP BY COLLECTION".
-  if (index !== -1) {
-    newMenu.splice(index + 1, 0, getShopByColorMenu(gender))
-  }
-
-  // Các mục cần thêm ở cuối menu
-  const commonSale = {
-    title: "Sale",
-    items: [
-      { name: "Shoes", href: `/${gender}-shoes-sale` },
-      { name: "Clothing", href: `/${gender}-clothing-sale` },
-      { name: "Accessories", href: `/${gender}-accessories-sale` },
-      { name: "Final Sale", href: `/${gender}-final-sale` },
-      { name: "All Sale", href: `/${gender}-sale` },
-    ],
-  }
-
-  if (gender === "men" || gender === "women") {
-    newMenu.push(
-      commonSale,
-      {
-        title: `All ${capitalizeWords(gender)}`,
-        titleHref: `/${gender}?grid=true`,
-        items: [],
-      },
-      {
-        title: "Fast, free delivery with Prime",
-        titleHref: `/prime`,
-        items: [],
-      }
-    )
-  } else if (gender === "kids") {
-    newMenu.push(
-      commonSale,
-      {
-        title: "All Kids",
-        titleHref: "/kids?grid=true",
-        items: [],
-      }
-    )
-  }
-
-  return newMenu
-}
-
-// Final menu with Shop by Color injected
-const menMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(menMenuData, "men"))
-const womenMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(womenMenuData, "women"))
-const kidsMenuDataWithColor = sanitizeMenuTitles(insertShopByColor(kidsMenuData, "kids"))
-
-// Override main menu data
-const mainMenuData: Record<string, MenuCategory[]> = {
-  MEN: menMenuDataWithColor,
-  WOMEN: womenMenuDataWithColor,
-  KIDS: kidsMenuDataWithColor,
-  "BACK TO SCHOOL": sanitizeMenuTitles(backToSchoolMenuData),
-  "NEW & TRENDING": sanitizeMenuTitles(trendingMenuData),
-  SALE: sanitizeMenuTitles(saleMenuData),
-}
-
-// Color mapping for "Shop by Color" sections
-// const colorMapping: Record<string, string> = {
-//   black: "bg-black",
-//   grey: "bg-gray-500",
-//   gray: "bg-gray-500",
-//   white: "bg-white border border-gray-300",
-//   brown: "bg-amber-800",
-//   red: "bg-red-500",
-//   pink: "bg-pink-300",
-//   orange: "bg-orange-500",
-//   yellow: "bg-yellow-400",
-//   green: "bg-green-500",
-//   blue: "bg-blue-500",
-//   purple: "bg-purple-500",
-// }
-
-// Main menu structure
-// const mainMenuData: Record<string, MenuCategory[]> = {
-//   MEN: menMenuData,
-//   WOMEN: womenMenuData,
-//   KIDS: kidsMenuData,
-//   "BACK TO SCHOOL": backToSchoolMenuData,
-//   "NEW & TRENDING": trendingMenuData,
-//   SALE: saleMenuData,
-// }
-
-// Additional menu items (non-category items)
-const additionalMenuItems = [
-  { name: "My Account", href: "/my-account" },
-  { name: "Exchanges & Returns", href: "/returns" },
-  { name: "Order Tracker", href: "/orders" },
-  { name: "adiClub", href: "/adiclub" },
-  { name: "Gift Cards", href: "/gift-cards" },
-  { name: "Store Locator", href: "/stores" },
-  { name: "Mobile Apps", href: "/mobile-apps" },
-  {
-    name: "Language",
-    hasSubmenu: true,
-    items: [
-      { name: "English", code: "en" },
-      { name: "Tiếng Việt", code: "vi" },
-    ],
-  },
-]
-
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
+  const pathname = usePathname()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
   })
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistory[]>([])
-  const locale = useAppSelector(selectLocale)
+  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English  
+  const languageLabel = localeDisplayMap[locale]
+  const t = getTranslations(locale, "header")
+
+  const additionalMenuItems = [
+    { name: "My Account", href: "/my-account" },
+    { name: "Exchanges & Returns", href: "/returns" },
+    { name: "Order Tracker", href: "/orders" },
+    { name: "adiClub", href: "/adiclub" },
+    { name: "Gift Cards", href: "/gift-cards" },
+    { name: "Store Locator", href: "/stores" },
+    { name: "Mobile Apps", href: "/mobile-apps" },
+    {
+      name: languageLabel,
+      hasSubmenu: true,
+      items: [
+        { name: "English", value: "en-US", flag: "/flag/us-show.svg" },
+        { name: "Tiếng Việt", value: "vi-VN", flag: "/flag/vn-show.svg" },
+      ],
+    },
+  ]
 
   useEffect(() => {
     if (!isOpen) return
@@ -463,33 +309,61 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </Link>
               ))} */}
               {additionalMenuItems.map((item) => {
+                const countryData = localeOptions.find(opt => opt.value === locale)
+
                 if (item.hasSubmenu) {
                   return (
                     <button
                       key={item.name}
                       onClick={() => {
-                        const scrollPosition = document.querySelector(".mobile-menu-content")?.scrollTop || 0
+                        const scrollPosition = document.querySelector(".mobile-menu-content")?.scrollTop || 0;
                         setNavigationHistory((prev) => [
                           ...prev,
                           { level: currentLevel, scrollPosition },
-                        ])
+                        ]);
+
                         setCurrentLevel({
                           title: item.name,
-                          items: item.items.map((lang) => ({
-                            title: lang.name,
-                            onClick: () => {
-                              localStorage.setItem("NEXT_LOCALE", lang.code)
-                              dispatch(setLocale(lang.code as SupportedLocale))
-                            },
-                            items: [],
-                          })),
-                        })
+                          items: [], // Temporarily empty, will be filled below
+                        });
+
+                        setTimeout(() => {
+                          // Inject radio options
+                          setCurrentLevel({
+                            title: item.name,
+                            items: localeOptions.map(({ value, label, flag }) => ({
+                              title: label,
+                              value,
+                              flag,
+                              // onClick: () => {
+                              //   localStorage.setItem("NEXT_LOCALE", value)
+                              //   dispatch(setLocale(value as SupportedLocale))
+                              // },
+                              items: [],
+                            })),
+                          });
+                        }, 0);
                       }}
-                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100"
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100 flex items-center justify-between"
                     >
-                      <span className="text-base">{item.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <Image
+                          src={
+                            countryData?.flagShow ||
+                            (locale === "en-US" ? "/flag/us-show.svg" : "/flag/vn-show.svg")
+                          }
+                          alt={
+                            countryData?.label ||
+                            capitalizeWordsCountry(locale === "en-US" ? "United States" : "Việt Nam")
+                          }
+                          width={24}
+                          height={16}
+                        />
+                        <span className="text-base">{capitalizeWordsCountry(item.name)}</span>
+                      </div>
+                      <span className="text-gray-400 text-sm">{">"}</span>
                     </button>
-                  )
+                  );
                 }
 
                 return (
@@ -501,21 +375,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   >
                     <span className="text-base">{item.name}</span>
                   </Link>
-                )
+                );
               })}
-
-              {/* Country Selection */}
-              <div className="p-4 border-b border-gray-100">
-                <div className="flex items-center space-x-2">
-                  <Image 
-                    src={locale === "en" ? "/flag/us-show.svg" : "/flag/vn-show.svg"}
-                    alt={capitalizeWordsCountry(locale === "en" ? "united-states" : "Việt-Nam")}
-                    width={24} 
-                    height={16} 
-                  />
-                  <span className="text-base">{capitalizeWordsCountry(locale === "en" ? "united-states" : "Việt-Nam")}</span>
-                </div>
-              </div>
             </div>
           ) : (
             // Submenu items
@@ -524,26 +385,45 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 const isCategory = "items" in item && item.items && item.items.length > 0
                 const itemName = "title" in item ? item.title : item.name
                 const itemHref = "titleHref" in item ? item.titleHref : item.href
+                const itemValue = "value" in item ? item.value : undefined
+                const itemFlag = "flag" in item ? item.flag : undefined
+                const isCountryMenu = localeOptions.some(opt => opt.label === currentLevel.title)
 
-                // ✅ Trường hợp có onClick: ví dụ chọn ngôn ngữ
-                if ("onClick" in item && typeof item.onClick === "function") {
+                const isSelected = itemValue === locale
+
+                if (isCountryMenu) {
                   return (
                     <button
                       key={index}
                       onClick={() => {
-                        item.onClick?.()
-                        handleClose()
+                        if (itemValue) {
+                          // item.onClick?.()
+                          dispatch(setLocale(itemValue as SupportedLocale));
+                          document.cookie = `NEXT_LOCALE=${itemValue}; path=/; max-age=31536000`
+                          localStorage.setItem("NEXT_LOCALE", itemValue)
+                          setCountry(itemValue === "en-US" ? "US" : "VN") // Cập nhật country dựa trên locale
+                          handleClose()
+                        }
                       }}
-                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100"
+                      className={cn(
+                        "w-full flex items-center justify-between p-4 border-b border-gray-100 text-left",
+                        isSelected ? "bg-gray-100 font-semibold" : "hover:bg-gray-50"
+                      )}
                     >
-                      <div className="flex items-center">
-                        {getColorSwatch?.(itemName, currentLevel.title)}
+                      <div className="flex items-center gap-3">
+                        {itemFlag && (
+                          <Image src={itemFlag} alt={itemName} width={24} height={16} />
+                        )}
                         <span className="text-base">{itemName}</span>
+                      </div>
+                      <div className="w-4 h-4 border-2 rounded-full flex items-center justify-center">
+                        {isSelected && <div className="w-2 h-2 bg-black rounded-full" />}
                       </div>
                     </button>
                   )
                 }
 
+                // Default rendering for other items
                 if (isCategory) {
                   // Category with submenu
                   return (
@@ -578,32 +458,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     </Link>
                   )
                 }
-                
-              })}
 
-              {/* Shop by Color - Conditional rendering */}
-                {/* {["MEN", "WOMEN", "KIDS"].includes(currentLevel.title) &&
-                  currentLevel.items.length > 0 &&
-                  ["CLOTHING", "SHOP BY AGE"].includes(currentLevel.items[0]?.title || "") && (
-                    <div className="border-t border-gray-200 mt-4">
-                      <div className="p-4 bg-gray-50">
-                        <h3 className="font-semibold text-base mb-3 flex items-center">SHOP BY COLOR 🌸</h3>
-                        <div className="space-y-2">
-                          {shopByColorData[0].items.map((colorItem, itemIndex) => (
-                            <Link
-                              key={itemIndex}
-                              href={colorItem.href.replace("/men/", `/${currentLevel.title.toLowerCase()}/`)}
-                              onClick={handleClose}
-                              className="flex items-center p-2 hover:bg-white rounded text-sm"
-                            >
-                              {getColorSwatch(colorItem.name, currentLevel.title)}
-                              <span>{colorItem.name}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )} */}
+              })}
             </div>
           )}
         </div>
