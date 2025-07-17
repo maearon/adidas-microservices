@@ -40,11 +40,13 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
     // Lưu localStorage (dự phòng)
     if (typeof window !== "undefined") {
+      localStorage.setItem("delivery-location", selectedLocation)
+      document.cookie = `NEXT_LOCALE=${selectedLocation}; path=/; max-age=31536000`
       localStorage.setItem("NEXT_LOCALE", selectedLocation)
     }
 
     // Cập nhật locale vào Redux + cookie
-    dispatch(setLocale(selectedLocation))
+    dispatch(setLocale(selectedLocation as SupportedLocale));
 
     onClose()
   }
