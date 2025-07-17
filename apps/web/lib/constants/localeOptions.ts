@@ -8,8 +8,9 @@ export const localeDisplayMap: Record<SupportedLocale, string> = {
 };
 
 export const countryDisplayMap: Record<string, string> = {
-  "united-states": "United States",
-  vietnam: "Việt Nam",
+  "en-US": "United States",
+  "en-UK": "United Kingdom",
+  "vi-VN": "Việt Nam",
 };
 
 export const countryToLocaleMap: Record<string, SupportedLocale> = {

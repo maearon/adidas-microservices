@@ -7,8 +7,10 @@ import Link from "next/link"
 import Image from "next/image"
 import CcpaIcon from "@/assets/icons/ccpa-privacy-options.svg";
 import { Button } from "./ui/button";
+import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 
 export default function Footer() {
+  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English
   const { value: user } = useAppSelector(selectUser)
   const cartItemsCount = useAppSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
@@ -290,13 +292,13 @@ export default function Footer() {
             {/* Country Selector */}
             <div className="flex items-center gap-2 text-sm">
               <Image
-                src="/flag/us.svg"
-                alt="US Flag"
+                src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
+                alt={`${localeDisplayMap[locale]} Flag`}
                 width={20}
                 height={14}
                 className="inline-block"
               />
-              <span>United States</span>
+              <span>{countryDisplayMap[locale]}</span>
             </div>
           </div>
 
