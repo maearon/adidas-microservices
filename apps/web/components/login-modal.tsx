@@ -155,7 +155,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black z-10"
+          className="absolute top-4 right-4 text-gray-500 hover:text-black z-51"
         >
           {/* <X className="w-5 h-5" /> */}
         </button>
@@ -400,7 +400,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-xl">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black z-10"
+          className="absolute top-4 right-4 text-gray-500 hover:text-black z-51"
         >
           {/* <X className="w-5 h-5" /> */}
         </button>
