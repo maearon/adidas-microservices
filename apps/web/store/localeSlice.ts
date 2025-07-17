@@ -3,6 +3,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
 import { SupportedLocale } from "@/lib/constants/localeOptions";
+import { getLocaleFromClient } from "@/lib/locale.client";
 
 interface LocaleState {
   locale: SupportedLocale;
@@ -11,7 +12,7 @@ interface LocaleState {
 const DEFAULT_LOCALE: SupportedLocale = "en-US";
 
 const initialState: LocaleState = {
-  locale: DEFAULT_LOCALE,
+  locale: (getLocaleFromClient() as SupportedLocale) || DEFAULT_LOCALE,
 };
 
 const localeSlice = createSlice({
