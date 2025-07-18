@@ -141,6 +141,7 @@ export default function Footer() {
               JOIN OUR ADICLUB & GET 15% OFF
             </h3>
             <Button
+              border={false}
               href="/signup"
               pressEffect={true}
               className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
@@ -230,6 +231,7 @@ export default function Footer() {
                     JOIN OUR ADICLUB & GET 15% OFF
                   </h3>
                   <Button
+                    border={false}
                     href="/signup"
                     pressEffect={true}
                     className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
