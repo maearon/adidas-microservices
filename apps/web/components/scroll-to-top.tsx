@@ -1,9 +1,9 @@
 "use client"
 
-import { ChevronUp } from "lucide-react"
+import { ChevronUp, ChevronDown } from "lucide-react"
 import { useEffect, useState } from "react"
 
-export default function ScrollToTop() {
+export default function ScrollButtons() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -32,15 +32,31 @@ export default function ScrollToTop() {
     setVisible(false)
   }
 
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
+  }
+
   return (
-    <button
-      aria-label="Scroll back to top"
-      onClick={scrollToTop}
-      className={`flex fixed bottom-6 left-1/2 -translate-x-1/2 z-50 
-        h-12 w-12 items-center justify-center rounded-sm bg-black text-white shadow-lg 
-        transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+    <div
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex gap-2 transition-opacity duration-300 ${
+        visible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
     >
-      <ChevronUp className="h-5 w-5 mx-auto my-auto" />
-    </button>
+      <button
+        aria-label="Scroll back to top"
+        onClick={scrollToTop}
+        className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+      >
+        <ChevronUp className="h-5 w-5" />
+      </button>
+
+      <button
+        aria-label="Scroll to bottom"
+        onClick={scrollToBottom}
+        className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+      >
+        <ChevronDown className="h-5 w-5" />
+      </button>
+    </div>
   )
 }
