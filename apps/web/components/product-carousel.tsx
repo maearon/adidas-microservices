@@ -73,13 +73,22 @@ export default function ProductCarousel({
             <ProductCard key={product.id} product={product} minimalMobile={minimalMobileForProductCard} />
           ))}
           <div className="col-span-full flex justify-center">
-            <BaseButton
+            {/* <BaseButton
               variant="outline"
               className="rounded-none border border-black text-black font-bold hover:bg-gray-100 text-sm px-6 py-0 leading-none"
               onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
             >
               VIEW ALL
-            </BaseButton>
+            </BaseButton> */}
+            <div className="col-span-full">
+              <BaseButton
+                variant="outline"
+                className="w-full rounded-none border border-black text-black font-bold hover:bg-gray-100 text-sm px-6 py-3 leading-none text-left"
+                onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
+              >
+                VIEW ALL
+              </BaseButton>
+            </div>
           </div>
         </div>
       </section>
