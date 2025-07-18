@@ -22,6 +22,7 @@ export default function SearchField() {
           name="q" 
           placeholder="Search" 
           className="
+          w-full sm:w-40 md:w-44 lg:w-48
           pe-10 
           bg-[#ECEFF1] 
           rounded-none 
