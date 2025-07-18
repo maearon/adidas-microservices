@@ -30,6 +30,22 @@ const LoginPage = () => {
   const [errors, setErrors] = useState<ErrorMessageType>({})
   const [hasMounted, setHasMounted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [minimumLoadingDone, setMinimumLoadingDone] = useState(false)
+  const [centered, setCentered] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+
+    const timer1 = setTimeout(() => setCentered(true), 2000)
+    const timer2 = setTimeout(() => {
+      setMinimumLoadingDone(true)
+    }, 4000)
+
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+    }
+  }, [])
 
   useEffect(() => setHasMounted(true), [])
 
@@ -72,11 +88,17 @@ const LoginPage = () => {
     window.location.href = authUrl
   }
 
-  if (!hasMounted || isLoading) return (
-    <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
-      <AdidasSpinner />
-    </div>
-  )
+  if (!hasMounted || isLoading || !minimumLoadingDone) {
+    return (
+      <div
+        className={`z-50 bg-white flex ${
+          centered ? "items-center justify-center" : ""
+        }`}
+      >
+        <AdidasSpinner />
+      </div>
+    )
+  }
 
   if (isError) {
     // flashMessage("error", "Session expired or unauthorized. Please login again.")

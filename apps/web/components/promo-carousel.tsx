@@ -63,7 +63,7 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
   }
 
   return (
-    <section className="container mx-auto px-4 py-0 mb-4">
+    <section className="container mx-auto px-4 py-0">
       <div
         className="relative overflow-hidden"
         onMouseEnter={() => setIsAutoPlaying(false)}

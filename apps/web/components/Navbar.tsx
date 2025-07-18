@@ -274,7 +274,7 @@ export default function Navbar() {
                 <User className="h-5 w-5" />
                 {!user?.email && (
                   <span className={cn(
-                    "absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
+                    "absolute -top-3 -right-2 bg-[#FFD619] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
                     loginBadgeAnimate && "animate-bounce",
                   )}>1</span>
                 )}
@@ -342,7 +342,7 @@ export default function Navbar() {
               <User className="h-5 w-5" />
               {!user?.email && (
                 <span className={cn(
-                  "absolute -top-2 -right-2 bg-yellow-500 text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
+                  "absolute -top-3 -right-2 bg-[#FFD619] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
                   loginBadgeAnimate && "animate-bounce",
                 )}>1</span>
               )}

@@ -41,10 +41,14 @@ export function Button({
   const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
   const text = isBlack ? "text-white" : "text-black"
   const hoverText = isBlack ? "hover:text-gray-500" : "hover:text-black"
-  const shadowBorderClass = isBlack
-    ? "border-black"
-    : "border-white group-hover:border-gray-400"
-  const defaultBorder = isBlack ? "border-white" : "border-black"
+  const shadowBorderClass = shadow ?
+    isBlack ? "border-black" : "border-white group-hover:border-gray-400"
+    : "border-transparent"
+  const borderClass = !isIconButton
+    ? shadow
+      ? "border border-transparent"
+      : `border ${isBlack ? "border-white" : "border-black"}`
+    : ""
 
   return (
     <div
@@ -69,13 +73,12 @@ export function Button({
         variant={variant}
         size={size}
         className={cn(
-          "relative z-10 inline-flex items-center justify-center px-4 h-12 font-bold text-base uppercase tracking-wide rounded-none transition-all",
+          "relative z-10 inline-flex items-center justify-center px-4 py-3 outline-none ring-0 font-bold text-base uppercase tracking-wide rounded-none transition-all",
           bg,
           hoverBg,
           text,
           hoverText,
-          border && !isIconButton && "border",
-          border && !isIconButton && defaultBorder,
+          !isIconButton && borderClass,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
           !isIconButton && (fullWidth ? "w-full" : "w-auto"),
           isIconButton && "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",

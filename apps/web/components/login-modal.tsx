@@ -187,7 +187,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="grid grid-cols-4 gap-3 mb-6">
             <LoadingButton 
               variant="outline" size="sm" 
-              className="p-3 h-12" 
+              className="social-button"
               onClick={() => handleSocialLogin("apple", () => console.log("apple"))}
               loading={socialLoading === "apple"}
             >
@@ -195,7 +195,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </LoadingButton>
             <LoadingButton 
               variant="outline" size="sm" 
-              className="p-3 h-12" 
+              className="social-button"
               onClick={() => handleSocialLogin("facebook", () => console.log("facebook"))}
               loading={socialLoading === "facebook"}
             >
@@ -206,7 +206,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             <LoadingButton 
               variant="outline" 
               size="sm" 
-              className="p-3 h-12" 
+              className="social-button"
               onClick={() => handleSocialLogin("google", () => console.log("google"))}
               loading={socialLoading === "google"}
             >
@@ -232,7 +232,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             <LoadingButton 
               variant="outline" 
               size="sm" 
-              className="p-3 h-12" 
+              className="social-button"
               onClick={() => handleSocialLogin("yahoo", () => console.log("yahoo"))}
               loading={socialLoading === "yahoo"}
             >
@@ -243,7 +243,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Email Form */}
           {step === "email" && (
             <Formik
-              initialValues={{ email: "", keepLoggedIn: false }}
+              initialValues={{ email: "", keepLoggedIn }}
               validationSchema={validationSchema}
               onSubmit={handleEmailSubmit}
             >

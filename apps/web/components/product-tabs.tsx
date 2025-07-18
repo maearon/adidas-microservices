@@ -59,7 +59,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
 
         {/* View All */}
         <button
-          className="hidden sm:inline-block text-sm font-bold underline underline-offset-[4px] mt-4 sm:mt-0"
+          className="hidden sm:inline-block text-sm font-bold underline underline-offset-4 mt-4 sm:mt-0"
           onClick={() => {
             if (viewMoreHref) window.location.href = `/${viewMoreHref}`
           }}

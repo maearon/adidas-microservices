@@ -76,7 +76,7 @@ export default function HeroBanner({
                   variant="outline"
                   href={btn.href}
                   showArrow
-                  className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white text-black py-3 rounded-none font-semibold transition-colors"
                 >
                   {btn.buttonLabel || t.shopNow || "SHOP NOW"}
                 </Button>

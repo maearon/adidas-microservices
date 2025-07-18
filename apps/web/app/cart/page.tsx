@@ -1,13 +1,11 @@
 "use client"
-import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Heart, X, ChevronDown } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { removeFromCart, updateQuantity } from "@/store/cartSlice"
 import { addToWishlist } from "@/store/wishlistSlice"
-import Header from "@/components/Navbar"
-import Footer from "@/components/footer"
 
 export default function CartPage() {
   const dispatch = useAppDispatch()
@@ -53,15 +51,24 @@ export default function CartPage() {
     return (
       <div className="min-h-screen flex flex-col">
         {/* <Header /> */}
-        <main className="flex-grow container mx-auto px-2 py-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">YOUR BAG IS EMPTY</h1>
-            <p className="text-gray-600 mb-4">
+        <main className="flex-grow container mx-auto px-2 py-28">
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-4xl font-bold mb-10">YOUR BAG IS EMPTY</h1>
+            <p className="text-gray-600 mb-6">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
-            <Button href="/" theme="black" shadow={true} pressEffect={true} fullWidth={false}>
+            <div className="max-w-[180px] w-full">
+            <Button
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              href="/"
+              className="w-full py-3 font-semibold transition-colors"
+            >
               GET STARTED
             </Button>
+            </div>
           </div>
         </main>
         {/* <Footer /> */}
@@ -73,7 +80,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* <Header /> */}
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow max-w-6xl mx-auto px-2 md:px-10 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Cart items */}

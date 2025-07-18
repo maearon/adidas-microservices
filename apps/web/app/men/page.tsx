@@ -110,7 +110,6 @@ export default function MenPage() {
           ],
         }}
       />
-      <div className="mb-2"></div>
 
       {/* Category Tiles */}
       <section className="container mx-auto px-4 py-8">
