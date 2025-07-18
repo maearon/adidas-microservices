@@ -1,0 +1,45 @@
+export const searchSuggestions = [
+  {
+    keyword: "SAMBA",
+    count: 4,
+    products: [
+      {
+        id: "b75806",
+        title: "Samba OG Shoes",
+        price: 100,
+        gender: "Women's Originals",
+        image: "/images/products/b75806.jpg",
+      },
+      {
+        id: "ig9030",
+        title: "Samba OG Shoes",
+        price: 100,
+        gender: "Women's Originals",
+        image: "/images/products/ig9030.jpg",
+      },
+      {
+        id: "jr8829",
+        title: "Samba OG Shoes",
+        price: 100,
+        gender: "Men's Originals",
+        image: "/images/products/jr8829.jpg",
+      },
+      {
+        id: "jr9446",
+        title: "Samba OG Shoes",
+        price: 100,
+        gender: "Women's Originals",
+        image: "/images/products/jr9446.jpg",
+      },
+    ],
+  },
+  { keyword: "CAMPUS", count: 134, products: [], },
+  { keyword: "SOCCER", count: 844, products: [], },
+  { keyword: "GAZELLE", count: 171, products: [], },
+  { keyword: "MEXICO", count: 4, products: [], },
+  { keyword: "SPEZIAL", count: 93, products: [], },
+  { keyword: "ADIZERO", count: 326, products: [], },
+  { keyword: "F50", count: 64, products: [], },
+  { keyword: "SLIDES", count: 136, products: [], },
+  { keyword: "ULTRABOOST", count: 70, products: [], },
+];
