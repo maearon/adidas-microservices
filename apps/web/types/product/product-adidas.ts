@@ -14,6 +14,7 @@ export interface ProductData {
   model_number: string;
   base_model_number: string;
   product_type: string;
+  sport?: string;
   display_name: string;
   name: string;
   price: string;
