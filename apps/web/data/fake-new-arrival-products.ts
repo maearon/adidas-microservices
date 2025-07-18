@@ -10,6 +10,7 @@ export const newArrivalProducts: Product[] = [
       price: 70,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Sportswear",
       attribute_list: {
         brand: "Sportswear"
       },
@@ -44,6 +45,7 @@ export const newArrivalProducts: Product[] = [
       price: 80,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -78,6 +80,7 @@ export const newArrivalProducts: Product[] = [
       price: 70,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -112,6 +115,7 @@ export const newArrivalProducts: Product[] = [
       price: 70,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -146,6 +150,7 @@ export const newArrivalProducts: Product[] = [
       price: 35,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -180,6 +185,7 @@ export const newArrivalProducts: Product[] = [
       price: 200,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -214,6 +220,7 @@ export const newArrivalProducts: Product[] = [
       price: 60,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -248,6 +255,7 @@ export const newArrivalProducts: Product[] = [
       price: 60,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -282,6 +290,7 @@ export const newArrivalProducts: Product[] = [
       price: 60,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
@@ -316,6 +325,7 @@ export const newArrivalProducts: Product[] = [
       price: 60,
       compare_at_price: "90",
       variant_code: "VC93-BL-b8e2",
+      sport: "Originals",
       attribute_list: {
         brand: "Originals"
       },
