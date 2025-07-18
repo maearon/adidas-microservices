@@ -38,20 +38,20 @@ export default function ScrollButtons() {
 
   return (
     <>
-      {/* Trên sm: chỉ hiện Scroll to Top */}
+      {/* show only button Scroll back to top */}
       <button
         aria-label="Scroll back to top"
         onClick={scrollToTop}
-        className={`hidden sm:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-50 
+        className={`hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 
           h-12 w-12 items-center justify-center rounded-sm bg-black text-white shadow-lg 
           transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
         <ChevronUp className="h-5 w-5" />
       </button>
 
-      {/* Dưới sm: hiện cả 2 nút cạnh nhau */}
+      {/* show both buttons next to each other */}
       <div
-        className={`flex sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 gap-3
+        className={`flex fixed bottom-6 left-1/2 -translate-x-1/2 z-50 gap-3
           transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
         <button
