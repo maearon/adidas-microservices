@@ -37,26 +37,38 @@ export default function ScrollButtons() {
   }
 
   return (
-    <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex gap-2 transition-opacity duration-300 ${
-        visible ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
-    >
+    <>
+      {/* Trên sm: chỉ hiện Scroll to Top */}
       <button
         aria-label="Scroll back to top"
         onClick={scrollToTop}
-        className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+        className={`hidden sm:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-50 
+          h-12 w-12 items-center justify-center rounded-sm bg-black text-white shadow-lg 
+          transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
         <ChevronUp className="h-5 w-5" />
       </button>
 
-      <button
-        aria-label="Scroll to bottom"
-        onClick={scrollToBottom}
-        className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+      {/* Dưới sm: hiện cả 2 nút cạnh nhau */}
+      <div
+        className={`flex sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 gap-3
+          transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
-        <ChevronDown className="h-5 w-5" />
-      </button>
-    </div>
+        <button
+          aria-label="Scroll to top"
+          onClick={scrollToTop}
+          className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+        >
+          <ChevronUp className="h-5 w-5" />
+        </button>
+        <button
+          aria-label="Scroll to bottom"
+          onClick={scrollToBottom}
+          className="h-12 w-12 flex items-center justify-center rounded-sm bg-black text-white shadow-lg"
+        >
+          <ChevronDown className="h-5 w-5" />
+        </button>
+      </div>
+    </>
   )
 }
