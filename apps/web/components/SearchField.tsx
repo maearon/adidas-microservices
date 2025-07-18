@@ -22,14 +22,14 @@ export default function SearchField() {
           name="q" 
           placeholder="Search" 
           className="
-          w-full sm:w-40 md:w-44 lg:w-48
+          w-full sm:w-36 md:w-40 lg:w-44
           pe-10 
           bg-[#ECEFF1] 
           rounded-none 
           placeholder-black
           focus:placeholder-transparent 
           text-sm 
-          pl-2
+          pl-3
           pr-10 
           py-1
           border 
@@ -38,7 +38,7 @@ export default function SearchField() {
           focus:outline-none 
           focus:ring-1 
           focus:ring-black" 
-          />
+        />
         <SearchIcon className="absolute right-3 top-1/2 size-5 -translate-y-1/2 transform text-black" />
       </div>
     </form>
