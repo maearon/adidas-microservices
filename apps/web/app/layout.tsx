@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Barlow } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/providers"
-import Header from "@/components/header"
+import Navbar from "@/components/Navbar"
 import Footer from "@/components/footer"
 import ChatWidget from "@/components/chat-widget"
 import { 
@@ -26,7 +26,10 @@ const barlow = Barlow({
 })
 
 export const metadata: Metadata = {
-  title: "adidas Online Shop | adidas US",
+  title: {
+    template: "%s | adidas US",
+    default: "adidas Online Shop | adidas US",
+  },
   description: "Shop the latest adidas shoes, clothing and accessories",
 }
 
@@ -45,7 +48,7 @@ export default function RootLayout({
             <AuthProvider>
               <ReactQueryProvider>
                 <RedirectListener /> {/* ✅ THÊM VÀO BODY */}
-                <Header />
+                <Navbar />
                 <ToastContainer
                   position="bottom-right"
                   autoClose={4000}

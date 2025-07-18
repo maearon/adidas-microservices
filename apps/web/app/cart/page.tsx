@@ -6,7 +6,7 @@ import { Heart, X, ChevronDown } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { removeFromCart, updateQuantity } from "@/store/cartSlice"
 import { addToWishlist } from "@/store/wishlistSlice"
-import Header from "@/components/header"
+import Header from "@/components/Navbar"
 import Footer from "@/components/footer"
 
 export default function CartPage() {

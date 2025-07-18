@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import Header from "@/components/header"
+import Header from "@/components/Navbar"
 import Footer from "@/components/footer"
 import ProductCard from "@/components/product-card"
 import PageFooter from "@/components/page-footer"

@@ -26,8 +26,9 @@ import { Nullable } from "@/types/common"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setLocale } from "@/store/localeSlice"
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
+import SearchField from "./SearchField"
 
-export default function Header() {
+export default function Navbar() {
   const { value: user, status } = useSelector(selectUser)
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
@@ -256,7 +257,7 @@ export default function Header() {
               </nav>
             </div>
             <div className="flex justify-end items-center space-x-4">
-              <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
+              {/* <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
                 <Input
                   placeholder="Search"
                   className="w-48"
@@ -266,7 +267,8 @@ export default function Header() {
                 <button type="button" onClick={handleSearchClick}>
                   <Search className="h-5 w-5 cursor-pointer" />
                 </button>
-              </form>
+              </form> */}
+              <SearchField />
 
               <button onClick={handleUserIconClick} className="relative">
                 <User className="h-5 w-5" />
