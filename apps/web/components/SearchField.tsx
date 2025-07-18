@@ -29,8 +29,8 @@ export default function SearchField() {
           placeholder-black
           focus:placeholder-transparent 
           text-sm 
-          pl-3
-          pr-10 
+          pl-2
+          pr-1 
           py-1
           border 
           border-[#ECEFF1] 
@@ -39,7 +39,7 @@ export default function SearchField() {
           focus:ring-1 
           focus:ring-black" 
         />
-        <SearchIcon className="absolute right-3 top-1/2 size-5 -translate-y-1/2 transform text-black" />
+        <SearchIcon className="absolute right-1 top-1/2 size-5 -translate-y-1/2 transform text-black" />
       </div>
     </form>
   );
