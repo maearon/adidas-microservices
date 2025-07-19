@@ -1,9 +1,9 @@
-// /app/api/search/route.ts
-
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import { getProductSearchSelect } from "@/lib/types"
 import { serializeBigInt } from "@/lib/bigint"
+
+export const dynamic = "force-dynamic" // ✅ Fix lỗi build trên Vercel
 
 export async function GET(req: NextRequest) {
   try {
@@ -20,13 +20,15 @@ export async function GET(req: NextRequest) {
     const products = await prisma.products.findMany({
       where: {
         name: {
-          search: searchQuery, // maps to to_tsquery in PostgreSQL
+          search: searchQuery,
         },
       },
       select: getProductSearchSelect(),
       orderBy: { created_at: "desc" },
       take: pageSize + 1,
-      ...(cursor ? { cursor: { id: BigInt(cursor) }, skip: 1 } : {}),
+      ...(cursor && /^\d+$/.test(cursor)
+        ? { cursor: { id: BigInt(cursor) }, skip: 1 }
+        : {}),
     })
 
     const productsWithAssets = await Promise.all(
@@ -74,22 +76,3 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: "Internal server error" }, { status: 500 })
   }
 }
-
-
-
-// SELECT indexname, indexdef
-// FROM pg_indexes
-// WHERE tablename = 'products';
-
-// CREATE INDEX index_products_on_lower_name
-// ON products (LOWER(name));
-
-// CREATE INDEX index_products_on_name_fts
-// ON products USING GIN (to_tsvector('simple', name));
-
-// CREATE EXTENSION IF NOT EXISTS pg_trgm;
-
-// CREATE INDEX product_name_trgm_idx ON "products" USING GIN (name gin_trgm_ops);
-// CREATE INDEX product_desc_trgm_idx ON "products" USING GIN (description_p gin_trgm_ops);
-
-
