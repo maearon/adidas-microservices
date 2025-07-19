@@ -11,6 +11,7 @@ export interface WishlistItem {
   id: number
   name: string
   price: string
+  sport?: string
   image: string
   category?: string
   url?:string
