@@ -31,33 +31,82 @@ export async function GET(req: NextRequest) {
       ...(cursor ? { cursor: { id: BigInt(cursor) }, skip: 1 } : {}),
     })
 
-    const productsWithAssets = await Promise.all(
+    const productsWithImages = await Promise.all(
       products.slice(0, pageSize).map(async (product) => {
-        const imageAttachments = await prisma.active_storage_attachments.findMany({
+        // 1. Ảnh chính của product
+        const productAttachments = await prisma.active_storage_attachments.findMany({
           where: {
             record_type: "Product",
             record_id: product.id,
           },
+          orderBy: { id: "asc" },
           select: {
-            blob_id: true,
             active_storage_blobs: {
-              select: {
-                key: true,
-                filename: true,
-                content_type: true,
-              },
+              select: { key: true },
             },
           },
         })
 
-        const imageUrls = imageAttachments.map((att) => {
-          const key = att.active_storage_blobs.key
-          return `https://res.cloudinary.com/dq7vadalc/image/upload/${key}`
+        const productImages = productAttachments.map(att => {
+          const key = att.active_storage_blobs?.key
+          return key ? `https://res.cloudinary.com/dq7vadalc/image/upload/${key}` : null
+        }).filter(Boolean)
+
+        // 2. Variants & ảnh
+        const variants = await prisma.variants.findMany({
+          where: { product_id: product.id },
+          // include: {
+          //   sizes: {
+          //     select: { label: true }
+          //   }
+          // }
         })
+
+        const enrichedVariants = await Promise.all(variants.map(async (variant) => {
+          // Ảnh của từng variant
+          const variantAttachments = await prisma.active_storage_attachments.findMany({
+            where: {
+              record_type: "Variant",
+              record_id: variant.id,
+            },
+            orderBy: { id: "asc" },
+            select: {
+              active_storage_blobs: {
+                select: { key: true },
+              },
+            },
+          })
+
+          const image_urls = variantAttachments.map(att => {
+            const key = att.active_storage_blobs?.key
+            return key ? `https://res.cloudinary.com/dq7vadalc/image/upload/${key}` : null
+          }).filter(Boolean)
+
+          return {
+            id: variant.id,
+            variant_code: variant.variant_code,
+            color: variant.color,
+            price: variant.price,
+            compare_at_price: variant.compare_at_price,
+            stock: variant.stock,
+            product_id: variant.product_id,
+            created_at: variant.created_at,
+            updated_at: variant.updated_at,
+            // sizes: variant.sizes.map(s => s.label).filter(Boolean),
+            avatar_url: image_urls[0] || "/placeholder.svg?height=300&width=250",
+            images: image_urls,
+          }
+        }))
+
+        const firstVariant = enrichedVariants[0]
 
         return {
           ...product,
-          image_urls: imageUrls,
+          price: firstVariant?.price ?? null,
+          compare_at_price: firstVariant?.compare_at_price ?? null,
+          image_url: productImages[0] ?? "/placeholder.svg?height=300&width=250",
+          hover_image_url: productImages[1] ?? "/placeholder.svg?height=300&width=250",
+          variants: enrichedVariants,
         }
       })
     )
@@ -67,7 +116,7 @@ export async function GET(req: NextRequest) {
 
     return Response.json(
       serializeBigInt({
-        products: productsWithAssets,
+        products: productsWithImages,
         nextCursor,
       })
     )
@@ -76,7 +125,6 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: "Internal server error" }, { status: 500 })
   }
 }
-
 
 
 // SELECT indexname, indexdef

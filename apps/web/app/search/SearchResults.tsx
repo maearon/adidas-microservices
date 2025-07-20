@@ -1,18 +1,25 @@
 "use client";
 
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSearchProductsFeed } from "@/api/hooks/useProducts";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import Product from "@/components/products/Product";
-import ProductsLoadingSkeleton from "@/components/products/ProductsLoadingSkeleton";
-import kyInstance from "@/lib/ky";
-import { ProductsPage } from "@/lib/types"
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import ProductCard from "@/components/product-card";
+import Loading from "@/components/loading";
+import { Loader2, Filter, SlidersHorizontal } from "lucide-react";
+import { BaseButton } from "@/components/ui/base-button";
+import SearchFilters from "@/components/search-filters";
+import { SearchFilters as SearchFiltersType } from "@/types/search";
+import { Button } from "@/components/ui/button";
 
 interface SearchResultsProps {
   query: string;
 }
 
 export default function SearchResults({ query }: SearchResultsProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const {
     data,
     fetchNextPage,
@@ -20,55 +27,150 @@ export default function SearchResults({ query }: SearchResultsProps) {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
-    queryKey: ["product-feed", "search", query],
-    queryFn: async ({ pageParam }) => {
-  const res = await kyInstance.get("/api/search", {
-    searchParams: {
-      q: query,
-      ...(pageParam ? { cursor: pageParam } : {}),
-    },
-  });
-  const json = await res.json<ProductsPage>();
-  console.log("Search result:", json); // 👈 kiểm tra ở đây
-  return json;
-},
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    gcTime: 0,
-  });
+  } = useSearchProductsFeed(query);
+
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState<SearchFiltersType>({});
+
+  const sitePath = searchParams.get("sitePath") || "us";
+
+  const handleFiltersChange = (newFilters: Partial<SearchFiltersType>) => {
+    const updatedFilters = { ...filters, ...newFilters, page: 1 };
+    setFilters(updatedFilters);
+
+    const params = new URLSearchParams();
+    params.set("q", updatedFilters.query || "");
+    params.set("sitePath", sitePath);
+
+    Object.entries(updatedFilters).forEach(([key, value]) => {
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== "" &&
+        key !== "query"
+      ) {
+        params.set(key, value.toString());
+      }
+    });
+
+    router.push(`/search?${params.toString()}`);
+  };
 
   const products = data?.pages.flatMap((page) => page.products) || [];
 
-  if (status === "pending") {
-    return <ProductsLoadingSkeleton />;
+  if (status === "pending" || isFetching) {
+    return <Loading />;
   }
 
-  if (status === "success" && !products.length && !hasNextPage) {
-    return (
-      <p className="text-center text-muted-foreground">
-        No products found for this query.
-      </p>
-    );
-  }
-
-  if (status === "error") {
-    return (
-      <p className="text-center text-destructive">
-        An error occurred while loading products.
-      </p>
-    );
-  }
+  const isError = status === "error";
+  const isEmpty = products.length === 0 && query;
 
   return (
-    <InfiniteScrollContainer
-      className="space-y-5"
-      onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-    >
-      {products.map((product) => (
-        <Product key={product.id} product={product} />
-      ))}
-      {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
-    </InfiniteScrollContainer>
+    <>
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
+        <div className="flex-grow min-w-0">
+          <h1 className="text-2xl md:text-3xl font-bold mb-1 truncate">
+            Search for: "{query.toUpperCase()}" [{products.length}]
+          </h1>
+          {products.length > 0 && (
+            <p className="text-gray-600 truncate">
+              Showing {products.length} of {products.length} results
+            </p>
+          )}
+        </div>
+
+        {/* Filter Button */}
+        <div className="flex-shrink-0 flex items-center">
+          <BaseButton
+            variant="outline"
+            onClick={() => setIsFiltersOpen(true)}
+            className="hidden sm:flex items-center gap-2"
+          >
+            <Filter size={16} />
+            FILTER & SORT
+            <SlidersHorizontal className="w-4 h-4" />
+          </BaseButton>
+          <BaseButton
+            variant="outline"
+            onClick={() => setIsFiltersOpen(true)}
+            className="flex sm:hidden items-center justify-center p-2"
+          >
+            <SlidersHorizontal className="w-5 h-5" />
+          </BaseButton>
+        </div>
+      </div>
+
+      {/* Error State */}
+      {isError && (
+        <div className="text-center py-4">
+          <h3 className="text-lg font-semibold mb-2 text-red-600">Search Error</h3>
+          <p className="text-gray-600 mb-4">
+            Failed to search products. Please try again.
+          </p>
+          <div className="flex justify-center">
+            <Button
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              onClick={() =>
+                router.push(`/search?q=${encodeURIComponent(query)}`)
+              }
+              className="px-6 py-3 font-semibold transition-colors"
+            >
+              TRY AGAIN
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {isEmpty && !isError && (
+        <div className="text-center py-4">
+          <h3 className="text-lg font-semibold mb-2">No results found</h3>
+          <p className="text-gray-600 mb-4">
+            We couldn't find any products matching "{query}". Try adjusting
+            your search terms or filters.
+          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-500">Suggestions:</p>
+            <ul className="text-sm text-gray-500 space-y-1">
+              <li>• Check your spelling</li>
+              <li>• Try more general terms</li>
+              <li>• Use fewer keywords</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Product Grid */}
+      {!isError && products.length > 0 && (
+        <InfiniteScrollContainer
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          onBottomReached={() =>
+            hasNextPage && !isFetching && fetchNextPage()
+          }
+        >
+          {products.map((product, index) => (
+            <ProductCard key={`${product.id}-${index}`} product={product} />
+          ))}
+          {isFetchingNextPage && (
+            <div className="col-span-full flex justify-center py-4">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          )}
+        </InfiniteScrollContainer>
+      )}
+
+      {/* Sidebar Filters */}
+      <SearchFilters
+        isOpen={isFiltersOpen}
+        onClose={() => setIsFiltersOpen(false)}
+        onFiltersChange={handleFiltersChange}
+        currentFilters={filters}
+        totalResults={products.length}
+      />
+    </>
   );
 }

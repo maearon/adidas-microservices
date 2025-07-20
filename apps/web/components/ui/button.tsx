@@ -54,7 +54,7 @@ export function Button({
     <div
       className={cn(
         "relative group",
-        !isIconButton && (fullWidth ? "w-full" : "w-auto"),
+        !isIconButton && (fullWidth ? "max-w-[180px] w-full" : "max-w-[180px] w-auto"),
       )}
     >
       {/* Shadow border */}

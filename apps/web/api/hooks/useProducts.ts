@@ -2,8 +2,38 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query"
 import rubyService from "@/api/services/rubyService"
 import { Product, ProductFilters, ProductsResponse } from "@/types/product"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
+import { useInfiniteQuery } from "@tanstack/react-query";
+import api from "@/api/client";
+import kyInstance from "@/lib/ky";
+import { ProductsPage } from "@/lib/types";
+import axiosInstance from "@/lib/axios";
 
-const CACHE_TTL = 1000 * 60 * 5 // 5 phút
+const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
+
+export const useSearchProductsFeed = (query: string) => {
+  return useInfiniteQuery({
+    queryKey: ["product-feed", "search", query],
+    queryFn: async ({ pageParam }) => {
+      const response = await axiosInstance.get<ProductsPage>("/api/search", {
+        params: {
+          q: query,
+          ...(pageParam ? { cursor: pageParam } : {}),
+        },
+      });
+      return response.data;
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    retry: (failureCount, error: any) => {
+      if (error?.code === "ERR_NETWORK") return false;
+      return failureCount < 1;
+    },
+    staleTime: CACHE_TTL,
+    gcTime: CACHE_TTL * 2,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+};
 
 // ===============================
 // ✅ useProductDetail: Lấy chi tiết sản phẩm theo slug + model

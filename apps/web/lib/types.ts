@@ -4,7 +4,16 @@ export function getProductSearchSelect() {
   return {
     id: true,
     name: true,
-    slug: true,
+    sport: true,
+    variants: {
+      select: {
+        id: true,
+        price: true,
+        compare_at_price: true,
+        variant_code: true,
+        stock: true,
+      }
+    },
     description_p: true,
     created_at: true,
   } satisfies Prisma.productsSelect

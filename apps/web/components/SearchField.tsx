@@ -1,20 +1,35 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Input } from "./ui/input"
 import { SearchIcon, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SearchAutocomplete from "./SearchAutocomplete"
+import useDebounce from "@/hooks/useDebounce"
 
 export default function SearchField() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams();
   const router = useRouter()
   const [searchText, setSearchText] = useState("")
+  const debouncedSearchText = useDebounce(searchText, 300);
+
+  // ✅ Clear input nếu đang ở /search
+  // Sync input với param q khi lịch sử thay đổi hoặc mount mới
+  useEffect(() => {
+    // if (pathname === "/search") {
+    //   const qParam = searchParams.get("q") ?? "";
+    //   setSearchText(qParam);
+    // }
+    setSearchText("");
+  }, [pathname, searchParams]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const q = (form.q as HTMLInputElement).value.trim()
     if (!q) return
+    setSearchText("");
     router.push(`/search?q=${encodeURIComponent(q)}`)
   }
 
@@ -59,8 +74,8 @@ export default function SearchField() {
         )}
       </div>
 
-      {searchText && (
-        <SearchAutocomplete keyword={searchText} />
+      {debouncedSearchText && (
+        <SearchAutocomplete keyword={debouncedSearchText} />
       )}
     </form>
   )
