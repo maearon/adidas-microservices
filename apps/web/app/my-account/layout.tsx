@@ -12,7 +12,7 @@ import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { useLogout } from "@/api/hooks/useLogout"
+import { useLogout } from "@/api/hooks/useLoginMutation"
 import flashMessage from "@/components/shared/flashMessages"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
 

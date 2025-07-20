@@ -163,6 +163,7 @@ export default function HomePage() {
           <TileCard tile={slide} index={i} />
         )}
       />
+      <div className="mb-4"></div>
 
       {/* Prime Section */}
       <section className="bg-black text-white py-8 mb-0">

@@ -17,7 +17,7 @@ import TopBarDropdown from "./top-bar-dropdown"
 import MobileMenu from "./mobile-menu"
 import MobileAppBanner from "./mobile-app-banner"
 import MobileSearchOverlay from "./mobile-search-overlay"
-import { useLogout } from "@/api/hooks/useLogout"
+import { useLogout } from "@/api/hooks/useLoginMutation"
 import { useInitSession } from "@/api/hooks/useInitSession"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUser } from "@/store/sessionSlice"
@@ -138,7 +138,11 @@ export default function Navbar() {
         {/* Top bar */}
         <div className="bg-black text-white text-xs py-3 text-center font-semibold">
           <span>
-            {["FREE STANDARD SHIPPING WITH ADICLUB", "FAST, FREE DELIVERY WITH PRIME"][currentMessageIndex]}
+            {[
+              "FREE STANDARD SHIPPING WITH ADICLUB", 
+              "FAST, FREE DELIVERY WITH PRIME", 
+              "GET AN EXTRA 25% OFF"
+             ][currentMessageIndex]}
             <button className="ml-1 inline-flex items-center" onClick={() => setShowTopBarDropdown(!showTopBarDropdown)}>
               <ChevronDown className="w-3 h-3" />
             </button>

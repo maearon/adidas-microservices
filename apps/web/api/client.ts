@@ -67,11 +67,11 @@ api.interceptors.response.use(
   (response: AxiosResponse) => {
     if (typeof response.data === "object" && response.data !== null) {
       return {
-        ...response.data,
+        ...response,
         _status: response.status,
       }
     }
-    return response.data
+    return response
   },
   async (error) => {
     const originalRequest = error.config

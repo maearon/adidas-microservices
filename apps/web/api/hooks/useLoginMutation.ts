@@ -6,6 +6,26 @@ import { setTokens } from "@/lib/token"
 import javaService from "@/api/services/javaService"
 import { useToast } from "@/components/ui/use-toast"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
+// apps/web/api/hooks/useLogout.ts
+import { useCallback } from "react"
+import { logout } from "@/store/sessionSlice"
+import { clearTokens } from "@/lib/token"
+
+export function useLogout() {
+  const dispatch = useDispatch<AppDispatch>()
+
+  return useCallback(async () => {
+    try {
+      await javaService.logout()
+      dispatch(logout())
+      clearTokens()
+      await dispatch(fetchUser()) // ✅ Redux fetch user sau logout
+    } catch (error) {
+      console.error("Logout failed", error)
+    }
+  }, [dispatch])
+}
+
 
 interface LoginPayload {
   email: string

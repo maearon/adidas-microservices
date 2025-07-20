@@ -9,7 +9,7 @@ import Link from "next/link"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
 import flashMessage from "./shared/flashMessages"
-import { useLogout } from "@/api/hooks/useLogout"
+import { useLogout } from "@/api/hooks/useLoginMutation"
 
 interface UserAccountSlideoutProps {
   isOpen: boolean

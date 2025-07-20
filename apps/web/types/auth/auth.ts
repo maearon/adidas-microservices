@@ -1,5 +1,8 @@
 // 🔐 Types for Password Reset feature
 
+// 👇 Wrapper type for response + _status from interceptor
+export type WithStatus<T> = T & { _status: number }
+
 // Password Reset
 export interface SendForgotPasswordEmailParams {
   password_reset: PasswordResetCreateField
@@ -8,7 +11,7 @@ export interface SendForgotPasswordEmailParams {
 }
 
 export interface PasswordResetCreateResponse {
-  flash: [message_type: string, message: string]
+  flash?: [message_type: string, message: string]
 }
 
 export interface PasswordResetUpdateParams {

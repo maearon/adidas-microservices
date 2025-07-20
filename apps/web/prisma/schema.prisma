@@ -1,0 +1,373 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+model active_storage_attachments {
+  id                   BigInt               @id @default(autoincrement())
+  name                 String               @db.VarChar
+  record_type          String               @db.VarChar
+  record_id            BigInt
+  blob_id              BigInt
+  created_at           DateTime             @db.Timestamp(6)
+  active_storage_blobs active_storage_blobs @relation(fields: [blob_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_c3b3935057")
+
+  @@unique([record_type, record_id, name, blob_id], map: "index_active_storage_attachments_uniqueness")
+  @@index([blob_id], map: "index_active_storage_attachments_on_blob_id")
+}
+
+model active_storage_blobs {
+  id                             BigInt                           @id @default(autoincrement())
+  key                            String                           @unique(map: "index_active_storage_blobs_on_key") @db.VarChar
+  filename                       String                           @db.VarChar
+  content_type                   String?                          @db.VarChar
+  metadata                       String?
+  service_name                   String                           @db.VarChar
+  byte_size                      BigInt
+  checksum                       String?                          @db.VarChar
+  created_at                     DateTime                         @db.Timestamp(6)
+  active_storage_attachments     active_storage_attachments[]
+  active_storage_variant_records active_storage_variant_records[]
+}
+
+model active_storage_variant_records {
+  id                   BigInt               @id @default(autoincrement())
+  blob_id              BigInt
+  variation_digest     String               @db.VarChar
+  active_storage_blobs active_storage_blobs @relation(fields: [blob_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_993965df05")
+
+  @@unique([blob_id, variation_digest], map: "index_active_storage_variant_records_uniqueness")
+}
+
+model ar_internal_metadata {
+  key        String   @id @db.VarChar
+  value      String?  @db.VarChar
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+}
+
+model cart_items {
+  id         BigInt   @id @default(autoincrement())
+  quantity   Int?
+  cart_id    BigInt
+  product_id BigInt
+  variant_id BigInt
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+  size       String?  @db.VarChar(255)
+  variants   variants @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_5e1fd37f08")
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_681a180e84")
+
+  @@index([size], map: "idx_cart_items_size")
+  @@index([cart_id], map: "index_cart_items_on_cart_id")
+  @@index([product_id], map: "index_cart_items_on_product_id")
+  @@index([variant_id], map: "index_cart_items_on_variant_id")
+}
+
+model carts {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  user_id    String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id], map: "idx_carts_user_id")
+}
+
+model categories {
+  id               Int          @id @default(autoincrement())
+  name             String       @db.VarChar
+  slug             String       @unique @db.VarChar
+  parent_id        Int?
+  created_at       DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at       DateTime?    @default(now()) @db.Timestamp(6)
+  categories       categories?  @relation("categoriesTocategories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_categories categories[] @relation("categoriesTocategories")
+  products         products[]
+}
+
+model collaborations {
+  id                      Int                       @id @default(autoincrement())
+  name                    String                    @unique @db.VarChar(100)
+  slug                    String                    @unique @db.VarChar(100)
+  description             String?
+  created_at              DateTime?                 @default(now()) @db.Timestamp(6)
+  updated_at              DateTime?                 @default(now()) @db.Timestamp(6)
+  collaborations_products collaborations_products[]
+  products                products[]
+}
+
+model collaborations_products {
+  product_id       BigInt
+  collaboration_id Int
+  collaborations   collaborations @relation(fields: [collaboration_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products         products       @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([product_id, collaboration_id])
+}
+
+model guest_cart_items {
+  id            BigInt      @id @default(autoincrement())
+  quantity      Int?
+  guest_cart_id BigInt
+  product_id    BigInt
+  variant_id    BigInt
+  created_at    DateTime    @db.Timestamp(6)
+  updated_at    DateTime    @db.Timestamp(6)
+  size          String?     @db.VarChar(255)
+  guest_carts   guest_carts @relation(fields: [guest_cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_3bdfea312e")
+  products      products    @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_4ba9457f5f")
+  variants      variants    @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_603cdced22")
+
+  @@index([size], map: "idx_guest_cart_items_size")
+  @@index([guest_cart_id], map: "index_guest_cart_items_on_guest_cart_id")
+  @@index([product_id], map: "index_guest_cart_items_on_product_id")
+  @@index([variant_id], map: "index_guest_cart_items_on_variant_id")
+}
+
+model guest_carts {
+  id               BigInt             @id @default(autoincrement())
+  created_at       DateTime           @db.Timestamp(6)
+  updated_at       DateTime           @db.Timestamp(6)
+  guest_cart_items guest_cart_items[]
+}
+
+model guest_wish_items {
+  id            BigInt       @id @default(autoincrement())
+  guest_wish_id BigInt
+  product_id    BigInt
+  variant_id    BigInt
+  created_at    DateTime     @db.Timestamp(6)
+  updated_at    DateTime     @db.Timestamp(6)
+  variants      variants     @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_5004853ca5")
+  guest_wishes  guest_wishes @relation(fields: [guest_wish_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_df1d3a30db")
+  products      products     @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_ed1f2f0948")
+
+  @@index([guest_wish_id], map: "index_guest_wish_items_on_guest_wish_id")
+  @@index([product_id], map: "index_guest_wish_items_on_product_id")
+  @@index([variant_id], map: "index_guest_wish_items_on_variant_id")
+}
+
+model guest_wishes {
+  id               BigInt             @id @default(autoincrement())
+  created_at       DateTime           @db.Timestamp(6)
+  updated_at       DateTime           @db.Timestamp(6)
+  guest_wish_items guest_wish_items[]
+}
+
+model model_bases {
+  id          BigInt    @id @default(autoincrement())
+  name        String    @db.VarChar
+  slug        String    @unique @db.VarChar
+  description String?
+  image_url   String?   @db.VarChar
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+  models      models[]
+
+  @@index([slug], map: "index_model_bases_on_slug")
+}
+
+model models {
+  id            BigInt      @id @default(autoincrement())
+  model_base_id BigInt
+  name          String      @db.VarChar
+  slug          String      @unique @db.VarChar
+  description   String?
+  release_date  DateTime?   @db.Date
+  hero_image    String?     @db.VarChar
+  tech_specs    Json?
+  created_at    DateTime?   @default(now()) @db.Timestamp(6)
+  updated_at    DateTime?   @default(now()) @db.Timestamp(6)
+  model_bases   model_bases @relation(fields: [model_base_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products      products[]
+
+  @@index([slug], map: "index_models_on_slug")
+}
+
+model order_items {
+  id         BigInt   @id @default(autoincrement())
+  quantity   Int?
+  order_id   BigInt
+  product_id BigInt
+  variant_id BigInt
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+  variants   variants @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_476172d337")
+  orders     orders   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_e3cb28f071")
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_f1a29ddd47")
+
+  @@index([order_id], map: "index_order_items_on_order_id")
+  @@index([product_id], map: "index_order_items_on_product_id")
+  @@index([variant_id], map: "index_order_items_on_variant_id")
+}
+
+model orders {
+  id          BigInt        @id @default(autoincrement())
+  user_id     BigInt
+  created_at  DateTime      @db.Timestamp(6)
+  updated_at  DateTime      @db.Timestamp(6)
+  order_items order_items[]
+
+  @@index([user_id], map: "index_orders_on_user_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model products {
+  id                      BigInt                    @id @default(autoincrement())
+  name                    String?                   @db.VarChar
+  model_number            String                    @unique(map: "index_products_on_model_number") @db.VarChar
+  gender                  String?                   @db.VarChar
+  franchise               String?                   @db.VarChar
+  product_type            String?                   @db.VarChar
+  brand                   String?                   @db.VarChar
+  category                String?                   @db.VarChar
+  sport                   String?                   @db.VarChar
+  description_h5          String?
+  description_p           String?
+  specifications          String?
+  care                    String?
+  created_at              DateTime                  @db.Timestamp(6)
+  updated_at              DateTime                  @db.Timestamp(6)
+  category_id             Int?
+  slug                    String?                   @unique(map: "index_products_on_slug") @db.VarChar
+  status                  String?                   @default("active") @db.VarChar
+  is_featured             Boolean?                  @default(false)
+  badge                   String?                   @db.VarChar
+  model_base_id           BigInt?
+  model_id                BigInt?
+  collaboration_id        Int?
+  activity                String?                   @db.VarChar
+  material                String?                   @db.VarChar
+  collection              String?                   @db.VarChar
+  cart_items              cart_items[]
+  collaborations_products collaborations_products[]
+  guest_cart_items        guest_cart_items[]
+  guest_wish_items        guest_wish_items[]
+  order_items             order_items[]
+  categories              categories?               @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_products_category")
+  collaborations          collaborations?           @relation(fields: [collaboration_id], references: [id], onUpdate: NoAction, map: "fk_products_collaborations")
+  models                  models?                   @relation(fields: [model_id], references: [id], onUpdate: NoAction, map: "fk_products_models")
+  products_tags           products_tags[]
+  reviews                 reviews[]
+  variants                variants[]
+  wish_items              wish_items[]
+
+  @@index([category_id], map: "index_products_on_category_id")
+  @@index([description_p(ops: raw("gin_trgm_ops"))], map: "product_desc_trgm_idx", type: Gin)
+  @@index([name(ops: raw("gin_trgm_ops"))], map: "product_name_trgm_idx", type: Gin)
+}
+
+model products_tags {
+  id         Int       @id @default(autoincrement())
+  product_id BigInt
+  tag_id     Int
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tags       tags      @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model reviews {
+  id         BigInt   @id @default(autoincrement())
+  content    String?
+  product_id BigInt
+  user_id    BigInt
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+  rating     Int?
+  status     String?  @default("approved") @db.VarChar
+  title      String?  @db.VarChar
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_bedd9094d4")
+
+  @@index([product_id], map: "index_reviews_on_product_id")
+  @@index([user_id], map: "index_reviews_on_user_id")
+}
+
+model schema_migrations {
+  version String @id @db.VarChar
+}
+
+model sizes {
+  id            Int             @id @default(autoincrement())
+  label         String          @db.VarChar(10)
+  system        String          @db.VarChar(20)
+  location      String          @db.VarChar(10)
+  created_at    DateTime?       @default(now()) @db.Timestamp(6)
+  updated_at    DateTime?       @default(now()) @db.Timestamp(6)
+  variant_sizes variant_sizes[]
+}
+
+model tags {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  slug          String          @unique(map: "index_tags_on_slug") @db.VarChar(255)
+  created_at    DateTime?       @default(now()) @db.Timestamp(6)
+  updated_at    DateTime?       @default(now()) @db.Timestamp(6)
+  products_tags products_tags[]
+}
+
+model variant_sizes {
+  id         Int       @id @default(autoincrement())
+  variant_id BigInt
+  size_id    Int
+  stock      Int?      @default(0)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  sizes      sizes     @relation(fields: [size_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_size")
+  variants   variants  @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_variant")
+}
+
+model variants {
+  id               BigInt             @id @default(autoincrement())
+  color            String?            @db.VarChar
+  price            Float
+  compare_at_price Float?
+  variant_code     String?
+  stock            Int?
+  product_id       BigInt
+  created_at       DateTime           @db.Timestamp(6)
+  updated_at       DateTime           @db.Timestamp(6)
+  cart_items       cart_items[]
+  guest_cart_items guest_cart_items[]
+  guest_wish_items guest_wish_items[]
+  order_items      order_items[]
+  variant_sizes    variant_sizes[]
+  products         products           @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_19f8efee69")
+  wish_items       wish_items[]
+
+  @@unique([product_id, color], map: "unique_product_color")
+  @@index([product_id], map: "index_variants_on_product_id")
+}
+
+model wish_items {
+  id         BigInt   @id @default(autoincrement())
+  wish_id    BigInt
+  product_id BigInt
+  variant_id BigInt
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+  variants   variants @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_5fe4dae293")
+  wishes     wishes   @relation(fields: [wish_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_6357d5ef81")
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_f4c6b03fcc")
+
+  @@index([product_id], map: "index_wish_items_on_product_id")
+  @@index([variant_id], map: "index_wish_items_on_variant_id")
+  @@index([wish_id], map: "index_wish_items_on_wish_id")
+}
+
+model wishes {
+  id         BigInt       @id @default(autoincrement())
+  user_id    BigInt
+  created_at DateTime     @db.Timestamp(6)
+  updated_at DateTime     @db.Timestamp(6)
+  wish_items wish_items[]
+
+  @@index([user_id], map: "index_wishes_on_user_id")
+}
