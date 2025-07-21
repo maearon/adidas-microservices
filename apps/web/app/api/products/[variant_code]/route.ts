@@ -1,5 +1,3 @@
-// app/api/products/[slug]/[variant_code]/route.ts
-// app/api/products/[slug]/[variant_code]/route.ts
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import { serializeBigInt } from "@/lib/bigint"
@@ -7,30 +5,34 @@ import { getImageUrlsByRecord } from "@/lib/attachments"
 
 export const dynamic = "force-dynamic"
 
-export async function GET(req: NextRequest, { params }: { params: { variant_code: string } }) {
-  const variant_code = params.variant_code
-
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { variant_code: string } }
+) {
+  const { variant_code } = params
   if (!variant_code) {
     return Response.json({ error: "Missing variant_code" }, { status: 404 })
   }
 
   try {
+    // ✅ Gộp toàn bộ product + variants + tags + categories + sizes vào 1 query
     const variant = await prisma.variants.findFirst({
       where: { variant_code },
       include: {
+        variant_sizes: { include: { sizes: true } },
         products: {
           include: {
+            variants: {
+              include: {
+                variant_sizes: { include: { sizes: true } },
+              },
+            },
             products_tags: {
               include: {
                 tags: { select: { name: true } },
               },
             },
             categories: { select: { name: true } },
-          },
-        },
-        variant_sizes: {
-          include: {
-            sizes: true,
           },
         },
       },
@@ -42,45 +44,38 @@ export async function GET(req: NextRequest, { params }: { params: { variant_code
 
     const product = variant.products
 
-    // Lấy ảnh sản phẩm từ ActiveStorage
+    // ✅ Lấy ảnh Product 1 lần
     const productImages = await getImageUrlsByRecord("Product", product.id)
     const mainImage = productImages[0] ?? "/placeholder.svg"
     const hoverImage = productImages[1] ?? "/placeholder.svg"
 
-    // Lấy tất cả variants thuộc product
-    const productVariants = await prisma.variants.findMany({
-      where: { product_id: product.id },
-      include: {
-        variant_sizes: {
-          include: { sizes: true },
-        },
-      },
-    })
-
-    const enrichedVariants = await Promise.all(
-      productVariants.map(async (v) => {
-        const variantImages = await getImageUrlsByRecord("Variant", v.id)
-        return {
-          id: v.id,
-          color: v.color,
-          price: v.price,
-          compare_at_price: v.compare_at_price,
-          variant_code: v.variant_code,
-          category: product.categories?.name ?? "",
-          stock: v.stock,
-          sizes: v.variant_sizes.map(vs => vs.sizes.label),
-          product_id: v.product_id,
-          created_at: v.created_at,
-          updated_at: v.updated_at,
-          avatar_url: variantImages[0] ?? "/placeholder.svg?height=300&width=250",
-          image_urls: variantImages,
-          image_url: mainImage,
-          hover_image_url: hoverImage,
-        }
-      })
+    // ✅ Lấy ảnh của tất cả variants song song
+    const variantImageResults = await Promise.all(
+      product.variants.map((v) => getImageUrlsByRecord("Variant", v.id))
     )
 
-    // Lấy sản phẩm liên quan
+    const enrichedVariants = product.variants.map((v, i) => {
+      const variantImages = variantImageResults[i]
+      return {
+        id: v.id,
+        color: v.color,
+        price: v.price,
+        compare_at_price: v.compare_at_price,
+        variant_code: v.variant_code,
+        category: product.categories?.name ?? "",
+        stock: v.stock,
+        sizes: v.variant_sizes.map((vs) => vs.sizes.label),
+        product_id: v.product_id,
+        created_at: v.created_at,
+        updated_at: v.updated_at,
+        avatar_url: variantImages[0] ?? "/placeholder.svg?height=300&width=250",
+        image_urls: variantImages,
+        image_url: mainImage,
+        hover_image_url: hoverImage,
+      }
+    })
+
+    // ✅ Lấy sản phẩm liên quan (tối đa 4)
     const relatedProducts = await prisma.products.findMany({
       where: {
         id: { not: product.id },
@@ -94,6 +89,7 @@ export async function GET(req: NextRequest, { params }: { params: { variant_code
       },
     })
 
+    // ✅ Fallback nếu thiếu
     let fallbackProducts: typeof relatedProducts = []
     if (relatedProducts.length < 4) {
       fallbackProducts = await prisma.products.findMany({
@@ -108,6 +104,22 @@ export async function GET(req: NextRequest, { params }: { params: { variant_code
       })
     }
 
+    // ✅ Lấy ảnh song song cho related products
+    const allRelated = [...relatedProducts, ...fallbackProducts]
+    const relatedImages = await Promise.all(
+      allRelated.map((p) => getImageUrlsByRecord("Product", p.id))
+    )
+
+    const relatedData = allRelated.map((p, i) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      model_number: p.model_number,
+      price: p.variants[0]?.price ?? 0,
+      image_url: relatedImages[i][0] ?? "/placeholder.svg",
+    }))
+
+    // ✅ Trả về kết quả đã được chuẩn hóa
     return Response.json(
       serializeBigInt({
         id: product.id,
@@ -125,7 +137,7 @@ export async function GET(req: NextRequest, { params }: { params: { variant_code
         created_at: product.created_at,
         updated_at: product.updated_at,
         category: product.categories?.name ?? "",
-        tags: product.products_tags.map(pt => pt.tags.name),
+        tags: product.products_tags.map((pt) => pt.tags.name),
         variant_code: variant.variant_code,
         title: product.name,
         slug: product.slug,
@@ -135,24 +147,12 @@ export async function GET(req: NextRequest, { params }: { params: { variant_code
         main_image_url: mainImage,
         hover_image_url: hoverImage,
         variants: enrichedVariants,
-        related_products: await Promise.all(
-          [...relatedProducts, ...fallbackProducts].map(async (p) => {
-            const [image] = await getImageUrlsByRecord("Product", p.id)
-            return {
-              id: p.id,
-              name: p.name,
-              slug: p.slug,
-              model_number: p.model_number,
-              price: p.variants[0]?.price ?? 0,
-              image_url: image ?? "/placeholder.svg",
-            }
-          })
-        ),
-        breadcrumb: [],
+        related_products: relatedData,
+        breadcrumb: [], // TODO: generate breadcrumb from slug or categories
       })
     )
   } catch (err) {
-    console.error("GET /products/[slug]/[variant_code] error:", err)
-    return Response.json({ error: "Not found" }, { status: 404 })
+    console.error("GET /api/products/[variant_code] error:", err)
+    return Response.json({ error: "Internal server error" }, { status: 500 })
   }
 }
