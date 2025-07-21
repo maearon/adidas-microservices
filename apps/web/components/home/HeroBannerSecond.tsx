@@ -25,43 +25,54 @@ export default function HeroBannerSecond() {
           </p>
 
           {/* Các nút CTA */}
-          <div className="flex flex-wrap items-start gap-2">
-            {[
-              { label: "SHOP WOMEN", href: "/women-superstar" },
-              { label: "SHOP MEN", href: "/men-superstar" },
-              { label: "SHOP KIDS", href: "/kids-superstar" },
-            ].map(({ label, href }) => (
-              <Button
-                key={label}
-                theme="white"
-                size="sm"
-                border
-                shadow={false}
-                fullWidth={false}
-                variant="outline"
-                href={href}
-                showArrow
-                className="border border-black text-black font-bold px-2 py-1 text-[11px] sm:text-xs rounded-none hover:bg-gray-100 transition w-auto h-9"
-              >
-                {label}
-              </Button>
-            ))}
-
-            {/* WATCH VIDEO */}
-            <Button
-              theme="white"
-              size="sm"
-              border
-              shadow={false}
-              fullWidth={false}
-              variant="outline"
-              showArrow={false}
-              onClick={() => setShowVideo(true)}
-              className="border border-black text-black font-bold px-2 py-1 text-[11px] sm:text-xs rounded-none hover:bg-gray-100 transition w-auto h-9 inline-flex items-center gap-1"
-            >
-              <Play className="h-3.5 w-3.5" />
-              WATCH VIDEO
-            </Button>
+          {/* Overlay nội dung */}
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 h-full flex items-end pb-11 text-white">
+            <div className="w-full max-w-md text-left">
+              <div className="flex flex-col gap-2 sm:gap-3">
+                <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
+                  SUPERSTAR
+                </h1>
+                <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
+                  Because icons wear the original icon.
+                </p>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
+                  {[
+                    { label: "MEN", href: "/men-superstar" },
+                    { label: "WOMEN", href: "/women-superstar" },
+                    { label: "KIDS", href: "/kids-superstar" },
+                  ].map(({ label, href }) => (
+                    <Button
+                      key={label}
+                      theme="white"
+                      size="sm"
+                      border
+                      shadow={false}
+                      fullWidth={false}
+                      variant="outline"
+                      href={href}
+                      showArrow
+                      className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                  <Button
+                    theme="white"
+                    size="sm"
+                    border
+                    shadow={false}
+                    fullWidth={false}
+                    variant="outline"
+                    showArrow={false}
+                    onClick={() => setShowVideo(true)}
+                    className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-9 inline-flex items-center gap-1"
+                  >
+                    <Play className="h-3.5 w-3.5" />
+                    WATCH VIDEO
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         </div>

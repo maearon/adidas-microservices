@@ -85,9 +85,10 @@ export default function HomePage() {
       />
       
       <HeroBannerSecond />
-      <div className="mb-4"></div>
 
       <HeroBannerVideo />
+
+      <div className="mb-4"></div>
 
       {/* <PromoCarousel slides={mockSlides}/> */}
       <PromoCarousel
