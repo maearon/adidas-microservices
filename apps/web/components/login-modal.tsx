@@ -150,7 +150,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-xl"
+        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none"
       >
         {/* Close Button */}
         <button
@@ -397,7 +397,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     </Dialog>
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-xl">
+      <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-black z-51"

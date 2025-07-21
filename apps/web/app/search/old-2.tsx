@@ -206,7 +206,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="hidden sm:flex items-center gap-2"
+            className="hidden sm:flex items-center gap-2 border border-black text-black"
           >
             <Filter size={16} />
             FILTER & SORT
@@ -217,7 +217,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="flex sm:hidden items-center justify-center p-2"
+            className="flex sm:hidden items-center justify-center p-2 border border-black text-black"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>

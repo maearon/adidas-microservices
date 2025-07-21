@@ -1,70 +1,70 @@
-puts "🧼 Purging images before destroying models..."
+# puts "🧼 Purging images before destroying models..."
 
-Product.find_each do |product|
-  product.image.purge if product.image.attached?
-  product.hover_image.purge if product.hover_image.attached?
-end
+# Product.find_each do |product|
+#   product.image.purge if product.image.attached?
+#   product.hover_image.purge if product.hover_image.attached?
+# end
 
-Variant.find_each do |variant|
-  variant.avatar.purge if variant.avatar.attached?
-  variant.hover.purge if variant.hover.attached?
-  variant.images.each { |img| img.purge }
-end
+# Variant.find_each do |variant|
+#   variant.avatar.purge if variant.avatar.attached?
+#   variant.hover.purge if variant.hover.attached?
+#   variant.images.each { |img| img.purge }
+# end
 
-# Now is the right time to destroy
-puts "🧼 Clearing existing data..."
-[Product, Variant, VariantSize, Size, Tag, ModelBase, Model, Collaboration, Category].each(&:destroy_all)
-[Product, Variant, VariantSize, Size, Tag, ModelBase, Model, Collaboration, Category].each do |model|
-  ActiveRecord::Base.connection.reset_pk_sequence!(model.table_name)
-end
+# # Now is the right time to destroy
+# puts "🧼 Clearing existing data..."
+# [Product, Variant, VariantSize, Size, Tag, ModelBase, Model, Collaboration, Category].each(&:destroy_all)
+# [Product, Variant, VariantSize, Size, Tag, ModelBase, Model, Collaboration, Category].each do |model|
+#   ActiveRecord::Base.connection.reset_pk_sequence!(model.table_name)
+# end
 
-puts "📦 Seeding sizes..."
-ALPHA_SIZES   = %w[XS S M L XL XXL]
-NUMERIC_SIZES = (36..45).flat_map { |n| ["#{n}", "#{n}.5"] }
-LOCATIONS     = %w[US VN]
+# puts "📦 Seeding sizes..."
+# ALPHA_SIZES   = %w[XS S M L XL XXL]
+# NUMERIC_SIZES = (36..45).flat_map { |n| ["#{n}", "#{n}.5"] }
+# LOCATIONS     = %w[US VN]
 
-puts "📁 Seeding categories..."
-categories = %w[Shoes Apparel Accessories].map do |name|
-  Category.find_or_create_by!(name: name)
-end
+# puts "📁 Seeding categories..."
+# categories = %w[Shoes Apparel Accessories].map do |name|
+#   Category.find_or_create_by!(name: name)
+# end
 
-LOCATIONS.each do |loc|
-  ALPHA_SIZES.each do |label|
-    Size.create!(label: label, system: "alpha", location: loc)
-  end
-  NUMERIC_SIZES.each do |label|
-    Size.create!(label: label, system: "numeric", location: loc)
-  end
-end
+# LOCATIONS.each do |loc|
+#   ALPHA_SIZES.each do |label|
+#     Size.create!(label: label, system: "alpha", location: loc)
+#   end
+#   NUMERIC_SIZES.each do |label|
+#     Size.create!(label: label, system: "numeric", location: loc)
+#   end
+# end
 
-Size.create!(label: "One Size", system: "one_size", location: "GLOBAL")
-puts "✅ Done seeding sizes: #{Size.count} entries."
+# Size.create!(label: "One Size", system: "one_size", location: "GLOBAL")
+# puts "✅ Done seeding sizes: #{Size.count} entries."
 
-puts "🏷️ Seeding tags..."
-tags = %w[
-  new_arrivals best_sellers prime_delivery liberty_london_florals
-  fast_delivery soft_lux must_have summer_savings trending_now
-  disney_collection premium_collaborations release_dates track_pants
-]
-tags.each { |slug| Tag.find_or_create_by!(slug: slug, name: slug.titleize) }
+# puts "🏷️ Seeding tags..."
+# tags = %w[
+#   new_arrivals best_sellers prime_delivery liberty_london_florals
+#   fast_delivery soft_lux must_have summer_savings trending_now
+#   disney_collection premium_collaborations release_dates track_pants
+# ]
+# tags.each { |slug| Tag.find_or_create_by!(slug: slug, name: slug.titleize) }
 
-puts "📚 Seeding model bases (collections)..."
-collections = %w[
-  adicolor gazelle samba superstar sportswear supernova terrex ultraboost y-3 zne
-  stella_mccartney originals f50 adizero 4d five_ten tiro copa
-]
-collections.each do |slug|
-  ModelBase.find_or_create_by!(slug: slug, name: slug.titleize)
-end
+# puts "📚 Seeding model bases (collections)..."
+# collections = %w[
+#   adicolor gazelle samba superstar sportswear supernova terrex ultraboost y-3 zne
+#   stella_mccartney originals f50 adizero 4d five_ten tiro copa
+# ]
+# collections.each do |slug|
+#   ModelBase.find_or_create_by!(slug: slug, name: slug.titleize)
+# end
 
-puts "🤝 Seeding collaborations..."
-collabs = [
-  "Bad Bunny", "Bape", "Disney", "Edison Chen", "Fear of God Athletics",
-  "Pharrell", "Prada", "Sporty & Rich", "Wales Bonner"
-]
-collabs.each do |name|
-  Collaboration.find_or_create_by!(name: name, slug: name.parameterize)
-end
+# puts "🤝 Seeding collaborations..."
+# collabs = [
+#   "Bad Bunny", "Bape", "Disney", "Edison Chen", "Fear of God Athletics",
+#   "Pharrell", "Prada", "Sporty & Rich", "Wales Bonner"
+# ]
+# collabs.each do |name|
+#   Collaboration.find_or_create_by!(name: name, slug: name.parameterize)
+# end
 
 puts "👟 Generating sample products..."
 
@@ -72,11 +72,11 @@ brands       = %w[Adidas Originals Athletics Essentials]
 sports       = %w[Running Soccer Basketball Tennis Gym Training Golf Hiking Yoga Football Baseball]
 producttypes = %w[Sneakers Cleats Sandals Hoodie Pants Shorts Jacket Jersey TShirt TankTop Dress Leggings Tracksuit Bra Coat]
 genders      = %w[Men Women Unisex Kids]
-categories   = %w[Shoes Apparel Accessories]
+categories = Category.where(name: ["Shoes", "Apparel", "Accessories"]).to_a
 PRODUCTS_IMAGE_DIR = Rails.root.join("app/assets/images/products")
 
 95.times do |i|
-  model_number = "MOD#{i.to_s.rjust(4, '0')}"
+  model_number = "MOD#{rand(10000..99999)}"
   brand        = brands.sample
   sport        = sports.sample
   producttype  = producttypes.sample
@@ -97,10 +97,10 @@ PRODUCTS_IMAGE_DIR = Rails.root.join("app/assets/images/products")
     franchise: "Tubular",
     product_type: producttype,
     brand: brand,
-    category: category,
+    category: categories.sample,
     sport: sport,
     model_base_id: model_base.id,
-    category_id: category.id,
+    # category_id: Category.first.id,
     model: model,
     collaboration: Collaboration.order("RANDOM()").first,
     tag_ids: Tag.order("RANDOM()").limit(2).pluck(:id),
@@ -153,4 +153,4 @@ PRODUCTS_IMAGE_DIR = Rails.root.join("app/assets/images/products")
   puts "✅ Created product #{i + 1}: #{product.name}"
 end
 
-puts "🎉 Seed completed with #{Product.count} products and #{Size.count} sizes."
+# puts "🎉 Seed completed with #{Product.count} products and #{Size.count} sizes."

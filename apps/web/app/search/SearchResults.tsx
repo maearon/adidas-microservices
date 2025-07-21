@@ -85,16 +85,16 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="hidden sm:flex items-center gap-2"
+            className="hidden sm:flex items-center gap-2 border border-black text-black rounded-none"
           >
-            <Filter size={16} />
+            {/* <Filter size={16} /> */}
             FILTER & SORT
             <SlidersHorizontal className="w-4 h-4" />
           </BaseButton>
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="flex sm:hidden items-center justify-center p-2"
+            className="flex sm:hidden items-center justify-center p-2 text-black"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>

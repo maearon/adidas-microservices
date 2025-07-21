@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, SlidersHorizontal } from "lucide-react"
+import { ArrowLeft, Filter, SlidersHorizontal } from "lucide-react"
 
 import { BaseButton } from "@/components/ui/base-button"
 import { Badge } from "@/components/ui/badge"
@@ -195,15 +195,16 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
           <BaseButton
             variant="outline"
             onClick={() => setShowFilters(true)}
-            className="hidden sm:flex items-center gap-2 ml-4"
+            className="hidden sm:flex items-center gap-2 ml-4 border border-black text-black rounded-none"
           >
+            {/* <Filter size={16} /> */}
             FILTER & SORT
             <SlidersHorizontal className="w-4 h-4" />
           </BaseButton>
           <BaseButton
             variant="outline"
             onClick={() => setShowFilters(true)}
-            className="flex sm:hidden items-center justify-center p-2 ml-2"
+            className="flex sm:hidden items-center justify-center p-2 ml-2 text-black"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>

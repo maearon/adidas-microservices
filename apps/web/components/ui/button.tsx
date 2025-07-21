@@ -31,7 +31,7 @@ export function Button({
   className,
   theme = "white",
   border = true,
-  size = "default", // fallback
+  size = "default",
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
@@ -41,8 +41,10 @@ export function Button({
   const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
   const text = isBlack ? "text-white" : "text-black"
   const hoverText = isBlack ? "hover:text-gray-500" : "hover:text-black"
-  const shadowBorderClass = shadow ?
-    isBlack ? "border-black" : "border-white group-hover:border-gray-400"
+  const shadowBorderClass = shadow
+    ? isBlack
+      ? "border-black"
+      : "border-white group-hover:border-gray-400"
     : "border-transparent"
   const borderClass = !isIconButton
     ? shadow
@@ -54,10 +56,12 @@ export function Button({
     <div
       className={cn(
         "relative group",
-        !isIconButton && (fullWidth ? "max-w-[180px] w-full" : "max-w-[180px] w-auto"),
+        !isIconButton &&
+          (fullWidth
+            ? "w-full sm:max-w-fit"
+            : "w-auto sm:max-w-fit"), // full ở mobile, auto ở desktop
       )}
     >
-      {/* Shadow border */}
       {shadow && !isIconButton && (
         <span
           className={cn(
@@ -73,15 +77,21 @@ export function Button({
         variant={variant}
         size={size}
         className={cn(
-          "relative z-10 inline-flex items-center justify-center px-4 py-3 outline-none ring-0 font-bold text-base uppercase tracking-wide rounded-none transition-all",
+          "relative z-10 inline-flex items-center justify-between text-base font-bold uppercase tracking-wide rounded-none transition-all outline-none ring-0",
           bg,
           hoverBg,
           text,
           hoverText,
           !isIconButton && borderClass,
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
-          !isIconButton && (fullWidth ? "w-full" : "w-auto"),
-          isIconButton && "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
+
+          // Padding responsive theo Adidas
+          !isIconButton &&
+            "min-h-[48px] px-[15px] sm:min-h-[50px] sm:px-[15px]",
+          fullWidth ? "w-full" : "w-auto",
+          isIconButton &&
+            "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
+
           className
         )}
         {...props}
@@ -90,12 +100,12 @@ export function Button({
           <Link
             href={href}
             onClick={(e) => loading && e.preventDefault()}
-            className="w-full h-full flex items-center justify-center"
+            className="w-full h-full flex items-center justify-between"
           >
             {loading ? (
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             ) : (
-              <span className="mr-2 -translate-y-[1px]">{children}</span>
+              <span className="-translate-y-[1px]">{children}</span>
             )}
             {showArrow && !isIconButton && (
               <span className="text-[22px] font-thin leading-none">⟶</span>
@@ -109,7 +119,7 @@ export function Button({
               <span
                 className={cn(
                   "flex items-center",
-                  !isIconButton && "mr-2 -translate-y-[1px]"
+                  !isIconButton && "-translate-y-[1px]"
                 )}
               >
                 {children}
