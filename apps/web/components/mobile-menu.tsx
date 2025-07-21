@@ -211,7 +211,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={handleClose} />
+      <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50" onClick={handleClose} />
 
       {/* Menu Panel */}
       <div className="fixed inset-0 bg-white z-50 flex flex-col md:hidden">

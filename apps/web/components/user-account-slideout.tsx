@@ -68,7 +68,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 w-screen h-screen bg-black bg-opacity-50 z-40" onClick={onClose} />}
+      {isOpen && <div className="fixed inset-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-40" onClick={onClose} />}
 
       <div
         className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${

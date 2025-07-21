@@ -161,7 +161,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)]" onClick={onClose} />
 
       {/* Sidebar */}
       <div className="absolute right-0 top-0 h-full w-96 bg-white shadow-xl overflow-y-auto">

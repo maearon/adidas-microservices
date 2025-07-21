@@ -57,7 +57,7 @@ export default function MobileSearchOverlay({
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 sm:hidden" onClick={onClose} />
+      <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50 sm:hidden" onClick={onClose} />
 
       {/* Search Panel */}
       <div

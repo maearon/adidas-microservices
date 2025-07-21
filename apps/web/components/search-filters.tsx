@@ -69,7 +69,7 @@ export default function SearchFilters({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.5)]">
       <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg overflow-y-auto">
         <div className="p-6">
           {/* Header */}
