@@ -63,11 +63,15 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
       return failureCount < 1
     },
     // ⚠️ Disable caching
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
+    // staleTime: 0,
+    // gcTime: 0,
+    // refetchOnWindowFocus: true,
+    // refetchOnMount: true,
+    // refetchOnReconnect: true,
+    staleTime: CACHE_TTL,
+    gcTime: CACHE_TTL * 2,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
 }
 
