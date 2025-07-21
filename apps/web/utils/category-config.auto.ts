@@ -107,7 +107,7 @@ export function getCategoryConfig(slug: string): CategoryConfig {
   return (
     categoryConfigs[slug] || {
       title: "Products",
-      breadcrumb: "Products",
+      breadcrumb: formatSlugTitle(slug),
       href: `/${slug}`,
       tabs: [],
     }
@@ -117,15 +117,20 @@ export function getCategoryConfig(slug: string): CategoryConfig {
 /**
  * Format slug to readable title.
  * Example: "men-soccer-shoes-f50" => "Men Soccer Shoes F50"
+ * Handles edge cases where slug is undefined or an array.
  */
-export function formatSlugTitle(slug: string): string {
+export function formatSlugTitle(slug: string | string[] | undefined): string {
+  if (!slug) return ""
+
+  const slugStr = Array.isArray(slug) ? slug.join("-") : slug
+
   const possessiveMap: Record<string, string> = {
     men: "Men's",
     women: "Women's",
     kids: "Kids'",
   }
 
-  const words = slug.replace(/[-_]/g, " ").split(" ")
+  const words = slugStr.replace(/[-_]/g, " ").split(" ")
 
   if (words.length === 0) return ""
 

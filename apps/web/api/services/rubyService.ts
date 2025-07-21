@@ -1,6 +1,7 @@
 // 📦 Product Service API
 import api from "@/api/client"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
+import { WithStatus } from "@/types/auth"
 import { ApiResponse } from "@/types/common/api"
 import { Product } from "@/types/product"
 
@@ -47,10 +48,10 @@ export type ProductListResponse = ApiResponse<ProductListData>
 
 const rubyService = {
   // ✅ Danh sách sản phẩm
-  getProducts: async (params: ProductQuery): Promise<ProductListData | undefined> => {
+  getProducts: async (params: ProductQuery): Promise<WithStatus<ProductListData | undefined> | undefined> => {
     try {
-      const res = await api.get<ProductListResponse>("/products", { params })
-      return res
+      const { data }  = await api.get<WithStatus<ProductListData>>("/products", { params })
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -58,10 +59,10 @@ const rubyService = {
   },
 
   // ✅ Chi tiết sản phẩm theo slug và model
-  getProductBySlugAndVariant: async (slug: string, modelNumber: string): Promise<Product | undefined> => {
+  getProductBySlugAndVariant: async (slug: string, modelNumber: string): Promise<WithStatus<Product | undefined> | undefined> => {
     try {
-      const res = await api.get<ApiResponse<Product>>(`/products/${slug}/${modelNumber}`)
-      return res
+      const { data }  = await api.get<WithStatus<Product>>(`/products/${slug}/${modelNumber}`)
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error

@@ -56,7 +56,6 @@ export default function RootLayout({
                 />
                 <main>{isMaintenance ? <MaintenancePage /> : children}</main>
                 <Footer />
-                <ChatWidget />
                 <LocationModalProvider />
                 <ChatWidget />
                 <FeedbackWidget />

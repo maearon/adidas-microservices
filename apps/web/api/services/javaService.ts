@@ -27,7 +27,7 @@ const javaService = {
   async checkEmail(email: string): Promise<{ exists: boolean; user: { activated: boolean } } | undefined> {
     try {
       const { data }  = await api.post<WithStatus<{ exists: boolean; user: { activated: boolean } }>>("/check-email", { email })
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -37,7 +37,7 @@ const javaService = {
   async login(params: LoginParams): Promise<WithStatus<SessionResponse> | undefined> {
     try {
       const { data }  = await api.post<WithStatus<SessionResponse>>("/login", params)
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -47,7 +47,7 @@ const javaService = {
   async register(params: UserCreateParams): Promise<WithStatus<UserCreateResponse> | undefined> {
     try {
       const { data }  = await api.post<WithStatus<UserCreateResponse>>("/signup", params)
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -66,7 +66,7 @@ const javaService = {
   async getCurrentSession(): Promise<WithStatus<SessionIndexResponse> | undefined> {
     try {
       const { data }  = await api.get<WithStatus<SessionIndexResponse>>("/sessions")
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -77,7 +77,7 @@ const javaService = {
   async sendForgotPasswordEmail(params: SendForgotPasswordEmailParams): Promise<WithStatus<PasswordResetCreateResponse> | undefined> {
     try {
       const { data }  = await api.post<WithStatus<PasswordResetCreateResponse>>("/password-resets", params)
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -87,7 +87,7 @@ const javaService = {
   async resetForForgotPassword(reset_token: string, params: PasswordResetUpdateParams): Promise<WithStatus<PasswordResetUpdateResponse> | undefined> {
     try {
       const { data }  = await api.patch<WithStatus<PasswordResetUpdateResponse>>(`/password-resets/${reset_token}`, params)
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -98,7 +98,7 @@ const javaService = {
   async resendActivationEmail(params: ResendActivationEmailParams): Promise<WithStatus<ResendActivationEmailResponse> | undefined> {
     try {
       const { data }  = await api.post<WithStatus<ResendActivationEmailResponse>>("/account_activations", params)
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -108,7 +108,7 @@ const javaService = {
   async activateAccount(activation_token: string, email: string): Promise<WithStatus<ApiResponse<User>> | undefined> {
     try {
       const { data }  = await api.patch<WithStatus<ApiResponse<User>>>(`/account_activations/${activation_token}`, { email })
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error
@@ -119,7 +119,7 @@ const javaService = {
   async test(): Promise<any> {
     try {
       const { data }  = await api.get<any>("/")
-      return res
+      return data;
     } catch (error: any) {
       handleNetworkError(error)
       throw error

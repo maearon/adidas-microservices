@@ -8,8 +8,15 @@ import Image from "next/image"
 import CcpaIcon from "./icons/CcpaIcon"
 import { Button } from "./ui/button";
 import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
+import { useEffect, useState } from "react"
 
 export default function Footer() {
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English
   const { value: user } = useAppSelector(selectUser)
   const cartItemsCount = useAppSelector((state) =>
@@ -292,16 +299,18 @@ export default function Footer() {
             </div>
 
             {/* Country Selector */}
-            <div className="flex items-center gap-2 text-sm">
-              <Image
-                src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
-                alt={`${localeDisplayMap[locale]} Flag`}
-                width={20}
-                height={14}
-                className="inline-block"
-              />
-              <span>{countryDisplayMap[locale]}</span>
-            </div>
+            {mounted && (
+              <div className="flex items-center gap-2 text-sm">
+                <Image
+                  src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
+                  alt={`${localeDisplayMap[locale]} Flag`}
+                  width={20}
+                  height={14}
+                  className="inline-block"
+                />
+                <span>{countryDisplayMap[locale]}</span>
+              </div>
+            )}
           </div>
 
           <div className="mt-4 text-center md:text-left">
