@@ -17,6 +17,7 @@ interface ButtonProps extends BaseButtonProps {
   className?: string
   theme?: "white" | "black"
   border?: boolean
+  sizeClass?: string
 }
 
 export function Button({
@@ -32,6 +33,7 @@ export function Button({
   theme = "white",
   border = true,
   size = "default",
+  sizeClass = undefined,
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
@@ -86,8 +88,8 @@ export function Button({
           pressEffect && "active:translate-x-[3px] active:translate-y-[3px]",
 
           // Padding responsive theo Adidas
-          !isIconButton &&
-            "min-h-[48px] px-[15px] sm:min-h-[50px] sm:px-[15px]",
+          sizeClass ?? (!isIconButton &&
+            "min-h-[48px] px-[15px] sm:min-h-[50px] sm:px-[15px]"),
           fullWidth ? "w-full" : "w-auto",
           isIconButton &&
             "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
