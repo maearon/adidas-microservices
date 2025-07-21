@@ -155,7 +155,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black z-51"
+          className="absolute top-4 right-4 text-black hover:text-black z-51"
         >
           {/* <X className="w-5 h-5" /> */}
         </button>
@@ -176,12 +176,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
             <p className="text-gray-600 text-sm">
-              Get free shipping, discount vouchers and members only products when you're in adiClub.
+              Enjoy members-only access to exclusive products, experiences, offers and more.
             </p>
           </div>
 
           {/* Social Login Text */}
-          <p className="text-center text-sm font-medium mb-4">Log in or sign up (it's free)</p>
+          <h1 className="text-2xl font-bold mb-2">LOG IN OR SIGN UP</h1>
+          {/* <p className="text-black text-sm">
+            Enjoy members-only access to exclusive products, experiences, offers and more.
+          </p> */}
 
           {/* Social Login Buttons */}
           <div className="grid grid-cols-4 gap-3 mb-6">
@@ -400,7 +403,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black z-51"
+          className="absolute top-4 right-4 text-black hover:text-black z-51"
         >
           {/* <X className="w-5 h-5" /> */}
         </button>
@@ -418,7 +421,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
             {/* Title + Content */}
             <h2 className="text-xl font-bold mb-2">ACTIVATE YOUR ACCOUNT</h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-black text-sm">
               Looks like you already have an account. We’ve sent you an email to activate it and get full access to adiClub benefits.
             </p>
           </div>

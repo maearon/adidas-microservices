@@ -49,6 +49,7 @@ export default function SearchField() {
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="Search"
           className="
+            border-none
             pe-10 
             bg-[#ECEFF1] 
             rounded-none 

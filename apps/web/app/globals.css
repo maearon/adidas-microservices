@@ -79,7 +79,7 @@
 } */
 
 .social-button {
-  @apply p-3 h-12 border border-gray-300 hover:border-black transition-colors;
+  @apply p-3 h-12 border border-black hover:border-black transition-colors;
 }
 
 /* global.css hoặc tailwind.config.js */
