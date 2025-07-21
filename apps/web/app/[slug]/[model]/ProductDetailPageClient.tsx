@@ -20,7 +20,16 @@ import { Variant } from "@/types/product"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { BaseButton } from "@/components/ui/base-button"
 
-export default function ProductDetailPageClient({ params }: { params: { slug: string; model: string } }) {
+interface ProductDetailPageClientProps {
+  params: {
+    slug: string;
+    model: string;
+  };
+}
+
+export default function ProductDetailPageClient({ params }: ProductDetailPageClientProps) {
+  // const parsedParams = typeof params === 'string' ? JSON.parse(params) : params;
+  const { slug, model } = params;
   const router = useRouter()
   const dispatch = useAppDispatch()
   const wishlistItems = useAppSelector((state) => state.wishlist.items)
@@ -32,7 +41,7 @@ export default function ProductDetailPageClient({ params }: { params: { slug: st
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [currentVariant, setCurrentVariant] = useState<any>(null)
 
-  const { data: product, isLoading, error, refetch } = useProductDetail(params.slug, params.model)
+  const { data: product, isLoading, error, refetch } = useProductDetail(slug, model)
 
   useEffect(() => {
     if (!product) return
