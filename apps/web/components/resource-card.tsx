@@ -1,4 +1,6 @@
-"use client"
+'use client'
+
+import Image from 'next/image'
 
 interface Resource {
   title: string,
@@ -8,6 +10,7 @@ interface Resource {
   href?: string,
   cta?: string,
 }
+
 interface ResourceCardProps {
   resource: Resource,
   index: number
@@ -18,7 +21,7 @@ export default function ResourceCard({
     title: "",
     subtitle: "",
     description: "",
-    image: "/placeholder.png?height=200&width=300",
+    image: "/placeholder.png",
     href: "#",
     cta: "SHOP NOW",
   },
@@ -28,22 +31,26 @@ export default function ResourceCard({
     <a
       key={`${resource.title}-${index}`}
       href={resource.href}
-      className="group relative z-10 box-border h-full border border-transparent transition duration-300 flex flex-col"
+      className="group flex flex-col w-full max-w-xs sm:max-w-sm md:max-w-md transition duration-300"
     >
-      <div
-  className="lazy-bg bg-gray-100 relative overflow-hidden"
-  style={{
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundImage: `url('${resource.image}')`, // <-- fix tại đây
-    height: "24rem",
-  }}
->
-        <div className="absolute inset-0 bg-black bg-opacity-30" />
-        <div className="relative h-full flex flex-col justify-end p-6 text-white">
-          <h3 className="font-bold text-lg mb-2">{resource.title}</h3>
-          <p className="text-sm mb-4 leading-relaxed">{resource.description}</p>
-        </div>
+      <div className="relative w-full h-60 overflow-hidden rounded-none">
+        <Image
+          src={resource.image || '/placeholder.png'}
+          alt={resource.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 25vw"
+        />
+      </div>
+      <div className="mt-4">
+        <h3 className="font-bold text-base sm:text-lg leading-tight">
+          {resource.title}
+        </h3>
+        {resource.description && (
+          <p className="text-sm text-black/70 mt-1 leading-relaxed">
+            {resource.description}
+          </p>
+        )}
       </div>
     </a>
   )

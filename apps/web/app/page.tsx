@@ -83,13 +83,22 @@ export default function HomePage() {
           ],
         }}
       />
-      <div className="mb-2"></div>
-
-      {/* <HeroBannerSecond /> */}
+      
+      <HeroBannerSecond />
+      <div className="mb-4"></div>
 
       {/* <HeroBannerVideo /> */}
       
       {/* History Products Section */}
+
+      {/* <PromoCarousel slides={mockSlides}/> */}
+      <PromoCarousel
+        items={mockSlides}
+        renderItem={(slide, i) => (
+          <TileCard tile={slide} index={i} />
+        )}
+      />
+
       <HistoryView
         title={
           <>
@@ -156,14 +165,6 @@ export default function HomePage() {
           ))}
         </div>
       </section> */}
-      {/* <PromoCarousel slides={mockSlides}/> */}
-      <PromoCarousel
-        items={mockSlides}
-        renderItem={(slide, i) => (
-          <TileCard tile={slide} index={i} />
-        )}
-      />
-      <div className="mb-4"></div>
 
       {/* Prime Section */}
       <section className="bg-black text-white py-8 mb-0">

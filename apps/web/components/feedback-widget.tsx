@@ -7,19 +7,29 @@ import AdidasLogo from "@/components/adidas-logo"
 import { ToastContainer, toast } from 'react-toastify'
 
 export default function FeedbackWidget() {
+  const [isClosed, setIsClosed] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [rating, setRating] = React.useState<number | null>(null)
 
-  const togglePanel = () => setIsOpen(!isOpen)
+  const togglePanel = () => { 
+    setIsOpen(!isOpen); 
+
+    if (isOpen) {
+      setIsClosed(true) 
+    }
+  }
 
   const handleSubmit = () => {
     // TODO: send to backend
     console.log("Feedback rating:", rating)
     setIsOpen(false)
+    setIsClosed(true)
     setRating(null)
     // toast("😊Thank you for feedback!")
     toast("Thank you for feedback!")
   }
+
+  if (isClosed) return null
 
   return (
     <>
@@ -27,9 +37,9 @@ export default function FeedbackWidget() {
       <button
         onClick={togglePanel}
         className={cn(
-          "fixed right-0 top-1/2 z-40 -translate-y-1/2",
+          "fixed right-0 top-1/2 z-40 -translate-y-1/2 rotate-180",
           "bg-gray-200 hover:bg-gray-300 transition-colors",
-          "px-2 py-6 text-xs font-bold tracking-wider",
+          "px-3 py-2 text-xs font-bold tracking-wider",
           "border-l border-gray-300",
           "focus:outline-hidden focus:ring-2 focus:ring-black focus:ring-offset-2",
         )}
@@ -143,7 +153,7 @@ export default function FeedbackWidget() {
       </div>
 
       {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 z-30 bg-black bg-opacity-50" onClick={togglePanel} />}
+      {isOpen && <div className="fixed inset-0 z-30 bg-[rgba(0,0,0,0.5)]" onClick={togglePanel} />}
     </>
   )
 }
