@@ -152,7 +152,7 @@ export default function HeroBannerVideo() {
                   variant="outline"
                   href={href}
                   showArrow
-                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 h-8 transition-colors"
                 >
                   {label}
                 </Button>

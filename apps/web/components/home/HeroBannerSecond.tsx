@@ -35,7 +35,7 @@ export default function HeroBannerSecond() {
                   variant="outline"
                   href={href}
                   showArrow
-                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 h-8 transition-colors"
                 >
                   {label}
                 </Button>
@@ -49,7 +49,7 @@ export default function HeroBannerSecond() {
                 variant="outline"
                 showArrow={false}
                 onClick={() => setShowVideo(true)}
-                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-9 inline-flex items-center gap-1"
+                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto h-8 inline-flex items-center gap-1"
               >
                 <Play className="h-3.5 w-3.5" />
                 WATCH VIDEO
