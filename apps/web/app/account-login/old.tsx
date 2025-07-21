@@ -122,7 +122,7 @@ const LoginPage: NextPage = () => {
                             className="w-full h-auto object-cover mb-6 rounded"
                           />
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-sm">
+              <div className="bg-white p-8 rounded-lg shadow-xs">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-bold text-xl">a</span>
@@ -180,7 +180,7 @@ const LoginPage: NextPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL ADDRESS *"
-                        className={`w-full border p-3 rounded ${formErrors.email && touched.email ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-none`}
+                        className={`w-full border p-3 rounded ${formErrors.email && touched.email ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-hidden`}
                       />
                       <ErrorMessage name="email">
                         {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}
@@ -192,7 +192,7 @@ const LoginPage: NextPage = () => {
                         name="password"
                         type="password"
                         placeholder="PASSWORD *"
-                        className={`w-full border p-3 rounded ${formErrors.password && touched.password ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-none`}
+                        className={`w-full border p-3 rounded ${formErrors.password && touched.password ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-hidden`}
                       />
                       <ErrorMessage name="password">
                         {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}

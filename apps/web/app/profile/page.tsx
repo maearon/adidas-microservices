@@ -77,7 +77,7 @@ export default function ProfilePage() {
                 <Field
                   name="name"
                   type="text"
-                  className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
                 <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1" />
               </div>
@@ -87,7 +87,7 @@ export default function ProfilePage() {
                 <Field
                   name="email"
                   type="email"
-                  className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
                 <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
               </div>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
                 <Field
                   name="phone"
                   type="tel"
-                  className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
                 <ErrorMessage name="phone" component="div" className="text-red-600 text-sm mt-1" />
               </div>
@@ -107,7 +107,7 @@ export default function ProfilePage() {
                 <Field
                   name="dateOfBirth"
                   type="date"
-                  className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
                 <ErrorMessage name="dateOfBirth" component="div" className="text-red-600 text-sm mt-1" />
               </div>

@@ -58,7 +58,7 @@ const New: NextPage = () => {
               Email address
             </label>
             <input
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:ring-black focus:border-black"
+              className="mt-1 block w-full rounded-md border border-gray-300 shadow-xs p-2 focus:ring-black focus:border-black"
               type="email"
               name="email"
               id="user_email"
@@ -74,7 +74,7 @@ const New: NextPage = () => {
               ref={submitRef}
               type="submit"
               disabled={submitting}
-              className={`w-full flex justify-center items-center px-4 py-2 text-white font-semibold bg-black rounded-md shadow-sm hover:bg-gray-800 transition ${
+              className={`w-full flex justify-center items-center px-4 py-2 text-white font-semibold bg-black rounded-md shadow-xs hover:bg-gray-800 transition ${
                 submitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >

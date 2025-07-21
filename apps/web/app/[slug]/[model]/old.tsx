@@ -341,7 +341,7 @@ export default function ProductDetailPageClient({ params }: Props) {
           {/* Left Column - 60% Width - Images with Overlay Elements */}
           <div id="left-column" className="relative mb-8 lg:mb-0 lg:w-[60%] lg:pr-8 lg:border-r lg:border-gray-200">
             {/* Desktop Breadcrumb - Overlay on Image */}
-            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-sm text-gray-700 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-none">
+            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-sm text-gray-700 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-none">
               <Link href="/men-soccer-shoes" className="hover:underline">
                 {productDetails.breadcrumb}
               </Link>

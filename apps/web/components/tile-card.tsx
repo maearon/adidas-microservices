@@ -32,7 +32,7 @@ export default function TileCard({
       className="group relative box-border border border-transparent hover:border-black transition duration-300 h-full flex flex-col"
     >
       {/* Image section */}
-      <div className="aspect-[3/4] w-full overflow-hidden">
+      <div className="aspect-3/4 w-full overflow-hidden">
         <img
           src={tile.image}
           alt={tile.title}

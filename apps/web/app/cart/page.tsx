@@ -51,7 +51,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen flex flex-col">
         {/* <Header /> */}
-        <main className="flex-grow container mx-auto px-2 py-28">
+        <main className="grow container mx-auto px-2 py-28">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-4xl font-bold mb-10">YOUR BAG IS EMPTY</h1>
             <p className="text-gray-600 mb-6">
@@ -80,7 +80,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* <Header /> */}
-      <main className="flex-grow max-w-6xl mx-auto px-2 md:px-10 py-8">
+      <main className="grow max-w-6xl mx-auto px-2 md:px-10 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Cart items */}

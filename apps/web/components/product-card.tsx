@@ -101,7 +101,7 @@ export default function ProductCard({
 
   if (isPlaceholder) {
     return (
-      <div className="border border-gray-200 rounded shadow-sm p-2 animate-pulse">
+      <div className="border border-gray-200 rounded shadow-xs p-2 animate-pulse">
         <div className="relative aspect-square bg-gray-200 rounded mb-4" />
         <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
         <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
@@ -167,17 +167,17 @@ export default function ProductCard({
                   : String(product?.category ?? "")}
               </p>
             )} */}
-            <p className="font-bold h-[1.25rem]">
+            <p className="font-bold h-5">
               ${product?.compare_at_price ?? product.price}
             </p>
-            <h3 className="font-medium h-[1.25rem] overflow-hidden">{product.name}</h3>
+            <h3 className="font-medium h-5 overflow-hidden">{product.name}</h3>
             {product?.sport && (
-              <p className="text-sm text-gray-600 min-h-[1.25rem]">
+              <p className="text-sm text-gray-600 min-h-5">
                 {product?.sport || product?.attribute_list?.brand}
               </p>
             )}
             {product?.tags && (
-              <p className="text-sm text-black min-h-[1.25rem]">
+              <p className="text-sm text-black min-h-5">
                 {product?.tags?.[0] || "BEST SELLER"}
               </p>
             )}

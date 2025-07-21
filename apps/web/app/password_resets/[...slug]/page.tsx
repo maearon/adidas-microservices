@@ -69,7 +69,7 @@ const Edit = ({ params }: { params: { slug: string[] } }) => {
               value={state.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-4 py-2 border rounded-xl focus:outline-hidden focus:ring-2 focus:ring-black"
               placeholder="Enter new password"
             />
           </div>
@@ -85,7 +85,7 @@ const Edit = ({ params }: { params: { slug: string[] } }) => {
               value={state.password_confirmation}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-4 py-2 border rounded-xl focus:outline-hidden focus:ring-2 focus:ring-black"
               placeholder="Confirm password"
             />
           </div>

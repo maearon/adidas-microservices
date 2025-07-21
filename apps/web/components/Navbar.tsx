@@ -171,7 +171,7 @@ export default function Navbar() {
                 height={12}
                 className="inline-block"
               />
-              <select defaultValue="US" className="bg-transparent border-none outline-none text-xs cursor-pointer">
+              <select defaultValue="US" className="bg-transparent border-none outline-hidden text-xs cursor-pointer">
                 <option value="US">United States</option>
                 <option value="VN">Vietnam</option>
                 <option value="UK">United Kingdom</option>

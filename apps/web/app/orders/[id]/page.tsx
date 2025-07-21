@@ -106,7 +106,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <div className="space-y-6">
               {order.timeline.map((step, index) => (
                 <div key={step.status} className="flex items-start gap-4">
-                  <div className="flex-shrink-0">{getStatusIcon(step.status, step.completed)}</div>
+                  <div className="shrink-0">{getStatusIcon(step.status, step.completed)}</div>
                   <div className="flex-1">
                     <h3 className={`font-medium ${step.completed ? "text-green-600" : "text-gray-900"}`}>
                       {step.title}
@@ -126,7 +126,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                     key={`${item.id}-${item.size}-${item.color}`}
                     className="flex items-center gap-4 p-4 border rounded-lg"
                   >
-                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md">
                       <img
                         src={item.image || "/placeholder.png"}
                         alt={item.name}

@@ -73,7 +73,7 @@ export default function OrderTrackerPage() {
                     name="orderNumber"
                     type="text"
                     placeholder="Enter your order number"
-                    className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                   />
                   <ErrorMessage name="orderNumber" component="div" className="text-red-600 text-sm mt-1" />
                 </div>
@@ -84,7 +84,7 @@ export default function OrderTrackerPage() {
                     name="email"
                     type="email"
                     placeholder="Enter your email address"
-                    className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                   />
                   <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
                 </div>

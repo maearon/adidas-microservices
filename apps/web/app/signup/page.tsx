@@ -122,7 +122,7 @@ const SignupPage = () => {
                         name="name"
                         type="text"
                         placeholder="NAME *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -132,7 +132,7 @@ const SignupPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -142,7 +142,7 @@ const SignupPage = () => {
                         name="password"
                         type="password"
                         placeholder="PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -152,7 +152,7 @@ const SignupPage = () => {
                         name="password_confirmation"
                         type="password"
                         placeholder="CONFIRM PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-sm mt-1" />
                     </div>

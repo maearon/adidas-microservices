@@ -15,7 +15,7 @@ export default function Product({ product }: ProductProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block rounded-2xl bg-card shadow-sm transition hover:shadow-md"
+      className="group block rounded-2xl bg-card shadow-xs transition hover:shadow-md"
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl">
         <Image

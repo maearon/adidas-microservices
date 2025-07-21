@@ -31,7 +31,7 @@ export default function FeedbackWidget() {
           "bg-gray-200 hover:bg-gray-300 transition-colors",
           "px-2 py-6 text-xs font-bold tracking-wider",
           "border-l border-gray-300",
-          "focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2",
+          "focus:outline-hidden focus:ring-2 focus:ring-black focus:ring-offset-2",
         )}
         style={{
           writingMode: "vertical-rl",

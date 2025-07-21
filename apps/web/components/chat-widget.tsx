@@ -185,7 +185,7 @@ export default function ChatWidget() {
       {!isOpen && (
         <button
           onClick={toggleChat}
-          className="fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition z-[99]"
+          className="fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition z-99"
         >
           <MessageCircle className="h-6 w-6" />
         </button>
@@ -195,7 +195,7 @@ export default function ChatWidget() {
       {isOpen && (
         <div
           className={`
-            fixed z-[99] bg-white border border-gray-200 shadow-xl transition-all duration-300
+            fixed z-99 bg-white border border-gray-200 shadow-xl transition-all duration-300
             ${isMinimized
               // ? "w-96 h-16 sm:w-96 sm:h-16 bottom-6 right-6" 
               // iPhone 15 Pro Max: w-96 = 384px → Exceeds 375px → Overflows off the left screen if you use right-6.

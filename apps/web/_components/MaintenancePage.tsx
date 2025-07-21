@@ -2,7 +2,7 @@
 
 export default function MaintenancePage() {
   return (
-    <div className="fixed inset-0 z-[1000] w-screen h-screen bg-white text-black overflow-y-auto">
+    <div className="fixed inset-0 z-1000 w-screen h-screen bg-white text-black overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 py-10 flex flex-col items-center text-center space-y-6">
         {/* Logo (chữ thay cho ảnh) */}
         <div className="text-3xl font-bold tracking-wide">adidas</div>

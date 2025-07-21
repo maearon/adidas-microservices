@@ -6,7 +6,7 @@ import Image from "next/image"
 export default function FullScreenLoader() {
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-white flex justify-center"
+      className="fixed inset-0 z-9999 bg-white flex justify-center"
       data-auto-id="loading-screen"
     >
       <div className="flex flex-col items-center justify-center w-full transform -translate-y-20">

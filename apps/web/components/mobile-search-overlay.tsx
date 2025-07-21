@@ -78,7 +78,7 @@ export default function MobileSearchOverlay({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search"
-              className="flex-1 text-lg outline-none"
+              className="flex-1 text-lg outline-hidden"
               autoFocus
             />
             {searchQuery && (

@@ -30,7 +30,7 @@ export default function WishlistPage() {
     return (
       <div className="min-h-screen flex flex-col">
         {/* <Header /> */}
-        <main className="flex-grow container mx-auto px-2 py-4">
+        <main className="grow container mx-auto px-2 py-4">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-2">MY WISHLIST</h1>
             <p className="text-gray-600 mb-2">0 ITEMS</p>
@@ -76,7 +76,7 @@ export default function WishlistPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* <Header /> */}
-      <main className="flex-grow container mx-auto px-2 py-4">
+      <main className="grow container mx-auto px-2 py-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold mb-2">MY WISHLIST</h1>
           <p className="text-gray-600 mb-4">{wishlistItems.length} ITEMS</p>

@@ -196,7 +196,7 @@ const LoginPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -206,7 +206,7 @@ const LoginPage = () => {
                         name="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black pr-12"
+                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
                       />
                       <button
                         type="button"

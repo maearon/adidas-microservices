@@ -179,7 +179,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
     <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-6">
-        <div className="flex-grow min-w-0">
+        <div className="grow min-w-0">
           <h1 className="text-3xl font-bold mb-2 truncate">
             {pageTitle}
             <span className="text-gray-500 ml-2 text-lg font-normal whitespace-nowrap">
@@ -191,7 +191,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
           )}
         </div>
 
-        <div className="flex-shrink-0 flex items-center">
+        <div className="shrink-0 flex items-center">
           <BaseButton
             variant="outline"
             onClick={() => setShowFilters(true)}

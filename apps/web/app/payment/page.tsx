@@ -174,7 +174,7 @@ export default function CheckoutPaymentPage() {
                         name="cardNumber"
                         type="text"
                         placeholder="1234 5678 9012 3456"
-                        className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="cardNumber" component="div" className="text-red-600 text-sm mt-1" />
                     </div>
@@ -186,7 +186,7 @@ export default function CheckoutPaymentPage() {
                           name="expiryDate"
                           type="text"
                           placeholder="MM/YY"
-                          className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                          className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
                         <ErrorMessage name="expiryDate" component="div" className="text-red-600 text-sm mt-1" />
                       </div>
@@ -197,7 +197,7 @@ export default function CheckoutPaymentPage() {
                           name="cvv"
                           type="text"
                           placeholder="123"
-                          className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                          className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
                         <ErrorMessage name="cvv" component="div" className="text-red-600 text-sm mt-1" />
                       </div>
@@ -209,7 +209,7 @@ export default function CheckoutPaymentPage() {
                         name="cardholderName"
                         type="text"
                         placeholder="John Doe"
-                        className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="cardholderName" component="div" className="text-red-600 text-sm mt-1" />
                     </div>
@@ -225,7 +225,7 @@ export default function CheckoutPaymentPage() {
                       <Field
                         name="billingAddress.street"
                         type="text"
-                        className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage
                         name="billingAddress.street"
@@ -240,7 +240,7 @@ export default function CheckoutPaymentPage() {
                         <Field
                           name="billingAddress.city"
                           type="text"
-                          className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                          className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
                         <ErrorMessage
                           name="billingAddress.city"
@@ -254,7 +254,7 @@ export default function CheckoutPaymentPage() {
                         <Field
                           name="billingAddress.zipCode"
                           type="text"
-                          className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                          className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
                         <ErrorMessage
                           name="billingAddress.zipCode"
@@ -269,7 +269,7 @@ export default function CheckoutPaymentPage() {
                       <Field
                         as="select"
                         name="billingAddress.country"
-                        className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       >
                         <option value="US">United States</option>
                         <option value="CA">Canada</option>

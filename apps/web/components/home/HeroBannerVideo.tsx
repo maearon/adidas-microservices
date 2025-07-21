@@ -120,7 +120,7 @@ export default function HeroBannerVideo() {
       </Button>
 
       {/* Loop counter */}    
-      {/* <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
+      {/* <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-xs">
         {MAX_LOOP_COUNT !== "forever"
           ? <>🔁 Played: {loopCount} / {MAX_LOOP_COUNT}</>
           : <>🔁 Played: {loopCount} / ∞</>}

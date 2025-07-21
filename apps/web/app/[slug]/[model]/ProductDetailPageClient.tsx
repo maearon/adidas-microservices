@@ -279,7 +279,7 @@ export default function ProductDetailPageClient({ params }: { params: { slug: st
         {/* Right Column */}
         <aside className="w-full lg:w-1/3">
 
-          <div className="sticky top-4 bg-white p-4 rounded-none shadow">
+          <div className="sticky top-4 bg-white p-4 rounded-none shadow-sm">
 
             {/* Mobile Product Title */}
             <div className="sm:hidden">

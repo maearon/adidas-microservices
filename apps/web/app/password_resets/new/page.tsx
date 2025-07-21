@@ -51,7 +51,7 @@ const ForgotPassword: NextPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-4 py-2 border rounded-xl focus:outline-hidden focus:ring-2 focus:ring-black"
               placeholder="you@example.com"
             />
           </div>

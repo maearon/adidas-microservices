@@ -189,7 +189,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
     <>
       {/* Search Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
-        <div className="flex-grow min-w-0">
+        <div className="grow min-w-0">
           <h1 className="text-2xl md:text-3xl font-bold mb-2 truncate">
             Search for: "{query.toUpperCase()}" [{totalResults}]
           </h1>
@@ -201,7 +201,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex-shrink-0 flex items-center">
+        <div className="shrink-0 flex items-center">
           {/* Button for sm and up */}
           <BaseButton
             variant="outline"

@@ -77,7 +77,7 @@ export function Button({
         variant={variant}
         size={size}
         className={cn(
-          "relative z-10 inline-flex items-center justify-between text-base font-bold uppercase tracking-wide rounded-none transition-all outline-none ring-0",
+          "relative z-10 inline-flex items-center justify-between text-base font-bold uppercase tracking-wide rounded-none transition-all outline-hidden ring-0",
           bg,
           hoverBg,
           text,
@@ -105,7 +105,7 @@ export function Button({
             {loading ? (
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             ) : (
-              <span className="-translate-y-[1px]">{children}</span>
+              <span className="-translate-y-px">{children}</span>
             )}
             {showArrow && !isIconButton && (
               <span className="text-[22px] font-thin leading-none">⟶</span>
@@ -119,7 +119,7 @@ export function Button({
               <span
                 className={cn(
                   "flex items-center",
-                  !isIconButton && "-translate-y-[1px]"
+                  !isIconButton && "-translate-y-px"
                 )}
               >
                 {children}
