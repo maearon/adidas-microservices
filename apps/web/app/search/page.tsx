@@ -1,20 +1,22 @@
 import { Metadata } from "next";
-import SearchResults from "./SearchResults"
-import Breadcrumb from "@/components/Breadcrumb";
+import SearchResults from "./SearchResults";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 interface PageProps {
-  searchParams: { q: string };
+  searchParams?: { q?: string };
 }
 
-export function generateMetadata({ searchParams: { q } }: PageProps): Metadata {
+export function generateMetadata({ searchParams }: PageProps): Metadata {
+  const q = searchParams?.q || "";
   return {
     title: `Search results for "${q}"`,
   };
 }
 
-export default function Page({ searchParams: { q } }: PageProps) {
+export default function Page({ searchParams }: PageProps) {
+  const q = searchParams?.q || "";
+
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -29,7 +31,6 @@ export default function Page({ searchParams: { q } }: PageProps) {
             Home
           </Link>
         </div>
-        {/* <Breadcrumb items={[{ label: "Home", href: "/" }]} /> */}
 
         <SearchResults query={encodeURIComponent(q)} />
       </div>
