@@ -115,6 +115,11 @@ export async function GET(req: NextRequest) {
       slug: p.slug,
       model_number: p.model_number,
       price: p.variants[0]?.price ?? 0,
+      variants: [
+        {
+          variant_code: p.variants[0]?.variant_code ?? null,
+        },
+      ],
       image_url: relatedImages[i][0] ?? "/placeholder.svg",
     }))
 
