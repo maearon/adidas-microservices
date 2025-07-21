@@ -5,7 +5,7 @@ import { selectUser } from "@/store/sessionSlice"
 import { Facebook, Instagram, Twitter, Youtube, Music, MapPin, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import CcpaIcon from "@/assets/icons/ccpa-privacy-options.svg";
+import CcpaIcon from "./icons/CcpaIcon"
 import { Button } from "./ui/button";
 import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 
