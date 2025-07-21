@@ -78,7 +78,7 @@ const SignupPage = () => {
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left info box */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-sm">
+              <div className="bg-white p-8 rounded-none">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-bold text-xl">a</span>
@@ -100,7 +100,7 @@ const SignupPage = () => {
             </div>
 
             {/* Signup form */}
-            <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="bg-white p-8 rounded-none shadow-lg">
               <h1 className="text-xl font-bold mb-6 text-center">CREATE ACCOUNT</h1>
 
               <Formik
@@ -122,7 +122,7 @@ const SignupPage = () => {
                         name="name"
                         type="text"
                         placeholder="NAME *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -132,7 +132,7 @@ const SignupPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -142,7 +142,7 @@ const SignupPage = () => {
                         name="password"
                         type="password"
                         placeholder="PASSWORD *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -152,7 +152,7 @@ const SignupPage = () => {
                         name="password_confirmation"
                         type="password"
                         placeholder="CONFIRM PASSWORD *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-sm mt-1" />
                     </div>

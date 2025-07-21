@@ -124,13 +124,13 @@ const LoginPage = () => {
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-sm">
+              <div className="bg-white p-8 rounded-none shadow-sm">
                 <Image
                   src="/assets/login/account-portal-page-inline.jpeg"
                   alt="Adiclub Benefits"
                   width={600}
                   height={600}
-                  className="w-full h-auto object-cover mb-6 rounded"
+                  className="w-full h-auto object-cover mb-6 rounded-none"
                 />
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
@@ -156,7 +156,7 @@ const LoginPage = () => {
             </div>
 
             {/* Login Form section */}
-            <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="bg-white p-8 rounded-none">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
@@ -174,7 +174,7 @@ const LoginPage = () => {
                   <button
                     key={name}
                     onClick={name === "google" ? handleGoogleLogin : undefined}
-                    className="border border-gray-300 p-3 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                    className="border border-black p-3 flex items-center justify-center hover:bg-gray-50 transition-colors"
                     aria-label={`Login with ${name}`}
                   >
                     <img src={`/icons/${name}.svg`} alt={name} className="h-5" />
@@ -196,7 +196,7 @@ const LoginPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
@@ -206,7 +206,7 @@ const LoginPage = () => {
                         name="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="PASSWORD *"
-                        className="w-full border p-3 rounded focus:outline-none focus:ring-2 focus:ring-black pr-12"
+                        className="w-full border p-3 rounded-none focus:outline-none focus:ring-2 focus:ring-black pr-12"
                       />
                       <button
                         type="button"
