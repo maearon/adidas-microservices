@@ -124,7 +124,7 @@ const LoginPage = () => {
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-none shadow-sm">
+              <div className="bg-white p-8 rounded-none">
                 <Image
                   src="/assets/login/account-portal-page-inline.jpeg"
                   alt="Adiclub Benefits"

@@ -100,7 +100,7 @@ const SignupPage = () => {
             </div>
 
             {/* Signup form */}
-            <div className="bg-white p-8 rounded-none shadow-lg">
+            <div className="bg-white p-8 rounded-none">
               <h1 className="text-xl font-bold mb-6 text-center">CREATE ACCOUNT</h1>
 
               <Formik
@@ -159,9 +159,9 @@ const SignupPage = () => {
 
                     <Button
                       theme={"black"}
-                      showArrow={true}
-                      pressEffect={true}
-                      shadow={true}
+                      showArrow
+                      pressEffect
+                      shadow
                       type="submit"
                       loading={isSubmitting || signupMutation.isPending}
                       className="w-full py-3 font-semibold transition-colors"
