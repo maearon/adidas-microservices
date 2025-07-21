@@ -45,7 +45,7 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
     queryFn: async () => {
       try {
         // const product = await rubyService.getProductBySlugAndVariant(slug, model)
-        const response = await axiosInstance.get<ProductData>(`/api/products/${slug}/${variant_code}`);
+        const response = await axiosInstance.get<ProductData>(`/api/products/${variant_code}`);
         const product = response.data;
         if (!product) throw new Error("Product not found")
         return product
@@ -58,10 +58,12 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
       if (error?.code === "ERR_NETWORK") return false
       return failureCount < 1
     },
-    staleTime: CACHE_TTL,
-    gcTime: CACHE_TTL * 2,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    // ⚠️ Disable caching
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   })
 }
 
