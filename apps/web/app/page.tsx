@@ -87,9 +87,7 @@ export default function HomePage() {
       <HeroBannerSecond />
       <div className="mb-4"></div>
 
-      {/* <HeroBannerVideo /> */}
-      
-      {/* History Products Section */}
+      <HeroBannerVideo />
 
       {/* <PromoCarousel slides={mockSlides}/> */}
       <PromoCarousel
@@ -98,7 +96,8 @@ export default function HomePage() {
           <TileCard tile={slide} index={i} />
         )}
       />
-
+      
+      {/* History Products Section */}
       <HistoryView
         title={
           <>

@@ -84,7 +84,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMessageIndex((prev) => (prev + 1) % 2)
+      setCurrentMessageIndex((prev) => (prev + 1) % 3)
     }, 3000)
     return () => clearInterval(interval)
   }, [])
