@@ -45,7 +45,11 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
     queryFn: async () => {
       try {
         // const product = await rubyService.getProductBySlugAndVariant(slug, model)
-        const response = await axiosInstance.get<ProductData>(`/api/products/${variant_code}`);
+        const response = await axiosInstance.get<ProductData>("/api/product", {
+          params: {
+            q: variant_code
+          },
+        });
         const product = response.data;
         if (!product) throw new Error("Product not found")
         return product

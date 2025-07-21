@@ -3,18 +3,17 @@ import prisma from "@/lib/prisma"
 import { serializeBigInt } from "@/lib/bigint"
 import { getImageUrlsByRecord } from "@/lib/attachments"
 
-export const dynamic = "force-dynamic"
+export const dynamic = 'force-dynamic'
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { variant_code: string } }
-) {
-  const { variant_code } = params
+export async function GET(req: NextRequest) {
+  try {
+    const variant_code = req.nextUrl.searchParams.get("q") || ""
+  // const { variant_code } = params
   if (!variant_code) {
     return Response.json({ error: "Missing variant_code" }, { status: 404 })
   }
 
-  try {
+  
     // ✅ Gộp toàn bộ product + variants + tags + categories + sizes vào 1 query
     const variant = await prisma.variants.findFirst({
       where: { variant_code },
@@ -151,8 +150,8 @@ export async function GET(
         breadcrumb: [], // TODO: generate breadcrumb from slug or categories
       })
     )
-  } catch (err) {
-    console.error("GET /api/products/[variant_code] error:", err)
+  } catch (error) {
+    console.error("Search error:", error)
     return Response.json({ error: "Internal server error" }, { status: 500 })
   }
 }
