@@ -274,7 +274,7 @@ export default function Navbar() {
               </form> */}
               <SearchField />
 
-              <button onClick={handleUserIconClick} className="relative">
+              <button onClick={handleUserIconClick} className="relative cursor-pointer">
                 <User className="h-5 w-5" />
                 {!user?.email && (
                   <span className={cn(
@@ -342,7 +342,7 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center space-x-4">
-            <button onClick={handleUserIconClick} className="relative">
+            <button onClick={handleUserIconClick} className="relative cursor-pointer">
               <User className="h-5 w-5" />
               {!user?.email && (
                 <span className={cn(
