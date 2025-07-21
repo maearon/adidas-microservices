@@ -406,9 +406,10 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             {/* Add to Bag & Wishlist - Side by Side */}
             <div className="flex gap-4">
               <Button
-                pressEffect={true}
+                theme="black"
+                pressEffect
                 onClick={handleAddToBag}
-                fullWidth={true}
+                fullWidth
               >
                 ADD TO BAG
               </Button>

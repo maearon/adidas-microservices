@@ -10,7 +10,14 @@ import { handleNetworkError } from "@/components/shared/handleNetworkError"
 import { useCallback } from "react"
 import { logout } from "@/store/sessionSlice"
 import { clearTokens } from "@/lib/token"
+// ------------------------
+// apps/web/api/hooks/useInitSession.ts
+import { useCurrentUser } from "./useCurrentUser"
 
+export const useInitSession = () => {
+  useCurrentUser()
+}
+// ------------------------
 export function useLogout() {
   const dispatch = useDispatch<AppDispatch>()
 

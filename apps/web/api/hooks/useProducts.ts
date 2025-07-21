@@ -5,7 +5,7 @@ import { handleNetworkError } from "@/components/shared/handleNetworkError"
 import { useInfiniteQuery } from "@tanstack/react-query";
 import api from "@/api/client";
 import kyInstance from "@/lib/ky";
-import { ProductsPage } from "@/lib/types";
+import { ProductData, ProductsPage } from "@/lib/types";
 import axiosInstance from "@/lib/axios";
 
 const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
@@ -38,15 +38,15 @@ export const useSearchProductsFeed = (query: string) => {
 // ===============================
 // ✅ useProductDetail: Lấy chi tiết sản phẩm theo slug + model
 // ===============================
-export function useProductDetail(
-  slug: string,
-  model: string
-): UseQueryResult<Product, Error> {
-  return useQuery<Product, Error>({
-    queryKey: ["productDetail", slug, model],
+export const useProductDetail = ( slug: string, variant_code: string) => {
+  return useQuery({
+    // ): UseQueryResult<Product, Error> {
+    queryKey: ["product-detail", slug, variant_code],
     queryFn: async () => {
       try {
-        const product = await rubyService.getProductBySlugAndVariant(slug, model)
+        // const product = await rubyService.getProductBySlugAndVariant(slug, model)
+        const response = await axiosInstance.get<ProductData>(`/api/products/${slug}/${variant_code}`);
+        const product = response.data;
         if (!product) throw new Error("Product not found")
         return product
       } catch (error: any) {

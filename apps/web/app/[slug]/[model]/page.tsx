@@ -10,6 +10,6 @@ interface PageProps {
 export default function ProductDetailPage({ params }: PageProps) {
   if (!params?.model) notFound();
   return <ProductDetailPageClient 
-  params={{ slug: "f50-messi-elite-firm-ground-cleats", model: "VC1-BL-bec3"}} 
+  params={{ slug: "f50-messi-elite-firm-ground-cleats", model: "JP55933"}} 
   />
 }
