@@ -1,10 +1,15 @@
 import prisma from "@/lib/prisma"
 
-export async function getImageUrlsByRecord(type: string, id: bigint | number) {
+export async function getImageUrlsByRecord(
+  type: string,
+  id: bigint | number,
+  name: string = "images" // default là "images"
+) {
   const attachments = await prisma.active_storage_attachments.findMany({
     where: {
       record_type: type,
       record_id: BigInt(id),
+      name: name, // lọc theo tên field
     },
     orderBy: { id: "asc" },
     select: {

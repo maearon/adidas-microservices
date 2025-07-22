@@ -32,4 +32,47 @@ else
   puts "⚠️ No second image found for hover"
 end
 
+# Tìm variant theo variant_code
+variant = Variant.find_by(variant_code: "JP55933")
+
+if variant
+  # Xoá toàn bộ ảnh cũ nếu có
+  variant.avatar.purge
+  variant.hover.purge
+  variant.images.each(&:purge)
+
+  # Gắn ảnh mới từ thư mục variant
+  variant_dir = Rails.root.join("app/assets/images/products/1")
+  variant_images = Dir.glob("#{variant_dir}/*.jpg").sort_by { |path| File.mtime(path) }
+
+  variant.avatar.attach(
+        io: File.open(variant_images[0]),
+        filename: File.basename(variant_images[0]),
+        content_type: "image/jpeg"
+      )
+
+  variant.hover.attach(
+        io: File.open(variant_images[1]),
+        filename: File.basename(variant_images[1]),
+        content_type: "image/jpeg"
+      )
+
+  if variant_images.empty?
+    puts "⚠️ No variant images found"
+  else
+    variant_images.each do |path|
+      variant.images.attach(
+        io: File.open(path),
+        filename: File.basename(path),
+        content_type: "image/jpeg"
+      )
+      puts "✅ Attached variant image: #{File.basename(path)}"
+    end
+  end
+else
+  puts "❌ Variant with code 'JP55933' not found"
+end
+
+puts "✅ Done updating images for product ##{product.id} and variant 'JP55933'"
+
 puts "✅ Done updating images for product ##{product.id}"
