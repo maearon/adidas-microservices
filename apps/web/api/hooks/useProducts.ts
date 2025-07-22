@@ -78,28 +78,54 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
 // ===============================
 // ✅ useProducts: Lấy danh sách sản phẩm
 // ===============================
-export function useProducts(
-  filters: ProductFilters = {}
-): UseQueryResult<ProductsResponse, Error> {
-  return useQuery<ProductsResponse, Error>({
-    queryKey: ["products", filters],
-    queryFn: async () => {
-      try {
-        const data = await rubyService.getProducts(filters as any)
-        if (!data) throw new Error("No product data found")
-        return data
-      } catch (error: any) {
-        handleNetworkError(error)
-        throw error
-      }
+
+export const useProducts = (filters: ProductFilters = {}) => {
+  return useInfiniteQuery<ProductsPage, Error, ProductsPage, (string | ProductFilters)[], string | undefined>({
+    queryKey: ["product-list", "search", filters],
+    queryFn: async ({ pageParam = undefined }) => {
+      const response = await axiosInstance.get<ProductsPage>("/api/search", {
+        params: {
+          q: 'a',
+          ...(pageParam ? { cursor: pageParam } : {}),
+        },
+      });
+      return response.data;
     },
+    getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
+    initialPageParam: undefined,
     retry: (failureCount, error: any) => {
-      if (error?.code === "ERR_NETWORK") return false
-      return failureCount < 1
+      if (error?.code === "ERR_NETWORK") return false;
+      return failureCount < 1;
     },
     staleTime: CACHE_TTL,
     gcTime: CACHE_TTL * 2,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-  })
-}
+  });
+};
+
+// export function useProducts(
+//   filters: ProductFilters = {}
+// ): UseQueryResult<ProductsResponse, Error> {
+//   return useQuery<ProductsResponse, Error>({
+//     queryKey: ["products", filters],
+//     queryFn: async () => {
+//       try {
+//         const data = await rubyService.getProducts(filters as any)
+//         if (!data) throw new Error("No product data found")
+//         return data
+//       } catch (error: any) {
+//         handleNetworkError(error)
+//         throw error
+//       }
+//     },
+//     retry: (failureCount, error: any) => {
+//       if (error?.code === "ERR_NETWORK") return false
+//       return failureCount < 1
+//     },
+//     staleTime: CACHE_TTL,
+//     gcTime: CACHE_TTL * 2,
+//     refetchOnWindowFocus: false,
+//     refetchOnMount: false,
+//   })
+// }
