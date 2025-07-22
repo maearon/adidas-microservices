@@ -43,7 +43,8 @@ if variant
 
   # Gắn ảnh mới từ thư mục variant
   variant_dir = Rails.root.join("app/assets/images/products/1")
-  variant_images = Dir.glob("#{variant_dir}/*.jpg").sort_by { |path| File.mtime(path) }
+  variant_images = Dir.glob("#{variant_dir}/*.jpg").sort_by { |path| File.basename(path) }
+  # .sort_by { |path| File.mtime(path) }
 
   variant.avatar.attach(
         io: File.open(variant_images[0]),
