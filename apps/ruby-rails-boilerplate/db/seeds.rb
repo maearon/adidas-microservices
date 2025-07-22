@@ -111,10 +111,22 @@ PRODUCTS_IMAGE_DIR = Rails.root.join("app/assets/images/products")
   )
 
   dir_path = PRODUCTS_IMAGE_DIR.join((i + 1).to_s)
-  avatar_path = dir_path.join("#{i + 1}.jpg")
-  if File.exist?(avatar_path)
-    product.image.attach(io: File.open(avatar_path), filename: "#{i + 1}.jpg", content_type: "image/jpeg")
-    product.hover_image.attach(io: File.open(avatar_path), filename: "#{i + 1}-hover.jpg", content_type: "image/jpeg")
+  thumbnail_dir = dir_path.join("thumbnail")
+  image_files = Dir.glob("#{thumbnail_dir}/*.jpg").sort_by { |p| File.basename(p).downcase }
+  if image_files[0] && image_files[1]
+    product.image.attach(
+      io: File.open(image_files[0]),
+      filename: File.basename(image_files[0]),
+      content_type: "image/jpeg"
+    )
+
+    product.hover_image.attach(
+      io: File.open(image_files[1]),
+      filename: File.basename(image_files[1]),
+      content_type: "image/jpeg"
+    )
+  else
+    puts "❌ Không tìm thấy đủ ảnh trong #{thumbnail_dir}"
   end
 
   %w[Black White Red Blue].each_with_index do |color, idx|
