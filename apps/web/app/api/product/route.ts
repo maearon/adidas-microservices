@@ -61,6 +61,7 @@ export async function GET(req: NextRequest) {
 
     const enrichedVariants = product.variants.map((v, i) => {
       const { images, avatar, hover } = variantImageResults[i]
+      const sortedImages = images ?? []
       return {
         id: v.id,
         color: v.color,
@@ -75,7 +76,7 @@ export async function GET(req: NextRequest) {
         updated_at: v.updated_at,
         avatar_url: avatar[0] ?? "/placeholder.svg?height=300&width=250",
         hover_url: hover[0] ?? "/placeholder.svg?height=300&width=250",
-        image_urls: images ?? [],
+        image_urls: sortedImages ?? [],
         image_url: mainImage[0] ?? "/placeholder.svg",
         hover_image_url: hoverImage[0] ?? "/placeholder.svg",
       }
