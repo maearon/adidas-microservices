@@ -147,7 +147,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {/* Product Grid */}
       {!isError && products.length > 0 && (
         <InfiniteScrollContainer
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           onBottomReached={() =>
             hasNextPage && !isFetching && fetchNextPage()
           }
