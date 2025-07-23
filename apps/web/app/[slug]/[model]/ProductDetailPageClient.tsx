@@ -17,7 +17,7 @@ import { useProductDetail } from "@/api/hooks/useProducts"
 import { slugify } from "@/utils/slugtify"
 import { upperWords } from "@/utils/upper-words"
 import { Variant } from "@/types/product"
-import FullScreenLoader from "@/components/ui/FullScreenLoader"
+import Loading from "@/components/loading"
 import { BaseButton } from "@/components/ui/base-button"
 
 interface ProductDetailPageClientProps {
