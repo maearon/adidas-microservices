@@ -42,16 +42,17 @@ export default function HeroBannerSecond() {
                 </Button>
               ))}
               <Button
+                key={"video-button"}
                 theme="white"
                 size="sm"
                 border
                 shadow={false}
                 fullWidth={false}
                 variant="outline"
-                showArrow={false}
                 onClick={() => setShowVideo(true)}
+                showArrow
                 sizeClass="h-8 px-3"
-                className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none hover:bg-gray-100 transition w-auto inline-flex items-center gap-1"
+                className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
               >
                 <Play className="h-3.5 w-3.5" />
                 WATCH VIDEO
