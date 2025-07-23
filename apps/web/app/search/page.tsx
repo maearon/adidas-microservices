@@ -2,18 +2,18 @@ import { Metadata } from "next";
 import SearchResults from "./SearchResults";
 import Breadcrumb from "@/components/Breadcrumb";
 
-interface PageProps {
+interface SearchPageProps {
   searchParams?: { q?: string };
 }
 
-export function generateMetadata({ searchParams }: PageProps): Metadata {
+export function generateMetadata({ searchParams }: SearchPageProps): Metadata {
   const q = searchParams?.q || "";
   return {
     title: `Search results for "${q}"`,
   };
 }
 
-export default function Page({ searchParams }: PageProps) {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const q = searchParams?.q || "";
 
   return (
@@ -27,3 +27,5 @@ export default function Page({ searchParams }: PageProps) {
     </main>
   );
 }
+
+export default SearchPage;
