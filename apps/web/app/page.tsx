@@ -67,7 +67,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* <PromoBanner /> */}
+      <PromoBanner />
       <HeroBanner
         backgroundClassName="bg-hero"
         content={{

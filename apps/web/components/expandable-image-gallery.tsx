@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import ImageLightbox from "@/components/image-lightbox"
-import Breadcrumb from "@/components/Breadcrumb"
+import BreadcrumbDetail from "@/components/BreadcrumbDetail"
 import { buildBreadcrumbFromProductDetail } from "@/utils/breadcrumb"
 import { Product } from "@/types/product"
 

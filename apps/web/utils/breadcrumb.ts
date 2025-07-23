@@ -1,6 +1,8 @@
+import { BreadcrumbItem } from "@/types/bread-crumb";
 import { Product } from "@/types/product";
 import { getCategoryConfig, categoryConfigs } from "@/utils/category-config.auto"
 import { slugify } from "@/utils/slugtify";
+import { capitalizeTitle } from "./sanitizeMenuTitleOnly";
 
 export function formatSlugTitle(slug: string): string {
   return slug
@@ -8,28 +10,21 @@ export function formatSlugTitle(slug: string): string {
     .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
-export function getBreadcrumbTrail(slug: string): { label: string; href: string }[] {
-  const trail: { label: string; href: string }[] = []
-  let currentSlug = slug
-  let depth = 0
+export function getBreadcrumbTrail(slug: string): BreadcrumbItem[] {
+  const parts = slug.split("-");
+  const hrefParts: string[] = [];
 
-  while (currentSlug && depth < 4) {
-    const config = getCategoryConfig(currentSlug)
+  const items: BreadcrumbItem[] = [
+    ...parts.map((part, index) => {
+      hrefParts.push(part);
+      return {
+        label: capitalizeTitle(part),
+        href: `/${hrefParts.join("-")}`,
+      };
+    }),
+  ];
 
-    trail.unshift({
-      // Luôn dùng formatSlugTitle để đẹp
-      label: formatSlugTitle(currentSlug),
-      href: config.href || `/${currentSlug}`,
-    })
-
-    const parent = Object.entries(categoryConfigs).find(([_, c]) =>
-      c.tabs.some((tab) => tab.slug === currentSlug)
-    )
-    currentSlug = parent?.[0] || ""
-    depth++
-  }
-
-  return [{ label: "Home", href: "/" }, ...trail]
+  return items;
 }
 
 export function buildBreadcrumbFromProductItem(product: Product) {

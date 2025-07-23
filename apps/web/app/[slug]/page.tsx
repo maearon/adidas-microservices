@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import CategoryPageClient from "./CategoryPageClient"
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
+import { getBreadcrumbTrail } from "@/utils/breadcrumb";
 
 interface CategoryPageProps {
   params: {
@@ -32,16 +32,7 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
     <main className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-6">
-          <Link href="/" className="flex items-center gap-2 text-sm hover:underline">
-            <ArrowLeft size={16} />
-            BACK
-          </Link>
-          <span className="text-gray-400">/</span>
-          <Link href="/" className="text-sm hover:underline">
-            Home
-          </Link>
-        </div>
+        <Breadcrumb items={getBreadcrumbTrail(params.slug)}/>
 
         <CategoryPageClient 
           params={params} 

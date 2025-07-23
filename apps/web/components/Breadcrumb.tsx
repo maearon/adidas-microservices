@@ -3,11 +3,8 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
-
-type BreadcrumbItem = {
-  label: string
-  href: string
-}
+import { BreadcrumbItem } from "@/types/bread-crumb"
+import { cn } from "@/lib/utils"
 
 type BreadcrumbProps = {
   items: BreadcrumbItem[]
@@ -31,28 +28,42 @@ export default function Breadcrumb({
   }
 
   return (
-    <nav
-      className={`absolute top-4 left-4 z-20 text-sm hidden sm:flex items-center gap-2 px-2 py-1 rounded ${className}`}
-    >
-      <button
-        onClick={handleBack}
-        className="flex items-center bg-transparent text-gray-700 px-2 py-1 hover:bg-black hover:text-white transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4 mr-1" />
-        <span className="underline-offset-2">Back</span>
-      </button>
-
-      {items.map((crumb, index) => (
-        <span key={index} className="flex items-center text-gray-700">
-          <span className="mx-1 text-gray-500">/</span>
-          <Link
-            href={crumb.href}
-            className="hover:bg-black hover:text-white hover:underline transition-colors px-2 py-1 rounded-none"
+    <div className={cn("flex items-center gap-2 mb-6", className)}>
+      {showBackButton && (
+        <>
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-sm hover:bg-black hover:text-white cursor-pointer"
           >
-            {crumb.label}
-          </Link>
-        </span>
-      ))}
-    </nav>
+            <ArrowLeft size={16} />
+            BACK
+          </button>
+          <span className="text-gray-400 cursor-default">/</span>
+        </>
+      )}
+
+      <Link href="/" className="text-sm hover:underline">
+        Home
+      </Link>
+
+      {items.map((crumb, index) => {
+        const isLast = index === items.length - 1
+
+        return (
+          <div key={index} className="flex items-center gap-2">
+            <span className="text-gray-400 cursor-default">/</span>
+            {isLast ? (
+              <span className="text-sm text-gray-600 cursor-default select-none">
+                {crumb.label}
+              </span>
+            ) : (
+              <Link href={crumb.href} className="text-sm hover:underline hover:bg-black hover:text-white">
+                {crumb.label}
+              </Link>
+            )}
+          </div>
+        )
+      })}
+    </div>
   )
 }
