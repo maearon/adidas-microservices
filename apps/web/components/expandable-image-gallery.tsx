@@ -56,8 +56,8 @@ export default function ExpandableImageGallery({ images, productName, product, t
       <div className="relative space-y-4">
         <BreadcrumbDetail items={buildBreadcrumbFromProductDetail(product)} />
 
-        <div className="absolute top-14 right-0 z-20 text-[10px] sm:text-xs text-black font-normal px-3 py-3 transform -rotate-90 origin-center bg-white rounded-none tracking-wider uppercase">
-          {tags?.[0] || "BEST SELLER"}
+        <div className="absolute top-14 left-0 sm:left-auto sm:right-0 -translate-x-3 sm:translate-x-5 z-20 text-[10px] sm:text-xs text-black font-normal px-3 py-2 -rotate-90 origin-center bg-white tracking-wider uppercase">
+          {[...tags].sort((a, b) => a.localeCompare(b))[0] || "BEST SELLER"}
         </div>
 
         {/* Image Grid */}

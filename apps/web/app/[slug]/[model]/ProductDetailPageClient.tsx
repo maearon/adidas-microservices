@@ -149,7 +149,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
   // ⏳ Loading thực sự (lần đầu hoặc đang loading dữ liệu mới)
   if (isLoading || !product) {
-    return <FullScreenLoader />
+    return <Loading />;
   }
 
   return (

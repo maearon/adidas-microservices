@@ -134,7 +134,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
     const products = data?.pages.flatMap((page) => page.products) || [];
   
     if (status === "pending" || isFetching) {
-      return <FullScreenLoader />
+      return <Loading />;
     }
   
     const isError = status === "error";
