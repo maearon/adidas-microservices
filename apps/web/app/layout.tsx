@@ -27,7 +27,7 @@ const barlow = Barlow({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | adidas US",
+    template: "adidas %s | adidas US",
     default: "adidas Online Shop | adidas US",
   },
   description: "Shop the latest adidas shoes, clothing and accessories",
