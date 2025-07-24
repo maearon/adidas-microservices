@@ -114,7 +114,7 @@ export default function ProductCarousel({
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
-        <div className="relative min-h-[330px]">
+        <div className="relative sm:min-h-[330px]">
           <motion.div
             ref={containerRef}
             className="flex gap-0 md:gap-2 transition-transform duration-700 ease-in-out will-change-transform px-0 md:px-0"

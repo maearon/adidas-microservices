@@ -68,62 +68,22 @@ export default function ExpandableImageGallery({ variant, images, productName, p
 
   // Mock product details
   const productDetails = {
-    soldOutSizes: ["36", "36.5", "37", "42.5"],
     rating: 4.8,
     reviewCount: 1247,
-    features: ["Get delivery dates", "Free standard shipping with adiClub", "Free 30 day returns"],
-    sizeGuide: "True to size. We recommend ordering your usual size.",
-    breadcrumb: "Home / Women / Soccer",
-    sizes: [
-      "4",
-      "4.5",
-      "5",
-      "5.5",
-      "6",
-      "6.5",
-      "7",
-      "7.5",
-      "8",
-      "8.5",
-      "9",
-      "9.5",
-      "10",
-      "10.5",
-      "11",
-      "11.5",
-      "12",
-      "12.5",
-      "13",
-      "13.5",
-    ],
   }
 
   return (
     <>
-      <div className="relative space-y-4">
-        {/* <div  className="flex sm:hidden px-[20px] py-[10px]">
-          <Breadcrumb items={breadcrumbItems} useLastItemHighlight={false} />
-           
-            <div className="sm:hidden">
-              <h1 className="text-xl font-bold mb-2">{product.name}</h1>
-              <div className="flex items-center space-x-2 mb-4">
-                <span className="text-xl font-bold">${product.price}</span>
-                {product.badge === "Best seller" && (
-                  <Badge className="bg-gray-300 text-black text-xs rounded-none">BEST SELLER</Badge>
-                )}
-              </div>
-            </div>
-        </div> */}
+      <div className="relative">
         {/* Mobile Product Title */}
         <div className="sm:hidden px-[20px] py-[10px]">
           {/* Breadcrumb + Reviews */}
           <div className="flex items-center justify-between mb-2">
-            {/* <p className="text-base text-gray-600">
-              {product.gender ? `${product.gender}'s` : ''} 
-              {product.gender && product.sport ? ' • ' : ''}
-              {product.sport}
-            </p> */}
-            <Breadcrumb items={breadcrumbItems} useLastItemHighlight={false} />
+            <Breadcrumb 
+              items={breadcrumbItems} 
+              useLastItemHighlight={false} 
+              showBackButton={false} 
+            />
             
             {/* Rating and Reviews */}
             <div className="flex items-center space-x-2">
@@ -142,24 +102,22 @@ export default function ExpandableImageGallery({ variant, images, productName, p
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold mb-4 leading-tight">{upperWords(product.name)}</h1>
+          <h1 className="text-[24px] leading-[28px] font-extrabold tracking-tight mt-[20px] mb-[10px]">
+            {upperWords(product.name)}
+          </h1>
 
-          <div className="flex items-center space-x-2 mb-6">
-            <span className="text-2xl font-bold">${variant?.price}</span>
+          <div className="flex items-center space-x-2 leading-[22px]">
+            <span className="text-md font-bold">${variant?.price}</span>
             {variant?.compare_at_price && (
-              <span className="text-lg text-gray-500 line-through">${variant?.compare_at_price}</span>
+              <span className="text-md text-gray-500 line-through">${variant?.compare_at_price}</span>
             )}
           </div>
-
-          {/* <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p> */}
         </div>
         <BreadcrumbForDetailProductPage items={breadcrumbItems} />
 
-        
-
         {/* Image Grid */}
         <div className="grid grid-cols-2 gap-1">
-          <div className="absolute top-64 sm:top-14 left-0 sm:left-auto sm:right-0 -translate-x-3 sm:translate-x-5 z-20 text-[10px] sm:text-xs text-black font-normal px-3 py-2 -rotate-90 origin-center bg-white tracking-wider uppercase">
+          <div className="absolute top-51 sm:top-14 -left-4 sm:left-auto sm:right-0 -translate-x-3 sm:translate-x-5 z-20 text-[10px] sm:text-xs text-black font-normal px-3 py-2 -rotate-90 origin-center bg-white tracking-wider uppercase">
             {[...tags].sort((a, b) => a.localeCompare(b))[0] || "BEST SELLER"}
           </div>
           {/* Display first 4 images or all if showAllImages is true */}
@@ -184,22 +142,25 @@ export default function ExpandableImageGallery({ variant, images, productName, p
 
         {/* Show More/Less Button */}
         {images.length > 4 && (
-          <div className="text-center">
-            <Button
-              shadow={false}
-              showArrow={false}
-              variant="outline"
-              className="border-black text-black hover:bg-white hover:text-gray-500 bg-transparent transition-colors duration-200 rounded-none px-8 py-3"
-              onClick={() => setShowAllImages(!showAllImages)}
-            >
-              {showAllImages ? (
-                <>SHOW LESS <span className="ml-2">↑</span></>
-              ) : (
-                <>SHOW MORE <span className="ml-2">↓</span></>
-              )}
-            </Button>
+          <div className="relative mt-2">
+            <div className="absolute left-1/2 transform translate-x-[-50%] translate-y-[-70%] z-10">
+              <Button
+                shadow={false}
+                showArrow={false}
+                variant="outline"
+                className="border-black text-black bg-white hover:bg-white hover:text-gray-500 transition-colors duration-200 rounded-none px-8 py-3 text-sm"
+                onClick={() => setShowAllImages(!showAllImages)}
+              >
+                {showAllImages ? (
+                  <>SHOW LESS <span className="ml-2">↑</span></>
+                ) : (
+                  <>SHOW MORE <span className="ml-2">↓</span></>
+                )}
+              </Button>
+            </div>
           </div>
         )}
+
       </div>
 
       {/* Lightbox - Desktop Only */}

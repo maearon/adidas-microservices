@@ -30,7 +30,7 @@ export default function Breadcrumb({
   }
 
   return (
-    <div className={cn("flex items-center gap-2 mb-6", className)}>
+    <div className={cn("flex items-center gap-2", className)}>
       {showBackButton && (
         <>
           <button
