@@ -28,7 +28,7 @@ interface CategoryPageProps {
   }
 }
 
-export function generateMetadata({ params }: CategoryPageProps): Metadata {
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const pageTitle = formatSlugTitle(params.slug)
   return {
     title: pageTitle,

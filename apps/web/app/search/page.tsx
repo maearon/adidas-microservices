@@ -6,7 +6,7 @@ interface SearchPageProps {
   searchParams?: { q?: string };
 }
 
-export function generateMetadata({ searchParams }: SearchPageProps): Metadata {
+export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
   const q = searchParams?.q || "";
   return {
     title: `Search results for "${q}"`,

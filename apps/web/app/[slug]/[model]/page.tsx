@@ -9,7 +9,7 @@ interface ProductDetailPageProps {
   params?: { slug?: string; model?: string };
 }
 
-export function generateMetadata({ params }: ProductDetailPageProps): Metadata {
+export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
   const pageTitle = formatSlugTitle(params?.slug || "Product Detail");
   return {
     title: pageTitle,
