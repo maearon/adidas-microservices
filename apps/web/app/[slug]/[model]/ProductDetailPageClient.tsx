@@ -599,7 +599,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
         {/* Mid-page Promotional Banner */}
         {/* F50 Messi Prestigio Section */}
-        <div className="flex sm:hidden mt-[80px] pt-[6px] relative w-full h-[300px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+        <div className="flex sm:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
           <Image
             src="/assets/product/football_fw25_messi_pdp_launch_m_ba9cdf23e1.jpg?height=1004&width=750"
             alt="F50 Messi Prestigio"
@@ -610,7 +610,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           />
         </div>
         {/* Feature Section */}
-        <div className="flex sm:hidden relative w-full h-[300px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+        <div className="flex sm:hidden relative w-full h-[402px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
           <Image
             src="/assets/product/football_fw25_messi_statement_launch_m_74db237251.jpg?height=1004&width=750"
             alt="F50 Messi Prestigio"

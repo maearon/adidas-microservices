@@ -134,7 +134,7 @@ export default function Navbar() {
     <>
       <MobileAppBanner isOpen={showAppBanner} onClose={() => setShowAppBanner(false)} />
 
-      <header className="relative border-b border-gray-200">
+      <header className="relative sm:border-b sm:border-gray-200">
         {/* Top bar */}
         <div className="bg-black text-white text-xs py-3 text-center font-semibold">
           <span>
@@ -322,7 +322,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile layout */}
-        <div className="sm:hidden flex items-center justify-between px-4 py-2">
+        <div className="sm:hidden flex items-center justify-between px-[10px] sm:px-[20px] xl:px-[40px]">
           <div className="flex items-center space-x-4">
             <button onClick={() => setShowMobileMenu(true)}>
               <MenuIcon className="h-6 w-6" />
