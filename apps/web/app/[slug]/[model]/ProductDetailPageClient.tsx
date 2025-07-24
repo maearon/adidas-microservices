@@ -20,6 +20,7 @@ import { Variant } from "@/types/product"
 import Loading from "@/components/loading"
 import { BaseButton } from "@/components/ui/base-button"
 import Image from "next/image"
+import { ButtonWish } from "@/components/ui/button-wish"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -447,14 +448,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 ADD TO BAG
               </Button>
 
-              <Button
+              <ButtonWish
                 shadow={false}
                 showArrow={false}
                 onClick={handleToggleWishlist}
                 className="w-12 h-12 border border-black rounded-none flex items-center justify-center hover:bg-white hover:text-black transition-colors translate-y-[3px]"
               >
-                <Heart size={20} className={isWishlisted ? "fill-current" : ""} />
-              </Button>
+                <Heart className={`w-[22px] h-[22px] ${isWishlisted ? "fill-current" : ""}`} />
+              </ButtonWish>
             </div>
 
             {/* Klarna Payment */}
