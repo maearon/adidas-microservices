@@ -14,7 +14,7 @@ const SliderWithValue = React.forwardRef<
 
   return (
     <div className="space-y-2">
-      <div className="text-sm text-muted-foreground">Giá trị: {value[0]}</div>
+      <div className="text-base text-muted-foreground">Giá trị: {value[0]}</div>
       <SliderPrimitive.Root
         ref={ref}
         className={cn("relative flex w-full touch-none select-none items-center", className)}

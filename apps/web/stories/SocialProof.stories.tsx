@@ -27,7 +27,7 @@ export const WithValue: Story = {
     return (
       <div className="space-y-4">
         <SocialProof {...args} value={value} onValueChange={setValue} />
-        <p className="text-sm text-muted-foreground">Value: {value[0]}</p>
+        <p className="text-base text-muted-foreground">Value: {value[0]}</p>
       </div>
     )
   },

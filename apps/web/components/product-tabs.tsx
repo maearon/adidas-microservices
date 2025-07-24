@@ -45,7 +45,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 border text-sm whitespace-nowrap transition-all
+              className={`px-4 py-2 border text-sm sm:text-base whitespace-nowrap transition-all
                 ${
                   activeTab === tab.id
                     ? "bg-black text-white border-black"
@@ -59,7 +59,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
 
         {/* View All */}
         <button
-          className="hidden sm:inline-block text-sm font-bold underline underline-offset-4 mt-4 sm:mt-0"
+          className="hidden sm:inline-block text-base font-bold underline underline-offset-4 mt-4 sm:mt-0"
           onClick={() => {
             if (viewMoreHref) window.location.href = `/${viewMoreHref}`
           }}

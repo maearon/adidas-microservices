@@ -89,7 +89,7 @@ const SignupPage = () => {
                   As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and
                   receive immediate access to these Level 1 benefits:
                 </p>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-base">
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Free shipping</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> A 15% off voucher</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Members Only sales</li>
@@ -124,7 +124,7 @@ const SignupPage = () => {
                         placeholder="NAME *"
                         className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="name" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     <div>
@@ -134,7 +134,7 @@ const SignupPage = () => {
                         placeholder="EMAIL *"
                         className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     <div>
@@ -144,7 +144,7 @@ const SignupPage = () => {
                         placeholder="PASSWORD *"
                         className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     <div>
@@ -154,7 +154,7 @@ const SignupPage = () => {
                         placeholder="CONFIRM PASSWORD *"
                         className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     <Button
@@ -169,14 +169,14 @@ const SignupPage = () => {
                       CREATE MY ACCOUNT
                     </Button>
 
-                    <div className="mt-4 text-sm text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 text-center">
                       Already have an account?{" "}
                       <Link href="/account-login" className="underline text-blue-600">
                         Log in
                       </Link>
                     </div>
 
-                    <div className="mt-2 text-sm text-center">
+                    <div className="mt-2 text-base text-center">
                       Didn't get your activation email?{" "}
                       <Link
                         href="/account_activations/new"

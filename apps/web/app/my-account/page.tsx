@@ -25,13 +25,13 @@ export default function MyAccountPage() {
             <div>
               <h1 className="text-3xl font-bold">HI {userData.value?.name?.toUpperCase() || "MANH"}</h1>
               <div className="flex items-center mt-2">
-                <span className="text-sm text-gray-600 mr-2">👑</span>
-                <span className="text-sm text-gray-600">0 points to spend</span>
+                <span className="text-base text-gray-600 mr-2">👑</span>
+                <span className="text-base text-gray-600">0 points to spend</span>
               </div>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold">adiclub</div>
-              <div className="text-sm">LEVEL 1</div>
+              <div className="text-base">LEVEL 1</div>
             </div>
           </div>
 
@@ -90,7 +90,7 @@ export default function MyAccountPage() {
                       </button>
                     </div>
                     <h3 className="font-medium mb-1">Product Name</h3>
-                    <p className="text-gray-600 text-sm mb-2">Category</p>
+                    <p className="text-gray-600 text-base mb-2">Category</p>
                     <p className="font-bold">$120.00</p>
                   </div>
                 ))}

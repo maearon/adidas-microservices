@@ -159,7 +159,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
               <ul className={`pl-4 pb-4 space-y-2 ${openCategory === category ? "block" : "hidden"}`}>
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
-                    <a href="#" className="text-sm text-gray-600 hover:underline">
+                    <a href="#" className="text-base text-gray-600 hover:underline">
                       {item}
                     </a>
                   </li>
@@ -177,7 +177,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
               <ul className="space-y-2">
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
-                    <a href="#" className="text-sm text-gray-600 hover:underline">
+                    <a href="#" className="text-base text-gray-600 hover:underline">
                       {item}
                     </a>
                   </li>
@@ -197,7 +197,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
             <ul className="space-y-2">
               {items.map((item, index) => (
                 <li key={index}>
-                  <a href="#" className="text-sm text-gray-600 hover:underline">
+                  <a href="#" className="text-base text-gray-600 hover:underline">
                     {item}
                   </a>
                 </li>
@@ -219,7 +219,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
                     expandedSections.includes(section) ? "bg-gray-100" : ""
                   }`}
                 >
-                  <span className="font-semibold text-sm capitalize">{section}</span>
+                  <span className="font-semibold text-base capitalize">{section}</span>
                   {expandedSections.includes(section) ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
@@ -236,7 +236,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
                       <li key={index}>
                         <a
                           href="#"
-                          className="block text-sm text-gray-600 hover:text-black transition-colors"
+                          className="block text-base text-gray-600 hover:text-black transition-colors"
                         >
                           {item}
                         </a>

@@ -27,11 +27,7 @@ export const useSearchProductsFeed = (query: string) => {
     retry: (failureCount, error: any) => {
       if (error?.code === "ERR_NETWORK") return false;
       return failureCount < 1;
-    },
-    staleTime: CACHE_TTL,
-    gcTime: CACHE_TTL * 2,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    }
   });
 };
 
@@ -61,17 +57,7 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
     retry: (failureCount, error: any) => {
       if (error?.code === "ERR_NETWORK") return false
       return failureCount < 1
-    },
-    // ⚠️ Disable caching
-    // staleTime: 0,
-    // gcTime: 0,
-    // refetchOnWindowFocus: true,
-    // refetchOnMount: true,
-    // refetchOnReconnect: true,
-    staleTime: CACHE_TTL,
-    gcTime: CACHE_TTL * 2,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    }
   })
 }
 
@@ -96,11 +82,7 @@ export const useProducts = (filters: ProductFilters = {}) => {
     retry: (failureCount, error: any) => {
       if (error?.code === "ERR_NETWORK") return false;
       return failureCount < 1;
-    },
-    staleTime: CACHE_TTL,
-    gcTime: CACHE_TTL * 2,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    }
   });
 };
 

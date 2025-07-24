@@ -36,14 +36,14 @@ function CheckoutFooter() {
   return (
     <footer className="bg-gray-800 text-white py-6 mt-16">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center text-sm">
+        <div className="flex justify-between items-center text-base">
           <div className="flex items-center space-x-4">
             <span>📞 Questions? 1-800-982-9337</span>
             <span>|</span>
             <span>💬 8AM ET - 11PM ET, 7 days a week</span>
           </div>
         </div>
-        <div className="flex justify-between items-center text-sm mt-4">
+        <div className="flex justify-between items-center text-base mt-4">
           <div className="flex items-center space-x-4">
             <span>Your Privacy Choices</span>
             <div className="flex items-center space-x-2">

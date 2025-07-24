@@ -86,7 +86,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
           {/* View all locations link */}
           <button
             onClick={handleViewAllLocations}
-            className="text-sm font-medium text-black underline hover:no-underline mb-8 block"
+            className="text-base font-medium text-black underline hover:no-underline mb-8 block"
           >
             VIEW ALL AVAILABLE LOCATIONS
           </button>

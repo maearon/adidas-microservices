@@ -130,12 +130,12 @@ function SearchPageContent() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-6">
-          <Link href="/" className="flex items-center gap-2 text-sm hover:underline">
+          <Link href="/" className="flex items-center gap-2 text-base hover:underline">
             <ArrowLeft size={16} />
             BACK
           </Link>
           <span className="text-gray-400">/</span>
-          <Link href="/" className="text-sm hover:underline">
+          <Link href="/" className="text-base hover:underline">
             Home
           </Link>
         </div>
@@ -194,8 +194,8 @@ function SearchPageContent() {
               We couldn't find any products matching "{query}". Try adjusting your search terms or filters.
             </p>
             <div className="space-y-2">
-              <p className="text-sm text-gray-500">Suggestions:</p>
-              <ul className="text-sm text-gray-500 space-y-1">
+              <p className="text-base text-gray-500">Suggestions:</p>
+              <ul className="text-base text-gray-500 space-y-1">
                 <li>• Check your spelling</li>
                 <li>• Try more general terms</li>
                 <li>• Use fewer keywords</li>

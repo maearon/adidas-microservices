@@ -134,8 +134,8 @@ export default function SearchResults({ query }: SearchResultsProps) {
             your search terms or filters.
           </p>
           <div className="space-y-2">
-            <p className="text-sm text-gray-500">Suggestions:</p>
-            <ul className="text-sm text-gray-500 space-y-1">
+            <p className="text-base text-gray-500">Suggestions:</p>
+            <ul className="text-base text-gray-500 space-y-1">
               <li>• Check your spelling</li>
               <li>• Try more general terms</li>
               <li>• Use fewer keywords</li>

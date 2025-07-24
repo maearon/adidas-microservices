@@ -18,7 +18,7 @@ export default function HeroBannerThreePanel() {
           <div className="absolute inset-0 bg-black bg-opacity-10"></div>
           <div className="absolute bottom-8 left-8 text-white">
               <h2 className="text-2xl font-bold mb-2">ADIZERO EVO SL</h2>
-              <p className="text-sm mb-4">Fast feels. For the speed of the city.</p>
+              <p className="text-base mb-4">Fast feels. For the speed of the city.</p>
               <Button variant="outline" className="bg-white text-black hover:bg-gray-100 font-bold">
               SHOP NOW →
               </Button>

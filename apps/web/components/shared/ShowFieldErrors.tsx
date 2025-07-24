@@ -4,7 +4,7 @@ interface ShowFieldErrorsProps {
 }
 
 const ShowFieldErrors = ({ errors }: ShowFieldErrorsProps) => (
-  <ul className="text-sm text-red-600 mt-1 space-y-1">
+  <ul className="text-base text-red-600 mt-1 space-y-1">
     {errors.map((error, idx) => (
       <li key={idx}>• {error}</li>
     ))}

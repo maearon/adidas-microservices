@@ -82,7 +82,7 @@ export default function MobileSearchOverlay({
               autoFocus
             />
             {searchQuery && (
-              <button type="button" onClick={handleClear} className="ml-2 text-gray-500 text-sm">
+              <button type="button" onClick={handleClear} className="ml-2 text-gray-500 text-base">
                 clear
               </button>
             )}
@@ -98,12 +98,12 @@ export default function MobileSearchOverlay({
               className="flex items-center justify-between w-full py-3 text-left hover:bg-gray-50"
             >
               <span className="font-medium">{suggestion.term}</span>
-              <span className="text-gray-500 text-sm">{suggestion.count}</span>
+              <span className="text-gray-500 text-base">{suggestion.count}</span>
             </button>
           ))}
 
           {searchQuery && filteredSuggestions.length > 0 && (
-            <button onClick={() => handleSuggestionClick(searchQuery)} className="mt-4 text-blue-600 text-sm">
+            <button onClick={() => handleSuggestionClick(searchQuery)} className="mt-4 text-blue-600 text-base">
               See all "{searchQuery}"
             </button>
           )}

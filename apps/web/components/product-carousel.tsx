@@ -63,9 +63,9 @@ export default function ProductCarousel({
       <section className="container mx-auto px-0 py-0">
         {title && (
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
+            <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
               {title}
-            </h2>
+            </h3>
           </div>
         )}
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
@@ -75,7 +75,7 @@ export default function ProductCarousel({
           <div className="col-span-full flex justify-center">
             {/* <BaseButton
               variant="outline"
-              className="rounded-none border border-black text-black font-bold hover:bg-gray-100 text-sm px-6 py-0 leading-none"
+              className="rounded-none border border-black text-black font-bold hover:bg-gray-100 text-base px-6 py-0 leading-none"
               onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
             >
               VIEW ALL
@@ -83,7 +83,7 @@ export default function ProductCarousel({
             <div className="col-span-full">
               <BaseButton
                 variant="outline"
-                className="w-full rounded-none border border-black text-black font-bold hover:bg-gray-100 text-sm px-6 py-3 leading-none text-left"
+                className="w-full rounded-none border border-black text-black font-bold hover:bg-gray-100 text-base px-6 py-3 leading-none text-left"
                 onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
               >
                 VIEW ALL
@@ -100,12 +100,12 @@ export default function ProductCarousel({
   const offset = `-${(100 / products.length) * itemsPerView * currentSlide}%`
 
   return (
-    <section className="container mx-auto py-0">
+    <section className="container mx-auto px-4 py-0">
       {title && (
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
+          <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
             {title}
-          </h2>
+          </h3>
         </div>
       )}
 
@@ -114,7 +114,7 @@ export default function ProductCarousel({
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
-        <div className="relative">
+        <div className="relative min-h-[330px]">
           <motion.div
             ref={containerRef}
             className="flex gap-0 md:gap-2 transition-transform duration-700 ease-in-out will-change-transform px-0 md:px-0"

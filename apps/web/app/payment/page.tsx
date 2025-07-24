@@ -169,49 +169,49 @@ export default function CheckoutPaymentPage() {
                 {values.paymentMethod === "credit-card" && (
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">CARD NUMBER *</label>
+                      <label className="block text-base font-medium mb-2">CARD NUMBER *</label>
                       <Field
                         name="cardNumber"
                         type="text"
                         placeholder="1234 5678 9012 3456"
                         className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="cardNumber" component="div" className="text-red-600 text-sm mt-1" />
+                      <ErrorMessage name="cardNumber" component="div" className="text-red-600 text-base mt-1" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">EXPIRY DATE *</label>
+                        <label className="block text-base font-medium mb-2">EXPIRY DATE *</label>
                         <Field
                           name="expiryDate"
                           type="text"
                           placeholder="MM/YY"
                           className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
-                        <ErrorMessage name="expiryDate" component="div" className="text-red-600 text-sm mt-1" />
+                        <ErrorMessage name="expiryDate" component="div" className="text-red-600 text-base mt-1" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">CVV *</label>
+                        <label className="block text-base font-medium mb-2">CVV *</label>
                         <Field
                           name="cvv"
                           type="text"
                           placeholder="123"
                           className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                         />
-                        <ErrorMessage name="cvv" component="div" className="text-red-600 text-sm mt-1" />
+                        <ErrorMessage name="cvv" component="div" className="text-red-600 text-base mt-1" />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">CARDHOLDER NAME *</label>
+                      <label className="block text-base font-medium mb-2">CARDHOLDER NAME *</label>
                       <Field
                         name="cardholderName"
                         type="text"
                         placeholder="John Doe"
                         className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="cardholderName" component="div" className="text-red-600 text-sm mt-1" />
+                      <ErrorMessage name="cardholderName" component="div" className="text-red-600 text-base mt-1" />
                     </div>
                   </div>
                 )}
@@ -221,7 +221,7 @@ export default function CheckoutPaymentPage() {
                   <h3 className="font-bold mb-4">BILLING ADDRESS</h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">STREET ADDRESS *</label>
+                      <label className="block text-base font-medium mb-2">STREET ADDRESS *</label>
                       <Field
                         name="billingAddress.street"
                         type="text"
@@ -230,13 +230,13 @@ export default function CheckoutPaymentPage() {
                       <ErrorMessage
                         name="billingAddress.street"
                         component="div"
-                        className="text-red-600 text-sm mt-1"
+                        className="text-red-600 text-base mt-1"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">CITY *</label>
+                        <label className="block text-base font-medium mb-2">CITY *</label>
                         <Field
                           name="billingAddress.city"
                           type="text"
@@ -245,12 +245,12 @@ export default function CheckoutPaymentPage() {
                         <ErrorMessage
                           name="billingAddress.city"
                           component="div"
-                          className="text-red-600 text-sm mt-1"
+                          className="text-red-600 text-base mt-1"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">ZIP CODE *</label>
+                        <label className="block text-base font-medium mb-2">ZIP CODE *</label>
                         <Field
                           name="billingAddress.zipCode"
                           type="text"
@@ -259,13 +259,13 @@ export default function CheckoutPaymentPage() {
                         <ErrorMessage
                           name="billingAddress.zipCode"
                           component="div"
-                          className="text-red-600 text-sm mt-1"
+                          className="text-red-600 text-base mt-1"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">COUNTRY *</label>
+                      <label className="block text-base font-medium mb-2">COUNTRY *</label>
                       <Field
                         as="select"
                         name="billingAddress.country"
@@ -278,7 +278,7 @@ export default function CheckoutPaymentPage() {
                       <ErrorMessage
                         name="billingAddress.country"
                         component="div"
-                        className="text-red-600 text-sm mt-1"
+                        className="text-red-600 text-base mt-1"
                       />
                     </div>
                   </div>
@@ -307,9 +307,9 @@ export default function CheckoutPaymentPage() {
                   <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-16 h-16 object-cover" />
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-600">{item.color}</p>
-                    <p className="text-sm text-gray-600">Size: {item.size}</p>
-                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                    <p className="text-base text-gray-600">{item.color}</p>
+                    <p className="text-base text-gray-600">Size: {item.size}</p>
+                    <p className="text-base text-gray-600">Qty: {item.quantity}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">

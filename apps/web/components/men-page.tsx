@@ -68,17 +68,17 @@ export default function MenPage({ onNavigate }: Props) {
 
             {/* Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <button className="text-sm font-medium hover:underline">SHOES</button>
+              <button className="text-base font-medium hover:underline">SHOES</button>
               <button
-                className="text-sm font-medium hover:underline border-b-2 border-black"
+                className="text-base font-medium hover:underline border-b-2 border-black"
                 onClick={() => onNavigate("men")}
               >
                 MEN
               </button>
-              <button className="text-sm font-medium hover:underline">WOMEN</button>
-              <button className="text-sm font-medium hover:underline">KIDS</button>
-              <button className="text-sm font-medium hover:underline">SALE</button>
-              <button className="text-sm font-medium hover:underline">NEW & TRENDING</button>
+              <button className="text-base font-medium hover:underline">WOMEN</button>
+              <button className="text-base font-medium hover:underline">KIDS</button>
+              <button className="text-base font-medium hover:underline">SALE</button>
+              <button className="text-base font-medium hover:underline">NEW & TRENDING</button>
             </nav>
 
             {/* Right side */}
@@ -107,7 +107,7 @@ export default function MenPage({ onNavigate }: Props) {
             <div className="absolute inset-0 bg-black bg-opacity-20"></div>
             <div className="absolute bottom-8 left-8 text-white">
               <h2 className="text-2xl font-bold mb-2">ADIZERO EVO SL</h2>
-              <p className="text-sm mb-4">Fast feels. For the speed of the city.</p>
+              <p className="text-base mb-4">Fast feels. For the speed of the city.</p>
               <Button variant="outline" className="bg-white text-black hover:bg-gray-100">
                 SHOP NOW
               </Button>
@@ -164,7 +164,7 @@ export default function MenPage({ onNavigate }: Props) {
               </div>
               <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
                 <h3 className="font-bold text-xl mb-2">{tile.title}</h3>
-                <p className="text-sm mb-4">{tile.description}</p>
+                <p className="text-base mb-4">{tile.description}</p>
                 <Button variant="outline" size="sm" className="w-fit bg-white text-black hover:bg-gray-100">
                   {tile.cta}
                 </Button>
@@ -218,7 +218,7 @@ export default function MenPage({ onNavigate }: Props) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="font-bold mb-4">MEN'S CLOTHING</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Hoodies
@@ -243,7 +243,7 @@ export default function MenPage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">MEN'S SHOES</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Lifestyle Sneakers
@@ -268,7 +268,7 @@ export default function MenPage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">MEN'S ACCESSORIES</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Men's Bags
@@ -293,7 +293,7 @@ export default function MenPage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">MEN'S COLLECTIONS</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Men's Soccer

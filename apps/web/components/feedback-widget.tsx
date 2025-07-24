@@ -39,7 +39,7 @@ export default function FeedbackWidget() {
         className={cn(
           "fixed right-0 top-1/2 z-40 -translate-y-1/2 rotate-180",
           "bg-gray-300 text-black border border-current transition-colors",
-          "px-6 py-3 text-sm font-bold tracking-wider",
+          "px-2 sm:px-6 py-1 sm:py-3 text-base font-bold tracking-wider",
         )}
         style={{
           writingMode: "vertical-rl",
@@ -78,17 +78,17 @@ export default function FeedbackWidget() {
               <h2 className="text-2xl font-bold">YOUR EXPERIENCE</h2>
 
               <div className="space-y-2">
-                <a href="#" className="inline-block text-sm font-medium underline hover:no-underline">
+                <a href="#" className="inline-block text-base font-medium underline hover:no-underline">
                   GET HELP
                 </a>
               </div>
 
-              <p className="text-sm leading-relaxed">
+              <p className="text-base leading-relaxed">
                 Don't hold back. Good or bad - <span className="font-semibold">tell it like it is</span>.
               </p>
 
               <div className="space-y-4">
-                <p className="text-sm font-medium">
+                <p className="text-base font-medium">
                   How likely are you to recommend <span className="font-bold">adidas.com</span> to a friend?{" "}
                   <span className="text-red-500">*</span>
                 </p>
@@ -122,7 +122,7 @@ export default function FeedbackWidget() {
                 onClick={handleSubmit}
                 disabled={rating === null}
                 className={cn(
-                  "w-full py-3 px-6 text-sm font-bold text-white",
+                  "w-full py-3 px-6 text-base font-bold text-white",
                   "bg-black hover:bg-gray-800 disabled:bg-gray-300",
                   "disabled:cursor-not-allowed transition-colors",
                   "flex items-center justify-center space-x-2",

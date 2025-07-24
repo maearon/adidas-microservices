@@ -163,7 +163,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
         <BaseButton onClick={() => refetch()} variant="default">
           Retry
         </BaseButton>
-        <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-sm text-gray-500">
+        <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-base text-gray-500">
           ← Go Back
         </BaseButton>
       </div>
@@ -216,7 +216,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
         <div className="border-b bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm font-medium">Applied Filters:</span>
+              <span className="text-base font-medium">Applied Filters:</span>
               {Object.entries(queryParams).map(([key, value]) => {
                 if (key === "slug" || key === "page") return null
                 if (typeof value === "string" && value.includes(",")) {
@@ -234,7 +234,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
                   </Badge>
                 )
               })}
-              <button onClick={clearAllFilters} className="text-sm text-gray-500 hover:text-black underline ml-2">
+              <button onClick={clearAllFilters} className="text-base text-gray-500 hover:text-black underline ml-2">
                 Clear All
               </button>
             </div>

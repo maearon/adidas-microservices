@@ -84,20 +84,20 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
           <div className="bg-white border rounded-lg p-6">
             <div className="mb-6">
               <h2 className="text-xl font-bold mb-2">HI {userData.value?.name?.toUpperCase() || "USER"}</h2>
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-base text-gray-600">
                 <span className="mr-2">🏆</span>
                 <span>0 points to spend</span>
               </div>
             </div>
 
             <nav className="space-y-1">
-              <h3 className="font-bold text-sm mb-4">ACCOUNT OVERVIEW</h3>
+              <h3 className="font-bold text-base mb-4">ACCOUNT OVERVIEW</h3>
               {accountMenuItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center px-3 py-2 text-sm rounded hover:bg-gray-100 transition-colors",
+                    "flex items-center px-3 py-2 text-base rounded hover:bg-gray-100 transition-colors",
                     pathname === item.href ? "bg-gray-100 font-medium" : "",
                   )}
                 >
@@ -116,7 +116,7 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
                     }
                     router.push("/")
                   }}
-                  className="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded w-full text-left"
+                  className="flex items-center px-3 py-2 text-base text-red-600 hover:bg-red-50 rounded w-full text-left"
                 >
                   <span className="mr-3" onClick={handleLogoutWithToLogin}>🚪</span>
                   Log out

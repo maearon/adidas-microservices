@@ -54,7 +54,7 @@ const New: NextPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="user_email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="user_email" className="block text-base font-medium text-gray-700">
               Email address
             </label>
             <input

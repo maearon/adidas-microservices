@@ -22,7 +22,7 @@ export default function CheckoutHeader() {
             <Link href="/" className="text-2xl font-bold">
               adidas
             </Link>
-            <span className="text-sm font-medium">HI, {userName.toUpperCase()}!</span>
+            <span className="text-base font-medium">HI, {userName.toUpperCase()}!</span>
           </div>
 
           {/* Right side - Cart and adiClub */}
@@ -35,7 +35,7 @@ export default function CheckoutHeader() {
                 </span>
               )}
             </Link>
-            <span className="text-sm font-medium">adiClub</span>
+            <span className="text-base font-medium">adiClub</span>
           </div>
         </div>
       </div>

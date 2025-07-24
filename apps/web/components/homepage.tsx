@@ -92,14 +92,14 @@ export default function Homepage({ onNavigate }: Props) {
 
             {/* Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <button className="text-sm font-medium hover:underline">SHOES</button>
-              <button className="text-sm font-medium hover:underline cursor-pointer" onClick={() => onNavigate("men")}>
+              <button className="text-base font-medium hover:underline">SHOES</button>
+              <button className="text-base font-medium hover:underline cursor-pointer" onClick={() => onNavigate("men")}>
                 MEN
               </button>
-              <button className="text-sm font-medium hover:underline">WOMEN</button>
-              <button className="text-sm font-medium hover:underline">KIDS</button>
-              <button className="text-sm font-medium hover:underline">SALE</button>
-              <button className="text-sm font-medium hover:underline">NEW & TRENDING</button>
+              <button className="text-base font-medium hover:underline">WOMEN</button>
+              <button className="text-base font-medium hover:underline">KIDS</button>
+              <button className="text-base font-medium hover:underline">SALE</button>
+              <button className="text-base font-medium hover:underline">NEW & TRENDING</button>
             </nav>
 
             {/* Right side */}
@@ -154,7 +154,7 @@ export default function Homepage({ onNavigate }: Props) {
             <Badge variant="secondary">New Arrivals</Badge>
             <Badge variant="outline">Best Sellers</Badge>
           </div>
-          <Button variant="link" className="text-sm">
+          <Button variant="link" className="text-base">
             VIEW ALL
           </Button>
         </div>
@@ -172,7 +172,7 @@ export default function Homepage({ onNavigate }: Props) {
                   <Heart className="absolute top-4 right-4 h-5 w-5 cursor-pointer" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">{product.category}</p>
+                  <p className="text-base text-gray-600 mb-1">{product.category}</p>
                   <h3 className="font-medium mb-2">{product.name}</h3>
                   <p className="font-bold">{product.price}</p>
                 </div>
@@ -197,8 +197,8 @@ export default function Homepage({ onNavigate }: Props) {
               </div>
               <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
                 <h3 className="font-bold text-lg mb-1">{tile.title}</h3>
-                {tile.subtitle && <p className="text-sm mb-2">{tile.subtitle}</p>}
-                <p className="text-sm mb-4">{tile.description}</p>
+                {tile.subtitle && <p className="text-base mb-2">{tile.subtitle}</p>}
+                <p className="text-base mb-4">{tile.description}</p>
                 <Button variant="outline" size="sm" className="w-fit bg-white text-black hover:bg-gray-100">
                   {tile.cta}
                 </Button>
@@ -226,7 +226,7 @@ export default function Homepage({ onNavigate }: Props) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="font-bold mb-4">PRODUCTS</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Shoes
@@ -251,7 +251,7 @@ export default function Homepage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">SPORTS</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Soccer
@@ -276,7 +276,7 @@ export default function Homepage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">COLLECTIONS</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Ultraboost
@@ -301,7 +301,7 @@ export default function Homepage({ onNavigate }: Props) {
             </div>
             <div>
               <h3 className="font-bold mb-4">SUPPORT</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
                     Help
@@ -332,7 +332,7 @@ export default function Homepage({ onNavigate }: Props) {
       <div className="bg-black text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <div className="text-2xl font-bold mb-4">adidas</div>
-          <p className="text-sm text-gray-400">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</p>
+          <p className="text-base text-gray-400">SNEAKERS, ACTIVEWEAR AND SPORTING GOODS</p>
         </div>
       </div>
     </div>

@@ -104,7 +104,7 @@ export default function SearchFilters({
                       onChange={() => handleFilterChange("sort", option.value)}
                       className="w-4 h-4"
                     />
-                    <label htmlFor={option.value} className="text-sm cursor-pointer">
+                    <label htmlFor={option.value} className="text-base cursor-pointer">
                       {option.label}
                     </label>
                   </div>
@@ -121,8 +121,8 @@ export default function SearchFilters({
             </BaseButton>
             {expandedSections.shipping && (
               <div className="flex items-center gap-2">
-                <span className="text-blue-600 font-bold text-sm">prime</span>
-                <span className="text-sm text-gray-600">(20)</span>
+                <span className="text-blue-600 font-bold text-base">prime</span>
+                <span className="text-base text-gray-600">(20)</span>
               </div>
             )}
           </div>
@@ -144,7 +144,7 @@ export default function SearchFilters({
                         handleFilterChange("gender", checked ? gender.toLowerCase() : undefined)
                       }
                     />
-                    <label htmlFor={gender} className="text-sm cursor-pointer">
+                    <label htmlFor={gender} className="text-base cursor-pointer">
                       {gender}
                     </label>
                   </div>
@@ -170,7 +170,7 @@ export default function SearchFilters({
                         handleFilterChange("category", checked ? category.toLowerCase() : undefined)
                       }
                     />
-                    <label htmlFor={category} className="text-sm cursor-pointer">
+                    <label htmlFor={category} className="text-base cursor-pointer">
                       {category}
                     </label>
                   </div>
@@ -196,7 +196,7 @@ export default function SearchFilters({
                         handleFilterChange("sport", checked ? sport.toLowerCase() : undefined)
                       }
                     />
-                    <label htmlFor={sport} className="text-sm cursor-pointer">
+                    <label htmlFor={sport} className="text-base cursor-pointer">
                       {sport}
                     </label>
                   </div>
@@ -219,7 +219,7 @@ export default function SearchFilters({
                 step={10}
                 className="mb-2"
               />
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-base text-gray-600">
                 <span>${localFilters.min_price || 0}</span>
                 <span>${localFilters.max_price || 500}</span>
               </div>

@@ -89,20 +89,20 @@ export async function GET(req: NextRequest) {
         category: product.category,
         sport: product.sport,
       },
-      take: 4,
+      take: 12,
       include: {
         variants: { take: 1 },
       },
     })
 
     let fallbackProducts: typeof relatedProducts = []
-    if (relatedProducts.length < 4) {
+    if (relatedProducts.length < 12) {
       fallbackProducts = await prisma.products.findMany({
         where: {
           id: { notIn: [product.id, ...relatedProducts.map((p) => p.id)] },
           category: product.category,
         },
-        take: 4 - relatedProducts.length,
+        take: 12 - relatedProducts.length,
         include: {
           variants: { take: 1 },
         },
@@ -134,7 +134,7 @@ export async function GET(req: NextRequest) {
       return {
         id: p.id,
         name: p.name,
-        slug: p.slug,
+        sport: p.sport,
         model_number: p.model_number,
         price: v?.price ?? 0,
         variants: [

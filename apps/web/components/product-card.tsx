@@ -161,7 +161,7 @@ export default function ProductCard({
             className={`space-y-2 px-2 pb-2 mt-auto ${minimalMobile ? "hidden sm:block" : ""}`}
           >
             {/* {product.category && (
-              <p className="text-sm text-gray-600">
+              <p className="text-base text-gray-600">
                 {typeof product.category === "string"
                   ? product.category
                   : String(product?.category ?? "")}
@@ -172,12 +172,12 @@ export default function ProductCard({
             </p>
             <h3 className="font-medium h-5 overflow-hidden">{product.name}</h3>
             {product?.sport && (
-              <p className="text-sm text-gray-600 min-h-5">
+              <p className="text-base text-gray-600 min-h-5">
                 {product?.sport || product?.attribute_list?.brand}
               </p>
             )}
             {product?.tags && (
-              <p className="text-sm text-black min-h-5">
+              <p className="text-base text-black min-h-5">
                 {product?.tags?.[0] || "BEST SELLER"}
               </p>
             )}

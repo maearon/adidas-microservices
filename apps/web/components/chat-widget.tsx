@@ -211,7 +211,7 @@ export default function ChatWidget() {
                 <span className="text-white text-xs font-bold">A</span>
               </div>
               <div className="truncate">
-                <h3 className="font-bold text-sm leading-none truncate">CHAT</h3>
+                <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
                 <p className="text-xs text-gray-500 truncate">
                   adiclub {userLevel} • {isConnected ? 'Online' : 'Connecting...'}
                 </p>
@@ -244,11 +244,11 @@ export default function ChatWidget() {
                         />
                         {!message.user ? (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                            <p className="text-sm text-gray-500 italic">[System message]</p>
+                            <p className="text-base text-gray-500 italic">[System message]</p>
                           </div>
                         ) : (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                            <p className="text-sm">{message.content}</p>
+                            <p className="text-base">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.timestamp.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
@@ -257,14 +257,14 @@ export default function ChatWidget() {
                       </div>
                     ) : (
                       // <div className="bg-black text-white rounded-lg p-3 max-w-xs ml-auto">
-                      //   <p className="text-sm">{message.content}</p>
+                      //   <p className="text-base">{message.content}</p>
                       //   <p className="text-xs text-gray-300 mt-1">
                       //     {message.timestamp.toLocaleTimeString()}
                       //   </p>
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-black text-white rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-sm">{message.content}</p>
+                          <p className="text-base">{message.content}</p>
                           <p className="text-xs text-gray-300 mt-1">
                             {message.timestamp.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
@@ -287,7 +287,7 @@ export default function ChatWidget() {
                       <span className="text-white text-xs font-bold">A</span>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-3">
-                      <p className="text-sm text-gray-500">Typing...</p>
+                      <p className="text-base text-gray-500">Typing...</p>
                     </div>
                   </div>
                 )}

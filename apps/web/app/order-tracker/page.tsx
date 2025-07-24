@@ -68,25 +68,25 @@ export default function OrderTrackerPage() {
             {({ isSubmitting }) => (
               <Form className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">ORDER NUMBER *</label>
+                  <label className="block text-base font-medium mb-2">ORDER NUMBER *</label>
                   <Field
                     name="orderNumber"
                     type="text"
                     placeholder="Enter your order number"
                     className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                   />
-                  <ErrorMessage name="orderNumber" component="div" className="text-red-600 text-sm mt-1" />
+                  <ErrorMessage name="orderNumber" component="div" className="text-red-600 text-base mt-1" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">EMAIL ADDRESS *</label>
+                  <label className="block text-base font-medium mb-2">EMAIL ADDRESS *</label>
                   <Field
                     name="email"
                     type="email"
                     placeholder="Enter your email address"
                     className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                   />
-                  <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
+                  <ErrorMessage name="email" component="div" className="text-red-600 text-base mt-1" />
                 </div>
 
                 <button
@@ -111,7 +111,7 @@ export default function OrderTrackerPage() {
                 <div className="flex justify-between">
                   <span className="font-medium">Status:</span>
                   <span
-                    className={`px-2 py-1 rounded text-sm ${
+                    className={`px-2 py-1 rounded text-base ${
                       orderStatus.status === "delivered"
                         ? "bg-green-100 text-green-800"
                         : orderStatus.status === "shipped"

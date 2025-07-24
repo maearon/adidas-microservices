@@ -70,7 +70,7 @@ export default function OrderHistoryPage() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-bold">Order #{order.order_number}</h3>
-                  <p className="text-sm text-gray-600">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
+                  <p className="text-base text-gray-600">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold">${order.total.toFixed(2)}</p>
@@ -100,13 +100,13 @@ export default function OrderHistoryPage() {
                           className="w-12 h-12 object-cover"
                         />
                         <div>
-                          <p className="text-sm font-medium">{item.name}</p>
+                          <p className="text-base font-medium">{item.name}</p>
                           <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
                         </div>
                       </div>
                     ))}
                     {order.items.length > 2 && (
-                      <p className="text-sm text-gray-600">+{order.items.length - 2} more items</p>
+                      <p className="text-base text-gray-600">+{order.items.length - 2} more items</p>
                     )}
                   </div>
                 </div>
@@ -115,11 +115,11 @@ export default function OrderHistoryPage() {
                   <div className="space-y-2">
                     <Link
                       href={`/order-tracker?order=${order.order_number}`}
-                      className="text-black underline text-sm font-medium"
+                      className="text-black underline text-base font-medium"
                     >
                       Track Order
                     </Link>
-                    <Link href={`/my-account/orders/${order.id}`} className="text-black underline text-sm font-medium">
+                    <Link href={`/my-account/orders/${order.id}`} className="text-black underline text-base font-medium">
                       View Details
                     </Link>
                   </div>

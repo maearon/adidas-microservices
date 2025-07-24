@@ -180,13 +180,13 @@ export default function ImageLightbox({
 
       {/* Instructions */}
       {/* <div className="absolute bottom-4 right-4 flex gap-2"> */}
-      {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-sm text-black"> */}
-      <div className="absolute bottom-4 left-4 bg-gray-100 px-3 py-2 rounded-none text-sm text-black">
+      {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-base text-black"> */}
+      <div className="absolute bottom-4 left-4 bg-gray-100 px-3 py-2 rounded-none text-base text-black">
         Click to {zoom === 1 ? "zoom in" : "zoom out"} • {zoom > 1 && "Drag to pan • "}ESC to close
       </div>
 
       {/* Image Counter */}
-      <div className="absolute top-4 left-4 bg-gray-100 px-3 py-1 rounded-none text-sm text-black">
+      <div className="absolute top-4 left-4 bg-gray-100 px-3 py-1 rounded-none text-base text-black">
         {currentIndex + 1} / {images.length}
       </div>
 

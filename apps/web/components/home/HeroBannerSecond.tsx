@@ -16,7 +16,7 @@ export default function HeroBannerSecond() {
             <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
               PAST, PRESENT, FUTURE
             </h1>
-            <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
+            <p className="bg-white text-black text-xs sm:text-base px-1.5 py-0.5 w-fit leading-snug">
               Explore the Superstar, now updated for the next generation.
             </p>
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
@@ -50,7 +50,7 @@ export default function HeroBannerSecond() {
                 fullWidth={false}
                 variant="outline"
                 onClick={() => setShowVideo(true)}
-                showArrow
+                showArrow={false}
                 sizeClass="h-8 px-3"
                 className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
               >

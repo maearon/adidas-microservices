@@ -117,11 +117,11 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
           {/* Cột đầu tiên - NEW & TRENDING hoặc FEATURED */}
           {menuData[0] && (
             <div className="space-y-4 pr-6 border-r border-gray-200 col-span-1">
-              <h3 className="font-bold text-sm">{menuData[0].title}</h3>
+              <h3 className="font-bold text-base">{menuData[0].title}</h3>
               <ul className="space-y-2">
                 {menuData[0].items.map((item, itemIndex) => (
                   <li key={itemIndex}>
-                    <Link href={item.href} className="text-sm hover:underline">
+                    <Link href={item.href} className="text-base hover:underline">
                       {item.name}
                     </Link>
                   </li>
@@ -146,7 +146,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               {/* {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && ["CLOTHING", "SHOP BY AGE"].includes(menuData[0].title) && (
                 {shopbycolor[0].items.map((item, itemIndex) => (
                   <li key={itemIndex}>
-                    <Link href={item.href} className="text-sm hover:underline">
+                    <Link href={item.href} className="text-base hover:underline">
                       {item.name}
                     </Link>
                   </li>
@@ -159,7 +159,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
           <div className="col-span-5 grid grid-cols-5 gap-8">
             {menuData.slice(1).map((category, index) => (
               <div key={index} className="space-y-4">
-                <h3 className="font-bold text-sm">
+                <h3 className="font-bold text-base">
                   {category.titleHref ? (
                     <Link href={category.titleHref} className="hover:underline">
                       {category.title}
@@ -171,7 +171,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                 <ul className="space-y-2">
                   {category.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <Link href={item.href} className="text-sm hover:underline">
+                      <Link href={item.href} className="text-base hover:underline">
                         {item.name}
                       </Link>
                     </li>
@@ -182,7 +182,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                 {["CLOTHING", "SHOP BY AGE"].includes(category.title.toUpperCase()) &&
                   ["MEN", "WOMEN", "KIDS"].includes(activeMenu) && (
                     <div className="pt-4">
-                      <h3 className="font-bold text-sm mb-2">
+                      <h3 className="font-bold text-base mb-2">
                         <Link
                           href={getShopByColorItems(activeMenu.toLowerCase())[0].href}
                           className="hover:underline"
@@ -190,11 +190,11 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                           SHOP BY COLOR 🌸
                         </Link>
                       </h3>
-                      {/* <h4 className="text-sm font-semibold mb-2">Shop by Color 🌸</h4> */}
+                      {/* <h4 className="text-base font-semibold mb-2">Shop by Color 🌸</h4> */}
                       {/* <ul className="space-y-1">
                         {getShopByColorItems(activeMenu.toLowerCase()).map((colorItem, colorIndex) => (
                           <li key={colorIndex}>
-                            <Link href={colorItem.href} className="text-sm hover:underline">
+                            <Link href={colorItem.href} className="text-base hover:underline">
                               {colorItem.name}
                             </Link>
                           </li>
@@ -214,7 +214,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
             <Link
               key={index}
               href={link.href}
-              className="text-sm font-medium hover:underline"
+              className="text-base font-medium hover:underline"
             >
               {link.name}
             </Link>

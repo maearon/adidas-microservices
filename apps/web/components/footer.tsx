@@ -115,7 +115,7 @@ export default function Footer() {
       {/* <section className="sm:hidden bg-white py-6 border-t">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-lg font-bold mb-2">YOUR OPINION COUNTS</h2>
-          <p className="text-sm text-gray-600 mb-6">We strive to serve you better and appreciate your feedback</p>
+          <p className="text-base text-gray-600 mb-6">We strive to serve you better and appreciate your feedback</p>
         </div>
       </section> */}
 
@@ -123,7 +123,7 @@ export default function Footer() {
       <section className="sm:hidden bg-gray-100 py-4">
         <div className="container mx-auto px-4">
           <h3 className="text-base font-bold mb-1">YOUR OPINION COUNTS</h3>
-          <p className="text-sm text-gray-600">We strive to serve you better and appreciate your feedback</p>
+          <p className="text-base text-gray-600">We strive to serve you better and appreciate your feedback</p>
         </div>
       </section>
 
@@ -167,12 +167,12 @@ export default function Footer() {
           <div className="hidden md:grid grid-cols-6 gap-8 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
             {Object.entries(footerSections).map(([section, items]) => (
               <div key={section}>
-                <h3 className="font-bold mb-4 text-sm">{section}</h3>
+                <h3 className="font-bold mb-4 text-base">{section}</h3>
                 <ul className="space-y-2">
                   {items.map((item, index) => (
                     <li key={index}>
                       {item ? (
-                        <a href="#" className="text-sm text-gray-300 hover:text-white hover:underline">
+                        <a href="#" className="text-base text-gray-300 hover:text-white hover:underline">
                           {item}
                         </a>
                       ) : (
@@ -186,7 +186,7 @@ export default function Footer() {
 
             {/* Follow Us Column */}
             <div>
-              <h3 className="font-bold mb-4 text-sm">FOLLOW US</h3>
+              <h3 className="font-bold mb-4 text-base">FOLLOW US</h3>
               <div className="space-y-3">
                 {socialIcons.map((social, index) => {
                   const IconComponent = social.icon
@@ -214,7 +214,7 @@ export default function Footer() {
               <div className="flex justify-center">
                 <Link
                   href={user?.email ? "/my-account" : "/account-login"}
-                  className="font-bold text-sm"
+                  className="font-bold text-base"
                 >
                   {user?.email ? "My Account" : "Login"}
                 </Link>
@@ -222,7 +222,7 @@ export default function Footer() {
               <div className="flex justify-center">
                 <Link
                   href="/cart"
-                  className="font-bold text-sm"
+                  className="font-bold text-base"
                 >
                   Your bag ({cartItemsCount})
                 </Link>
@@ -254,7 +254,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {mobileFooterSections["My account"].map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="text-sm text-gray-300 hover:text-white">
+                    <a href="#" className="text-base text-gray-300 hover:text-white">
                       {item}
                     </a>
                   </li>
@@ -263,7 +263,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {mobileFooterSections["Your bag (2)"].map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="text-sm text-gray-300 hover:text-white">
+                    <a href="#" className="text-base text-gray-300 hover:text-white">
                       {item}
                     </a>
                   </li>
@@ -278,7 +278,7 @@ export default function Footer() {
       {/* Bottom Footer */}
       <div className="bg-black text-white py-6 border-t border-gray-700">
         <div className="container mx-auto pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-base">
             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
               <div className="flex items-center gap-2">
                 <span>Your Privacy Choices</span>
@@ -300,7 +300,7 @@ export default function Footer() {
 
             {/* Country Selector */}
             {mounted && (
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-2 text-base">
                 <Image
                   src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
                   alt={`${localeDisplayMap[locale]} Flag`}
@@ -314,7 +314,7 @@ export default function Footer() {
           </div>
 
           <div className="mt-4 text-center md:text-left">
-            <div className="text-gray-400 text-sm">© 2025 adidas America, Inc.</div>
+            <div className="text-gray-400 text-base">© 2025 adidas America, Inc.</div>
           </div>
         </div>
       </div>

@@ -119,9 +119,9 @@ export default function HomePage() {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
             <Badge className="bg-black text-white">New Arrivals</Badge>
-            <span className="text-sm text-gray-600">Best Sellers</span>
+            <span className="text-base text-gray-600">Best Sellers</span>
           </div>
-          <Button variant="link" className="text-sm font-bold">
+          <Button variant="link" className="text-base font-bold">
             VIEW ALL
           </Button>
         </div>
@@ -155,8 +155,8 @@ export default function HomePage() {
               </div>
               <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
                 <h3 className="font-bold text-lg mb-1">{title.title}</h3>
-                {title.subtitle && <p className="text-sm mb-2">{title.subtitle}</p>}
-                <p className="text-sm mb-4">{title.description}</p>
+                {title.subtitle && <p className="text-base mb-2">{title.subtitle}</p>}
+                <p className="text-base mb-4">{title.description}</p>
                 <Button variant="outline" size="sm" className="border border-black text-black font-bold px-2 py-1 text-[11px] sm:text-xs rounded-none hover:bg-gray-100 transition w-fit">
                   {title.cta}
                 </Button>
@@ -230,8 +230,8 @@ export default function HomePage() {
                   alt={resource.title}
                   className="w-full h-48 object-cover mb-4"
                 />
-                <h3 className="font-bold mb-2 text-sm">{resource.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{resource.description}</p>
+                <h3 className="font-bold mb-2 text-base">{resource.title}</h3>
+                <p className="text-base text-gray-600 leading-relaxed">{resource.description}</p>
               </CardContent>
             </Card>
           ))}
@@ -260,7 +260,7 @@ export default function HomePage() {
             SNEAKERS, ACTIVEWEAR AND SPORTING GOODS
           </h2>
 
-          <div className="max-w-2xl mx-auto text-sm sm:text-md leading-relaxed space-y-4 text-left">
+          <div className="max-w-2xl mx-auto text-base sm:text-md leading-relaxed space-y-4 text-left">
             <p>
               Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for
               men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes

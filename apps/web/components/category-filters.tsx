@@ -36,7 +36,7 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
         <h3 className="font-bold mb-4">Size</h3>
         <div className="grid grid-cols-3 gap-2">
           {sizeOptions.map((size) => (
-            <BaseButton key={size} variant="outline" size="sm" className="h-10 text-sm hover:bg-black hover:text-white">
+            <BaseButton key={size} variant="outline" size="sm" className="h-10 text-base hover:bg-black hover:text-white">
               {size}
             </BaseButton>
           ))}
@@ -63,7 +63,7 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
           {priceRanges.map((range) => (
             <div key={range} className="flex items-center space-x-2">
               <Checkbox id={range} />
-              <label htmlFor={range} className="text-sm cursor-pointer">
+              <label htmlFor={range} className="text-base cursor-pointer">
                 {range}
               </label>
             </div>
@@ -79,7 +79,7 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
             {["Firm Ground", "Artificial Turf", "Indoor", "Multi-Ground"].map((surface) => (
               <div key={surface} className="flex items-center space-x-2">
                 <Checkbox id={surface} />
-                <label htmlFor={surface} className="text-sm cursor-pointer">
+                <label htmlFor={surface} className="text-base cursor-pointer">
                   {surface}
                 </label>
               </div>
@@ -95,7 +95,7 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
           {["Predator", "X", "Copa", "Nemeziz", "F50"].map((collection) => (
             <div key={collection} className="flex items-center space-x-2">
               <Checkbox id={collection} />
-              <label htmlFor={collection} className="text-sm cursor-pointer">
+              <label htmlFor={collection} className="text-base cursor-pointer">
                 {collection}
               </label>
             </div>

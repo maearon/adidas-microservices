@@ -141,7 +141,7 @@ const LoginPage = () => {
                 <p className="text-gray-600 mb-6">
                   Join adiClub for free and enjoy immediate access to these Level 1 rewards:
                 </p>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-base">
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Welcome Bonus Voucher for 15% off</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Free Shipping and Returns</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Members-Only Products</li>
@@ -162,7 +162,7 @@ const LoginPage = () => {
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
                 <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
                 </p>
               </div>
@@ -198,7 +198,7 @@ const LoginPage = () => {
                         placeholder="EMAIL *"
                         className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
-                      <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     <div className="relative">
@@ -219,12 +219,12 @@ const LoginPage = () => {
                           <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
                         )}
                       </button>
-                      <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
                     </div>
 
                     {/* <div className="flex items-center space-x-2">
                       <Field type="checkbox" name="rememberMe" checked={values.rememberMe} />
-                      <label className="text-sm text-gray-600">
+                      <label className="text-base text-gray-600">
                         Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
                       </label>
                     </div> */}
@@ -236,7 +236,7 @@ const LoginPage = () => {
                         checked={values.keepLoggedIn}
                         onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
                       />
-                      <label htmlFor="keepLoggedIn" className="text-sm">
+                      <label htmlFor="keepLoggedIn" className="text-base">
                         Keep me logged in. Applies to all options.{" "}
                         <button type="button" className="underline">
                           More info
@@ -256,10 +256,10 @@ const LoginPage = () => {
                       CONTINUE
                     </Button>
 
-                    <div className="mt-4 text-sm text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 text-center">
                       Don't have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
                     </div>
-                    <div className="mt-2 text-sm text-center">
+                    <div className="mt-2 text-base text-center">
                       Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" target="_blank">Reset it here</Link>
                     </div>
                     {/* Terms */}

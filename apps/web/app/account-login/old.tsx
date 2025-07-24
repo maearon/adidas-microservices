@@ -133,7 +133,7 @@ const LoginPage: NextPage = () => {
                   As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and
                   receive immediate access to these Level 1 benefits:
                 </p>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-base">
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Free shipping</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> A 15% off voucher</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span> Members Only sales</li>
@@ -150,7 +150,7 @@ const LoginPage: NextPage = () => {
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
                 <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
                 </p>
               </div>
@@ -183,7 +183,7 @@ const LoginPage: NextPage = () => {
                         className={`w-full border p-3 rounded ${formErrors.email && touched.email ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-hidden`}
                       />
                       <ErrorMessage name="email">
-                        {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}
+                        {(error) => <div className="text-red-500 text-base mt-1">{error}</div>}
                       </ErrorMessage>
                     </div>
 
@@ -195,13 +195,13 @@ const LoginPage: NextPage = () => {
                         className={`w-full border p-3 rounded ${formErrors.password && touched.password ? "border-red-500" : "border-gray-300"} focus:border-blue-500 focus:outline-hidden`}
                       />
                       <ErrorMessage name="password">
-                        {(error) => <div className="text-red-500 text-sm mt-1">{error}</div>}
+                        {(error) => <div className="text-red-500 text-base mt-1">{error}</div>}
                       </ErrorMessage>
                     </div>
 
                     <div className="flex items-start space-x-2">
                       <Field type="checkbox" name="rememberMe" value="1" className="mt-1" checked={values.rememberMe === "1"} />
-                      <label className="text-sm text-gray-600">
+                      <label className="text-base text-gray-600">
                         Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
                       </label>
                     </div>
@@ -215,14 +215,14 @@ const LoginPage: NextPage = () => {
                       CONTINUE
                     </Button>
 
-                    <div className="mt-4 text-sm text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 text-center">
                       Don't have an account yet?{" "}
                       <Link href="/signup" className="underline text-blue-600">
                         Sign up
                       </Link>
                     </div>
 
-                    <div className="mt-2 text-sm text-center">
+                    <div className="mt-2 text-base text-center">
                       Forgot your password?{" "}
                       <Link
                         href="/password_resets/new"

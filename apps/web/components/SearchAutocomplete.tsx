@@ -30,12 +30,12 @@ export default function SearchAutocomplete({ keyword }: Props) {
               </li>
             ))
           ) : (
-            <li className="text-sm text-gray-400 italic">No suggestions found</li>
+            <li className="text-base text-gray-400 italic">No suggestions found</li>
           )}
         </ul>
         <Link
           href={`/search?q=${encodeURIComponent(keyword)}`}
-          className="block mt-6 text-sm font-semibold text-black underline hover:opacity-80"
+          className="block mt-6 text-base font-semibold text-black underline hover:opacity-80"
         >
           SEE ALL "{keyword.toUpperCase()}"
         </Link>
@@ -64,7 +64,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
             ))}
           </ul>
         ) : (
-          <div className="text-gray-400 text-sm italic">No products found</div>
+          <div className="text-gray-400 text-base italic">No products found</div>
         )}
       </div>
     </div>

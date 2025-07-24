@@ -38,7 +38,7 @@ export default function HistoryView({
             <h2 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
               {title}
             </h2>
-            {/* <Button variant="link" className="text-sm font-bold">
+            {/* <Button variant="link" className="text-base font-bold">
             VIEW ALL
             </Button> */}
         </div>

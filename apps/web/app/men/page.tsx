@@ -130,7 +130,7 @@ export default function MenPage() {
               </div>
 
               {/* Title */}
-              <h3 className="text-black text-sm font-bold underline uppercase text-center">
+              <h3 className="text-black text-base font-bold underline uppercase text-center">
                 {category.title}
               </h3>
             </a>
@@ -172,7 +172,7 @@ export default function MenPage() {
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
           MEN'S SNEAKERS AND WORKOUT CLOTHES
         </h2>
-        <div className="max-w-4xl mx-auto text-sm sm:text-md leading-relaxed space-y-4">
+        <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
             <p>
             Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men's shoes and
             apparel that support your passion and define your style. Whether you're training for a marathon, playing
@@ -204,11 +204,11 @@ export default function MenPage() {
           <div className="grid grid-cols-4 gap-8">
             {Object.entries(menCategories).map(([category, items]) => (
               <div key={category}>
-                <h3 className="font-bold mb-4 text-sm">{category}</h3>
+                <h3 className="font-bold mb-4 text-base">{category}</h3>
                 <ul className="space-y-2">
                   {items.map((item, index) => (
                     <li key={index}>
-                      <a href="#" className="text-sm text-gray-600 hover:underline">
+                      <a href="#" className="text-base text-gray-600 hover:underline">
                         {item}
                       </a>
                     </li>

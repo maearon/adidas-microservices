@@ -122,7 +122,7 @@ export default function KidsPage() {
               </div>
 
               {/* Title */}
-              <h3 className="text-black text-sm font-bold underline uppercase text-center">
+              <h3 className="text-black text-base font-bold underline uppercase text-center">
                 {category.title}
               </h3>
             </a>
@@ -155,7 +155,7 @@ export default function KidsPage() {
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
           Kids' Shoes and Activewear</h2>
-        <div className="max-w-4xl mx-auto text-sm sm:text-md leading-relaxed space-y-4">
+        <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
           <p>
             Aspiring sports stars and busy kids deserve the best. Explore kids' sneakers and sportswear for active girls and boys. Fulfill their sports dreams with matching kids' activewear and warm-ups that fit and feel great from the classroom to the playground, the gym, and home. Enjoy the best selection of comfy kids' clothes and sneakers to keep your young athlete excited to exercise and play their best. Discover the latest trends and heritage adidas styles in kids' athletic clothes, sneakers, cleats and accessories.
           </p>
@@ -187,11 +187,11 @@ export default function KidsPage() {
           <div className="grid grid-cols-4 gap-8">
             {Object.entries(menCategories).map(([category, items]) => (
               <div key={category}>
-                <h3 className="font-bold mb-4 text-sm">{category}</h3>
+                <h3 className="font-bold mb-4 text-base">{category}</h3>
                 <ul className="space-y-2">
                   {items.map((item, index) => (
                     <li key={index}>
-                      <a href="#" className="text-sm text-gray-600 hover:underline">
+                      <a href="#" className="text-base text-gray-600 hover:underline">
                         {item}
                       </a>
                     </li>

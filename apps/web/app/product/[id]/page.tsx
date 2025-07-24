@@ -163,7 +163,7 @@ const ProductDetailPage = () => {
       {/* <Header /> */}
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-600 mb-6">
+        <nav className="text-base text-gray-600 mb-6">
           <span>← Back / Home / Men</span>
         </nav>
 
@@ -212,7 +212,7 @@ const ProductDetailPage = () => {
                   />
                 ))}
               </div>
-              <span className="text-sm">({productRails.reviewCount})</span>
+              <span className="text-base">({productRails.reviewCount})</span>
             </div>
 
             {/* Product Name and Price */}
@@ -231,7 +231,7 @@ const ProductDetailPage = () => {
 
             {/* Member Benefits */}
             <div className="bg-gray-100 p-4 rounded">
-              <p className="font-bold text-sm mb-2">
+              <p className="font-bold text-base mb-2">
                 💳 Popular with guests who bought this product in the last 30 days
               </p>
             </div>
@@ -254,14 +254,14 @@ const ProductDetailPage = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-gray-600 mt-2">Grey Mel / White Melange</p>
+              <p className="text-base text-gray-600 mt-2">Grey Mel / White Melange</p>
             </div>
 
             {/* Sizes */}
             <div>
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-bold mb-3">Sizes</h3>
-                <button className="text-sm underline">Size guide</button>
+                <button className="text-base underline">Size guide</button>
               </div>
               <div className="grid grid-cols-6 gap-2">
                 {product.variants?.[0]?.size?.map((size) => (
@@ -276,8 +276,8 @@ const ProductDetailPage = () => {
                   </button>
                 ))}
               </div>
-              {sizeError && <p className="text-red-600 text-sm mt-2 font-medium">{sizeError}</p>}
-              <button className="text-sm underline mt-2">Size is too big? We recommend ordering one size down</button>
+              {sizeError && <p className="text-red-600 text-base mt-2 font-medium">{sizeError}</p>}
+              <button className="text-base underline mt-2">Size is too big? We recommend ordering one size down</button>
             </div>
 
             {/* Add to Bag */}
@@ -289,7 +289,7 @@ const ProductDetailPage = () => {
                 ADD TO BAG →
               </Button>
 
-              <div className="flex items-center justify-center space-x-4 text-sm">
+              <div className="flex items-center justify-center space-x-4 text-base">
                 <span>Size too big? Try going</span>
                 <button className="underline font-bold">one size down</button>
                 <span>for the best fit.</span>
@@ -300,7 +300,7 @@ const ProductDetailPage = () => {
             {/* Features */}
             <div className="space-y-2">
               {productRails.features.map((feature, index) => (
-                <div key={index} className="flex items-center space-x-2 text-sm">
+                <div key={index} className="flex items-center space-x-2 text-base">
                   <span className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
                     ✓
                   </span>
@@ -310,7 +310,7 @@ const ProductDetailPage = () => {
             </div>
 
             {/* Wishlist Button */}
-            <button onClick={handleToggleWishlist} className="flex items-center space-x-2 text-sm hover:underline">
+            <button onClick={handleToggleWishlist} className="flex items-center space-x-2 text-base hover:underline">
               <Heart size={16} className={isWishlisted ? "fill-black text-black" : "text-gray-600"} />
               <span>{isWishlisted ? "Remove from wishlist" : "Add to wishlist"}</span>
             </button>
@@ -427,7 +427,7 @@ const ProductDetailPage = () => {
                   </div>
                   <div>
                     <p className="font-bold mb-1">{item.price}</p>
-                    <h3 className="text-sm text-gray-700">{item.name}</h3>
+                    <h3 className="text-base text-gray-700">{item.name}</h3>
                   </div>
                 </CardContent>
               </Card>
@@ -448,7 +448,7 @@ const ProductDetailPage = () => {
                   </div>
                   <div>
                     <p className="font-bold mb-1">{item.price}</p>
-                    <h3 className="text-sm text-gray-700">{item.name}</h3>
+                    <h3 className="text-base text-gray-700">{item.name}</h3>
                   </div>
                 </CardContent>
               </Card>

@@ -21,7 +21,7 @@ export const Default: Story = {
         <p>This is the content of the card. You can put anything here.</p>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">Footer area</p>
+        <p className="text-base text-muted-foreground">Footer area</p>
       </CardFooter>
     </Card>
   ),

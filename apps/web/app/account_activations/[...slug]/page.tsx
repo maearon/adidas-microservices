@@ -51,7 +51,7 @@ export default function Edit({ params }: EditProps) {
           <>
             <Loader2 className="mx-auto h-12 w-12 text-gray-600 animate-spin" />
             <h2 className="text-xl font-semibold text-gray-700">Activating your account...</h2>
-            <p className="text-sm text-gray-500">Please wait while we process your activation.</p>
+            <p className="text-base text-gray-500">Please wait while we process your activation.</p>
           </>
         )}
 
@@ -59,7 +59,7 @@ export default function Edit({ params }: EditProps) {
           <>
             <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
             <h2 className="text-xl font-semibold text-green-600">Account Activated</h2>
-            <p className="text-sm text-gray-500">Redirecting to login page...</p>
+            <p className="text-base text-gray-500">Redirecting to login page...</p>
           </>
         )}
 
@@ -67,7 +67,7 @@ export default function Edit({ params }: EditProps) {
           <>
             <AlertTriangle className="mx-auto h-12 w-12 text-red-500" />
             <h2 className="text-xl font-semibold text-red-600">Activation Failed</h2>
-            <p className="text-sm text-gray-500">We couldn’t activate your account. Please try again later.</p>
+            <p className="text-base text-gray-500">We couldn’t activate your account. Please try again later.</p>
           </>
         )}
       </div>

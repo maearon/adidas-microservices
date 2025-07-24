@@ -59,7 +59,7 @@ const Edit = ({ params }: { params: { slug: string[] } }) => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="user_password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="user_password" className="block text-base font-medium text-gray-700 mb-1">
               New Password
             </label>
             <input
@@ -75,7 +75,7 @@ const Edit = ({ params }: { params: { slug: string[] } }) => {
           </div>
 
           <div>
-            <label htmlFor="user_password_confirmation" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="user_password_confirmation" className="block text-base font-medium text-gray-700 mb-1">
               Confirm Password
             </label>
             <input

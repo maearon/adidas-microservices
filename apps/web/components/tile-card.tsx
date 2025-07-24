@@ -42,9 +42,9 @@ export default function TileCard({
 
       {/* Text section */}
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-bold text-sm md:text-base uppercase mb-1">{tile.title}</h3>
-        <p className="text-sm text-gray-700 mb-3">{tile.description}</p>
-        <span className="text-sm font-bold underline underline-offset-4 mt-auto">SHOP NOW</span>
+        <h3 className="font-bold text-base md:text-base uppercase mb-1">{tile.title}</h3>
+        <p className="text-base text-gray-700 mb-3">{tile.description}</p>
+        <span className="text-base font-bold underline underline-offset-4 mt-auto">SHOP NOW</span>
       </div>
     </a>
   )

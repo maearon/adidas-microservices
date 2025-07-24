@@ -18,7 +18,7 @@ function Wrapper({ activeMenu }: { activeMenu: string }) {
   return visible ? (
     <MegaMenu activeMenu={activeMenu} onClose={() => setVisible(false)} />
   ) : (
-    <div className="p-10 text-gray-500 text-sm">Menu closed</div>
+    <div className="p-10 text-gray-500 text-base">Menu closed</div>
   )
 }
 

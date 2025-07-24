@@ -170,7 +170,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Filter & Sort</h2>
             <div className="flex items-center space-x-2">
-              <button onClick={clearAllFilters} className="text-sm text-gray-500 hover:text-gray-700 underline">
+              <button onClick={clearAllFilters} className="text-base text-gray-500 hover:text-gray-700 underline">
                 Clear All
               </button>
               <button onClick={onClose}>
@@ -183,12 +183,12 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
         {/* Applied Filters */}
         {getAppliedFiltersCount() > 0 && (
           <div className="p-4 border-b border-gray-200">
-            <h3 className="text-sm font-medium mb-3">APPLIED FILTERS</h3>
+            <h3 className="text-base font-medium mb-3">APPLIED FILTERS</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(filters).map(([key, value]) => {
                 if (Array.isArray(value) && value.length > 0) {
                   return value.map((item) => (
-                    <div key={`${key}-${item}`} className="flex items-center bg-gray-100 rounded px-2 py-1 text-sm">
+                    <div key={`${key}-${item}`} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
                       <span>{item}</span>
                       <button
                         onClick={() => handleFilterChange(key, item, false)}
@@ -200,7 +200,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                   ))
                 } else if (typeof value === "string" && value) {
                   return (
-                    <div key={key} className="flex items-center bg-gray-100 rounded px-2 py-1 text-sm">
+                    <div key={key} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
                       <span>{value}</span>
                       <button
                         onClick={() => setFilters((prev: any) => ({ ...prev, [key]: undefined }))}
@@ -240,7 +240,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                       onChange={(e) => handleSortChange(e.target.value)}
                       className="w-4 h-4"
                     />
-                    <span className="text-sm">{option}</span>
+                    <span className="text-base">{option}</span>
                   </label>
                 ))}
               </div>
@@ -270,7 +270,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                         checked={(filters.gender || []).includes(option.value)}
                         onCheckedChange={(checked) => handleFilterChange("gender", option.value, checked as boolean)}
                       />
-                      <span className="text-sm">{option.label}</span>
+                      <span className="text-base">{option.label}</span>
                     </div>
                     <span className="text-xs text-gray-500">({option.count})</span>
                   </label>
@@ -294,7 +294,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                   <button
                     key={size}
                     onClick={() => handleFilterChange("size", size, !(filters.size || []).includes(size))}
-                    className={`p-2 text-sm border rounded transition-colors ${
+                    className={`p-2 text-base border rounded transition-colors ${
                       (filters.size || []).includes(size)
                         ? "border-black bg-black text-white"
                         : "border-gray-300 hover:border-gray-500"
@@ -348,7 +348,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
             </button>
             {expandedSections.price && (
               <div className="space-y-4">
-                <div className="text-center text-sm text-gray-600">
+                <div className="text-center text-base text-gray-600">
                   ${priceRange.min} – ${priceRange.max}
                 </div>
                 <div className="flex gap-2">
@@ -392,7 +392,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
             pressEffect={true}
             fullWidth={false}
             onClick={applyFilters}
-            className="w-full bg-black text-white hover:bg-gray-800 py-3 text-sm font-medium"
+            className="w-full bg-black text-white hover:bg-gray-800 py-3 text-base font-medium"
           >
             APPLY ({getAppliedFiltersCount()})
           </Button>

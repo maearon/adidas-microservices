@@ -35,13 +35,13 @@ const ForgotPassword: NextPage = () => {
     <div className="flex items-center justify-center min-h-[80vh] px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Forgot your password?</h2>
-        <p className="text-sm text-gray-600 text-center mb-6">
+        <p className="text-base text-gray-600 text-center mb-6">
           Enter your email and we’ll send you a link to reset your password.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-1">
               Email address
             </label>
             <input

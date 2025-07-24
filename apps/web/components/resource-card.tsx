@@ -47,7 +47,7 @@ export default function ResourceCard({
           {resource.title}
         </h3>
         {resource.description && (
-          <p className="text-sm text-black/70 mt-1 leading-relaxed">
+          <p className="text-base text-black/70 mt-1 leading-relaxed">
             {resource.description}
           </p>
         )}

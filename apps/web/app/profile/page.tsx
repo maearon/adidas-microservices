@@ -73,47 +73,47 @@ export default function ProfilePage() {
           <Form className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium mb-2">FIRST NAME *</label>
+                <label className="block text-base font-medium mb-2">FIRST NAME *</label>
                 <Field
                   name="name"
                   type="text"
                   className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
-                <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1" />
+                <ErrorMessage name="name" component="div" className="text-red-600 text-base mt-1" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">EMAIL *</label>
+                <label className="block text-base font-medium mb-2">EMAIL *</label>
                 <Field
                   name="email"
                   type="email"
                   className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
-                <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
+                <ErrorMessage name="email" component="div" className="text-red-600 text-base mt-1" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">PHONE NUMBER</label>
+                <label className="block text-base font-medium mb-2">PHONE NUMBER</label>
                 <Field
                   name="phone"
                   type="tel"
                   className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
-                <ErrorMessage name="phone" component="div" className="text-red-600 text-sm mt-1" />
+                <ErrorMessage name="phone" component="div" className="text-red-600 text-base mt-1" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">DATE OF BIRTH</label>
+                <label className="block text-base font-medium mb-2">DATE OF BIRTH</label>
                 <Field
                   name="dateOfBirth"
                   type="date"
                   className="w-full border border-gray-300 px-3 py-2 focus:outline-hidden focus:ring-2 focus:ring-black"
                 />
-                <ErrorMessage name="dateOfBirth" component="div" className="text-red-600 text-sm mt-1" />
+                <ErrorMessage name="dateOfBirth" component="div" className="text-red-600 text-base mt-1" />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-2">GENDER</label>
+                <label className="block text-base font-medium mb-2">GENDER</label>
                 <div className="flex space-x-4">
                   <label className="flex items-center">
                     <Field type="radio" name="gender" value="male" className="mr-2" />
@@ -128,7 +128,7 @@ export default function ProfilePage() {
                     Other
                   </label>
                 </div>
-                <ErrorMessage name="gender" component="div" className="text-red-600 text-sm mt-1" />
+                <ErrorMessage name="gender" component="div" className="text-red-600 text-base mt-1" />
               </div>
             </div>
 

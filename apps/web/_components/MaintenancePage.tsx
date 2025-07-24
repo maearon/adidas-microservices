@@ -8,7 +8,7 @@ export default function MaintenancePage() {
         <div className="text-3xl font-bold tracking-wide">adidas</div>
 
         {/* Reference Error */}
-        <p className="text-sm text-gray-600">Reference Error: 18.83e6ab71.1752472560.8c21dccb</p>
+        <p className="text-base text-gray-600">Reference Error: 18.83e6ab71.1752472560.8c21dccb</p>
 
         {/* Main message */}
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase">
@@ -23,7 +23,7 @@ export default function MaintenancePage() {
           {/* Column 1: What caused this */}
           <div>
             <h2 className="text-lg font-semibold mb-2">What could have caused this?</h2>
-            <p className="text-sm sm:text-base text-gray-700">
+            <p className="text-base sm:text-base text-gray-700">
               During high-traffic product releases we have extra security in place to prevent bots
               entering our site. We do this to protect customers and to give everyone a fair chance
               of getting the sneakers. Something in your setup must have triggered our security
@@ -34,7 +34,7 @@ export default function MaintenancePage() {
           {/* Column 2: How can I resolve */}
           <div>
             <h2 className="text-lg font-semibold mb-2">How can I resolve this?</h2>
-            <p className="text-sm sm:text-base text-gray-700">
+            <p className="text-base sm:text-base text-gray-700">
               Please try refreshing or accessing our website from a different browser or another
               device. You could also check if there are any scripts, like ad blockers, running in
               your browser and disable them.
@@ -50,7 +50,7 @@ export default function MaintenancePage() {
         </div>
 
         {/* Footer message */}
-        <p className="text-sm text-gray-500 mt-10">HTTP 403 - Forbidden</p>
+        <p className="text-base text-gray-500 mt-10">HTTP 403 - Forbidden</p>
       </div>
     </div>
   )

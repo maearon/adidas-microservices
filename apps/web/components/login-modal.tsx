@@ -175,14 +175,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Title */}
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-base">
               Enjoy members-only access to exclusive products, experiences, offers and more.
             </p>
           </div>
 
           {/* Social Login Text */}
           <h1 className="text-2xl font-bold mb-2">LOG IN OR SIGN UP</h1>
-          {/* <p className="text-black text-sm">
+          {/* <p className="text-black text-base">
             Enjoy members-only access to exclusive products, experiences, offers and more.
           </p> */}
 
@@ -287,7 +287,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         </div>
                       )}
                     </Field>
-                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                    <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
                   </div>
 
                   {/* Keep me logged in */}
@@ -297,7 +297,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       checked={values.keepLoggedIn}
                       onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
                     />
-                    <label htmlFor="keepLoggedIn" className="text-sm">
+                    <label htmlFor="keepLoggedIn" className="text-base">
                       Keep me logged in. Applies to all options.{" "}
                       <button type="button" className="underline">
                         More info
@@ -421,7 +421,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
             {/* Title + Content */}
             <h2 className="text-xl font-bold mb-2">ACTIVATE YOUR ACCOUNT</h2>
-            <p className="text-black text-sm">
+            <p className="text-black text-base">
               Looks like you already have an account. We’ve sent you an email to activate it and get full access to adiClub benefits.
             </p>
           </div>

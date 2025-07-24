@@ -242,7 +242,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //                 <button
   //                   key={size}
   //                   onClick={() => handleSizeSelect(size)}
-  //                   className={`py-2 border text-sm ${
+  //                   className={`py-2 border text-base ${
   //                     selectedSize === size ? "bg-black text-white" : "hover:border-black"
   //                   }`}
   //                 >
@@ -250,7 +250,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //                 </button>
   //               ))}
   //             </div>
-  //             {sizeError && <p className="text-red-600 text-sm mt-2">{sizeError}</p>}
+  //             {sizeError && <p className="text-red-600 text-base mt-2">{sizeError}</p>}
   //           </div>
 
   //           {/* Buttons */}
@@ -266,7 +266,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //           {/* Features */}
   //           {/* <div className="space-y-2">
   //             {product.features.map((feature, i) => (
-  //               <p key={i} className="text-sm text-gray-600">📦 {feature}</p>
+  //               <p key={i} className="text-base text-gray-600">📦 {feature}</p>
   //             ))}
   //           </div> */}
   //         </div>
@@ -329,7 +329,7 @@ export default function ProductDetailPageClient({ params }: Props) {
       
       <main className="container mx-auto px-4 py-4 lg:py-8">
         {/* Mobile Breadcrumb */}
-        <nav className="lg:hidden text-sm text-gray-600 mb-4 flex items-center">
+        <nav className="lg:hidden text-base text-gray-600 mb-4 flex items-center">
           <Link href="/women-shoes" className="flex items-center">
             <ArrowLeft className="h-4 w-4 mr-2" />
             <span>{productDetails.breadcrumb}</span>
@@ -341,7 +341,7 @@ export default function ProductDetailPageClient({ params }: Props) {
           {/* Left Column - 60% Width - Images with Overlay Elements */}
           <div id="left-column" className="relative mb-8 lg:mb-0 lg:w-[60%] lg:pr-8 lg:border-r lg:border-gray-200">
             {/* Desktop Breadcrumb - Overlay on Image */}
-            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-sm text-gray-700 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-none">
+            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-base text-gray-700 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-none">
               <Link href="/men-soccer-shoes" className="hover:underline">
                 {productDetails.breadcrumb}
               </Link>
@@ -390,7 +390,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                 <div className="hidden lg:block">
                   {/* Gender • Sport + Reviews */}
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-base text-gray-600">
                       {product.gender ? `${product.gender}'s` : ''} 
                       {product.gender && product.sport ? ' • ' : ''}
                       {product.sport}
@@ -409,7 +409,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                           />
                         ))}
                       </div>
-                      <span className="text-sm font-bold">{productDetails.reviewCount}</span>
+                      <span className="text-base font-bold">{productDetails.reviewCount}</span>
                     </div>
                   </div>
 
@@ -422,7 +422,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                     )}
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-6">Promo codes will not apply to this product.</p>
+                  <p className="text-base text-gray-600 mb-6">Promo codes will not apply to this product.</p>
                 </div>
 
 
@@ -457,7 +457,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="font-bold">Sizes</h3>
-                    <button className="text-sm underline flex items-center">
+                    <button className="text-base underline flex items-center">
                       <span className="mr-1">📏</span>
                       Size guide
                     </button>
@@ -467,7 +467,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                       <button
                         key={`${size}-${index}`}
                         onClick={() => handleSizeSelect(size)}
-                        className={`py-3 border text-center font-medium text-sm rounded-none ${
+                        className={`py-3 border text-center font-medium text-base rounded-none ${
                           selectedSize === size
                             ? "border-black bg-black text-white"
                             : "border-gray-300 hover:border-black"
@@ -477,9 +477,9 @@ export default function ProductDetailPageClient({ params }: Props) {
                       </button>
                     ))}
                   </div>
-                  {sizeError && <p className="text-red-600 text-sm mt-2 font-medium">{sizeError}</p>}
+                  {sizeError && <p className="text-red-600 text-base mt-2 font-medium">{sizeError}</p>}
                   <div className="mt-3 p-3 border border-gray-300 rounded-none">
-                    <div className="flex items-center text-sm text-gray-600">
+                    <div className="flex items-center text-base text-gray-600">
                       <span className="mr-2">ℹ️</span>
                       <span>
                         <strong>True to size.</strong> We recommend ordering your usual size.
@@ -506,7 +506,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                   </button>
                 </div>
 
-                <div className="text-center text-sm text-gray-600">
+                <div className="text-center text-base text-gray-600">
                   <p>From $24.24/month, or 4 payments at 0% interest with</p>
                   <button className="underline font-medium">Klarna Learn more</button>
                 </div>
@@ -514,7 +514,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                 {/* Features */}
                 <div className="space-y-2">
                   {productDetails.features.map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-2 text-sm">
+                    <div key={index} className="flex items-center space-x-2 text-base">
                       <span className="text-blue-600">📦</span>
                       <span className="underline">{feature}</span>
                     </div>
@@ -654,7 +654,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-medium text-sm mb-2">{item.name}</h3>
+                  <h3 className="font-medium text-base mb-2">{item.name}</h3>
                   <p className="font-bold">${item.price}</p>
                 </CardContent>
               </Card>
@@ -691,7 +691,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-medium text-sm mb-2">{item.name}</h3>
+                  <h3 className="font-medium text-base mb-2">{item.name}</h3>
                   <p className="font-bold">${item.price}</p>
                 </CardContent>
               </Card>

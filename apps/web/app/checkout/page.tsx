@@ -113,7 +113,7 @@ export default function CheckoutPage() {
           {/* Contact Section */}
           <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
-            <p className="text-sm text-gray-600">{user?.email}</p>
+            <p className="text-base text-gray-600">{user?.email}</p>
           </div>
 
           {/* Address Section */}
@@ -131,7 +131,7 @@ export default function CheckoutPage() {
                     onChange={(e) => handleInputChange("firstName", e.target.value)}
                     className={errors.firstName ? "border-red-500" : ""}
                   />
-                  {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+                  {errors.firstName && <p className="text-red-500 text-base mt-1">{errors.firstName}</p>}
                 </div>
                 <div>
                   <Input
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
                     onChange={(e) => handleInputChange("lastName", e.target.value)}
                     className={errors.lastName ? "border-red-500" : ""}
                   />
-                  {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+                  {errors.lastName && <p className="text-red-500 text-base mt-1">{errors.lastName}</p>}
                 </div>
               </div>
 
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
                   className={errors.address ? "border-red-500" : ""}
                 />
                 <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+                {errors.address && <p className="text-red-500 text-base mt-1">{errors.address}</p>}
               </div>
 
               {/* Phone Field */}
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   className={errors.phone ? "border-red-500" : ""}
                 />
-                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                {errors.phone && <p className="text-red-500 text-base mt-1">{errors.phone}</p>}
               </div>
 
               {/* Checkboxes */}
@@ -175,7 +175,7 @@ export default function CheckoutPage() {
                     checked={formData.saveInfo}
                     onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, saveInfo: !!checked }))}
                   />
-                  <label htmlFor="saveInfo" className="text-sm">
+                  <label htmlFor="saveInfo" className="text-base">
                     Save address and contact information for future orders
                   </label>
                 </div>
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
                     checked={formData.sameAddress}
                     onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, sameAddress: !!checked }))}
                   />
-                  <label htmlFor="sameAddress" className="text-sm font-medium">
+                  <label htmlFor="sameAddress" className="text-base font-medium">
                     Billing and delivery address are the same
                   </label>
                 </div>
@@ -197,7 +197,7 @@ export default function CheckoutPage() {
                     checked={formData.ageVerified}
                     onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, ageVerified: !!checked }))}
                   />
-                  <label htmlFor="ageVerified" className="text-sm font-medium">
+                  <label htmlFor="ageVerified" className="text-base font-medium">
                     I'm 13+ years old. *
                   </label>
                 </div>
@@ -239,30 +239,30 @@ export default function CheckoutPage() {
           <div className="sticky top-4">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold">YOUR ORDER</h2>
-              <BaseButton variant="link" className="text-sm font-bold underline">
+              <BaseButton variant="link" className="text-base font-bold underline">
                 EDIT
               </BaseButton>
             </div>
 
             {/* Order Summary */}
             <div className="space-y-2 mb-6">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-base">
                 <span>{totalItems} items</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-base">
                 <span>Original price</span>
                 <span>${(subtotal + 20).toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-base">
                 <span>Sales Tax</span>
                 <span>${salesTax.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-base">
                 <span>Delivery</span>
                 <span>Free</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-base">
                 <span>Sale</span>
                 <span className="text-red-600">-$21.00</span>
               </div>
@@ -306,8 +306,8 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-sm">{item.product.name}</h3>
-                      <p className="text-sm font-bold">{item.variant.price}</p>
+                      <h3 className="font-bold text-base">{item.product.name}</h3>
+                      <p className="text-base font-bold">{item.variant.price}</p>
                       <p className="text-xs text-gray-600">
                         Size: {item.size} / Quantity: {item.quantity}
                       </p>

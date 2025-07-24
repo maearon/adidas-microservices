@@ -38,7 +38,7 @@ export function buildBreadcrumbFromProductItem(product: Product) {
 
 export function buildBreadcrumbFromProductDetail(product: Product) {
   return [
-    { label: "Home", href: "/" },
+    // { label: "Home", href: "/" },
     product.sport
       ? { label: product.sport, href: `/${slugify(product.sport)}` }
       : { label: product.gender, href: `/${slugify(product.gender)}` },

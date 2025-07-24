@@ -32,7 +32,7 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
 
           {/* App Info */}
           <div className="flex-1">
-            <div className="font-semibold text-sm">ADIDAS - SPORTS & STYLE</div>
+            <div className="font-semibold text-base">ADIDAS - SPORTS & STYLE</div>
             <div className="flex items-center space-x-1 text-xs text-gray-600">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -47,7 +47,7 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
         </div>
 
         {/* Download Button */}
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">DOWNLOAD</button>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-base font-semibold">DOWNLOAD</button>
       </div>
     </div>
   )

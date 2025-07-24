@@ -59,7 +59,7 @@ export default function HeroBanner({
             </h1>
 
             {/* Mô tả */}
-            <p className="bg-white text-black text-xs sm:text-sm px-1.5 py-0.5 w-fit leading-snug">
+            <p className="bg-white text-black text-xs sm:text-base px-1.5 py-0.5 w-fit leading-snug">
               {description}
             </p>
 

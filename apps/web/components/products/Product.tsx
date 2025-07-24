@@ -26,7 +26,7 @@ export default function Product({ product }: ProductProps) {
         />
       </div>
       <div className="p-4 space-y-1">
-        <h3 className="text-sm font-semibold leading-snug line-clamp-2">
+        <h3 className="text-base font-semibold leading-snug line-clamp-2">
           {product.name}
         </h3>
         <p className="text-xs text-muted-foreground line-clamp-2">

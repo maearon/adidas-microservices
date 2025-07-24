@@ -93,7 +93,7 @@ export default function CartPage() {
               <p className="text-gray-600 mb-4">
                 TOTAL: ({totalItems} items) ${subtotal.toFixed(2)}
               </p>
-              <p className="text-sm text-gray-500 mb-6">
+              <p className="text-base text-gray-500 mb-6">
                 Items in your bag are not reserved — check out now to make them yours.
               </p>
 
@@ -108,12 +108,12 @@ export default function CartPage() {
                       <div className="flex justify-between">
                         <div>
                           <h3 className="font-bold">{item.name}</h3>
-                          <p className="text-sm text-gray-600">{item.color}</p>
-                          <p className="text-sm text-gray-600">SIZE: {item.size}</p>
+                          <p className="text-base text-gray-600">{item.color}</p>
+                          <p className="text-base text-gray-600">SIZE: {item.size}</p>
                           {item.customization && (
                             <>
-                              <p className="text-sm text-gray-600">NAME: {item.customization.name}</p>
-                              <p className="text-sm text-gray-600">NUMBER: {item.customization.number}</p>
+                              <p className="text-base text-gray-600">NAME: {item.customization.name}</p>
+                              <p className="text-base text-gray-600">NUMBER: {item.customization.number}</p>
                             </>
                           )}
                         </div>
@@ -151,7 +151,7 @@ export default function CartPage() {
               ))}
 
               {/* Custom design notice */}
-              <div className="bg-gray-100 p-4 mb-6 text-sm">
+              <div className="bg-gray-100 p-4 mb-6 text-base">
                 <p>
                   We start working on your custom design right away. As a result, no changes can be made after order is
                   placed. Customized products can only be returned in case of manufacturing defects.
@@ -170,7 +170,7 @@ export default function CartPage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <p className="text-sm">Pay over time in interest-free installments with Affirm, Klarna or Afterpay</p>
+                  <p className="text-base">Pay over time in interest-free installments with Affirm, Klarna or Afterpay</p>
                 </div>
                 <div className="flex items-center">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +182,7 @@ export default function CartPage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <p className="text-sm">Free shipping with adiClub</p>
+                  <p className="text-base">Free shipping with adiClub</p>
                 </div>
               </div>
             </div>

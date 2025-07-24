@@ -94,7 +94,7 @@ export default function WishlistPage() {
                   </div>
                   <div className="space-y-2">
                     <p className="font-bold">{item.price}</p>
-                    <h3 className="text-sm text-gray-700">{item.name}</h3>
+                    <h3 className="text-base text-gray-700">{item.name}</h3>
                     <Button
                       className="w-full bg-black text-white hover:bg-gray-800"
                       onClick={() => handleAddToBag(item)}

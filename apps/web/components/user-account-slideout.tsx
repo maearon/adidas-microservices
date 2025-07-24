@@ -81,8 +81,8 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
               <h2 className="text-xl font-bold">HI {userData?.name?.toUpperCase() || "MEMBER"}</h2>
               <div className="flex items-center mt-2">
                 <div className="flex items-center">
-                  <span className="text-sm font-bold">adi</span>
-                  <span className="text-sm font-bold text-blue-600 italic">club</span>
+                  <span className="text-base font-bold">adi</span>
+                  <span className="text-base font-bold text-blue-600 italic">club</span>
                   <div className="ml-1 flex items-center">
                     <span className="text-xs">LEVEL</span>
                     <span className="ml-1 text-2xl font-bold">1</span>
@@ -97,7 +97,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
 
           <div className="px-6 py-4 border-b">
             <div className="flex items-center justify-between">
-              <span className="text-sm">Points to spend</span>
+              <span className="text-base">Points to spend</span>
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-2">
                   <span className="text-xs">0</span>
@@ -147,7 +147,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
                   <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <h3 className="font-medium text-sm mb-1">{offer.title}</h3>
+                        <h3 className="font-medium text-base mb-1">{offer.title}</h3>
                         <p className="text-xs text-gray-600">{offer.description}</p>
                       </div>
                       <ChevronRight className="h-4 w-4 text-gray-400 ml-2" />

@@ -108,7 +108,7 @@ const LoginPage: NextPage = () => {
 
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold uppercase mb-2">Your AdiClub benefits await</h2>
-          <p className="text-sm text-gray-600">Get free shipping, vouchers and members-only products in adiClub.</p>
+          <p className="text-base text-gray-600">Get free shipping, vouchers and members-only products in adiClub.</p>
         </div>
 
         <div className="grid grid-cols-4 gap-2 mb-4">
@@ -143,7 +143,7 @@ const LoginPage: NextPage = () => {
                 </Field>
                 <div className="flex items-center">
                   <Field type="checkbox" name="keepLoggedIn" checked={values.keepLoggedIn} onChange={() => setFieldValue("keepLoggedIn", !values.keepLoggedIn)} />
-                  <span className="ml-2 text-sm">Keep me logged in</span>
+                  <span className="ml-2 text-base">Keep me logged in</span>
                 </div>
                 <button type="submit" className="w-full bg-black text-white py-2 font-semibold">
                   {isChecking ? "LOADING..." : "CONTINUE →"}
@@ -201,7 +201,7 @@ const LoginPage: NextPage = () => {
         {step === 'activate' && (
           <div className="text-center">
             <h2 className="text-lg font-bold">Activate Your Account</h2>
-            <p className="text-sm text-gray-600 mt-2">Check your email to activate your account and enjoy adiClub benefits.</p>
+            <p className="text-base text-gray-600 mt-2">Check your email to activate your account and enjoy adiClub benefits.</p>
           </div>
         )}
 

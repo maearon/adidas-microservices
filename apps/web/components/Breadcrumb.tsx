@@ -10,12 +10,14 @@ type BreadcrumbProps = {
   items: BreadcrumbItem[]
   className?: string
   showBackButton?: boolean
+  useLastItemHighlight?: boolean // <-- thêm prop mới
 }
 
 export default function Breadcrumb({
   items,
   className = "",
   showBackButton = true,
+  useLastItemHighlight = true, // <-- mặc định là true
 }: BreadcrumbProps) {
   const router = useRouter()
 
@@ -33,7 +35,7 @@ export default function Breadcrumb({
         <>
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-sm hover:bg-black hover:text-white cursor-pointer"
+            className="flex items-center gap-2 text-base hover:bg-black hover:text-white cursor-pointer"
           >
             <ArrowLeft size={16} />
             BACK
@@ -42,7 +44,7 @@ export default function Breadcrumb({
         </>
       )}
 
-      <Link href="/" className="text-sm hover:underline">
+      <Link href="/" className="text-base hover:underline hover:bg-black hover:text-white">
         Home
       </Link>
 
@@ -52,12 +54,15 @@ export default function Breadcrumb({
         return (
           <div key={index} className="flex items-center gap-2">
             <span className="text-gray-400 cursor-default">/</span>
-            {isLast ? (
-              <span className="text-sm text-gray-600 cursor-default select-none">
+            {isLast && useLastItemHighlight ? (
+              <span className="text-base text-gray-600 cursor-default select-none">
                 {crumb.label}
               </span>
             ) : (
-              <Link href={crumb.href} className="text-sm hover:underline hover:bg-black hover:text-white">
+              <Link
+                href={crumb.href}
+                className="text-base hover:underline hover:bg-black hover:text-white"
+              >
                 {crumb.label}
               </Link>
             )}
