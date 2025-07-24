@@ -19,6 +19,14 @@ export async function GET(req: NextRequest) {
       .map((word) => word + ":*")
       .join(" & ")
 
+    const totalCount = await prisma.products.count({
+      where: {
+        name: {
+          search: searchQuery,
+        },
+      },
+    })
+
     const products = await prisma.products.findMany({
       where: {
         name: {
@@ -118,6 +126,7 @@ export async function GET(req: NextRequest) {
       serializeBigInt({
         products: productsWithImages,
         nextCursor,
+        totalCount,
       })
     )
   } catch (error) {

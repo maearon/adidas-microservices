@@ -129,16 +129,17 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
       // });
   
       // router.push(`/search?${params.toString()}`);
-    };
-  
-    const products = data?.pages.flatMap((page) => page.products) || [];
-  
-    if (status === "pending" || isFetching) {
-      return <Loading />;
-    }
-  
-    const isError = status === "error";
-    const isEmpty = products.length === 0 && "a";
+  };
+
+  const products = data?.pages.flatMap((page) => page.products) || [];
+  const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+
+  if (status === "pending" || isFetching) {
+    return <Loading />;
+  }
+
+  const isError = status === "error";
+  const isEmpty = products.length === 0 && "a";
 
   // const products = data?.products || []
   // const meta = data?.meta || {
@@ -218,18 +219,18 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   return (
       <>
         {/* Header */}
-        <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
+        <div className="flex flex-nowrap items-start justify-between gap-2 sm:gap-4 mb-4">
           <div className="grow min-w-0">
-            <h1 className="text-2xl md:text-3xl font-bold mb-1 truncate mb[30px]">
+            <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
               {pageTitle}
             </h1>
             {products.length > 0 && (
-              <p className="text-gray-600 truncate">
-                Showing {products.length} of {products.length} results
+              <p className="text-gray-600 break-words text-sm">
+                Showing {products.length} of {totalCount} results
               </p>
             )}
           </div>
-  
+
           {/* Filter Button */}
           <div className="shrink-0 flex items-center">
             <BaseButton
@@ -237,7 +238,6 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
               onClick={() => setIsFiltersOpen(true)}
               className="hidden sm:flex items-center gap-2 border border-black text-black rounded-none"
             >
-              {/* <Filter size={16} /> */}
               FILTER & SORT
               <SlidersHorizontal className="w-4 h-4" />
             </BaseButton>
