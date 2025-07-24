@@ -205,8 +205,8 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   )
 
   const pageTitle = hasExtraFilters
-    ? `${formatSlugTitle("men-shoes")} | ${generateAppliedFiltersTitle()}`
-    : formatSlugTitle("men-shoes")
+    ? `${formatSlugTitle(params.slug)} | ${generateAppliedFiltersTitle()}`
+    : formatSlugTitle(params.slug)
 
   // ⏳ Loading thực sự (lần đầu hoặc đang loading dữ liệu mới)
   // if (isLoading || isPlaceholderData) {
@@ -222,7 +222,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         <div className="flex flex-nowrap items-start justify-between gap-2 sm:gap-4 mb-4">
           <div className="grow min-w-0">
             <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
-              {pageTitle}
+              {pageTitle} <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
             {products.length > 0 && (
               <p className="text-gray-600 break-words text-sm">

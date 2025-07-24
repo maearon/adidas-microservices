@@ -75,7 +75,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
             You searched for '{query}', showing results for:
           </p>
           <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
-            "{query}" <span className="text-xs text-[#7A7F7B]">[{products.length}]</span>
+            "{query}" <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
           </h1>
           {products.length > 0 && (
             <p className="text-gray-600 break-words text-sm">
