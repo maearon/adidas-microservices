@@ -349,7 +349,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
             </div>
 
-            <div className="flex sm:hidden">
+            <div className="flex sm:hidden mt-[40px]">
                 <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
             </div>
 
