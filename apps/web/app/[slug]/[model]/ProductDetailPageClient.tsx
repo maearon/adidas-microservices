@@ -383,7 +383,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
             {/* Sizes */}
             <div>
-              <div className="flex justify-between items-center my-[40px]">
+              <div className="flex justify-between items-center mt-[40px]">
                 <h3 className="font-bold text-base">Sizes</h3>
                 <button className="text-sm underline flex items-center text-black hover:opacity-80">
                   <span className="mr-1">📏</span>
@@ -391,7 +391,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </button>
               </div>
 
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-6 gap-2 mt-[10px]">
                 {[...sizes].sort((a, b) => a.localeCompare(b)).map((size, index) => {
                   const isSoldOut = productDetails.soldOutSizes.includes(size);
                   const isSelected = selectedSize === size;
