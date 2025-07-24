@@ -41,7 +41,7 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
     <main className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
-        <Breadcrumb items={getBreadcrumbTrail(params.slug)}/>
+        <Breadcrumb items={getBreadcrumbTrail(params.slug)}  className="mb[30px]" />
 
         <CategoryPageClient 
           params={params} 

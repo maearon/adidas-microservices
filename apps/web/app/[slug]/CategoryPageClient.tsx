@@ -220,7 +220,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
           <div className="grow min-w-0">
-            <h1 className="text-2xl md:text-3xl font-bold mb-1 truncate">
+            <h1 className="text-2xl md:text-3xl font-bold mb-1 truncate mb[30px]">
               {pageTitle}
             </h1>
             {products.length > 0 && (
