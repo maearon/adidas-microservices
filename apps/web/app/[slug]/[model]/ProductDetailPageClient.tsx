@@ -447,12 +447,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 ADD TO BAG
               </Button>
 
-              <button
+              <Button
+                shadow={false}
+                showArrow={false}
                 onClick={handleToggleWishlist}
                 className="w-12 h-12 border border-black rounded-none flex items-center justify-center hover:bg-white hover:text-black transition-colors translate-y-[3px]"
               >
                 <Heart size={20} className={isWishlisted ? "fill-current" : ""} />
-              </button>
+              </Button>
             </div>
 
             {/* Klarna Payment */}
