@@ -20,7 +20,13 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     <main className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
-        <Breadcrumb items={[]}/>
+        <Breadcrumb items={[
+          { 
+            label: `Search for: "${q}"`, 
+            href: `/search?q=${encodeURIComponent(q)}`, 
+          }
+        ]} />
+        <div className="mb-[30px]"></div>
 
         <SearchResults query={encodeURIComponent(q)} />
       </div>

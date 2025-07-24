@@ -68,16 +68,17 @@ export default function SearchResults({ query }: SearchResultsProps) {
   return (
     <>
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-[30px]">
         <div className="grow min-w-0">
+          <p>You searched for '{query}', showing results for:</p>
           <h1 className="text-2xl md:text-3xl font-bold mb-1 truncate">
-            Search for: "{query.toUpperCase()}" [{products.length}]
+            "{query}" <span className="text-xs text-[#7A7F7B]">[{products.length}]</span>
           </h1>
-          {products.length > 0 && (
+          {/* {products.length > 0 && (
             <p className="text-gray-600 truncate">
               Showing {products.length} of {products.length} results
             </p>
-          )}
+          )} */}
         </div>
 
         {/* Filter Button */}
