@@ -60,8 +60,8 @@ export function Button({
         "relative group",
         !isIconButton &&
           (fullWidth
-            ? "w-full sm:max-w-full"
-            : "w-auto sm:max-w-fit"), // full ở mobile, auto ở desktop
+            ? "w-full sm:max-w-full" // ✅ allow buttons to expand on both mobile and desktop when needed
+            : "w-auto sm:max-w-fit"), // full on mobile, auto on desktop
       )}
     >
       {shadow && !isIconButton && (
