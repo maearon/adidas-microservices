@@ -6,26 +6,33 @@ import { formatSlugTitle } from "@/utils/category-config.auto";
 import Loading from "@/components/loading";
 
 interface ProductDetailPageProps {
-  params?: { slug?: string; model?: string };
+  params: { slug?: string; model?: string };
 }
 
-export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
-  const pageTitle = formatSlugTitle(params?.slug || "Product Detail");
+// ✅ generateMetadata must be async with awaited `params`
+export async function generateMetadata(
+  props: { params: { slug?: string } }
+): Promise<Metadata> {
+  const { slug } = await Promise.resolve(props.params || {});
+  const pageTitle = formatSlugTitle(slug || "Product Detail");
   return {
     title: pageTitle,
   };
 }
 
+// ✅ Main page function must await `params`
 const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
-  if (!params?.model) notFound();
+  const { slug, model } = await params;
+
+  if (!slug || !model) notFound();
 
   return (
     <div className="min-h-screen bg-white">
       <Suspense fallback={<Loading />}>
         <ProductDetailPageClient
           params={{
-            slug: params.slug || "default-slug",
-            model: params.model,
+            slug,
+            model,
           }}
         />
       </Suspense>

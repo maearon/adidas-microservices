@@ -6,32 +6,40 @@ interface SearchPageProps {
   searchParams?: { q?: string };
 }
 
-export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
-  const q = searchParams?.q || "";
+// ✅ Fix generateMetadata: dùng destructuring đúng cách
+export async function generateMetadata({
+  searchParams,
+}: SearchPageProps): Promise<Metadata> {
+  const { q } = await Promise.resolve(searchParams || {});
   return {
-    title: `Search results for "${q}"`,
+    title: q ? `Search results for "${q}"` : "Search",
   };
 }
 
-const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  const q = searchParams?.q || "";
+// ✅ Component async: tránh lỗi nếu `searchParams` không tồn tại
+const SearchPage = async ({
+  searchParams,
+}: SearchPageProps) => {
+  const q = typeof searchParams?.q === "string" ? searchParams.q : "";
 
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
-        <Breadcrumb items={[
-          { 
-            label: `Search for: "${q}"`, 
-            href: `/search?q=${encodeURIComponent(q)}`, 
-          }
-        ]} />
-        <div className="mb-[30px]"></div>
+        <Breadcrumb
+          items={[
+            {
+              label: q ? `Search for: "${q}"` : "Search",
+              href: `/search${q ? `?q=${encodeURIComponent(q)}` : ""}`,
+            },
+          ]}
+        />
+        <div className="mb-[30px]" />
 
-        <SearchResults query={encodeURIComponent(q)} />
+        <SearchResults query={q} />
       </div>
     </main>
   );
-}
+};
 
 export default SearchPage;
