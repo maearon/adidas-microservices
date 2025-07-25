@@ -59,7 +59,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
   const products = data?.pages.flatMap((page) => page.products) || [];
   const totalCount = data?.pages?.[0]?.totalCount ?? 0;
 
-  if (status === "pending" || isFetching) {
+  if (status === "pending") {
     return <Loading />;
   }
 
