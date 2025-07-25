@@ -21,8 +21,8 @@ export async function generateMetadata(
 }
 
 // ✅ Main page function must await `params`
-const ProductDetailPage = async ({ params }: ProductDetailPageProps) => {
-  const { slug, model } = await params;
+const ProductDetailPage = async (props: ProductDetailPageProps) => {
+  const { slug, model } = await Promise.resolve(props.params || {});
 
   if (!slug || !model) notFound();
 

@@ -20,7 +20,7 @@ export async function generateMetadata({
 const SearchPage = async ({
   searchParams,
 }: SearchPageProps) => {
-  const q = typeof searchParams?.q === "string" ? searchParams.q : "";
+  const { q } = await Promise.resolve(searchParams || { q: "" });
 
   return (
     <main className="min-h-screen bg-white">
@@ -36,7 +36,7 @@ const SearchPage = async ({
         />
         <div className="mb-[30px]" />
 
-        <SearchResults query={q} />
+        <SearchResults query={q || ""} />
       </div>
     </main>
   );

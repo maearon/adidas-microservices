@@ -46,7 +46,7 @@ const CategoryPage = async ({
   params,
   searchParams,
 }: CategoryPageProps) => {
-  const slug = await params?.slug;
+  const { slug } = await Promise.resolve(params || {});
 
   if (!slug) notFound();
 

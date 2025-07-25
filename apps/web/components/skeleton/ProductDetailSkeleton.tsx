@@ -1,6 +1,6 @@
 export default function ProductDetailSkeleton() {
   return (
-    <main className="w-full max-w-[1600px] mx-auto px-6 py-6 lg:flex gap-12 animate-pulse">
+    <main className="w-full mx-auto px-6 py-6 lg:flex gap-12 animate-pulse">
       {/* Left Column */}
       <div className="w-full lg:w-2/3 space-y-6">
         {/* Gallery */}

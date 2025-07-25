@@ -159,7 +159,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   }
 
   return (
-    <main className="w-full max-w-[1600px] mx-auto lg:flex">
+    <main className="w-full mx-0 lg:flex">
       {/* <div className="flex flex-col lg:flex-row gap-8 items-start"> */}
         {/* Left Column */}
         <div className="w-full lg:w-2/3">
@@ -169,7 +169,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           {/* Expandable Sections */}
           <div className="hidden sm:block mt-[80px] sm:px-[20px]">
             {/* Expandable Sections - Full Width Below Main Content */}
-            <div className="max-w-none mx-auto space-y-0 my-16 border-t sm:mt-24">
+            <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
               {/* Reviews */}
               <div className="border-b px-[15px] px-[30px]">
                 <button
@@ -285,7 +285,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             />
             <div className="z-10 p-4">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">F50 MESSI PRESTIGIO</h2>
-              <p className="text-base sm:text-lg max-w-2xl mx-auto">
+              <p className="text-base sm:text-lgmx-0">
                 A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant
                 icon.
               </p>
@@ -508,7 +508,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         {/* Expandable Sections */}
         <div className="block sm:hidden mt-[80px] sm:px-[20px]">
           {/* Expandable Sections - Full Width Below Main Content */}
-          <div className="max-w-none mx-auto space-y-0 my-16 border-t sm:mt-24">
+          <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
             {/* Reviews */}
             <div className="border-b px-[15px] px-[30px]">
               <button
@@ -624,7 +624,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           />
           <div className="z-10 p-4">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">F50 MESSI PRESTIGIO</h2>
-            <p className="text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="text-base sm:text-lgmx-0">
               A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant
               icon.
             </p>
