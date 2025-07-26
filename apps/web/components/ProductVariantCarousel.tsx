@@ -1,10 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
-import { cn } from "@/lib/utils"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Variant } from "@/types/product"
+import { slugify } from "@/utils/slugtify"
+import { cn } from "@/lib/utils"
 
 interface ProductVariantCarouselProps {
   variants: Variant[]
@@ -15,7 +17,7 @@ interface ProductVariantCarouselProps {
 export default function ProductVariantCarousel({
   variants,
   activeImage,
-  onHover
+  onHover,
 }: ProductVariantCarouselProps) {
   const [scrollIndex, setScrollIndex] = useState(0)
 
@@ -46,42 +48,52 @@ export default function ProductVariantCarousel({
 
   return (
     <div className="flex items-center space-x-1 mt-2 px-2">
+      {/* Left scroll button */}
       {canScrollLeft && (
         <button
           onClick={handleScrollLeft}
-          className="p-1 hover:bg-gray-100 rounded"
+          className="p-1 hover:bg-gray-100 rounded-full bg-white shadow-sm"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
       )}
+
+      {/* Variant thumbnails */}
       <div className="flex gap-1 overflow-hidden">
-        {visibleVariants.map((variant, idx) => (
-          <div
-            key={idx}
-            onMouseEnter={() => variant.image_url && onHover(variant.image_url)}
-            onClick={(e) => e.preventDefault()}
-            className={cn(
-              "relative w-6 h-6 rounded overflow-hidden cursor-pointer border",
-              variant.image_url === activeImage
-                ? "border-black"
-                : "border-transparent hover:border-gray-400"
-            )}
-          >
-            {variant.image_url && (
-              <Image
-                src={variant.image_url}
-                alt={`Variant ${idx}`}
-                fill
-                className="object-cover"
-              />
-            )}
-          </div>
-        ))}
+        {visibleVariants.map((variant, idx) => {
+          const isActive = variant.avatar_url === activeImage
+          const variantSlug = `/${slugify(variant.name || "product")}/${variant.variant_code}.html`
+
+          return (
+            <Link
+              key={variant.id ?? idx}
+              href={variantSlug}
+              onMouseEnter={() => variant.avatar_url && onHover(variant.avatar_url)}
+              className={cn(
+                "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
+                isActive
+                  ? "border-black border-b-[3px]"
+                  : "border-gray-200 hover:border-gray-400"
+              )}
+            >
+              {variant.avatar_url && (
+                <Image
+                  src={variant.avatar_url}
+                  alt={`Variant ${variant.color || idx}`}
+                  fill
+                  className="object-cover"
+                />
+              )}
+            </Link>
+          )
+        })}
       </div>
+
+      {/* Right scroll button */}
       {canScrollRight && (
         <button
           onClick={handleScrollRight}
-          className="p-1 hover:bg-gray-100 rounded"
+          className="p-1 hover:bg-gray-100 rounded-full bg-white shadow-sm"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
