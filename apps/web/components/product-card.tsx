@@ -3,11 +3,13 @@
 import type React from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useAppDispatch } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
 import WishButton from "./wish-button"
+import ProductVariantCarousel from "./ProductVariantCarousel"
 import type {
   LastVisitedProduct,
   PriceInfo,
@@ -25,7 +27,7 @@ interface ProductCardProps {
     id: number
     name?: string
     price?: string
-    sport?: string;
+    sport?: string
     tags?: string[]
     compare_at_price?: string
     image?: string
@@ -74,7 +76,8 @@ export default function ProductCard({
   minimalMobile = false
 }: ProductCardProps) {
   const dispatch = useAppDispatch()
-  const image = product.image ?? product.image_url ?? "/placeholder.png"
+  const defaultImage = product.image ?? product.image_url ?? "/placeholder.png"
+  const [currentImage, setCurrentImage] = useState(defaultImage)
   const isPlaceholder = product.__isPlaceholder || !product.name
 
   const handleAddToBag = (e: React.MouseEvent) => {
@@ -85,7 +88,7 @@ export default function ProductCard({
         id: product.id,
         name: product.name || "Unknown Product",
         price: product.price || "0",
-        image: image,
+        image: currentImage,
         color: "Default",
         size: "M"
       })
@@ -123,9 +126,9 @@ export default function ProductCard({
               hasHoverImage ? "group" : ""
             } ${!minimalMobile ? "mb-4" : ""}`}
           >
-            {/* Main image (hiện mặc định, ẩn khi hover nếu có hover image) */}
+            {/* Main image (có thể bị thay đổi khi hover variant) */}
             <Image
-              src={image}
+              src={currentImage}
               alt={product?.name || ""}
               fill
               className={`object-cover transition-opacity duration-300 ${
@@ -134,7 +137,7 @@ export default function ProductCard({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
             />
 
-            {/* Hover image (ẩn mặc định, hiện khi hover) */}
+            {/* Hover image */}
             {hasHoverImage && (
               <Image
                 src={product?.hover_image_url || ""}
@@ -156,17 +159,19 @@ export default function ProductCard({
             </div>
           </div>
 
+          {/* Variant carousel */}
+          {product.variants?.length > 1 && (
+            <ProductVariantCarousel
+              variants={product.variants}
+              activeImage={currentImage}
+              onHover={(src) => setCurrentImage(src)}
+            />
+          )}
+
           {/* Info Section */}
           <div
             className={`space-y-2 px-2 pb-2 mt-auto ${minimalMobile ? "hidden sm:block" : ""}`}
           >
-            {/* {product.category && (
-              <p className="text-base text-gray-600">
-                {typeof product.category === "string"
-                  ? product.category
-                  : String(product?.category ?? "")}
-              </p>
-            )} */}
             <p className="font-bold h-5">
               ${product?.compare_at_price ?? product.price}
             </p>
