@@ -114,7 +114,7 @@ export default function ProductCard({
       <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all shadow-none cursor-pointer rounded-none">
         <CardContent className="p-0 flex flex-col h-full">
           {/* Image section */}
-          <div className={`relative aspect-square overflow-hidden group/image ${!minimalMobile ? "mb-4" : ""}`}>
+          <div className={`relative aspect-square overflow-hidden group/image ${!minimalMobile ? "mb-1" : ""}`}>
             {/* Main Image */}
             <Image
               src={currentImage}
@@ -151,7 +151,7 @@ export default function ProductCard({
 
           {/* Variant Carousel (only visible when hover toàn card) */}
           {product.variants?.length > 1 && (
-            <div className="overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-20 max-h-0">
+            <div className="hidden group-hover:block">
               <ProductVariantCarousel
                 variants={product.variants}
                 activeImage={currentImage}

@@ -47,7 +47,7 @@ export default function ProductVariantCarousel({
   )
 
   return (
-    <div className="flex items-center space-x-1 mt-2 px-2">
+    <div className="flex items-center space-x-1">
       {/* Left scroll button */}
       {canScrollLeft && (
         <button
@@ -72,8 +72,8 @@ export default function ProductVariantCarousel({
               className={cn(
                 "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
                 isActive
-                  ? "border-black border-b-[3px]"
-                  : "border-gray-200 hover:border-gray-400"
+                  ? "border-b-[3px] border-b-black"
+                  : "border border-transparent"
               )}
             >
               {variant.avatar_url && (
