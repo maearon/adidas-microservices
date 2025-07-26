@@ -13,53 +13,12 @@ import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
 import { slugify } from "@/utils/slugtify";
 import type { ProductAsset, ProductVariation } from "@/types/product/product-adidas";
-import type { Variant } from "@/types/product";
+import type { Product, Variant } from "@/types/product";
 import ProductPrice from "./ProductCardPrice";
 
 interface ProductCardProps {
   slug?: string;
-  product: {
-    id: number;
-    name?: string;
-    price?: string;
-    sport?: string;
-    tags?: string[];
-    compare_at_price?: string;
-    image?: string;
-    image_url?: string;
-    hover_image_url?: string;
-    category?: string;
-    model_number?: string;
-    base_model_number?: string;
-    product_type?: string;
-    url?: string;
-    price_information?: {
-      currentPrice: number;
-      standard_price: number;
-      standard_price_no_vat: number;
-    };
-    description?: string;
-    attribute_list?: {
-      brand?: string;
-      color?: string;
-      gender?: string;
-      sale?: boolean;
-    };
-    product_description?: {
-      title?: string;
-      text?: string;
-      subtitle?: string;
-    };
-    links?: {
-      self: {
-        href: string;
-      };
-    };
-    variation_list?: ProductVariation[];
-    view_list?: ProductAsset[];
-    variants: Variant[];
-    __isPlaceholder?: boolean;
-  };
+  product: Product;
   showAddToBag?: boolean;
   minimalMobile?: boolean;
 }
@@ -68,6 +27,8 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
   const dispatch = useAppDispatch();
   const defaultImage = product.variants?.[0]?.avatar_url ?? product.image ?? product.image_url ?? "/placeholder.png";
   const [currentImage, setCurrentImage] = useState(defaultImage);
+  const fallbackUrl = `/${slugify(product.name || "product")}/${product?.variants?.[0]?.variant_code}.html`;
+  const [currentUrl, setCurrentUrl] = useState(product.url ?? fallbackUrl);
   const isPlaceholder = product.__isPlaceholder || !product.name;
 
   const handleAddToBag = (e: React.MouseEvent) => {
@@ -75,9 +36,9 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
     e.stopPropagation();
     dispatch(
       addToCart({
-        id: product.id,
+        id: Number(product.id),
         name: product.name || "Unknown Product",
-        price: product.price || "0",
+        price: String(product.price) || "0",
         image: currentImage,
         color: "Default",
         size: "M",
@@ -85,7 +46,6 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
     );
   };
 
-  const fallbackUrl = `/${slugify(product.name || "product")}/${product?.variants?.[0]?.variant_code}.html`;
   const hasHoverImage = !!product.hover_image_url?.trim();
   const hasVariants = product.variants?.length > 1;
 
@@ -103,9 +63,17 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
 
   return (
     <Link
-      href={product.url ?? fallbackUrl}
-      onMouseEnter={() => setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)}
-      onMouseLeave={() => setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)}
+      href={currentUrl ?? fallbackUrl}
+      onMouseEnter={() => {
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
+        setCurrentUrl(product.url ?? fallbackUrl)
+        }
+      }
+      onMouseLeave={() => {
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
+        setCurrentUrl(product.url ?? fallbackUrl)
+        }
+      }
     >
       <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible min-h-[450px]">
         <CardContent className="p-0">
@@ -145,17 +113,20 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
                 productName={product?.name || "product"}
                 variants={product.variants}
                 activeImage={currentImage}
-                onHover={(src) => setCurrentImage(src)}
+                onHover={(src, url) => {
+                  setCurrentImage(src)
+                  setCurrentUrl(url)
+                }}
               />
             </div>
           )}
 
           <div className={`px-2 pb-0 space-y-1 ${minimalMobile ? "hidden sm:block" : ""}`}>
-            <ProductPrice price={product.price} compareAtPrice={product.compare_at_price} />
+            <ProductPrice price={product.price} compareAtPrice={String(product.compare_at_price)} />
             <h3 className="font-medium text-base leading-tight line-clamp-2">{product.name}</h3>
             {product.sport && <p className="text-gray-600 text-sm">{product.sport}</p>}
             {hasVariants && <p className="text-gray-600 text-sm">{product.variants.length} colors</p>}
-            {product.tags?.length > 0 && <p className="text-black text-sm font-medium">{product.tags[0]}</p>}
+            {(product?.tags?.length || 0) > 0 && <p className="text-black text-sm font-medium">{product?.tags?.[0]}</p>}
             {showAddToBag && (
               <Button className="w-full bg-black text-white hover:bg-gray-800 mt-3" onClick={handleAddToBag}>
                 ADD TO BAG

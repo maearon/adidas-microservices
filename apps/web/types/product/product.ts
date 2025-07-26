@@ -61,6 +61,7 @@ export interface Product {
   updated_at: string
   image?: string
   image_url?: string
+  hover_image_url?: string
   availableSizes: string[]
   collection: string
   badge: string
@@ -70,6 +71,7 @@ export interface Product {
   average_rating: number
   url?: string
   model_number: string
+  __isPlaceholder?: boolean
 }
 
 // 📦 API response for product listing

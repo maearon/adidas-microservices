@@ -12,7 +12,7 @@ interface ProductVariantCarouselProps {
   productName: string
   variants: Variant[]
   activeImage: string
-  onHover: (src: string) => void
+  onHover: (src: string, url: string) => void
 }
 
 export default function ProductVariantCarousel({
@@ -72,7 +72,9 @@ export default function ProductVariantCarousel({
             <Link
               key={variant.id ?? idx}
               href={variantSlug}
-              onMouseEnter={() => variant.avatar_url && onHover(variant.avatar_url)}
+              onMouseEnter={() => 
+                variant.avatar_url && onHover(variant.avatar_url, variantSlug) // 👈 pass up to parent url and src
+              } 
               className={cn(
                 "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
                 isActive
