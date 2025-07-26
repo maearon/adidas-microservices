@@ -359,12 +359,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             <div>
               <h3 className="mb-3">{variant?.color}</h3>
               <div className="flex gap-2 mb-6">
-                {product.variants.map((v) => {
-                  const isActive = v.variant_code === params.model
+                {product.variants.map((variant) => {
+                  const isActive = variant.variant_code === params.model
                   return (
                     <Link
-                      key={v.id}
-                      href={`/${slugify(product.name)}/${v.variant_code}.html`}
+                      key={variant.id}
+                      href={`/${slugify(product.name)}/${variant.variant_code}.html`}
                       className={`
                         w-12 h-12 overflow-hidden block
                         border-b-4
@@ -372,8 +372,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       `}
                     >
                       <img
-                        src={v.image_urls?.[0] || "/placeholder.svg"}
-                        alt={v.color}
+                        src={variant?.image_urls?.[0] || "/placeholder.svg"}
+                        alt={variant.color}
                         className="w-full h-full object-cover"
                       />
                     </Link>

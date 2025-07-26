@@ -39,7 +39,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
     setFilters(updatedFilters);
 
     const params = new URLSearchParams();
-    params.set("q", updatedFilters.query || "");
+    params.set("q", updatedFilters.query ?? query);
     params.set("sitePath", sitePath);
 
     Object.entries(updatedFilters).forEach(([key, value]) => {

@@ -63,7 +63,9 @@ export default function ProductVariantCarousel({
       {/* Variant thumbnails */}
       <div className="flex gap-1 overflow-hidden">
         {visibleVariants.map((variant, idx) => {
-          const isActive = variant.avatar_url === activeImage
+          const isActive = variant.variant_code === variants?.[0].variant_code ?
+           variant.avatar_url === activeImage ? true : false
+           : variant.avatar_url === activeImage ? true : false
           const variantSlug = `/${slugify(productName || "f50-messi-elite-firm-ground-cleats")}/${variant?.variant_code}.html`
 
           return (
@@ -74,8 +76,8 @@ export default function ProductVariantCarousel({
               className={cn(
                 "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
                 isActive
-                  ? "border-b-[3px] border-b-black"
-                  : "border border-transparent"
+                  ? "border-b-2 border-b-black"
+                  : "border-b-2 border-transparent"
               )}
             >
               {variant.avatar_url && (

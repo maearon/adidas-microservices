@@ -67,7 +67,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showAddToBag = false, minimalMobile = false }: ProductCardProps) {
   const dispatch = useAppDispatch()
-  const defaultImage = product.image ?? product.image_url ?? "/placeholder.png"
+  const defaultImage = product.variants?.[0]?.avatar_url ?? product.image ?? product.image_url ?? "/placeholder.png"
   const [currentImage, setCurrentImage] = useState(defaultImage)
   const isPlaceholder = product.__isPlaceholder || !product.name
 
@@ -103,7 +103,15 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
   }
 
   return (
-    <Link href={product.url ?? fallbackUrl}>
+    <Link
+      href={product.url ?? fallbackUrl}
+      onMouseEnter={() =>
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
+      }
+      onMouseLeave={() =>
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
+      }
+    >
       <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible">
         <CardContent className="p-0">
           {/* Image section */}
