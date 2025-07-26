@@ -12,8 +12,8 @@ import WishButton from "./wish-button";
 import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
 import { slugify } from "@/utils/slugtify";
-import type { ProductAsset, ProductVariation } from "@/types/product/product-adidas";
-import type { Product, Variant } from "@/types/product";
+import type { Product } from "@/types/product";
+import { cn } from "@/lib/utils";
 import ProductPrice from "./ProductCardPrice";
 
 interface ProductCardProps {
@@ -23,11 +23,21 @@ interface ProductCardProps {
   minimalMobile?: boolean;
 }
 
-export default function ProductCard({ product, showAddToBag = false, minimalMobile = false }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  showAddToBag = false,
+  minimalMobile = false,
+}: ProductCardProps) {
   const dispatch = useAppDispatch();
-  const defaultImage = product.variants?.[0]?.avatar_url ?? product.image ?? product.image_url ?? "/placeholder.png";
+  const defaultImage =
+    product.variants?.[0]?.avatar_url ??
+    product.image ??
+    product.image_url ??
+    "/placeholder.png";
+  const fallbackUrl = `/${slugify(product.name || "product")}/${
+    product?.variants?.[0]?.variant_code
+  }.html`;
   const [currentImage, setCurrentImage] = useState(defaultImage);
-  const fallbackUrl = `/${slugify(product.name || "product")}/${product?.variants?.[0]?.variant_code}.html`;
   const [currentUrl, setCurrentUrl] = useState(product.url ?? fallbackUrl);
   const isPlaceholder = product.__isPlaceholder || !product.name;
 
@@ -63,26 +73,27 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
 
   return (
     <Link
-      href={currentUrl ?? fallbackUrl}
+      href={currentUrl}
       onMouseEnter={() => {
-        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
-        setCurrentUrl(product.url ?? fallbackUrl)
-        }
-      }
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage);
+        setCurrentUrl(product.url ?? fallbackUrl);
+      }}
       onMouseLeave={() => {
-        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage)
-        setCurrentUrl(product.url ?? fallbackUrl)
-        }
-      }
+        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage);
+        setCurrentUrl(product.url ?? fallbackUrl);
+      }}
     >
-      <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible min-h-[450px]">
+      <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible sm:min-h-[450px] min-h-fit">
         <CardContent className="p-0">
-          <div className="relative aspect-square overflow-hidden group/image mb-1"> {/* distance between MainImage and Carousel */}
+          <div className="relative aspect-square overflow-hidden group/image mb-1">
             <Image
               src={currentImage || "/placeholder.svg"}
               alt={product?.name || ""}
               fill
-              className={`object-cover transition-opacity duration-300 ${hasHoverImage ? "group-hover/image:opacity-0" : ""}`}
+              className={cn(
+                "object-cover transition-opacity duration-300",
+                hasHoverImage && "group-hover/image:opacity-0"
+              )}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
             />
             {hasHoverImage && (
@@ -106,27 +117,37 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
           </div>
 
           {hasVariants && (
-            <div className="max-h-0 group-hover:max-h-[64px] opacity-0 
-            group-hover:opacity-100 invisible group-hover:visible transition-all 
-            duration-300 overflow-hidden group-hover:mb-1"> {/* distance between Carousel and Info */}
+            <div
+              className={cn(
+                // Desktop hover: only show on hover
+                "sm:max-h-0 sm:opacity-0 sm:invisible sm:group-hover:max-h-[64px] sm:group-hover:opacity-100 sm:group-hover:visible",
+                // Mobile: always show
+                "max-h-[64px] opacity-100 visible",
+                "transition-all duration-300 overflow-hidden mb-1"
+              )}
+            >
               <ProductVariantCarousel
-                productName={product?.name || "product"}
+                productName={product.name || "product"}
                 variants={product.variants}
                 activeImage={currentImage}
                 onHover={(src, url) => {
-                  setCurrentImage(src)
-                  setCurrentUrl(url)
+                  setCurrentImage(src);
+                  setCurrentUrl(url);
                 }}
               />
             </div>
           )}
 
-          <div className={`px-2 pb-0 space-y-1 ${minimalMobile ? "hidden sm:block" : ""}`}>
-            <ProductPrice price={product.price} compareAtPrice={String(product.compare_at_price)} />
+          <div className={cn("px-2 pb-0 space-y-1", minimalMobile && "hidden sm:block")}>
+            <ProductPrice price={String(product.price)} compareAtPrice={String(product.compare_at_price)} />
             <h3 className="font-medium text-base leading-tight line-clamp-2">{product.name}</h3>
             {product.sport && <p className="text-gray-600 text-sm">{product.sport}</p>}
-            {hasVariants && <p className="text-gray-600 text-sm">{product.variants.length} colors</p>}
-            {(product?.tags?.length || 0) > 0 && <p className="text-black text-sm font-medium">{product?.tags?.[0]}</p>}
+            {hasVariants && (
+              <p className="text-gray-600 text-sm">{product.variants.length} colors</p>
+            )}
+            {(product?.tags?.length || 0) > 0 && (
+              <p className="text-black text-sm font-medium">{product?.tags?.[0]}</p>
+            )}
             {showAddToBag && (
               <Button className="w-full bg-black text-white hover:bg-gray-800 mt-3" onClick={handleAddToBag}>
                 ADD TO BAG
