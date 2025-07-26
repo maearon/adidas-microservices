@@ -15,6 +15,7 @@ import { slugify } from "@/utils/slugtify"
 import type { ProductAsset, ProductVariation } from "@/types/product/product-adidas"
 import type BreadcrumbItem from "@/types/bread-crumb"
 import type { Variant } from "@/types/product"
+import ProductPrice from "./ProductCardPrice"
 
 interface ProductCardProps {
   slug?: string
@@ -165,15 +166,7 @@ export default function ProductCard({ product, showAddToBag = false, minimalMobi
           {/* Product Info - always visible */}
           <div className={`px-2 pb-2 space-y-1 ${minimalMobile ? "hidden sm:block" : ""}`}>
             {/* Price */}
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-lg">${product.compare_at_price ?? product.price}</span>
-              {product.price && product.compare_at_price && product.price !== product.compare_at_price && (
-                <>
-                  <span className="text-gray-500 line-through text-sm">${product.price}</span>
-                  <span className="text-red-600 text-sm font-medium">-30%</span>
-                </>
-              )}
-            </div>
+            <ProductPrice price={product.price} compareAtPrice={product.compare_at_price} />
 
             {/* Product Name */}
             <h3 className="font-medium text-base leading-tight line-clamp-2">{product.name}</h3>
