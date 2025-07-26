@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, Filter, Loader2, SlidersHorizontal } from "lucide-react"
 
@@ -60,6 +60,9 @@ function getBreadcrumbTrail(slug: string): { label: string; href: string }[] {
 
 export default function CategoryPageClient({ params, searchParams, query }: CategoryPageClientProps) {
   // const searchParams = useSearchParams();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
   const router = useRouter()
   const [showFilters, setShowFilters] = useState(false)
 
@@ -289,7 +292,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         {/* Product Grid */}
         {!isError && products.length > 0 && (
           <InfiniteScrollContainer
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-2"
             onBottomReached={() =>
               hasNextPage && !isFetching && fetchNextPage()
             }

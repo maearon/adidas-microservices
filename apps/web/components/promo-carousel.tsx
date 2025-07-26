@@ -24,9 +24,10 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
   const [itemsPerView, setItemsPerView] = useState(4)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const totalSlides = useMemo(() => {
-    return Math.ceil(items.length / itemsPerView)
-  }, [items.length, itemsPerView])
+  const totalSlides = Math.ceil(items.length / itemsPerView)
+  // const totalSlides = useMemo(() => {
+  //   return Math.ceil(items.length / itemsPerView) No need to use useMemo in react 19
+  // }, [items.length, itemsPerView])
 
   useEffect(() => {
     const updateItems = () => {

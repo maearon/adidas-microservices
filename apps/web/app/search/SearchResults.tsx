@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchProductsFeed } from "@/api/hooks/useProducts";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import ProductCard from "@/components/product-card";
@@ -17,6 +17,9 @@ interface SearchResultsProps {
 }
 
 export default function SearchResults({ query }: SearchResultsProps) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -150,7 +153,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {/* Product Grid */}
       {!isError && products.length > 0 && (
         <InfiniteScrollContainer
-          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-2"
           onBottomReached={() =>
             hasNextPage && !isFetching && fetchNextPage()
           }
