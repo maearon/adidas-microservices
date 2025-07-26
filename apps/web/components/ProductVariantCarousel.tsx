@@ -9,12 +9,14 @@ import { slugify } from "@/utils/slugtify"
 import { cn } from "@/lib/utils"
 
 interface ProductVariantCarouselProps {
+  productName: string
   variants: Variant[]
   activeImage: string
   onHover: (src: string) => void
 }
 
 export default function ProductVariantCarousel({
+  productName = "f50-messi-elite-firm-ground-cleats",
   variants,
   activeImage,
   onHover,
@@ -62,7 +64,7 @@ export default function ProductVariantCarousel({
       <div className="flex gap-1 overflow-hidden">
         {visibleVariants.map((variant, idx) => {
           const isActive = variant.avatar_url === activeImage
-          const variantSlug = `/${slugify(variant.name || "product")}/${variant.variant_code}.html`
+          const variantSlug = `/${slugify(productName || "f50-messi-elite-firm-ground-cleats")}/${variant?.variant_code}.html`
 
           return (
             <Link

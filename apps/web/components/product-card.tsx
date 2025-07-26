@@ -12,12 +12,9 @@ import WishButton from "./wish-button"
 import ProductVariantCarousel from "./ProductVariantCarousel"
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist"
 import { slugify } from "@/utils/slugtify"
-import type {
-  ProductAsset,
-  ProductVariation,
-} from "@/types/product/product-adidas"
-import { Breadcrumb } from "@/types/bread-crumb/bread-crumb"
-import { Variant } from "@/types/product"
+import type { ProductAsset, ProductVariation } from "@/types/product/product-adidas"
+import type BreadcrumbItem from "@/types/bread-crumb"
+import type { Variant } from "@/types/product"
 
 interface ProductCardProps {
   slug?: string
@@ -48,7 +45,7 @@ interface ProductCardProps {
       gender?: string
       sale?: boolean
     }
-    breadcrumb_list?: Breadcrumb[]
+    breadcrumb_list?: BreadcrumbItem[]
     product_description?: {
       title?: string
       text?: string
@@ -68,11 +65,7 @@ interface ProductCardProps {
   minimalMobile?: boolean
 }
 
-export default function ProductCard({
-  product,
-  showAddToBag = false,
-  minimalMobile = false,
-}: ProductCardProps) {
+export default function ProductCard({ product, showAddToBag = false, minimalMobile = false }: ProductCardProps) {
   const dispatch = useAppDispatch()
   const defaultImage = product.image ?? product.image_url ?? "/placeholder.png"
   const [currentImage, setCurrentImage] = useState(defaultImage)
@@ -89,13 +82,13 @@ export default function ProductCard({
         image: currentImage,
         color: "Default",
         size: "M",
-      })
+      }),
     )
   }
 
   const fallbackUrl = `/${slugify(product.name || "product")}/${product?.variants?.[0]?.variant_code}.html`
-
   const hasHoverImage = !!product.hover_image_url?.trim()
+  const hasVariants = product.variants?.length > 1
 
   if (isPlaceholder) {
     return (
@@ -111,13 +104,13 @@ export default function ProductCard({
 
   return (
     <Link href={product.url ?? fallbackUrl}>
-      <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all shadow-none cursor-pointer rounded-none">
-        <CardContent className="p-0 flex flex-col h-full">
+      <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible">
+        <CardContent className="p-0">
           {/* Image section */}
-          <div className={`relative aspect-square overflow-hidden group/image ${!minimalMobile ? "mb-1" : ""}`}>
+          <div className="relative aspect-square overflow-hidden group/image mb-3">
             {/* Main Image */}
             <Image
-              src={currentImage}
+              src={currentImage || "/placeholder.svg"}
               alt={product?.name || ""}
               fill
               className={`object-cover transition-opacity duration-300 ${
@@ -129,7 +122,7 @@ export default function ProductCard({
             {/* Hover Image (only appears when hovering image area) */}
             {hasHoverImage && (
               <Image
-                src={product.hover_image_url}
+                src={product.hover_image_url || "/placeholder.svg"}
                 alt={product.name || ""}
                 fill
                 className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover/image:opacity-100"
@@ -149,10 +142,11 @@ export default function ProductCard({
             </div>
           </div>
 
-          {/* Variant Carousel (only visible when hover toàn card) */}
-          {product.variants?.length > 1 && (
-            <div className="hidden group-hover:block">
+          {/* Variant Carousel - appears on hover between image and info */}
+          {hasVariants && (
+            <div className="h-0 group-hover:h-auto opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 group-hover:mb-3 overflow-hidden">
               <ProductVariantCarousel
+                productName={product?.name || "f50-messi-elite-firm-ground-cleats"}
                 variants={product.variants}
                 activeImage={currentImage}
                 onHover={(src) => setCurrentImage(src)}
@@ -160,26 +154,34 @@ export default function ProductCard({
             </div>
           )}
 
-          {/* Info */}
-          <div
-            className={`space-y-2 px-2 pb-2 mt-auto transition-opacity ${
-              minimalMobile ? "hidden sm:block" : ""
-            }`}
-          >
-            <p className="font-bold h-5">${product.compare_at_price ?? product.price}</p>
-            <h3 className="font-medium h-5 overflow-hidden">{product.name}</h3>
-            {product.sport && (
-              <p className="text-base text-gray-600 min-h-5">{product.sport}</p>
-            )}
-            {product.tags?.length > 0 && (
-              <p className="text-base text-black min-h-5">{product.tags[0]}</p>
-            )}
+          {/* Product Info - always visible */}
+          <div className={`px-2 pb-2 space-y-1 ${minimalMobile ? "hidden sm:block" : ""}`}>
+            {/* Price */}
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-lg">${product.compare_at_price ?? product.price}</span>
+              {product.price && product.compare_at_price && product.price !== product.compare_at_price && (
+                <>
+                  <span className="text-gray-500 line-through text-sm">${product.price}</span>
+                  <span className="text-red-600 text-sm font-medium">-30%</span>
+                </>
+              )}
+            </div>
 
+            {/* Product Name */}
+            <h3 className="font-medium text-base leading-tight line-clamp-2">{product.name}</h3>
+
+            {/* Category/Sport */}
+            {product.sport && <p className="text-gray-600 text-sm">{product.sport}</p>}
+
+            {/* Color count */}
+            {hasVariants && <p className="text-gray-600 text-sm">{product.variants.length} colors</p>}
+
+            {/* Tags */}
+            {product.tags?.length > 0 && <p className="text-black text-sm font-medium">{product.tags[0]}</p>}
+
+            {/* Add to Bag Button */}
             {showAddToBag && (
-              <Button
-                className="w-full bg-black text-white hover:bg-gray-800"
-                onClick={handleAddToBag}
-              >
+              <Button className="w-full bg-black text-white hover:bg-gray-800 mt-3" onClick={handleAddToBag}>
                 ADD TO BAG
               </Button>
             )}
