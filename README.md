@@ -23,7 +23,7 @@ This monorepo implements a sophisticated microservices architecture designed to 
                              👤  End Users
                                  │
                         ┌────────▼────────┐
-                        │  Next.js 14 FE  │
+                        │  Next.js 15 FE  │
                         │  - Vercel/Nginx │
                         │  - Port: 3001   │
                         └────────┬────────┘
@@ -96,7 +96,7 @@ This monorepo implements a sophisticated microservices architecture designed to 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **Next.js 14** - App Router, Server Components
+- **Next.js 15** - App Router, Server Components
 ```
 cd apps/web
 
@@ -140,7 +140,7 @@ header.tsx
                └─ Call sessionApi.me()
          ✅ Show on React Query Devtools
 ```
-- **React 18** - Modern React with Hooks
+- **react 19** - Modern React with Hooks
 - **Tailwind CSS** - Utility-first styling
 - **Redux Toolkit** - State management
 - **TypeScript** - Type safety
