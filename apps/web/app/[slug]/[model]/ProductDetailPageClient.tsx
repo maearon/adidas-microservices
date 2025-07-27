@@ -260,9 +260,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
             </div>
           </div>
-
+          
+          {variant?.variant_code === "JP5593" && (
+          <>
           {/* Mid-page Promotional Banner */}
-          {/* F50 Messi Prestigio Section */}
+          {/* F50 Messi Prestigio Section */}      
           <div className="hidden mt-[80px] pt-[6px] relative w-full h-[300px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
             <Image
               src="/assets/product/football_fw25_messi_pdp_launch_d_1213df14f1.jpg?height=500&width=1200"
@@ -293,6 +295,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           </div>
 
           <div className="mb-0 sm:mb-[80px]"></div>
+          </>
+          )}
 
           {/* Product Carousel */}
           <div className="hidden sm:block sm:mb-[80px]">
@@ -600,6 +604,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           </div>
         </div>
 
+        {variant?.variant_code === "JP5593" && (
+        <>
         {/* Mid-page Promotional Banner */}
         {/* F50 Messi Prestigio Section */}
         <div className="flex sm:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
@@ -632,6 +638,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         </div>
 
         <div className="block sm:hidden mb-[80px]"></div>
+        </>
+        )}
 
         {/* Product Carousel */}
         <div className="block sm:hidden sm:block mb-[60px]">

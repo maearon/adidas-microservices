@@ -81,6 +81,11 @@ export default function SearchResults({ query }: SearchResultsProps) {
               Search for: "{query}"{" "}
               <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
+            {products.length > 0 && (
+              <p className="text-gray-600 break-words text-sm">
+                Showing {products.length} of {totalCount} results
+              </p>
+            )}
           </div>
 
           {/* Desktop Title */}
