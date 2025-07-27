@@ -355,14 +355,16 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             <div className="flex sm:hidden mt-[40px]">
-                <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
+                <p className="text-base text-black">Promo codes will not apply to this product.</p>
             </div>
 
 
             {/* Colors */}
-            <div>
-              <h3 className="mb-3">{variant?.color}</h3>
-              <div className="flex gap-2 mb-6">
+            <div className="mt-[40px]">
+              <div className="flex justify-between items-center">
+                <h3 className="font-bold text-base">Colors</h3>
+              </div>
+              <div className="flex gap-2 mt-[10px]">
                 {product.variants.map((variant) => {
                   const isActive = variant.variant_code === params.model
                   return (
@@ -384,6 +386,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   )
                 })}
               </div>
+              <h3 className="mt-[5px]">{variant?.color}</h3>
             </div>
 
             {/* Sizes */}

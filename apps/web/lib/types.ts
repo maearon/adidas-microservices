@@ -8,6 +8,7 @@ export function getProductSearchSelect() {
     variants: {
       select: {
         id: true,
+        color: true,
         price: true,
         compare_at_price: true,
         variant_code: true,
