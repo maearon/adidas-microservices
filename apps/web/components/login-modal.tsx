@@ -18,6 +18,7 @@ import javaService from "@/api/services/javaService"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { useSignupMutation } from "@/api/hooks/useSignupMutation"
+import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -241,6 +242,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             >
               <span className="text-purple-600 font-bold text-lg">Y!</span>
             </LoadingButton>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-3 mb-6">
+            <GoogleSignInButton />
           </div>
           
           {/* Email Form */}

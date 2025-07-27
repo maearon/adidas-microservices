@@ -16,6 +16,7 @@ import { Eye, EyeOff } from "lucide-react"
 import AdidasSpinner from "@/components/ui/AdidasSpinner"
 import { handleApiError } from "@/components/shared/handleApiError"
 import { Checkbox } from "@/components/ui/checkbox"
+import GoogleSignInButton from "./google/GoogleSignInButton"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -183,6 +184,10 @@ const LoginPage = () => {
                     <img src={`/icons/${name}.svg`} alt={name} className="h-5" />
                   </button>
                 ))}
+              </div>
+
+              <div className="grid grid-cols-1 gap-2 mb-6">
+                <GoogleSignInButton />
               </div>
 
               <Formik
