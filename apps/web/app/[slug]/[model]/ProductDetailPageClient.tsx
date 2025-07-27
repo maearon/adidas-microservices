@@ -32,9 +32,9 @@ interface ProductDetailPageClientProps {
 export default function ProductDetailPageClient({ params }: ProductDetailPageClientProps) {
   // const parsedParams = typeof params === 'string' ? JSON.parse(params) : params;
   const { slug, model } = params;
-  useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "auto" });
-}, []);
+//   useEffect(() => {
+//   window.scrollTo({ top: 0, behavior: "auto" });
+// }, []);
   const router = useRouter()
   const dispatch = useAppDispatch()
   const wishlistItems = useAppSelector((state) => state.wishlist.items)

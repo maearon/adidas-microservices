@@ -88,16 +88,19 @@ const LoginPage = () => {
     window.location.href = authUrl
   }
 
-  if (!hasMounted || isLoading || !minimumLoadingDone) {
-    return (
-      <div
-        className={`z-50 bg-white flex ${
-          centered ? "items-center justify-center" : ""
-        }`}
-      >
-        <AdidasSpinner />
-      </div>
-    )
+  // if (!hasMounted || isLoading || !minimumLoadingDone) {
+  //   return (
+  //     <div
+  //       className={`z-50 bg-white flex ${
+  //         centered ? "items-center justify-center" : ""
+  //       }`}
+  //     >
+  //       <AdidasSpinner />
+  //     </div>
+  //   )
+  // }
+  if (isLoading) {
+    <FullScreenLoader />
   }
 
   if (isError) {

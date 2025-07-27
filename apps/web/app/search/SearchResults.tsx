@@ -71,24 +71,37 @@ export default function SearchResults({ query }: SearchResultsProps) {
 
   return (
     <>
-      {/* Header */}
-      <div className="flex flex-nowrap items-start justify-between gap-2 sm:gap-4 mb-[30px]">
-        <div className="grow min-w-0">
-          <p className="text-sm text-gray-500">
-            You searched for '{query}', showing results for:
-          </p>
-          <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
-            "{query}" <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
-          </h1>
-          {products.length > 0 && (
-            <p className="text-gray-600 break-words text-sm">
-              Showing {products.length} of {totalCount} results
+    {/* Header */}
+      <div className="flex flex-wrap sm:flex-nowrap items-start justify-between gap-2 sm:gap-4 mb-[30px]">
+        {/* Left: Title */}
+        <div className="flex flex-col grow min-w-0">
+          {/* Mobile Title */}
+          <div className="sm:hidden">
+            <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
+              Search for: "{query}"{" "}
+              <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
+            </h1>
+          </div>
+
+          {/* Desktop Title */}
+          <div className="hidden sm:flex flex-col">
+            <p className="text-base text-gray-500">
+              You searched for '{query}', showing results for:
             </p>
-          )}
+            <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
+              "{query}" <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
+            </h1>
+            {products.length > 0 && (
+              <p className="text-gray-600 break-words text-sm">
+                Showing {products.length} of {totalCount} results
+              </p>
+            )}
+          </div>
         </div>
 
-        {/* Filter Button */}
+        {/* Right: Filter button */}
         <div className="shrink-0 flex items-center">
+          {/* Desktop button */}
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
@@ -97,6 +110,8 @@ export default function SearchResults({ query }: SearchResultsProps) {
             FILTER & SORT
             <SlidersHorizontal className="w-4 h-4" />
           </BaseButton>
+
+          {/* Mobile button */}
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
