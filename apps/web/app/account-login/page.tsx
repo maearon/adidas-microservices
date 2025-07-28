@@ -174,7 +174,9 @@ const LoginPage = () => {
                 </p>
               </div>
 
-              <p className="font-medium mb-4">Log in or sign up (it's free)</p>
+              {/* Social Login Text */}
+              <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
+              <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
 
               {/* Social Login Buttons */}
               {/* <div className="grid grid-cols-4 gap-2 mb-6">

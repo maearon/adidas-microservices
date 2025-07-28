@@ -185,7 +185,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
 
           {/* Social Login Text */}
-          <h1 className="text-2xl font-bold mb-2">LOG IN OR SIGN UP</h1>
+          <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
+          <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
           {/* <p className="text-black text-base">
             Enjoy members-only access to exclusive products, experiences, offers and more.
           </p> */}
