@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import flashMessage from "@/components/shared/flashMessages"
@@ -26,6 +26,10 @@ const SignupPage = () => {
   const router = useRouter()
   const signupMutation = useSignupMutation()
   const [errors, setErrors] = useState<ErrorMessageType>({})
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
 
   const handleSubmit = async (values: any) => {
     setErrors({})
@@ -75,12 +79,12 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative bg-white py-16">
+      <div className="relative bg-white md:py-8 pt-1 pb-1">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-start">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
             {/* Left info box */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-none">
+              <div className="bg-white md:p-8 p-1 rounded-none">
                 <Image
                   src="/assets/login/account-portal-page-inline.png"
                   alt="Adiclub Benefits"
@@ -109,7 +113,7 @@ const SignupPage = () => {
             </div>
 
             {/* Signup form */}
-            <div className="bg-white p-8 rounded-none">
+            <div className="bg-white md:p-8 p-1 rounded-none">
               <div className="flex items-center space-x-4">
               {/* adiClub Logo */}
               <AdidasLogo className="w-15 h-auto" />

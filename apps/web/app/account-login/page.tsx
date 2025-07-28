@@ -39,6 +39,10 @@ const LoginPage = () => {
   const [centered, setCentered] = useState(false)
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
+  useEffect(() => {
     setHasMounted(true)
 
     const timer1 = setTimeout(() => setCentered(true), 2000)
@@ -127,12 +131,12 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative bg-white py-16">
+      <div className="relative bg-white md:py-8 pt-1 pb-1">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-start">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-none">
+              <div className="bg-white md:p-8 p-1 rounded-none">
                 <Image
                   src="/assets/login/account-portal-page-inline.jpeg"
                   alt="Adiclub Benefits"
@@ -164,7 +168,7 @@ const LoginPage = () => {
             </div>
 
             {/* Login Form section */}
-            <div className="bg-white p-8 rounded-none">
+            <div className="bg-white md:p-8 p-1 rounded-none">
               <div className="flex items-center space-x-4">
               {/* adiClub Logo */}
               <AdidasLogo className="w-15 h-auto" />
