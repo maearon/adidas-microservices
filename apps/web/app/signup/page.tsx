@@ -10,6 +10,7 @@ import Link from "next/link"
 import { useSignupMutation } from "@/api/hooks/useSignupMutation"
 import { Button } from "@/components/ui/button"
 import { handleApiError } from "@/components/shared/handleApiError"
+import Image from "next/image"
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -79,6 +80,13 @@ const SignupPage = () => {
             {/* Left info box */}
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-none">
+                <Image
+                  src="/assets/login/account-portal-page-inline.png"
+                  alt="Adiclub Benefits"
+                  width={600}
+                  height={600}
+                  className="w-full h-auto object-cover mb-6 rounded-none"
+                />
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
                     <span className="text-white font-bold text-xl">a</span>
@@ -101,7 +109,9 @@ const SignupPage = () => {
 
             {/* Signup form */}
             <div className="bg-white p-8 rounded-none">
-              <h1 className="text-xl font-bold mb-6 text-center">CREATE ACCOUNT</h1>
+              {/* Social Login Text */}
+              <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">SIGN UP</h1>
+              <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
 
               <Formik
                 initialValues={{
