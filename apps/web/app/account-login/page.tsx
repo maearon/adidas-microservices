@@ -129,7 +129,7 @@ const LoginPage = () => {
     <div className="min-h-screen bg-white">
       <div className="relative bg-white py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 items-start">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-none">
