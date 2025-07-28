@@ -11,6 +11,7 @@ import { useSignupMutation } from "@/api/hooks/useSignupMutation"
 import { Button } from "@/components/ui/button"
 import { handleApiError } from "@/components/shared/handleApiError"
 import Image from "next/image"
+import AdidasLogo from "@/components/adidas-logo"
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -109,6 +110,21 @@ const SignupPage = () => {
 
             {/* Signup form */}
             <div className="bg-white p-8 rounded-none">
+              <div className="flex items-center space-x-4">
+              {/* adiClub Logo */}
+              <AdidasLogo className="w-15 h-auto" />
+              <div className="w-px h-6 bg-gray-300" />
+              <div className="text-center">
+                <div className="inline-flex justify-center">
+                  <span className="text-2xl font-bold">adi</span>
+                  <span className="text-2xl font-bold text-blue-600 italic">club</span>
+                  <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
+                    <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              
               {/* Social Login Text */}
               <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">SIGN UP</h1>
               <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
