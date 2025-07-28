@@ -67,6 +67,7 @@ export async function GET(req: NextRequest) {
     const BASE_URL = process.env.NODE_ENV === "development"
       ? "http://localhost:9000/api"
       : "https://adidas-microservices.onrender.com/api"
+    
     const apiRes = await fetch(`${BASE_URL}/social-login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

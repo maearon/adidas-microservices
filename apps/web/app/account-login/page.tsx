@@ -17,6 +17,9 @@ import AdidasSpinner from "@/components/ui/AdidasSpinner"
 import { handleApiError } from "@/components/shared/handleApiError"
 import { Checkbox } from "@/components/ui/checkbox"
 import GoogleSignInButton from "./google/GoogleSignInButton"
+import FacebookSignInButton from "./facebook/FacebookSignInButton"
+import AppleSignInButton from "./apple/AppleSignInButton"
+import YahooSignInButton from "./yahoo/YahooSignInButton"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -173,7 +176,8 @@ const LoginPage = () => {
 
               <p className="font-medium mb-4">Log in or sign up (it's free)</p>
 
-              <div className="grid grid-cols-4 gap-2 mb-6">
+              {/* Social Login Buttons */}
+              {/* <div className="grid grid-cols-4 gap-2 mb-6">
                 {["apple", "facebook", "google", "yahoo"].map((name) => (
                   <button
                     key={name}
@@ -184,10 +188,13 @@ const LoginPage = () => {
                     <img src={`/icons/${name}.svg`} alt={name} className="h-5" />
                   </button>
                 ))}
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 gap-2 mb-6">
+                <FacebookSignInButton />
                 <GoogleSignInButton />
+                <AppleSignInButton />
+                <YahooSignInButton />
               </div>
 
               <Formik

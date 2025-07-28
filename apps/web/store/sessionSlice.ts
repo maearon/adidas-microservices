@@ -36,7 +36,7 @@ export const fetchUser = createAsyncThunk(
     try {
       const response = await javaService.getCurrentSession()
       // Ensure the returned user matches the User interface
-      const user = response.user
+      const user = response?.user
       if (user) {
         return {
           id: user.id,

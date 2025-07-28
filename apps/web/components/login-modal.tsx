@@ -19,6 +19,9 @@ import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { useSignupMutation } from "@/api/hooks/useSignupMutation"
 import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
+import FacebookSignInButton from "@/app/account-login/facebook/FacebookSignInButton"
+import YahooSignInButton from "@/app/account-login/yahoo/YahooSignInButton"
+import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -188,7 +191,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </p> */}
 
           {/* Social Login Buttons */}
-          <div className="grid grid-cols-4 gap-3 mb-6">
+          {/* <div className="grid grid-cols-4 gap-3 mb-6">
             <LoadingButton 
               variant="outline" size="sm" 
               className="social-button"
@@ -242,10 +245,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             >
               <span className="text-purple-600 font-bold text-lg">Y!</span>
             </LoadingButton>
-          </div>
+          </div> */}
           
           <div className="grid grid-cols-1 gap-3 mb-6">
+            <FacebookSignInButton />
             <GoogleSignInButton />
+            <AppleSignInButton />
+            <YahooSignInButton />
           </div>
           
           {/* Email Form */}
