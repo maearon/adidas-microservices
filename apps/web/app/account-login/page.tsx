@@ -168,10 +168,10 @@ const LoginPage = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
-                <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
+                {/* <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
                 <p className="text-gray-600 text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
-                </p>
+                </p> */}
               </div>
 
               {/* Social Login Text */}

@@ -177,12 +177,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
 
           {/* Title */}
-          <div className="text-center mb-6">
+          {/* <div className="text-center mb-6">
             <h2 className="text-2xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
             <p className="text-gray-600 text-base">
               Enjoy members-only access to exclusive products, experiences, offers and more.
             </p>
-          </div>
+          </div> */}
 
           {/* Social Login Text */}
           <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
