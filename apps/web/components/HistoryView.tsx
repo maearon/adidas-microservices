@@ -43,7 +43,11 @@ export default function HistoryView({
             </Button> */}
         </div>
     
-        <ProductCarousel products={stillInterestedProducts.map((p) => p.product)} showIndicators={showIndicatorsInProductCarousel} />
+        <ProductCarousel 
+          products={stillInterestedProducts.map((p) => p.product)} 
+          showIndicators={showIndicatorsInProductCarousel} 
+          minimalMobileForProductCard={true}
+        />
     </section>
   )
 }

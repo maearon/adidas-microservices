@@ -83,7 +83,12 @@ export default function ProductCard({
         setCurrentUrl(product.url ?? fallbackUrl);
       }}
     >
-      <Card className="group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible sm:min-h-[450px] min-h-fit">
+      <Card
+        className={cn(
+          "group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
+          minimalMobile ? "min-h-fit" : "sm:min-h-[450px] min-h-[450px]"
+        )}
+      >
         <CardContent className="p-0">
           <div className="relative aspect-square overflow-hidden group/image mb-1">
             <Image

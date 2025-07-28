@@ -154,16 +154,16 @@
   }
 }
 
-/* Custom utilities for vertical text */
-/* @layer utilities {
-  .writing-mode-vertical-rl {
-    writing-mode: vertical-rl;
-  }
-
-  .text-orientation-mixed {
-    text-orientation: mixed;
-  }
-} */
+/* Overlay when loading to prevent background shadow from showing through the button */
+button:disabled::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(128, 128, 128, 0.4); /* subtle gray overlay */
+  z-index: 20;
+  border-radius: inherit;
+  pointer-events: none;
+}
 
 .social-button {
   @apply p-3 h-12 border border-black hover:border-black transition-colors;

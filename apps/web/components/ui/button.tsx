@@ -4,7 +4,7 @@ import { BaseButton, BaseButtonProps } from "@/components/ui/base-button"
 import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import type { ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 
 interface ButtonProps extends BaseButtonProps {
   href?: string
@@ -38,6 +38,17 @@ export function Button({
 }: ButtonProps) {
   const isBlack = theme === "black"
   const isIconButton = size === "icon"
+
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [measuredWidth, setMeasuredWidth] = useState<number>()
+
+  // 📏 Measure width only once when not loading
+  useEffect(() => {
+    if (!loading && buttonRef.current) {
+      const width = buttonRef.current.getBoundingClientRect().width
+      setMeasuredWidth(width)
+    }
+  }, [loading, children]) // Children changes may affect width
 
   const bg = isBlack ? "bg-black" : "bg-white"
   const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
@@ -74,10 +85,12 @@ export function Button({
       )}
 
       <BaseButton
+        ref={buttonRef}
         asChild={!!href}
         disabled={loading}
         variant={variant}
         size={size}
+        style={{ minWidth: loading ? measuredWidth : undefined }}
         className={cn(
           "relative z-10 inline-flex items-center justify-between text-base font-bold uppercase tracking-wide rounded-none transition-all outline-hidden ring-0",
           bg,
@@ -89,11 +102,11 @@ export function Button({
 
           // Padding responsive theo Adidas
           sizeClass ?? (!isIconButton &&
-            "min-h-[48px] px-[15px] sm:min-h-[50px] sm:px-[15px]"),
+              "min-h-[48px] px-[15px] sm:min-h-[50px] sm:px-[15px]"),
           fullWidth ? "w-full" : "w-auto",
           isIconButton &&
             "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
-
+            
           className
         )}
         {...props}
