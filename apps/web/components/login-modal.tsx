@@ -22,6 +22,7 @@ import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
 import FacebookSignInButton from "@/app/account-login/facebook/FacebookSignInButton"
 import YahooSignInButton from "@/app/account-login/yahoo/YahooSignInButton"
 import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
+import AdidasLogo from "./adidas-logo"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -166,14 +167,18 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
         <div className="p-6 sm:p-8">
           {/* adiClub Logo */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center">
+          <div className="flex items-center space-x-4">
+          <AdidasLogo className="w-15 h-auto" />
+          <div className="w-px h-6 bg-gray-300" />
+          <div className="text-center">
+            <div className="inline-flex justify-center">
               <span className="text-2xl font-bold">adi</span>
               <span className="text-2xl font-bold text-blue-600 italic">club</span>
               <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
                 <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
               </div>
             </div>
+          </div>
           </div>
 
           {/* Title */}

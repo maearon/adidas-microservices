@@ -20,6 +20,7 @@ import GoogleSignInButton from "./google/GoogleSignInButton"
 import FacebookSignInButton from "./facebook/FacebookSignInButton"
 import AppleSignInButton from "./apple/AppleSignInButton"
 import YahooSignInButton from "./yahoo/YahooSignInButton"
+import AdidasLogo from "@/components/adidas-logo"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -164,15 +165,29 @@ const LoginPage = () => {
 
             {/* Login Form section */}
             <div className="bg-white p-8 rounded-none">
-              <div className="text-center mb-6">
+              <div className="flex items-center space-x-4">
+              {/* adiClub Logo */}
+              <AdidasLogo className="w-15 h-auto" />
+              <div className="w-px h-6 bg-gray-300" />
+              <div className="text-center">
+                <div className="inline-flex justify-center">
+                  <span className="text-2xl font-bold">adi</span>
+                  <span className="text-2xl font-bold text-blue-600 italic">club</span>
+                  <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
+                    <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              {/* <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
-                {/* <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
+                <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
                 <p className="text-gray-600 text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
-                </p> */}
-              </div>
+                </p>
+              </div> */}
 
               {/* Social Login Text */}
               <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
