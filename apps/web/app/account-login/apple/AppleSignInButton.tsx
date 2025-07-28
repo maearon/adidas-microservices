@@ -10,7 +10,7 @@ export default function AppleSignInButton() {
     >
       <Link href="/account-login/apple" className="flex w-full items-center gap-2">
         <AppleIcon />
-        Sign in with Apple
+        Log in with Apple
       </Link>
     </BaseButton>
   );

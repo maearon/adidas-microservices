@@ -10,7 +10,7 @@ export default function GoogleSignInButton() {
     >
       <Link href="/account-login/google" className="flex w-full items-center gap-2">
         <GoogleIcon />
-        Sign in with Google
+        Log in with Google
       </Link>
     </BaseButton>
   );

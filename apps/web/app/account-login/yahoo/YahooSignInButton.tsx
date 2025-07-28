@@ -10,7 +10,7 @@ export default function YahooSignInButton() {
     >
       <Link href="/account-login/yahoo" className="flex w-full items-center gap-2">
         <YahooIcon />
-        Sign in with Yahoo
+        Log in with Yahoo
       </Link>
     </BaseButton>
   );

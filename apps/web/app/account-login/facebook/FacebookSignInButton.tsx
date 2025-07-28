@@ -10,7 +10,7 @@ export default function FacebookSignInButton() {
     >
       <Link href="/account-login/facebook" className="flex w-full items-center gap-2">
         <FacebookIcon />
-        Sign in with Facebook
+        Log in with Facebook
       </Link>
     </BaseButton>
   );
