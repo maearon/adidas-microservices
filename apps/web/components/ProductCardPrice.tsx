@@ -13,17 +13,24 @@ export default function ProductPrice({ price, compareAtPrice }: ProductPriceProp
     )
 
     return (
-      <div className="flex items-center gap-2">
-        <span className="font-extralight text-red-600 text-base">${price}</span>
-        <span className="line-through text-gray-500 text-base">${compareAtPrice}</span>
-        <span className="text-[#E32B2B] text-base font-thin">-{discountPercent}%</span>
+      <div className="space-y-1">
+        {/* Giá sau giảm */}
+        <div className="text-[#E32B2B] font-bold text-[18px]">
+          ${price}
+        </div>
+
+        {/* Giá gốc và phần trăm giảm */}
+        <div className="text-[#88769E] text-sm front-extralight">
+          ${compareAtPrice} <span className="font-normal">Original price</span> <span className="text-[#E32B2B] front-thin ml-1">-{discountPercent}%</span>
+        </div>
       </div>
     )
   }
 
+  // Trường hợp không có giảm giá
   return (
-    <div className="flex items-center gap-2">
-      <span className="font-extralight text-base">${price ?? compareAtPrice ?? "0"}</span>
+    <div className="text-[18px] font-bold text-black">
+      ${price ?? compareAtPrice ?? "0"}
     </div>
   )
 }
