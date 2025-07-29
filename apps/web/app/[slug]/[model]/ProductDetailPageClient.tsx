@@ -372,6 +372,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
             {/* Colors */}
             <div className="mt-[40px]">
+              {product.variants.length > 1 && (
+              <>
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-base">Colors</h3>
               </div>
@@ -403,6 +405,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   )
                 })}
               </div>
+              </>
+              )}
               {/* <h3 className="mt-[5px]">{variant?.color}</h3> */}
               <h3 className="mt-[5px]">{displayColor}</h3>
             </div>
