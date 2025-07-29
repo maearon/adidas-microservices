@@ -1,11 +1,11 @@
-product = Product.find(1)
+product = Product.find(3)
 
 # 🧹 Xoá ảnh cũ nếu có
 product.image.purge if product.image.attached?
 product.hover_image.purge if product.hover_image.attached?
 
 # 📁 Đường dẫn đến thư mục thumbnail
-thumbnail_dir = Rails.root.join("app/assets/images/products/1/thumbnail")
+thumbnail_dir = Rails.root.join("app/assets/images/products/93/thumbnail")
 
 # 📄 Lấy danh sách ảnh và sắp xếp
 image_files = Dir.glob("#{thumbnail_dir}/*.jpg").sort_by { |path| File.basename(path).downcase }
