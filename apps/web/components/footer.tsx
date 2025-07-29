@@ -9,6 +9,7 @@ import CcpaIcon from "./icons/CcpaIcon"
 import { Button } from "./ui/button";
 import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
+import { footerLinks } from "@/data/footer-links"
 
 export default function Footer() {
   const [mounted, setMounted] = useState(false)
@@ -172,7 +173,7 @@ export default function Footer() {
                   {items.map((item, index) => (
                     <li key={index}>
                       {item ? (
-                        <a href="#" className="text-base text-gray-300 hover:text-white hover:underline">
+                        <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white hover:underline">
                           {item}
                         </a>
                       ) : (
@@ -254,7 +255,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {mobileFooterSections["My account"].map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="text-base text-gray-300 hover:text-white">
+                    <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
                       {item}
                     </a>
                   </li>
@@ -263,7 +264,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {mobileFooterSections["Your bag (2)"].map((item, index) => (
                   <li key={index}>
-                    <a href="#" className="text-base text-gray-300 hover:text-white">
+                    <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
                       {item}
                     </a>
                   </li>
@@ -289,11 +290,11 @@ export default function Footer() {
                 </div>
               </div>
               <span className="hidden md:inline text-gray-400">|</span>
-              <a href="#" className="hover:underline text-gray-300">
+              <a href={footerLinks["Privacy Policy"] || "#"} className="hover:underline text-gray-300">
                 Privacy Policy
               </a>
               <span className="hidden md:inline text-gray-400">|</span>
-              <a href="#" className="hover:underline text-gray-300">
+              <a href={footerLinks["Terms and Conditions"] || "#"} className="hover:underline text-gray-300">
                 Terms and Conditions
               </a>
             </div>
