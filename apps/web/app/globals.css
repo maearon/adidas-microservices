@@ -155,7 +155,7 @@
 }
 
 /* Overlay when loading to prevent background shadow from showing through the button */
-button:disabled::before {
+.btn-loading::before {
   content: "";
   position: absolute;
   inset: 0;

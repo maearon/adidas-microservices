@@ -27,8 +27,8 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black z-40 transition-opacity duration-200 ${
-          isOpen ? "bg-opacity-50" : "bg-opacity-0"
+        className={`fixed inset-0 z-40 transition-opacity duration-200 ${
+          isOpen ? "bg-[rgba(0,0,0,0.5)]" : "bg-opacity-0"
         }`}
         onClick={onClose}
       />
@@ -48,7 +48,8 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
           <div className="flex justify-end p-4 md:p-6">
             <button
               onClick={onClose}
-              className="w-10 h-10 border border-black flex items-center justify-center hover:bg-gray-100 transition-colors duration-150"
+              className="w-10 h-10 border border-black flex items-center justify-center 
+              cursor-pointer transition-colors duration-150"
             >
               <X className="w-5 h-5" />
             </button>

@@ -106,6 +106,8 @@ export function Button({
           fullWidth ? "w-full" : "w-auto",
           isIconButton &&
             "w-auto h-auto p-2 text-black bg-white/70 hover:bg-white rounded-full",
+          loading &&
+            "btn-loading",
             
           className
         )}

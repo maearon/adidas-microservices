@@ -155,15 +155,18 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none"
+        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white p-0 rounded-none"
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-black hover:text-black z-51"
-        >
-          {/* <X className="w-5 h-5" /> */}
-        </button>
+        {/* Close button - Square border style */}
+        <div className="absolute bg-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+          <button
+            onClick={onClose}
+            className="w-12 h-12 border border-black flex items-center 
+            justify-center cursor-pointer transition-colors duration-150"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
         <div className="p-6 sm:p-8">
           {/* adiClub Logo */}
@@ -418,12 +421,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-black hover:text-black z-51"
-        >
-          {/* <X className="w-5 h-5" /> */}
-        </button>
+        {/* Close button - Square border style */}
+        <div className="absolute bg-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+          <button
+            onClick={onClose}
+            className="w-12 h-12 border border-black flex items-center 
+            justify-center cursor-pointer transition-colors duration-150"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
         {step === "activate" ? (
           <div className="p-6 sm:p-8 text-center">
