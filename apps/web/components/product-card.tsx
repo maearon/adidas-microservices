@@ -86,7 +86,7 @@ export default function ProductCard({
       <Card
         className={cn(
           "group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
-          minimalMobile ? "min-h-fit" : "sm:min-h-fit min-h-[450px]"
+          minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[450px]"
         )}
       >
         <CardContent className="p-0">
