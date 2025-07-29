@@ -159,7 +159,7 @@ button:disabled::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(128, 128, 128, 0.4); /* subtle gray overlay */
+  background: rgba(255, 255, 255, 0.6); /* subtle gray overlay */
   z-index: 20;
   border-radius: inherit;
   pointer-events: none;
