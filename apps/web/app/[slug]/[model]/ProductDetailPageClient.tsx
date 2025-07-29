@@ -22,6 +22,7 @@ import { BaseButton } from "@/components/ui/base-button"
 import Image from "next/image"
 import { ButtonWish } from "@/components/ui/button-wish"
 import { cn } from "@/lib/utils"
+import ProductPrice from "@/components/ProductCardPrice"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -356,10 +357,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <h1 className="text-3xl font-bold mb-4 leading-tight">{upperWords(product.name)}</h1>
 
               <div className="flex items-center space-x-2 mb-6">
-                <span className="text-2xl font-bold">${variant?.price}</span>
+                {/* <span className="text-2xl font-bold">${variant?.price}</span>
                 {variant?.compare_at_price && (
                   <span className="text-lg text-gray-500 line-through">${variant?.compare_at_price}</span>
-                )}
+                )} */}
+                <ProductPrice price={String(variant?.price)} compareAtPrice={String(variant?.compare_at_price)} />
               </div>
 
               <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
