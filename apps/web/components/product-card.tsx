@@ -61,7 +61,7 @@ export default function ProductCard({
 
   if (isPlaceholder) {
     return (
-      <div className="border border-gray-200 rounded shadow-xs p-2 animate-pulse min-h-[450px]">
+      <div className="border border-gray-200 rounded shadow-xs p-2 animate-pulse min-h-[470px]">
         <div className="relative aspect-square bg-gray-200 rounded mb-4" />
         <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
         <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
@@ -86,7 +86,7 @@ export default function ProductCard({
       <Card
         className={cn(
           "group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
-          minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[450px]"
+          minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[470px]"
         )}
       >
         <CardContent className="p-0">
