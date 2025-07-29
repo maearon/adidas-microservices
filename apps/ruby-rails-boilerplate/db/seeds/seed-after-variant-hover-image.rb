@@ -26,6 +26,8 @@ if image_files[0] && image_files[1]
 else
   puts "❌ Không tìm thấy đủ ảnh trong #{thumbnail_dir}"
 end
+# ruby-rails-boilerplate(dev)> product.variants.find_by(id: 466).variant_sizes.find_by(size_id: 53).update!(variant_id: 10)
+# ruby-rails-boilerplate(dev)> VariantSize.find_by(variant_id: 10, size_id: 53)
 # product = Product.find(3)
 
 # # 🧹 Xoá ảnh cũ nếu có
