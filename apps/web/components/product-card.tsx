@@ -128,7 +128,7 @@ export default function ProductCard({
                 "sm:max-h-0 sm:opacity-0 sm:invisible sm:group-hover:max-h-[64px] sm:group-hover:opacity-100 sm:group-hover:visible",
                 // Mobile: always show
                 "max-h-[64px] opacity-100 visible",
-                "transition-all duration-300 overflow-hidden mb-1"
+                "overflow-hidden mb-1"
               )}
             >
               <ProductVariantCarousel
