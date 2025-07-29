@@ -38,8 +38,8 @@ export default function FeedbackWidget() {
         onClick={togglePanel}
         className={cn(
           "fixed right-0 top-1/2 z-40 -translate-y-1/2 rotate-180",
-          "bg-gray-300 text-black border border-current transition-colors",
-          "px-2 sm:px-5 py-1 sm:py-2 text-base font-bold tracking-wider",
+          "bg-[#EBEBEB] text-[#616363] border border-[#616363] transition-colors",
+          "px-3 sm:px-6 py-1 sm:py-2 text-base font-extrabold tracking-wider",
         )}
         style={{
           writingMode: "vertical-rl",

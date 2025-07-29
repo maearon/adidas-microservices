@@ -21,6 +21,7 @@ import Loading from "@/components/loading"
 import { BaseButton } from "@/components/ui/base-button"
 import Image from "next/image"
 import { ButtonWish } from "@/components/ui/button-wish"
+import { cn } from "@/lib/utils"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -55,6 +56,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   }, [product, selectedVariant, wishlistItems])
 
   const variant = product?.variants.find((v) => v.variant_code === params.model)
+  const [hoveredColor, setHoveredColor] = useState<string | null>(null)
+  const displayColor = hoveredColor || variant?.color
   const sizes = variant?.sizes ?? []
 
   const handleSizeSelect = (size: string) => {
@@ -158,6 +161,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     return <Loading />;
   }
 
+  // Helper function
+  function getThumbnailSize(count: number): number {
+    if (count <= 3) return 117
+    if (count <= 5) return 100
+    if (count <= 8) return 70
+    return 44
+  }
+
   return (
     <main className="w-full mx-0 lg:flex">
       {/* <div className="flex flex-col lg:flex-row gap-8 items-start"> */}
@@ -167,7 +178,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <ExpandableImageGallery variant={variant} product={product} images={variant?.image_urls || []} productName={product.name} tags={product?.tags || []}/>
 
           {/* Expandable Sections */}
-          <div className="hidden sm:block mt-[80px] sm:px-[20px]">
+          <div className="hidden lg:block mt-[80px] sm:px-[20px]">
             {/* Expandable Sections - Full Width Below Main Content */}
             <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
               {/* Reviews */}
@@ -265,7 +276,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <>
           {/* Mid-page Promotional Banner */}
           {/* F50 Messi Prestigio Section */}      
-          <div className="hidden mt-[80px] pt-[6px] relative w-full h-[300px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+          <div className="hidden mt-[80px] pt-[6px] relative w-full lg:h-[500px] bg-black lg:flex items-center justify-center text-white text-center overflow-hidden">
             <Image
               src="/assets/product/football_fw25_messi_pdp_launch_d_1213df14f1.jpg?height=500&width=1200"
               alt="F50 Messi Prestigio"
@@ -299,7 +310,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           )}
 
           {/* Product Carousel */}
-          <div className="hidden sm:block sm:mb-[80px]">
+          <div className="hidden lg:block sm:mb-[80px]">
           <ProductCarousel products={product.related_products} title="COMPLETE THE LOOK" carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
           <div className="mb-[80px]"></div>
           <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile minimalMobileForProductCard showIndicators />
@@ -316,7 +327,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <div className="sticky top-4 bg-white p-4 rounded-none border-l px-[20px] sm:px-12">
 
             {/* Desktop Product Title */}
-            <div className="hidden sm:block">
+            <div className="hidden lg:block">
               {/* Gender • Sport + Reviews */}
               <div className="flex items-center justify-between mb-2">
                 <p className="text-base text-gray-600">
@@ -354,7 +365,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
             </div>
 
-            <div className="flex sm:hidden mt-[40px]">
+            <div className="flex lg:hidden mt-[40px]">
                 <p className="text-base text-black">Promo codes will not apply to this product.</p>
             </div>
 
@@ -364,29 +375,36 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-base">Colors</h3>
               </div>
-              <div className="flex gap-2 mt-[10px]">
+              <div
+                className="flex gap-2 mt-[10px]"
+                onMouseLeave={() => setHoveredColor(variant?.color)} // reset when leave area
+              >
                 {product.variants.map((variant) => {
                   const isActive = variant.variant_code === params.model
+                  const size = getThumbnailSize(product.variants.length)
                   return (
                     <Link
                       key={variant.id}
                       href={`/${slugify(product.name)}/${variant.variant_code}.html`}
-                      className={`
-                        w-12 h-12 overflow-hidden block
-                        border-b-4
-                        ${isActive ? "border-black" : "border-transparent hover:border-black"}
-                      `}
+                      onMouseEnter={() => setHoveredColor(variant.color)} // only change displayColor when hover 
+                      className={cn(
+                        `w-[${size}px] h-[${size}px] block overflow-hidden border-b-4`,
+                        isActive ? "border-black" : "border-transparent hover:border-black"
+                      )}
                     >
-                      <img
+                      <Image
                         src={variant?.image_urls?.[0] || "/placeholder.svg"}
                         alt={variant.color}
-                        className="w-full h-full object-cover"
+                        width={size}
+                        height={size}
+                        className="!w-full !h-full object-cover"
                       />
                     </Link>
                   )
                 })}
               </div>
-              <h3 className="mt-[5px]">{variant?.color}</h3>
+              {/* <h3 className="mt-[5px]">{variant?.color}</h3> */}
+              <h3 className="mt-[5px]">{displayColor}</h3>
             </div>
 
             {/* Sizes */}
@@ -513,7 +531,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         </aside>
 
         {/* Expandable Sections */}
-        <div className="block sm:hidden mt-[80px] sm:px-[20px]">
+        <div className="block lg:hidden mt-[80px] sm:px-[20px]">
           {/* Expandable Sections - Full Width Below Main Content */}
           <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
             {/* Reviews */}
@@ -611,7 +629,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         <>
         {/* Mid-page Promotional Banner */}
         {/* F50 Messi Prestigio Section */}
-        <div className="flex sm:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+        <div className="flex lg:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
           <Image
             src="/assets/product/football_fw25_messi_pdp_launch_m_ba9cdf23e1.jpg?height=1004&width=750"
             alt="F50 Messi Prestigio"
@@ -622,7 +640,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           />
         </div>
         {/* Feature Section */}
-        <div className="flex sm:hidden relative w-full h-[402px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+        <div className="flex lg:hidden relative w-full h-[402px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
           <Image
             src="/assets/product/football_fw25_messi_statement_launch_m_74db237251.jpg?height=1004&width=750"
             alt="F50 Messi Prestigio"
@@ -640,12 +658,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           </div>
         </div>
 
-        <div className="block sm:hidden mb-[80px]"></div>
+        <div className="block lg:hidden mb-[80px]"></div>
         </>
         )}
 
         {/* Product Carousel */}
-        <div className="block sm:hidden sm:block mb-[60px]">
+        <div className="block lg:hidden lg:block mb-[60px]">
         <ProductCarousel products={product.related_products} title="COMPLETE THE LOOK" carouselModeInMobile showIndicators={false} />
         <div className="mb-[60px]"></div>
         <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile showIndicators />
