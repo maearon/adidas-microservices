@@ -39,6 +39,7 @@ export default function StoreList({
           {/* Address label */}
           <p className="text-sm text-muted-foreground">{store.address}</p>
           <p className="text-xs text-red-500">Open Closes {store.hours['Sunday'].split('-')[1]}</p>
+          <p className="text-sm text-blue-600 underline">{store.phone}</p>
         </div>
          )
       })}
