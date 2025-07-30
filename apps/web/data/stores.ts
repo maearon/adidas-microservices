@@ -7,7 +7,7 @@ export const stores: Store[] = [
     address: '565 5th Ave',
     city: 'New York',
     distance: 2.86,
-    coordinates: [20.81874, 105.34438],
+    coordinates: [105.34438, 20.81874], // longitude, latitude
     hours: {
       Monday: '10:00 AM - 08:00 PM',
       Tuesday: '10:00 AM - 08:00 PM',
@@ -26,7 +26,7 @@ export const stores: Store[] = [
     address: '115 Spring Street',
     city: 'New York',
     distance: 3.42,
-    coordinates: [20.86878, 105.33494],
+    coordinates: [105.33494, 20.86878], // longitude, latitude
     hours: {
       Monday: '10:00 AM - 07:00 PM',
       Tuesday: '10:00 AM - 07:00 PM',
