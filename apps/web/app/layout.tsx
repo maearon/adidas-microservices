@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Barlow } from "next/font/google"
 import "./globals.css"
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { Providers } from "@/components/providers"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/footer"
