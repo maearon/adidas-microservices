@@ -20,10 +20,10 @@ export default function StoreMap({ stores, selected }: { stores: Store[]; select
     })
 
     stores.forEach((store) => {
-      new mapboxgl.Marker()
-        .setLngLat(store.coordinates)
-        .addTo(mapRef.current!)
-    })
+  new mapboxgl.Marker({ anchor: 'bottom' }) // 👈 THÊM anchor
+    .setLngLat(store.coordinates)
+    .addTo(mapRef.current!)
+})
   }, [])
 
   useEffect(() => {
