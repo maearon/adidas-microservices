@@ -1,5 +1,6 @@
 "use client"
 
+import { upperWords } from "@/utils/upper-words";
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
 
@@ -153,7 +154,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
                 onClick={() => toggleCategory(category)}
                 className="w-full flex justify-between items-center py-4 font-bold text-md"
               >
-                {category}
+                {upperWords(category)}
                 {openCategory === category ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
               <ul className={`pl-4 pb-4 space-y-2 ${openCategory === category ? "block" : "hidden"}`}>
@@ -173,7 +174,9 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
         <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8">
           {Object.entries(selectedCategories).map(([category, items]) => (
             <div key={category}>
-              <h4 className="font-bold mb-4 text-md">{category}</h4>
+              <h4 className="font-bold mb-4 text-md">
+                {upperWords(category)}
+              </h4>
               <ul className="space-y-2">
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
