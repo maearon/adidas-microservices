@@ -2,6 +2,7 @@
 
 import { Store } from "@/types/store"
 import { MapPin } from "lucide-react"
+import StoreMap from "./StoreMap"
 
 export default function StoreList({
   stores,
@@ -16,12 +17,21 @@ export default function StoreList({
     <div className="space-y-2">
       {stores.map((store) => {
         const [lng, lat] = store.coordinates
+        const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+        const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+000(${lng},${lat})/${lng},${lat},15/500x200?access_token=${mapboxToken}`
         return (
         <div
           key={store.id}
           onClick={() => onSelect(store)}
           className={`border rounded p-3 cursor-pointer ${selectedId === store.id ? 'border-black' : ''}`}
         >
+          <div className="xl:hidden">
+            <img
+              src={mapUrl}
+              alt={store.name}
+              className="w-full h-[200px] object-cover rounded"
+            />
+          </div>
           <p className="font-semibold">{store.name}</p>
           {/* Directions button */}
           <div className="mt-3">
