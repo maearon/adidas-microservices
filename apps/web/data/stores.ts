@@ -3,11 +3,11 @@ import { Store } from "@/types/store";
 export const stores: Store[] = [
   {
     id: 'store-001',
-    name: 'adidas Flagship Store New York',
+    name: 'adidas Flagship Store Hòa Bình',
     address: '565 5th Ave',
     city: 'New York',
     distance: 2.86,
-    coordinates: [-73.974187, 40.756795],
+    coordinates: [20.81874, 105.34438],
     hours: {
       Monday: '10:00 AM - 08:00 PM',
       Tuesday: '10:00 AM - 08:00 PM',
@@ -22,11 +22,11 @@ export const stores: Store[] = [
   },
   {
     id: 'store-002',
-    name: 'Originals Flagship Store New York, Spring Street',
+    name: 'Originals Flagship Store Hòa Bình, Spring Street',
     address: '115 Spring Street',
     city: 'New York',
     distance: 3.42,
-    coordinates: [-74.000263, 40.723007],
+    coordinates: [20.86878, 105.33494],
     hours: {
       Monday: '10:00 AM - 07:00 PM',
       Tuesday: '10:00 AM - 07:00 PM',
