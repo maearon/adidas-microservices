@@ -16,7 +16,7 @@ export default function StoreMap({ stores, selected }: { stores: Store[]; select
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12',
       center: selected.coordinates,
-      zoom: 13,
+      zoom: 17,
     })
 
     stores.forEach((store) => {
@@ -29,7 +29,7 @@ export default function StoreMap({ stores, selected }: { stores: Store[]; select
   useEffect(() => {
     mapRef.current?.flyTo({
       center: selected.coordinates,
-      zoom: 14,
+      zoom: 17,
       speed: 1.2,
     })
   }, [selected])
