@@ -3,16 +3,16 @@ import { Store } from "@/types/store";
 import { MapPin } from "lucide-react"
 
 export default function StoreDetail({ store }: { store: Store }) {
+  const [lng, lat] = store.coordinates
+
   return (
     <div className="p-4">
       <h3 className="text-lg font-bold">{store.name}</h3>
 
-      {/* Nút Directions */}
+      {/* Directions button */}
       <div className="mt-3">
         <a
-          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-            store.address
-          )}`}
+          href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center border px-4 py-2 rounded hover:bg-gray-100 transition text-sm"
