@@ -17,7 +17,7 @@ export const stores: Store[] = [
       Saturday: '10:00 AM - 08:00 PM',
       Sunday: '11:00 AM - 07:00 PM',
     },
-    phone: '+1 (212) 123-4567',
+    phone: '+84 (912) 915-132',
     features: ['click and collect', 'endless aisle', 'gift cards'],
   },
   {
@@ -36,7 +36,7 @@ export const stores: Store[] = [
       Saturday: '10:00 AM - 08:00 PM',
       Sunday: '11:00 AM - 07:00 PM',
     },
-    phone: '+1 (212) 966-0954',
+    phone: '+84 (974) 006-807',
     features: ['click and collect', 'endless aisle', 'gift cards'],
   },
 ]
