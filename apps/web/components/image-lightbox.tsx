@@ -134,7 +134,7 @@ export default function ImageLightbox({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-white z-1000 flex items-center justify-center">
+    <div className="fixed inset-0 bg-[#ECEFF1] z-1000 flex items-center justify-center">
       {/* Close Button */}
       <button
         onClick={onClose}
