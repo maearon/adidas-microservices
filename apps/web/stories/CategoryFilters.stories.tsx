@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import CategoryFilters from "@/components/category-filters"
+import CategoryFilters from "@/components/filter/category-filters"
 
 const meta: Meta<typeof CategoryFilters> = {
-  title: "Components/CategoryFilters",
+  title: "Filter/CategoryFilters",
   component: CategoryFilters,
 }
 export default meta

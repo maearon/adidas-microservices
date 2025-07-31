@@ -8,7 +8,7 @@ import ProductCard from "@/components/product-card";
 import Loading from "@/components/loading";
 import { Loader2, Filter, SlidersHorizontal } from "lucide-react";
 import { BaseButton } from "@/components/ui/base-button";
-import SearchFilters from "@/components/search-filters";
+import SearchFilters from "@/components/filter/search-filters";
 import { SearchFilters as SearchFiltersType } from "@/types/search";
 import { Button } from "@/components/ui/button";
 

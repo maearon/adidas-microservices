@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { LocationModalProvider, FeedbackModalProvider } from "@/components/modal-providers"
+import { LocationModalProvider } from "@/components/modal-providers"
 import { useEffect } from "react"
 import { useLocationModal } from "@/hooks/useLocationModal"
 import { useFeedbackModal } from "@/hooks/useFeedbackModal"
@@ -37,18 +37,18 @@ function LocationModalStoryWrapper() {
   return <LocationModalProvider />
 }
 
-function FeedbackModalStoryWrapper() {
-  const { isOpen, closeModal } = useFeedbackModal()
+// function FeedbackModalStoryWrapper() {
+//   const { isOpen, closeModal } = useFeedbackModal()
 
-  // Optionally, you can use isOpen or closeModal here if needed
+//   // Optionally, you can use isOpen or closeModal here if needed
 
-  return <FeedbackModalProvider />
-}
+//   return <FeedbackModalProvider />
+// }
 
 export const LocationModalExample: Story = {
   render: () => <LocationModalStoryWrapper />,
 }
 
-export const FeedbackModalExample: Story = {
-  render: () => <FeedbackModalStoryWrapper />,
-}
+// export const FeedbackModalExample: Story = {
+//   render: () => <FeedbackModalStoryWrapper />,
+// }

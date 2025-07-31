@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import FiltersSidebar from "@/components/filters-sidebar"
+import FiltersSidebar from "@/components/filter/filters-sidebar"
 import { useState } from "react"
 
 const meta: Meta<typeof FiltersSidebar> = {
-  title: "Components/FiltersSidebar",
+  title: "Filter/FiltersSidebar",
   component: FiltersSidebar,
 }
 export default meta

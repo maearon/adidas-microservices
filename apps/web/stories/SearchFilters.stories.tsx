@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-import SearchFilters from "@/components/search-filters"
+import SearchFilters from "@/components/filter/search-filters"
 import type { SearchFilters as SearchFiltersType } from "@/types/search"
 import { useState } from "react"
 
 const meta: Meta<typeof SearchFilters> = {
-  title: "Components/SearchFilters",
+  title: "Filter/SearchFilters",
   component: SearchFilters,
   tags: ["autodocs"],
   parameters: {

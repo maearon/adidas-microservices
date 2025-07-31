@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { SearchFilters as SearchFiltersType } from "@/types/search"
-import { BaseButton } from "./ui/base-button"
+import { BaseButton } from "../ui/base-button"
 
 interface SearchFiltersProps {
   isOpen: boolean
