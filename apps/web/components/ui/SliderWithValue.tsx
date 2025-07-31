@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 export interface SliderWithValueProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {}
 
 const SliderWithValue = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentRef<typeof SliderPrimitive.Root>,
   SliderWithValueProps
 >(({ className, defaultValue = [50], ...props }, ref) => {
   const [value, setValue] = React.useState<number[]>(defaultValue as number[])
