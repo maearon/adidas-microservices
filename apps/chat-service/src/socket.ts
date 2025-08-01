@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import md5 from "blueimp-md5";
+import { randomUUID } from 'crypto';
 
 export const getGravatarUrl = (email: string, size = 50): string => {
   const hash = md5(email.trim().toLowerCase());
@@ -117,6 +118,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
         const message = await prisma.messages.create({
           data: {
+            id: randomUUID(),
             content: content.trim(),
             type: MessageType[prismaType],
             room_id: roomId,
