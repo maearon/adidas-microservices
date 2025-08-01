@@ -83,7 +83,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
         const messages = await prisma.messages.findMany({
           where: { room_id: roomId },
-          include: { user: { select: { id: true, name: true, email: true } } },
+          include: { users: { select: { id: true, name: true, email: true } } },
           orderBy: { created_at: 'desc' },
           take: 50,
         });
@@ -123,7 +123,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
             user_id: socket.userId!,
           },
           include: {
-            user: {
+            users: {
               select: { id: true, name: true, email: true },
             },
           },
@@ -144,7 +144,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
           content: message.content,
           type: message.type,
           roomId: message.room_id,
-          user: {
+          users: {
             ...message.user,
             avatar: avatarUrl,
           },

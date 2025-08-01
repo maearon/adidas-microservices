@@ -34,7 +34,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
     const messages = await prisma.messages.findMany({
       where: { room_id: roomId },
       include: {
-        user: {
+        users: {
           select: { id: true, name: true, email: true, avatar: true },
         },
       },
