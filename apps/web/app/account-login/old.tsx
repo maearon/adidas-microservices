@@ -227,7 +227,7 @@ const LoginPage: NextPage = () => {
                       <Link
                         href="/password_resets/new"
                         className="underline text-blue-600"
-                        target="_blank"
+                        
                       >
                         Send Change your password link with token to your email
                       </Link>

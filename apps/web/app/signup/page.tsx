@@ -211,7 +211,7 @@ const SignupPage = () => {
                       <Link
                         href="/account_activations/new"
                         className="underline text-blue-600"
-                        target="_blank"
+                        
                       >
                         Resend activation
                       </Link>

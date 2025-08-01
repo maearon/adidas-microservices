@@ -296,7 +296,7 @@ const LoginPage = () => {
                       Don't have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
                     </div>
                     <div className="mt-2 text-base text-center">
-                      Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" target="_blank">Reset it here</Link>
+                      Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" >Reset it here</Link>
                     </div>
                     {/* Terms */}
                     <div className="mt-6 text-xs text-gray-500">

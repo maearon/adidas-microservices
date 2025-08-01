@@ -57,7 +57,7 @@ const Help: NextPage = () => {
           <a
             key={idx}
             href={link.href}
-            target="_blank"
+            
             rel="noopener noreferrer"
             className="border-2 border-black bg-white text-black p-6 text-center font-semibold hover:bg-black hover:text-white transition rounded"
           >
