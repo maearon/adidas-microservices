@@ -46,7 +46,7 @@ async function main() {
   })
 
   // Create sample rooms
-  const generalRoom = await prisma.room.upsert({
+  const generalRoom = await prisma.rooms.upsert({
     where: { id: 'general' },
     update: {},
     create: {
@@ -60,7 +60,7 @@ async function main() {
     }
   })
 
-  const supportRoom = await prisma.room.upsert({
+  const supportRoom = await prisma.rooms.upsert({
     where: { id: 'support' },
     update: {},
     create: {
@@ -75,7 +75,7 @@ async function main() {
   })
 
   // Create sample messages
-  await prisma.message.createMany({
+  await prisma.messages.createMany({
     data: [
       {
         content: 'Welcome to Adidas chat! How can we help you today?',

@@ -31,7 +31,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
     const limit = parseInt(req.query.limit as string) || 50;
     const offset = (page - 1) * limit;
 
-    const messages = await prisma.message.findMany({
+    const messages = await prisma.messages.findMany({
       where: { room_id: roomId },
       include: {
         user: {
@@ -43,7 +43,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
       take: limit,
     });
 
-    const total = await prisma.message.count({
+    const total = await prisma.messages.count({
       where: { room_id: roomId },
     });
 
@@ -65,7 +65,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
 // List active rooms
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const rooms = await prisma.room.findMany({
+    const rooms = await prisma.rooms.findMany({
       include: {
         _count: {
           select: { messages: true },
@@ -90,7 +90,7 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Room id and name are required' });
     }
 
-    const room = await prisma.room.create({
+    const room = await prisma.rooms.create({
       data: { id, name, type },
     });
 

@@ -68,9 +68,9 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
     socket.on('join_room', async ({ roomId }: JoinRoomData) => {
       try {
-        let room = await prisma.room.findUnique({ where: { id: roomId } });
+        let room = await prisma.rooms.findUnique({ where: { id: roomId } });
         if (!room) {
-          room = await prisma.room.create({
+          room = await prisma.rooms.create({
             data: {
               id: roomId,
               name: roomId,
@@ -81,7 +81,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
         socket.join(roomId);
 
-        const messages = await prisma.message.findMany({
+        const messages = await prisma.messages.findMany({
           where: { room_id: roomId },
           include: { user: { select: { id: true, name: true, email: true } } },
           orderBy: { created_at: 'desc' },
@@ -115,7 +115,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
         const prismaType = (type?.toUpperCase() as keyof typeof MessageType) || 'TEXT';
 
-        const message = await prisma.message.create({
+        const message = await prisma.messages.create({
           data: {
             content: content.trim(),
             type: MessageType[prismaType],
@@ -129,7 +129,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
           },
         });
 
-        await prisma.room.update({
+        await prisma.rooms.update({
           where: { id: roomId },
           data: {
             last_message_at: new Date(),

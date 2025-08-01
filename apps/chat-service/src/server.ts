@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
@@ -37,7 +37,7 @@ initializeSocket(io, prisma);
 app.use('/api/rooms', roomRoutes);
 
 // Health check
-app.head('/health', (req, res) => {
+app.head('/health', (req: Request, res: Response) => {
   res.status(200).end();
 });
 app.get('/health', (req, res) => {
@@ -49,7 +49,7 @@ app.get('/health', (req, res) => {
 });
 
 // Root endpoint
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.json({ 
     message: 'Adidas Chat Service',
     version: '1.0.0',
