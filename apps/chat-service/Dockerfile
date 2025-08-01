@@ -12,9 +12,10 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # Install dependencies
-RUN npm ci --only=production
+# RUN npm ci --only=production
 
 # Generate Prisma client
+ENV DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
 RUN npx prisma generate
 
 # Copy source code
