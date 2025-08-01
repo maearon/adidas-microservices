@@ -12,7 +12,7 @@ COPY apps/chat-service/package*.json ./
 COPY apps/chat-service/prisma ./prisma/
 
 # Install dependencies
-# RUN npm ci --only=production
+RUN npm install
 
 # Generate Prisma client
 ENV DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
@@ -23,6 +23,9 @@ COPY apps/chat-service/ .
 
 # Build TypeScript
 RUN npm run build
+
+# Optional: prune devDependencies for final image size
+RUN npm prune --production
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
