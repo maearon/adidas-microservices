@@ -34,6 +34,10 @@ apiEndpoints:
     path: /api/oauth*
     target: http://api-java:8080
 
+  check-email:
+    path: /api/check-email
+    target: http://api-java:8080
+
   login:
     path: /api/login
     target: http://api-java:8080
@@ -116,6 +120,13 @@ pipelines:
   oauth-pipeline:
     apiEndpoints:
       - oauth
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: api-java
+  check-email-pipeline:
+    apiEndpoints:
+      - check-email
     policies:
       - proxy:
           - action:
