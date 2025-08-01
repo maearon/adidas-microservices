@@ -44,7 +44,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
 
-      const user = await prisma.user.findUnique({
+      const user = await prisma.users.findUnique({
         where: { id: decoded.sub },
       });
 

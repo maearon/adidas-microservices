@@ -6,7 +6,7 @@ async function main() {
   console.log('🌱 Seeding database...')
 
   // Create sample users
-  const user1 = await prisma.user.upsert({
+  const user1 = await prisma.users.upsert({
     where: { email: 'admin@adidas.com' },
     update: {},
     create: {
@@ -26,7 +26,7 @@ async function main() {
     }
   })
 
-  const user2 = await prisma.user.upsert({
+  const user2 = await prisma.users.upsert({
     where: { email: 'support@adidas.com' },
     update: {},
     create: {
