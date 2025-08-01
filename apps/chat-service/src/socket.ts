@@ -139,7 +139,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
           },
         });
 
-        const avatarUrl = getGravatarUrl(message.user.email ?? 'default@example.com');
+        const avatarUrl = getGravatarUrl(message.users.email ?? 'default@example.com');
 
         io.to(roomId).emit('new_message', {
           id: message.id,
@@ -147,7 +147,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
           type: message.type,
           roomId: message.room_id,
           users: {
-            ...message.user,
+            ...message.users,
             avatar: avatarUrl,
           },
           createdAt: message.created_at,
