@@ -21,6 +21,7 @@ import FacebookSignInButton from "./facebook/FacebookSignInButton"
 import AppleSignInButton from "./apple/AppleSignInButton"
 import YahooSignInButton from "./yahoo/YahooSignInButton"
 import AdidasLogo from "@/components/adidas-logo"
+import XSignInButton from "./x/XSignInButton"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -214,6 +215,7 @@ const LoginPage = () => {
               <div className="grid grid-cols-1 gap-2 mb-6">
                 <FacebookSignInButton />
                 <GoogleSignInButton />
+                <XSignInButton />
                 <AppleSignInButton />
                 <YahooSignInButton />
               </div>
