@@ -104,7 +104,7 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/home", "/about", "/help", "/contact").permitAll()
                 .requestMatchers("/images/**", "/webjars/**").permitAll()
-                .requestMatchers("/api/signup", "/api/login", "/api/oauth/callback", "/api/oauth/**", "/error").permitAll()
+                .requestMatchers("/api/signup", "/api/login", "/api/social-login", "/error").permitAll()
                 .requestMatchers("/api/users").permitAll()
                 .requestMatchers("/account-activation/**").permitAll()
                 .requestMatchers("/api/password-resets/**").permitAll()
