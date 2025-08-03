@@ -8,7 +8,6 @@ import { OAuth2RequestError } from "arctic";
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
   const state = req.nextUrl.searchParams.get("state");
-
   const storedState = cookies().get("state")?.value;
 
   if (!code || !state || !storedState || state !== storedState) {
@@ -16,23 +15,25 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // ✅ Không dùng code_verifier
     const tokens = await google.validateAuthorizationCode(code);
 
-    // Fetch user info from Google
-    const googleUser = await axiosInstance
-      .get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      })
-      .json<{ id: string; email: string; name: string }>();
+    const { data: googleUser } = await axiosInstance.get<{
+      sub: string;
+      email: string;
+      name: string;
+      given_name: string;
+      family_name: string;
+      picture: string;
+    }>("https://openidconnect.googleapis.com/v1/userinfo", {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken}`,
+      },
+    });
 
-    // Check or create user
-    // Call Java backend to get JWT
-    const BASE_URL = process.env.NODE_ENV === "development"
-      ? "http://localhost:9000/api"
-      : "https://adidas-microservices.onrender.com/api";
+    const BASE_URL =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:9000/api"
+        : "https://adidas-microservices.onrender.com/api";
 
     const apiRes = await fetch(`${BASE_URL}/social-login`, {
       method: "POST",
@@ -40,8 +41,10 @@ export async function GET(req: NextRequest) {
       body: JSON.stringify({
         session: {
           email: googleUser.email,
-          providerId: googleUser.id,
+          providerId: googleUser.sub, // ✅ dùng sub làm providerId
           provider: "google",
+          givenName: googleUser.given_name, // ✅ truyền thêm
+          familyName: googleUser.family_name,
         },
       }),
     });
