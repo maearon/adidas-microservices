@@ -1,4 +1,4 @@
-import { google, lucia } from "@/auth";
+import { google } from "@/auth"; // chỉ lấy cấu hình google OAuth từ Arctic
 import axios from "axios";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const codeVerifier = cookies().get("code_verifier")?.value;
 
   if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
-    return new Response(null, { status: 400 });
+    return new Response("Invalid state or code", { status: 400 });
   }
 
   try {
@@ -27,25 +27,19 @@ export async function GET(req: NextRequest) {
 
     const { id: providerId, email } = googleUser;
 
-    // Gọi đến Java backend để xác thực hoặc tạo user
-    const { data } = await axios.post("http://localhost:8080/api/users/social-login", {
+    // Gửi thông tin đến backend Java
+    const response = await axios.post("http://localhost:8080/api/users/social-login", {
       session: {
-      provider: "google",
-      providerId,
-      email,
-      }
+        provider: "google",
+        providerId,
+        email,
+      },
     });
 
-    const { token, user } = data;
+    const { token, user } = response.data;
 
-    // Tạo session với Lucia (dùng user.id từ backend)
-    const session = await lucia.createSession(user.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
-
-    // Có thể set token backend nếu muốn chia sẻ cho frontend gọi API sau này
-    cookies().set("backend_token", token, {
+    // Ghi token BE vào cookie
+    cookies().set("auth_token", token, {
       path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -53,17 +47,28 @@ export async function GET(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 7, // 7 ngày
     });
 
+    // Optional: ghi user JSON (nếu cần dùng client-side nhanh)
+    cookies().set("user", JSON.stringify(user), {
+      path: "/",
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: "/", // Redirect về trang chủ hoặc dashboard
       },
     });
   } catch (err) {
-    console.error("Google OAuth error:", err);
+    console.error("Google OAuth Error:", err);
+
     if (err instanceof OAuth2RequestError) {
-      return new Response("Invalid OAuth request", { status: 400 });
+      return new Response("OAuth2 request failed", { status: 400 });
     }
+
     return new Response("Internal server error", { status: 500 });
   }
 }
