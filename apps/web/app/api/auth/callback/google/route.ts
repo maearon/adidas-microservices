@@ -1,4 +1,4 @@
-import { google } from "@/auth"; // chỉ lấy cấu hình google OAuth từ Arctic
+import { google } from "@/lib/social-login/google";
 import axios from "axios";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";
