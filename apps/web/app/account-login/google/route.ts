@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 export async function GET() {
   const state = generateState();
 
-  // ✅ Không dùng codeVerifier vì Google không hỗ trợ PKCE cho Web OAuth
   const url = await google.createAuthorizationURL(state, {
     scopes: ["profile", "email"],
   });
