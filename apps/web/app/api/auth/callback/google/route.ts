@@ -69,14 +69,18 @@ export async function GET(req: NextRequest) {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/dashboard",
+        Location: "/",
       },
     });
-  } catch (err) {
-    console.error("OAuth error:", err);
-    if (err instanceof OAuth2RequestError) {
-      return new Response("OAuth2 failed", { status: 400 });
+  } catch (error) {
+    console.error(error);
+    if (error instanceof OAuth2RequestError) {
+      return new Response(null, {
+        status: 400,
+      });
     }
-    return new Response("Internal Server Error", { status: 500 });
+    return new Response(null, {
+      status: 500,
+    });
   }
 }
