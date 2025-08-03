@@ -7,7 +7,7 @@ export async function GET() {
   const codeVerifier = generateCodeVerifier();
 
   const url = await google.createAuthorizationURL(state, codeVerifier, {
-    scopes: ["profile", "email"],
+    scopes: ["openid", "profile", "email"]
   });
 
   cookies().set("state", state, {
