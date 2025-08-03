@@ -8,3 +8,6 @@ export const google = new Google(
   process.env.GOOGLE_CLIENT_SECRET!,
   `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback/google`,
 );
+
+// Đặt scope thủ công (ví dụ: lấy email + profile)
+google.scopes = ['openid', 'email', 'profile'];
