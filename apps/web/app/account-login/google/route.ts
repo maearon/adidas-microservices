@@ -6,17 +6,13 @@ export async function GET() {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  // Tạo URL đăng nhập với Google
   const url = await google.createAuthorizationURL(state, codeVerifier, {
     scopes: ["profile", "email"],
   });
 
-  // Lưu state và code_verifier vào cookie để kiểm tra khi callback về
-  const secure = process.env.NODE_ENV === "production";
-
   cookies().set("state", state, {
     path: "/",
-    secure,
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     maxAge: 60 * 10,
     sameSite: "lax",
@@ -24,7 +20,7 @@ export async function GET() {
 
   cookies().set("code_verifier", codeVerifier, {
     path: "/",
-    secure,
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     maxAge: 60 * 10,
     sameSite: "lax",
