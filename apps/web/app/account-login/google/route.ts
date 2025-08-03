@@ -1,32 +1,32 @@
 import { google } from "@/lib/social-login/google";
-import { generateState, generateCodeVerifier } from "arctic";
+import { generateCodeVerifier, generateState } from "arctic";
 import { cookies } from "next/headers";
 
 export async function GET() {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  const url = await google.createAuthorizationURL(state, {
+  // Tạo URL đăng nhập với Google
+  const url = await google.createAuthorizationURL(state, codeVerifier, {
     scopes: ["profile", "email"],
-    codeVerifier,
   });
 
+  // Lưu state và code_verifier vào cookie để kiểm tra khi callback về
   const secure = process.env.NODE_ENV === "production";
 
-  // ✅ Lưu cả `state` và `codeVerifier` vào cookie
   cookies().set("state", state, {
     path: "/",
     secure,
     httpOnly: true,
-    maxAge: 600,
+    maxAge: 60 * 10,
     sameSite: "lax",
   });
 
-  cookies().set("codeVerifier", codeVerifier, {
+  cookies().set("code_verifier", codeVerifier, {
     path: "/",
     secure,
     httpOnly: true,
-    maxAge: 600,
+    maxAge: 60 * 10,
     sameSite: "lax",
   });
 
