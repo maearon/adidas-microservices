@@ -29,37 +29,6 @@ export async function GET(req: NextRequest) {
       .json<{ id: string; email: string; name: string }>();
 
     // Check or create user
-    let user = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { googleId: googleUser.id },
-          { email: googleUser.email ?? undefined },
-        ],
-      },
-    });
-
-    if (!user) {
-      const now = new Date().toISOString();
-      user = await prisma.user.create({
-        data: {
-          googleId: googleUser.id,
-          email: googleUser.email,
-          displayName: googleUser.name,
-          username: googleUser.email?.split("@")[0] ?? `user-${googleUser.id.slice(0, 5)}`,
-          created_at: now,
-          updated_at: now,
-        },
-      });
-    } else if (!user.googleId) {
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          googleId: googleUser.id,
-          updated_at: new Date().toISOString(),
-        },
-      });
-    }
-
     // Call Java backend to get JWT
     const BASE_URL = process.env.NODE_ENV === "development"
       ? "http://localhost:9000/api"
