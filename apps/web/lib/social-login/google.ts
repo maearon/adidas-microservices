@@ -9,5 +9,4 @@ export const google = new Google(
   `${process.env.GOOGLE_REDIRECT_URI}/api/auth/callback/google`,
 );
 
-// Đặt scope thủ công (ví dụ: lấy email + profile)
 google.scopes = ['openid', 'email', 'profile'];
