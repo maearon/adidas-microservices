@@ -15,7 +15,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const tokens = await google.validateAuthorizationCode(code);
+    const codeVerifier = cookies().get("codeVerifier")?.value;
+
+    const tokens = await google.validateAuthorizationCode(code, codeVerifier);
 
     const { data: googleUser } = await axiosInstance.get<{
       sub: string;
