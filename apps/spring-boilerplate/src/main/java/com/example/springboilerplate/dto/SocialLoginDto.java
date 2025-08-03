@@ -14,15 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonRootName("session")
-public class LoginDto {
+public class SocialLoginDto {
     @NotNull
     @NotEmpty
     private String email;
 
     @NotNull
     @NotEmpty
-    private String password;
+    private String providerId;
 
-    @JsonProperty("remember_me")
-    private boolean rememberMe;
+    @NotNull
+    @NotEmpty
+    private String provider;
 }

@@ -72,8 +72,11 @@ export async function GET(req: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: googleUser.email,
-        googleId: googleUser.id,
+        session: {
+          email: googleUser.email,
+          providerId: googleUser.id,
+          provider: "google",
+        }
       }),
     });
 

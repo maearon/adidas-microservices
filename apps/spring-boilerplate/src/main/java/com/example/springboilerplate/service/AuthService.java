@@ -113,4 +113,33 @@ public class AuthService {
 
         return new AuthResponse(user, accessToken, refreshToken);
     }
+
+    public Optional<User> findOrCreateUserFromProviderIdOrEmail(String providerId, String email, String provider) {
+        // 1. Tìm theo providerId
+        Optional<User> userOpt = userRepository.findByGoogleId(providerId); // Dùng tạm luôn là Google mở rộng các nhà cung cấp khác sau
+        if (userOpt.isPresent()) {
+            return userOpt;
+        }
+
+        // 2. Nếu không có thì tìm theo email
+        userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User existingUser = userOpt.get();
+            // cập nhật thêm provider info nếu chưa có
+            existingUser.setProvider(provider);
+            existingUser.setGoogleId(providerId); // Dùng tạm luôn là Google mở rộng các nhà cung cấp khác sau
+            userRepository.save(existingUser);
+            return Optional.of(existingUser);
+        }
+
+        // 3. Nếu vẫn không có, tạo mới
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setProvider(provider);
+        newUser.setGoogleId(providerId); // Dùng tạm luôn là Google mở rộng các nhà cung cấp khác sau
+        newUser.setName("New User"); // Hoặc lấy từ socialLoginDto nếu có
+        // thêm các trường mặc định khác nếu cần
+        userRepository.save(newUser);
+        return Optional.of(newUser);
+    }
 }

@@ -38,6 +38,10 @@ apiEndpoints:
     path: /api/check-email
     target: http://api-java:8080
 
+  social-login:
+    path: /api/social-login
+    target: http://api-java:8080
+
   login:
     path: /api/login
     target: http://api-java:8080
@@ -142,6 +146,13 @@ pipelines:
   login-pipeline:
     apiEndpoints:
       - login
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: api-java
+  social-login-pipeline:
+    apiEndpoints:
+      - social-login
     policies:
       - proxy:
           - action:

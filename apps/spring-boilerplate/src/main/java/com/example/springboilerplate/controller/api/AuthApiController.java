@@ -122,6 +122,40 @@ public class AuthApiController {
         return ResponseEntity.ok(jwtResponse);
     }
 
+    @PostMapping("/social-login")
+    public ResponseEntity<?> socialLogin(@Valid @RequestBody Map<String, SocialLoginDto> payload) {
+        SocialLoginDto socialLoginDto = payload.get("session");
+        Optional<User> userOpt = authService.findOrCreateUserFromProviderIdOrEmail(
+                socialLoginDto.getProviderId(),
+                socialLoginDto.getEmail(),
+                socialLoginDto.getProvider()
+        );
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not found"));
+        }
+
+        User user = userOpt.get();
+
+        // sinh JWT
+        UserPrincipal userPrincipal = UserPrincipal.create(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            userPrincipal, null, userPrincipal.getAuthorities()
+        );
+
+        String token = tokenProvider.generateToken(authentication);
+        String refresh = tokenProvider.generateRefreshToken(authentication);
+
+        return ResponseEntity.ok(Map.of(
+            "token", token,
+            "user", Map.of(
+                "id", user.getId(),
+                "email", user.getEmail(),
+                "name", user.getName()
+            )
+        ));
+    }
+
     @PostMapping("/login")
     // public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Map<String, LoginDto> payload) {
