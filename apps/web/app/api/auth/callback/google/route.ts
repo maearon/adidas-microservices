@@ -10,15 +10,14 @@ export async function GET(req: NextRequest) {
   const state = req.nextUrl.searchParams.get("state");
 
   const storedState = cookies().get("state")?.value;
-  const codeVerifier = cookies().get("code_verifier")?.value;
 
-  if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
+  if (!code || !state || !storedState || state !== storedState) {
     return new Response("Invalid OAuth flow", { status: 400 });
   }
 
   try {
-    // Exchange code for tokens
-    const tokens = await google.validateAuthorizationCode(code, codeVerifier);
+    // ✅ Không dùng code_verifier
+    const tokens = await google.validateAuthorizationCode(code);
 
     // Fetch user info from Google
     const googleUser = await axiosInstance
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
       })
       .json<{ id: string; email: string; name: string }>();
 
-    // Check if user already exists (by googleId or email)
+    // Check or create user
     let user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -40,7 +39,6 @@ export async function GET(req: NextRequest) {
     });
 
     if (!user) {
-      // Create new user if not exists
       const now = new Date().toISOString();
       user = await prisma.user.create({
         data: {
@@ -53,7 +51,6 @@ export async function GET(req: NextRequest) {
         },
       });
     } else if (!user.googleId) {
-      // If user exists but missing googleId, update it
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -66,8 +63,8 @@ export async function GET(req: NextRequest) {
     // Call Java backend to get JWT
     const BASE_URL = process.env.NODE_ENV === "development"
       ? "http://localhost:9000/api"
-      : "https://adidas-microservices.onrender.com/api"
-    
+      : "https://adidas-microservices.onrender.com/api";
+
     const apiRes = await fetch(`${BASE_URL}/social-login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +73,7 @@ export async function GET(req: NextRequest) {
           email: googleUser.email,
           providerId: googleUser.id,
           provider: "google",
-        }
+        },
       }),
     });
 
@@ -85,18 +82,16 @@ export async function GET(req: NextRequest) {
       return new Response("Failed to login via backend", { status: 401 });
     }
 
-    const { token, user: javaUser } = await apiRes.json();
+    const { token } = await apiRes.json();
 
-    // Save token to HttpOnly cookie (optional: or localStorage from frontend)
     cookies().set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
     });
 
-    // ✅ Redirect to home or dashboard
     return new Response(null, {
       status: 302,
       headers: {
