@@ -1,11 +1,13 @@
 'use client'
 
+// app/layout.tsx
+import { ThemeProvider } from 'next-themes'
 import type React from "react"
-import type { Metadata } from "next"
+// import type { Metadata } from "next"
 import { Barlow } from "next/font/google"
 import "./globals.css"
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Providers } from "@/components/providers"
+// import { Providers } from "@/components/providers"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/footer"
 import ChatWidget from "@/components/chat-widget"
@@ -55,19 +57,26 @@ export default function RootLayout({
           <Provider store={store}>
             <AuthProvider>
               <ReactQueryProvider>
-                <RedirectListener /> {/* ✅ THÊM VÀO BODY */}
-                <Navbar />
-                <ToastContainer
-                  position="bottom-right"
-                  autoClose={4000}
-                  hideProgressBar={false}
-                />
-                <main>{isMaintenance ? <MaintenancePage /> : children}</main>
-                <Footer />
-                <LocationModalProvider />
-                <ChatWidget />
-                <FeedbackWidget />
-                <ScrollToTop />
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <RedirectListener /> {/* ✅ THÊM VÀO BODY */}
+                  <Navbar />
+                  <ToastContainer
+                    position="bottom-right"
+                    autoClose={4000}
+                    hideProgressBar={false}
+                  />
+                  <main>{isMaintenance ? <MaintenancePage /> : children}</main>
+                  <Footer />
+                  <LocationModalProvider />
+                  <ChatWidget />
+                  <FeedbackWidget />
+                  <ScrollToTop />
+                </ThemeProvider>
               </ReactQueryProvider>
               <Toaster />
             </AuthProvider>
