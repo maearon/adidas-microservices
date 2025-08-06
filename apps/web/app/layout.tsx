@@ -31,13 +31,13 @@ const barlow = Barlow({
   weight: ["400", "500", "700"],
 })
 
-export const metadata: Metadata = {
-  title: {
-    template: "adidas %s | adidas US",
-    default: "adidas Online Shop | adidas US",
-  },
-  description: "Shop the latest adidas shoes, clothing and accessories",
-}
+// export const metadata: Metadata = {
+//   title: {
+//     template: "adidas %s | adidas US",
+//     default: "adidas Online Shop | adidas US",
+//   },
+//   description: "Shop the latest adidas shoes, clothing and accessories",
+// }
 
 const isMaintenance = false
 
