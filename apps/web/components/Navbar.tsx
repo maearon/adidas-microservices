@@ -77,7 +77,7 @@ export default function Navbar() {
     { name: "MEN", href: "/men" },
     { name: "WOMEN", href: "/women" },
     { name: "KIDS", href: "/kids" },
-    { name: "BACK TO SCHOOL", href: "/back_to_school" },
+    { name: "BACK TO SCHOOL 🔥", href: "/back_to_school" },
     { name: "SALE", href: "/sale" },
     { name: "NEW & TRENDING", href: "/trending" },
   ]
