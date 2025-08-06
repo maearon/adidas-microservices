@@ -1,3 +1,5 @@
+'use client'
+
 import type React from "react"
 import type { Metadata } from "next"
 import { Barlow } from "next/font/google"
@@ -20,6 +22,9 @@ import RedirectListener from "@/components/RedirectListener" // ✅ THÊM DÒNG 
 import { ToastContainer } from "react-toastify"
 import MaintenancePage from "@/_components/MaintenancePage"
 import { Toaster } from "@/components/ui/toaster"
+import { store } from "@/store/store"
+import { fetchUser } from "@/store/sessionSlice"
+import { Provider } from "react-redux"
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -36,6 +41,8 @@ export const metadata: Metadata = {
 
 const isMaintenance = false
 
+store.dispatch(fetchUser())
+
 export default function RootLayout({
   children,
 }: {
@@ -45,7 +52,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={barlow.className}>
         <GoogleOAuthProvider clientId={'588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com'}>
-          <Providers>
+          <Provider store={store}>
             <AuthProvider>
               <ReactQueryProvider>
                 <RedirectListener /> {/* ✅ THÊM VÀO BODY */}
@@ -64,7 +71,7 @@ export default function RootLayout({
               </ReactQueryProvider>
               <Toaster />
             </AuthProvider>
-          </Providers>
+          </Provider>
         </GoogleOAuthProvider>
       </body>
     </html>
