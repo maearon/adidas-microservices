@@ -69,7 +69,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
         { name: "All Women's", href: "/women" },
       ]
       break
-    case "BACK TO SCHOOL":
+    case "BACK TO SCHOOL🔥":
       menuData = backToSchoolMenuData
       footerLinks = [
         { name: "All Back to School", href: "/back_to_school" },

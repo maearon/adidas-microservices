@@ -374,7 +374,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        <MegaMenu activeMenu={activeMenu} onClose={handleMouseLeave} />
+        <MegaMenu activeMenu={activeMenu} onClose={handleMouseLeave} /> 
+        {/* Menu dropdown when hover main menu */}
       </header>
 
       <TopBarDropdown isOpen={showTopBarDropdown} onClose={() => setShowTopBarDropdown(false)} />
