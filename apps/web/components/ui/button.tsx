@@ -15,7 +15,7 @@ interface ButtonProps extends BaseButtonProps {
   pressEffect?: boolean
   fullWidth?: boolean
   className?: string
-  theme?: "white" | "black"
+  theme?: "white" | "black" | "transparent"
   border?: boolean
   sizeClass?: string
 }
@@ -31,12 +31,13 @@ export function Button({
   variant = "default",
   className,
   theme = "white",
-  border = true,
+  border = false,
   size = "default",
   sizeClass = undefined,
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
+  const isTransparent = theme === "transparent"
   const isIconButton = size === "icon"
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -50,20 +51,20 @@ export function Button({
     }
   }, [loading, children]) // Children changes may affect width
 
-  const bg = isBlack ? "bg-black" : "bg-white"
-  const hoverBg = isBlack ? "hover:bg-black" : "hover:bg-white"
-  const text = isBlack ? "text-white" : "text-black"
+  const bg = isBlack ? "bg-black" : isTransparent ? "bg-transparent" : "bg-white"
+  const hoverBg = isBlack ? "hover:bg-black" : isTransparent ? "hover:bg-transparent" : "hover:bg-white"
+  const text = isBlack ? "text-white" : isTransparent ? "text-black dark:text-white" : "text-black"
   const hoverText = isBlack ? "hover:text-gray-500" : "hover:text-black"
   const shadowBorderClass = shadow
     ? isBlack
-      ? "border-black"
-      : "border-white group-hover:border-gray-400"
+      ? "border-black dark:border-white"
+      : isTransparent ? "border-white dark:border-white group-hover:border-gray-400" : "border-white group-hover:border-gray-400"
     : "border-transparent"
   const borderClass = !isIconButton
-    ? shadow
-      ? "border border-transparent"
-      : `border ${isBlack ? "border-white" : "border-black"}`
-    : ""
+    ? border
+      ? `border ${isBlack ? "border-white dark:border-white" : isTransparent ? "border-black dark:border-white" : "border-black dark:border-white"}`
+      : "border border-transparent"
+    : "border border-transparent"
 
   return (
     <div

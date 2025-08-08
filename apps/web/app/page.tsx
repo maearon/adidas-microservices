@@ -66,7 +66,7 @@ export default function HomePage() {
   const popularCategories = ["ultraboost", "samba", "campus", "soccer", "gazelle", "spezial"]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <PromoBanner />
       <HeroBanner
         backgroundClassName="bg-hero"
@@ -119,7 +119,7 @@ export default function HomePage() {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
             <Badge className="bg-black text-white">New Arrivals</Badge>
-            <span className="text-base text-gray-600">Best Sellers</span>
+            <span className="text-base text-gray-600 dark:text-white">Best Sellers</span>
           </div>
           <Button variant="link" className="text-base font-bold">
             VIEW ALL
@@ -153,11 +153,11 @@ export default function HomePage() {
               >
                 <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               </div>
-              <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
+              <CardContent className="relative h-full flex flex-col justify-end p-6 text-background">
                 <h3 className="font-bold text-lg mb-1">{title.title}</h3>
                 {title.subtitle && <p className="text-base mb-2">{title.subtitle}</p>}
                 <p className="text-base mb-4">{title.description}</p>
-                <Button variant="outline" size="sm" className="border border-black text-black font-bold px-2 py-1 text-[11px] sm:text-xs rounded-none hover:bg-gray-100 transition w-fit">
+                <Button variant="outline" size="sm" className="border border-border text-background font-bold px-2 py-1 text-[11px] sm:text-xs rounded-none hover:bg-gray-100 transition w-fit">
                   {title.cta}
                 </Button>
               </CardContent>
@@ -196,7 +196,7 @@ export default function HomePage() {
 
       {/* Popular Categories */}
       <section className="container mx-auto px-2 py-0">
-        <h2 className="text-[32px] font-bold mb-4">Popular right now</h2>
+        <h2 className="text-[32px] font-bold mb-4 text-foreground">Popular right now</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6">
           {popularCategories.slice(0, 6).map((category, index) => (
@@ -205,9 +205,10 @@ export default function HomePage() {
               key={`${category}-${index}`}
               variant="ghost"
               className="w-full justify-start text-left text-[44px] font-extrabold pb-10
-                border-0 border-b border-black
-                hover:shadow-[inset_0_-5px_0_0_black]
-                hover:bg-transparent focus:bg-transparent active:bg-transparent
+                border-0 border-b border-border
+                hover:shadow-[inset_0_-5px_0_0_black] dark:hover:shadow-[inset_0_-5px_0_0_white]
+                text-foreground hover:text-foreground
+                bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent
                 rounded-none shadow-none transition-all duration-200"
               showArrow={false}
             >
@@ -231,7 +232,7 @@ export default function HomePage() {
                   className="w-full h-48 object-cover mb-4"
                 />
                 <h3 className="font-bold mb-2 text-base">{resource.title}</h3>
-                <p className="text-base text-gray-600 leading-relaxed">{resource.description}</p>
+                <p className="text-base text-gray-600 dark:text-white leading-relaxed">{resource.description}</p>
               </CardContent>
             </Card>
           ))}

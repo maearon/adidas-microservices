@@ -13,7 +13,7 @@ interface SalePromoProps {
 export default function SalePromo({
   message = "UP TO 40% OFF",
   bgColor = "bg-cyan-700", // Đổi từ bg-red-600 sang bg-cyan-700
-  textColor = "text-white",
+  textColor = "text-background",
   className = "",
 }: SalePromoProps) {
   return (

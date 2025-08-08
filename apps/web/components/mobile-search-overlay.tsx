@@ -62,7 +62,7 @@ export default function MobileSearchOverlay({
       {/* Search Panel */}
       <div
         className={cn(
-          "fixed top-0 right-0 h-full w-full bg-white z-50 transform transition-transform duration-300 sm:hidden",
+          "fixed top-0 right-0 h-full w-full bg-white dark:bg-black z-50 transform transition-transform duration-300 sm:hidden",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >

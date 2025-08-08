@@ -29,7 +29,7 @@ export default function ProductPrice({ price, compareAtPrice }: ProductPriceProp
 
   // Trường hợp không có giảm giá
   return (
-    <div className="text-sm sm:text-[18px] font-bold text-black">
+    <div className="text-sm sm:text-[18px] font-bold text-foreground">
       ${price ?? compareAtPrice ?? "0"}
     </div>
   )

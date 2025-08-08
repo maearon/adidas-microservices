@@ -55,7 +55,8 @@ export default function SearchField() {
             rounded-none 
             placeholder-black
             focus:placeholder-transparent 
-            text-base 
+            text-base
+            text-black
             pl-2
             pr-1 
             py-1

@@ -45,7 +45,7 @@ const New: NextPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gray-50">
-      <div className="bg-white w-full max-w-md shadow-xl rounded-xl p-8 border border-gray-200">
+      <div className="bg-background w-full max-w-md shadow-xl rounded-xl p-8 border border-gray-200">
         <h1 className="text-2xl font-extrabold text-gray-900 mb-6 text-center uppercase tracking-wide">
           Resend Activation Email
         </h1>
@@ -58,7 +58,7 @@ const New: NextPage = () => {
               Email address
             </label>
             <input
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-xs p-2 focus:ring-black focus:border-black"
+              className="mt-1 block w-full rounded-md border border-gray-300 shadow-xs p-2 focus:ring-black focus:border-border"
               type="email"
               name="email"
               id="user_email"
@@ -74,7 +74,7 @@ const New: NextPage = () => {
               ref={submitRef}
               type="submit"
               disabled={submitting}
-              className={`w-full flex justify-center items-center px-4 py-2 text-white font-semibold bg-black rounded-md shadow-xs hover:bg-gray-800 transition ${
+              className={`w-full flex justify-center items-center px-4 py-2 text-background font-semibold bg-black rounded-md shadow-xs hover:bg-gray-800 transition ${
                 submitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >

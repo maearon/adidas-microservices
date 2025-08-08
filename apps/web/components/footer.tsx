@@ -116,20 +116,20 @@ export default function Footer() {
       {/* <section className="sm:hidden bg-white py-6 border-t">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-lg font-bold mb-2">YOUR OPINION COUNTS</h2>
-          <p className="text-base text-gray-600 mb-6">We strive to serve you better and appreciate your feedback</p>
+          <p className="text-base text-gray-600 dark:text-white mb-6">We strive to serve you better and appreciate your feedback</p>
         </div>
       </section> */}
 
       {/* Opinion Section with Back to Top */}
-      <section className="sm:hidden bg-gray-100 py-4">
+      <section className="sm:hidden bg-gray-100 text-base text-gray-600 py-4">
         <div className="container mx-auto px-4">
-          <h3 className="text-base font-bold mb-1">YOUR OPINION COUNTS</h3>
-          <p className="text-base text-gray-600">We strive to serve you better and appreciate your feedback</p>
+          <h3 className="font-bold mb-1">YOUR OPINION COUNTS</h3>
+          <p>We strive to serve you better and appreciate your feedback</p>
         </div>
       </section>
 
       {/* Back to Top button (mobile) */}
-      <section className="sm:hidden bg-white border-t py-4">
+      <section className="sm:hidden bg-white border-none py-4">
         <div className="px-4 flex justify-center">
           <button
             onClick={scrollToTop}

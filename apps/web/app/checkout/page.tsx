@@ -102,7 +102,7 @@ export default function CheckoutPage() {
       {/* Page Title */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold mb-2">CHECKOUT</h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-white">
           ({totalItems} items) ${total.toFixed(2)}
         </p>
       </div>
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
           {/* Contact Section */}
           <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
-            <p className="text-base text-gray-600">{user?.email}</p>
+            <p className="text-base text-gray-600 dark:text-white">{user?.email}</p>
           </div>
 
           {/* Address Section */}
@@ -270,7 +270,7 @@ export default function CheckoutPage() {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-gray-600 dark:text-white">
                 From $31.57/month or 4 payments at 0% interest with <strong>Klarna</strong>
               </p>
             </div>
@@ -308,10 +308,10 @@ export default function CheckoutPage() {
                     <div className="flex-1">
                       <h3 className="font-bold text-base">{item.product.name}</h3>
                       <p className="text-base font-bold">{item.variant.price}</p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-600 dark:text-white">
                         Size: {item.size} / Quantity: {item.quantity}
                       </p>
-                      <p className="text-xs text-gray-600">Color: {item.variant.color}</p>
+                      <p className="text-xs text-gray-600 dark:text-white">Color: {item.variant.color}</p>
                     </div>
                   </CardContent>
                 </Card>

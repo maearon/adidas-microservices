@@ -103,12 +103,12 @@ const LoginPage: NextPage = () => {
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <div className="bg-white max-w-md w-full p-6 rounded shadow-lg relative overflow-y-auto max-h-[90vh]">
+      <div className="bg-background max-w-md w-full p-6 rounded shadow-lg relative overflow-y-auto max-h-[90vh]">
         <button onClick={() => router.push("/")} className="absolute top-4 right-4 text-xl font-bold">×</button>
 
         <div className="text-center mb-6">
           <h2 className="text-xl font-bold uppercase mb-2">Your AdiClub benefits await</h2>
-          <p className="text-base text-gray-600">Get free shipping, vouchers and members-only products in adiClub.</p>
+          <p className="text-base text-gray-600 dark:text-white">Get free shipping, vouchers and members-only products in adiClub.</p>
         </div>
 
         <div className="grid grid-cols-4 gap-2 mb-4">
@@ -201,11 +201,11 @@ const LoginPage: NextPage = () => {
         {step === 'activate' && (
           <div className="text-center">
             <h2 className="text-lg font-bold">Activate Your Account</h2>
-            <p className="text-base text-gray-600 mt-2">Check your email to activate your account and enjoy adiClub benefits.</p>
+            <p className="text-base text-gray-600 dark:text-white mt-2">Check your email to activate your account and enjoy adiClub benefits.</p>
           </div>
         )}
 
-        <p className="text-xs text-gray-600 mt-6">
+        <p className="text-xs text-gray-600 dark:text-white mt-6">
           By clicking the “Continue” button, you agree to the
           <Link href="#" className="underline"> TERMS OF USE</Link>,
           <Link href="#" className="underline"> ADICLUB TERMS</Link> and

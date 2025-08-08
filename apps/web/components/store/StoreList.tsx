@@ -23,7 +23,7 @@ export default function StoreList({
         <div
           key={store.id}
           onClick={() => onSelect(store)}
-          className={`border rounded p-3 cursor-pointer ${selectedId === store.id ? 'border-black' : ''}`}
+          className={`border rounded p-3 cursor-pointer ${selectedId === store.id ? 'border-border' : ''}`}
         >
           <div className="xl:hidden">
             <img

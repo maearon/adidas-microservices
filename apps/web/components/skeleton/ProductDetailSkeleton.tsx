@@ -16,7 +16,7 @@ export default function ProductDetailSkeleton() {
 
       {/* Right Column */}
       <aside className="w-full lg:w-1/3 mt-10 lg:mt-0 space-y-6">
-        <div className="bg-white border p-6 space-y-4 shadow-xs">
+        <div className="bg-background border p-6 space-y-4 shadow-xs">
           <div className="h-6 bg-gray-200 rounded w-2/3" />
           <div className="h-8 bg-gray-200 rounded w-1/3" />
           <div className="grid grid-cols-5 gap-2">

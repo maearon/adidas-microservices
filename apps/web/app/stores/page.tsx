@@ -29,7 +29,7 @@ export default function StoreFinderPage() {
       {/* Map and Detail - Hidden on mobile */}
       <div className="hidden xl:flex flex-1 relative">
         <StoreMap stores={stores} selected={selectedStore} />
-        <div className="absolute top-4 right-4 bg-white shadow-lg rounded-lg max-w-md w-full z-10">
+        <div className="absolute top-4 right-4 bg-background shadow-lg rounded-lg max-w-md w-full z-10">
           <StoreDetail store={selectedStore} />
         </div>
       </div>

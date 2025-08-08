@@ -195,7 +195,7 @@ export default function ChatWidget() {
       {isOpen && (
         <div
           className={`
-            fixed z-99 bg-white border border-gray-200 shadow-xl transition-all duration-300
+            fixed z-99 bg-white dark:bg-black text-foreground border border-gray-200 shadow-xl transition-all duration-300
             ${isMinimized
               // ? "w-96 h-16 sm:w-96 sm:h-16 bottom-6 right-6" 
               // iPhone 15 Pro Max: w-96 = 384px → Exceeds 375px → Overflows off the left screen if you use right-6.
@@ -205,10 +205,10 @@ export default function ChatWidget() {
           `}
         >
           {/* Chat Header */}
-          <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between h-16">
+          <div className="bg-background border-b border-gray-200 p-4 flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 overflow-hidden">
               <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">A</span>
+                <span className="text-foreground text-xs font-bold">A</span>
               </div>
               <div className="truncate">
                 <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
@@ -263,9 +263,9 @@ export default function ChatWidget() {
                       //   </p>
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
-                        <div className="bg-black text-white rounded-lg p-3 max-w-xs ml-auto">
+                        <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
                           <p className="text-base">{message.content}</p>
-                          <p className="text-xs text-gray-300 mt-1">
+                          <p className="text-xs text-gray-300 dark:text-black mt-1">
                             {message.timestamp.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
@@ -284,7 +284,7 @@ export default function ChatWidget() {
                 {isTyping && (
                   <div className="flex items-start space-x-2">
                     <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">A</span>
+                      <span className="text-foreground text-xs font-bold">A</span>
                     </div>
                     <div className="bg-gray-100 rounded-lg p-3">
                       <p className="text-base text-gray-500">Typing...</p>

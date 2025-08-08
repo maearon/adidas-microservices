@@ -52,7 +52,7 @@ export default function MenPage({ onNavigate }: Props) {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-gray-200">
         {/* Top bar */}
@@ -70,7 +70,7 @@ export default function MenPage({ onNavigate }: Props) {
             <nav className="hidden md:flex space-x-8">
               <button className="text-base font-medium hover:underline">SHOES</button>
               <button
-                className="text-base font-medium hover:underline border-b-2 border-black"
+                className="text-base font-medium hover:underline border-b-2 border-border"
                 onClick={() => onNavigate("men")}
               >
                 MEN
@@ -105,10 +105,10 @@ export default function MenPage({ onNavigate }: Props) {
             style={{ backgroundImage: "url('/placeholder.png?height=400&width=400')" }}
           >
             <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-            <div className="absolute bottom-8 left-8 text-white">
+            <div className="absolute bottom-8 left-8 text-background">
               <h2 className="text-2xl font-bold mb-2">ADIZERO EVO SL</h2>
               <p className="text-base mb-4">Fast feels. For the speed of the city.</p>
-              <Button variant="outline" className="bg-white text-black hover:bg-gray-100">
+              <Button variant="outline" className="bg-background text-background hover:bg-gray-100">
                 SHOP NOW
               </Button>
             </div>
@@ -147,7 +147,7 @@ export default function MenPage({ onNavigate }: Props) {
                 <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               </div>
               <CardContent className="relative h-full flex items-end p-6">
-                <h3 className="text-white font-bold text-lg">{category.title}</h3>
+                <h3 className="text-background font-bold text-lg">{category.title}</h3>
               </CardContent>
             </Card>
           ))}
@@ -162,10 +162,10 @@ export default function MenPage({ onNavigate }: Props) {
               <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${tile.image}')` }}>
                 <div className="absolute inset-0 bg-black bg-opacity-40"></div>
               </div>
-              <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
+              <CardContent className="relative h-full flex flex-col justify-end p-6 text-background">
                 <h3 className="font-bold text-xl mb-2">{tile.title}</h3>
                 <p className="text-base mb-4">{tile.description}</p>
-                <Button variant="outline" size="sm" className="w-fit bg-white text-black hover:bg-gray-100">
+                <Button variant="outline" size="sm" className="w-fit bg-background text-background hover:bg-gray-100">
                   {tile.cta}
                 </Button>
               </CardContent>
@@ -202,7 +202,7 @@ export default function MenPage({ onNavigate }: Props) {
       {/* Men's Description */}
       <section className="container mx-auto px-2 py-4 text-center">
         <h2 className="text-3xl font-bold mb-6">MEN'S SNEAKERS AND WORKOUT CLOTHES</h2>
-        <div className="max-w-4xl mx-auto text-gray-600 space-y-4">
+        <div className="max-w-4xl mx-auto text-gray-600 dark:text-white space-y-4">
           <p>
             Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men's shoes and
             apparel that support your passion and define your style. Whether you're training for a marathon, playing

@@ -70,7 +70,7 @@ export default function SearchFilters({
 
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.5)]">
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg overflow-y-auto">
+      <div className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-black text-black dark:text-white shadow-lg overflow-y-auto">
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
@@ -122,7 +122,7 @@ export default function SearchFilters({
             {expandedSections.shipping && (
               <div className="flex items-center gap-2">
                 <span className="text-blue-600 font-bold text-base">prime</span>
-                <span className="text-base text-gray-600">(20)</span>
+                <span className="text-base text-gray-600 dark:text-white">(20)</span>
               </div>
             )}
           </div>
@@ -219,7 +219,7 @@ export default function SearchFilters({
                 step={10}
                 className="mb-2"
               />
-              <div className="flex justify-between text-base text-gray-600">
+              <div className="flex justify-between text-base text-gray-600 dark:text-white">
                 <span>${localFilters.min_price || 0}</span>
                 <span>${localFilters.max_price || 500}</span>
               </div>

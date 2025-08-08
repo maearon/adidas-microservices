@@ -214,7 +214,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50" onClick={handleClose} />
 
       {/* Menu Panel */}
-      <div className="fixed inset-0 bg-white z-50 flex flex-col md:hidden">
+      <div className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:hidden">
         {/* Header */}
         <div
           className="h-10 flex items-center justify-between p-4 border-b border-gray-200 min-h-[60px]"

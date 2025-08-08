@@ -6,8 +6,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Search, ShoppingBag, User, Heart, MenuIcon, LogOut, LogIn, ChevronDown } from "lucide-react"
+// import { Input } from "@/components/ui/input"
+import { Search, ShoppingBag, User, Heart, MenuIcon, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import MegaMenu from "./mega-menu"
 import LoginModal from "./login-modal"
@@ -17,7 +17,6 @@ import TopBarDropdown from "./top-bar-dropdown"
 import MobileMenu from "./mobile-menu"
 import MobileAppBanner from "./mobile-app-banner"
 import MobileSearchOverlay from "./mobile-search-overlay"
-import { useLogout } from "@/api/hooks/useLoginMutation"
 import { useInitSession } from "@/api/hooks/useLoginMutation"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUser } from "@/store/sessionSlice"
@@ -27,6 +26,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setLocale } from "@/store/localeSlice"
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import SearchField from "./SearchField"
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+// import SignOutButton from "./navbar/SignOutButton"
+// import SignInButton from "./navbar/SignInButton"
 
 export default function Navbar() {
   const { value: user, status } = useSelector(selectUser)
@@ -54,7 +56,6 @@ export default function Navbar() {
 
   useInitSession()
 
-  const logoutHandler = useLogout()
   const pathname = usePathname()
   const router = useRouter()
   const [activeMenu, setActiveMenu] = useState<Nullable<string>>(null)
@@ -150,14 +151,15 @@ export default function Navbar() {
         </div>
 
         {/* Desktop layout */}
-        <div className="hidden sm:block border-b border-gray-200 relative">
+        <div className="hidden sm:block border-b border-gray-200 relative bg-white dark:bg-black text-black dark:text-white">
           <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20">
             <Link href="/" className="flex items-center">
               <AdidasLogo />
             </Link>
           </div>
-
-          <div className="flex justify-end items-center text-xs text-gray-700 px-12 py-2 w-full">
+          
+          {/* header navbar */}
+          <div className="flex justify-end items-center text-xs text-gray-700 dark:text-white px-12 py-2 w-full">
             <Link href="/signup" className="hover:underline mr-3">sign up</Link>
             <Link href="/help" className="hover:underline mr-3">help</Link>
             <Link href="/orders" className="hover:underline mr-3">orders and returns</Link>
@@ -239,6 +241,7 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* main navbar */}
           <div className="grid grid-cols-3 items-center px-12 pb-2 mx-0 w-full">
             <div></div>
             <div className="w-full justify-self-start xl:justify-self-center">
@@ -248,10 +251,10 @@ export default function Navbar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        "text-sm py-2 whitespace-nowrap",
+                        "text-base py-2 whitespace-nowrap",
                         (item.name === "MEN" || item.name === "WOMEN" || item.name === "KIDS") ? "font-bold uppercase" : "font-medium",
-                        pathname === item.href && "border-b-2 border-black",
-                        activeMenu === item.name && "border-b-2 border-black",
+                        pathname === item.href && "border-b-2 border-black dark:border-white",
+                        activeMenu === item.name && "border-b-2 border-black dark:border-white",
                       )}
                     >
                       {item.name}
@@ -309,14 +312,20 @@ export default function Navbar() {
               </Link>
 
               {user?.email ? (
-                <button onClick={logoutHandler}>
-                  <LogOut className="h-5 w-5" />
-                </button>
+                <></>
+                // <button onClick={logoutHandler}>
+                //   <LogOut className="h-5 w-5" />
+                // </button>
+                // <SignOutButton />
               ) : (
-                <Link href="/account-login">
-                  <LogIn className="h-5 w-5" />
-                </Link>
+                <></>
+                // <Link href="/account-login">
+                //   <LogIn className="h-5 w-5" />
+                // </Link>
+                // <SignInButton />
               )}
+
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -335,6 +344,7 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
+            <ThemeToggle />
           </div>
 
           <Link href="/" className="flex items-center">
@@ -363,13 +373,17 @@ export default function Navbar() {
               )}
             </Link>
             {user?.email ? (
-              <button onClick={logoutHandler}>
-                <LogOut className="h-5 w-5" />
-              </button>
+              <></>
+              // <button onClick={logoutHandler}>
+              //   <LogOut className="h-5 w-5" />
+              // </button>
+              // <SignOutButton />
             ) : (
-              <Link href="/account-login">
-                <LogIn className="h-5 w-5" />
-              </Link>
+              <></>
+              // <Link href="/account-login">
+              //   <LogIn className="h-5 w-5" />
+              // </Link>
+              // <SignInButton />
             )}
           </div>
         </div>

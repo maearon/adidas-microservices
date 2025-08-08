@@ -14,7 +14,7 @@ interface WishButtonProps {
   size?: number
 }
 
-export default function WishButton({ item, className, size = 20 }: WishButtonProps) {
+export default function WishButton({ item, className, size = 24 }: WishButtonProps) {
   const dispatch = useAppDispatch()
   const wishlistItems = useAppSelector((state) => state.wishlist.items)
 
@@ -30,7 +30,7 @@ export default function WishButton({ item, className, size = 20 }: WishButtonPro
     <button onClick={handleToggleWishlist} className={cn("hover:scale-110 transition-transform", className)}>
       <Heart
         size={size}
-        className={cn("transition-colors", isWishlisted ? "fill-black text-black" : "text-gray-600 hover:text-black")}
+        className={cn("transition-colors", isWishlisted ? "fill-black text-black dark:text-black" : "text-black dark:text-black")}
       />
     </button>
   )

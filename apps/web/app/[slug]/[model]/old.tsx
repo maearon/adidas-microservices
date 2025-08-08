@@ -136,7 +136,7 @@ export default function ProductDetailPageClient({ params }: Props) {
 
   if (isLoading || !product) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-background">
         <Loading />
       </div>
     )
@@ -225,7 +225,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //                   key={variant.id}
   //                   onClick={() => setSelectedVariant(index)}
   //                   className={`w-12 h-12 border-2 overflow-hidden ${
-  //                     selectedVariant === index ? "border-black" : "border-gray-300"
+  //                     selectedVariant === index ? "border-border" : "border-gray-300"
   //                   }`}
   //                 >
   //                   <img src={variant.avatar_url} alt={variant.color} className="w-full h-full object-cover" />
@@ -243,7 +243,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //                   key={size}
   //                   onClick={() => handleSizeSelect(size)}
   //                   className={`py-2 border text-base ${
-  //                     selectedSize === size ? "bg-black text-white" : "hover:border-black"
+  //                     selectedSize === size ? "bg-black text-white" : "hover:border-border"
   //                   }`}
   //                 >
   //                   {size}
@@ -258,7 +258,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //             <Button onClick={handleAddToBag} fullWidth>
   //               ADD TO BAG
   //             </Button>
-  //             <button onClick={handleToggleWishlist} className="w-12 h-12 border border-black">
+  //             <button onClick={handleToggleWishlist} className="w-12 h-12 border border-border">
   //               <Heart size={20} className={isWishlisted ? "fill-current" : ""} />
   //             </button>
   //           </div>
@@ -266,7 +266,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //           {/* Features */}
   //           {/* <div className="space-y-2">
   //             {product.features.map((feature, i) => (
-  //               <p key={i} className="text-base text-gray-600">📦 {feature}</p>
+  //               <p key={i} className="text-base text-gray-600 dark:text-white">📦 {feature}</p>
   //             ))}
   //           </div> */}
   //         </div>
@@ -280,7 +280,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //           <span>Description</span>
   //           {expandedSections.description ? <ChevronUp /> : <ChevronDown />}
   //         </button>
-  //         {expandedSections.description && <p className="pb-4 text-gray-600">{product.description}</p>}
+  //         {expandedSections.description && <p className="pb-4 text-gray-600 dark:text-white">{product.description}</p>}
   //       </div>
 
   //       <div className="border-b">
@@ -289,7 +289,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //           {expandedSections.details ? <ChevronUp /> : <ChevronDown />}
   //         </button>
   //         {expandedSections.details && (
-  //           <ul className="pb-4 text-gray-600 space-y-2">
+  //           <ul className="pb-4 text-gray-600 dark:text-white space-y-2">
   //             {product.description}
   //             <li>• Product code: {product.jan_code}</li>
   //             <li>• Color: {currentVariant?.color}</li>
@@ -314,7 +314,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //                 />
   //               ))}
   //             </div>
-  //             <p className="text-gray-600">Customer reviews coming soon.</p>
+  //             <p className="text-gray-600 dark:text-white">Customer reviews coming soon.</p>
   //           </div>
   //         )}
   //       </div>
@@ -325,11 +325,11 @@ export default function ProductDetailPageClient({ params }: Props) {
   //   </main>
   // )
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       
       <main className="container mx-auto px-4 py-4 lg:py-8">
         {/* Mobile Breadcrumb */}
-        <nav className="lg:hidden text-base text-gray-600 mb-4 flex items-center">
+        <nav className="lg:hidden text-base text-gray-600 dark:text-white mb-4 flex items-center">
           <Link href="/women-shoes" className="flex items-center">
             <ArrowLeft className="h-4 w-4 mr-2" />
             <span>{productDetails.breadcrumb}</span>
@@ -341,7 +341,7 @@ export default function ProductDetailPageClient({ params }: Props) {
           {/* Left Column - 60% Width - Images with Overlay Elements */}
           <div id="left-column" className="relative mb-8 lg:mb-0 lg:w-[60%] lg:pr-8 lg:border-r lg:border-gray-200">
             {/* Desktop Breadcrumb - Overlay on Image */}
-            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-base text-gray-700 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-none">
+            <nav className="hidden lg:block absolute top-4 left-4 z-20 text-base text-gray-700 bg-background/80 backdrop-blur-xs px-3 py-1 rounded-none">
               <Link href="/men-soccer-shoes" className="hover:underline">
                 {productDetails.breadcrumb}
               </Link>
@@ -350,7 +350,7 @@ export default function ProductDetailPageClient({ params }: Props) {
             {/* Best Seller Badge - Gray Background, Black Text, Counter-clockwise */}
             {product.badge === "Best seller" && (
               <div className="absolute top-4 right-1 z-20 lg:top-8 lg:right-1">
-                <div className="bg-gray-300 text-black text-xs font-bold px-2 py-1 lg:px-3 lg:py-2 lg:transform lg:-rotate-90 lg:origin-center rounded-none">
+                <div className="bg-gray-300 text-background text-xs font-bold px-2 py-1 lg:px-3 lg:py-2 lg:transform lg:-rotate-90 lg:origin-center rounded-none">
                   BEST SELLER
                 </div>
               </div>
@@ -368,7 +368,7 @@ export default function ProductDetailPageClient({ params }: Props) {
           <div id="right-column" className="lg:w-[40%] lg:pl-8 lg:relative">
             <div
               className={`lg:transition-all lg:duration-300 ${
-                isSticky ? "lg:fixed lg:top-4 lg:w-[calc(40%-4rem)] lg:bg-white lg:z-10 lg:pr-4" : "lg:static lg:w-full"
+                isSticky ? "lg:fixed lg:top-4 lg:w-[calc(40%-4rem)] lg:bg-background lg:z-10 lg:pr-4" : "lg:static lg:w-full"
               }`}
               style={{
                 right: isSticky ? `max(1rem, calc(50vw - 640px + 1rem))` : "auto",
@@ -381,7 +381,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                   <div className="flex items-center space-x-2 mb-4">
                     <span className="text-xl font-bold">${product.price}</span>
                     {product.badge === "Best seller" && (
-                      <Badge className="bg-gray-300 text-black text-xs rounded-none">BEST SELLER</Badge>
+                      <Badge className="bg-gray-300 text-background text-xs rounded-none">BEST SELLER</Badge>
                     )}
                   </div>
                 </div>
@@ -390,7 +390,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                 <div className="hidden lg:block">
                   {/* Gender • Sport + Reviews */}
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-base text-gray-600">
+                    <p className="text-base text-gray-600 dark:text-white">
                       {product.gender ? `${product.gender}'s` : ''} 
                       {product.gender && product.sport ? ' • ' : ''}
                       {product.sport}
@@ -422,7 +422,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                     )}
                   </div>
 
-                  <p className="text-base text-gray-600 mb-6">Promo codes will not apply to this product.</p>
+                  <p className="text-base text-gray-600 dark:text-white mb-6">Promo codes will not apply to this product.</p>
                 </div>
 
 
@@ -439,7 +439,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                           className={`
                             w-12 h-12 overflow-hidden block
                             border-b-4
-                            ${isActive ? "border-black" : "border-transparent hover:border-black"}
+                            ${isActive ? "border-border" : "border-transparent hover:border-border"}
                           `}
                         >
                           <img
@@ -469,8 +469,8 @@ export default function ProductDetailPageClient({ params }: Props) {
                         onClick={() => handleSizeSelect(size)}
                         className={`py-3 border text-center font-medium text-base rounded-none ${
                           selectedSize === size
-                            ? "border-black bg-black text-white"
-                            : "border-gray-300 hover:border-black"
+                            ? "border-border bg-black text-white"
+                            : "border-gray-300 hover:border-border"
                         }`}
                       >
                         {size}
@@ -479,7 +479,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                   </div>
                   {sizeError && <p className="text-red-600 text-base mt-2 font-medium">{sizeError}</p>}
                   <div className="mt-3 p-3 border border-gray-300 rounded-none">
-                    <div className="flex items-center text-base text-gray-600">
+                    <div className="flex items-center text-base text-gray-600 dark:text-white">
                       <span className="mr-2">ℹ️</span>
                       <span>
                         <strong>True to size.</strong> We recommend ordering your usual size.
@@ -500,13 +500,13 @@ export default function ProductDetailPageClient({ params }: Props) {
 
                   <button
                     onClick={handleToggleWishlist}
-                    className="w-12 h-12 border border-black rounded-none flex items-center justify-center hover:bg-white hover:text-black transition-colors translate-y-[3px]"
+                    className="w-12 h-12 border border-border rounded-none flex items-center justify-center hover:bg-background hover:text-background transition-colors translate-y-[3px]"
                   >
                     <Heart size={20} className={isWishlisted ? "fill-current" : ""} />
                   </button>
                 </div>
 
-                <div className="text-center text-base text-gray-600">
+                <div className="text-center text-base text-gray-600 dark:text-white">
                   <p>From $24.24/month, or 4 payments at 0% interest with</p>
                   <button className="underline font-medium">Klarna Learn more</button>
                 </div>
@@ -554,10 +554,10 @@ export default function ProductDetailPageClient({ params }: Props) {
                     </div>
                   </div>
                 </div>
-                <Button className="mb-4 border-black text-black bg-transparent hover:bg-white hover:text-gray-500 rounded-none">
+                <Button className="mb-4 border-border text-background bg-transparent hover:bg-background hover:text-gray-500 rounded-none">
                   WRITE A REVIEW
                 </Button>
-                <p className="text-gray-600">Customer reviews and ratings would appear here.</p>
+                <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
               </div>
             )}
           </div>
@@ -573,7 +573,7 @@ export default function ProductDetailPageClient({ params }: Props) {
             </button>
             {expandedSections.description && (
               <div className="pb-6">
-                <p className="text-gray-600 leading-relaxed">{productDetails.description}</p>
+                <p className="text-gray-600 dark:text-white leading-relaxed">{productDetails.description}</p>
               </div>
             )}
           </div>
@@ -591,7 +591,7 @@ export default function ProductDetailPageClient({ params }: Props) {
               <div className="pb-6">
                 <ul className="space-y-2">
                   {productDetails.details.map((detail, index) => (
-                    <li key={index} className="text-gray-600">
+                    <li key={index} className="text-gray-600 dark:text-white">
                       • {detail}
                     </li>
                   ))}
@@ -608,13 +608,13 @@ export default function ProductDetailPageClient({ params }: Props) {
               <h2 className="text-2xl font-bold mb-4">
                 LIGHTWEIGHT F50 CLEATS FOR SHOWING NON-STOP MESSI SKILLS ON FIRM GROUND
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 dark:text-white mb-6">
                 Engineered for speed, these F50 Laceless Boots feature a lightweight Fiberskin upper and Sprintframe
                 outsole for explosive acceleration. The laceless construction provides a clean ball contact surface,
                 while Messi signature details celebrate the GOAT.
               </p>
             </div>
-            <div className="aspect-square bg-white rounded-lg overflow-hidden">
+            <div className="aspect-square bg-background rounded-lg overflow-hidden">
               <img
                 src="/placeholder.svg?height=400&width=400"
                 alt="F50 Messi lifestyle"

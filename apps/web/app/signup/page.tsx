@@ -78,13 +78,13 @@ const SignupPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative bg-white md:py-8 pt-1 pb-1">
+    <div className="min-h-screen bg-background">
+      <div className="relative bg-background md:py-8 pt-1 pb-1">
         <div className="container mx-auto px-4">
           <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
             {/* Left info box */}
             <div className="space-y-6">
-              <div className="bg-white md:p-8 p-1 rounded-none">
+              <div className="bg-background md:p-8 p-1 rounded-none">
                 <Image
                   src="/assets/login/account-portal-page-inline.png"
                   alt="Adiclub Benefits"
@@ -94,11 +94,11 @@ const SignupPage = () => {
                 />
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold text-xl">a</span>
+                    <span className="text-background font-bold text-xl">a</span>
                   </div>
                   <h2 className="text-2xl font-bold">JOIN ADICLUB. GET A 15% DISCOUNT.</h2>
                 </div>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-white mb-6">
                   As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and
                   receive immediate access to these Level 1 benefits:
                 </p>
@@ -113,7 +113,7 @@ const SignupPage = () => {
             </div>
 
             {/* Signup form */}
-            <div className="bg-white md:p-8 p-1 rounded-none">
+            <div className="bg-background md:p-8 p-1 rounded-none">
               <div className="flex items-center space-x-4">
               {/* adiClub Logo */}
               <AdidasLogo className="w-15 h-auto" />
@@ -152,7 +152,7 @@ const SignupPage = () => {
                         name="name"
                         type="text"
                         placeholder="NAME *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="name" component="div" className="text-red-500 text-base mt-1" />
                     </div>
@@ -162,7 +162,7 @@ const SignupPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
                     </div>
@@ -172,7 +172,7 @@ const SignupPage = () => {
                         name="password"
                         type="password"
                         placeholder="PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
                     </div>
@@ -182,7 +182,7 @@ const SignupPage = () => {
                         name="password_confirmation"
                         type="password"
                         placeholder="CONFIRM PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
                     </div>
@@ -199,7 +199,7 @@ const SignupPage = () => {
                       CREATE MY ACCOUNT
                     </Button>
 
-                    <div className="mt-4 text-base text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
                       Already have an account?{" "}
                       <Link href="/account-login" className="underline text-blue-600">
                         Log in

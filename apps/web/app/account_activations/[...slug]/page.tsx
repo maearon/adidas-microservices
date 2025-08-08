@@ -46,10 +46,10 @@ export default function Edit({ params }: EditProps) {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="max-w-md text-center bg-white p-8 rounded-2xl shadow-xl space-y-4 border">
+      <div className="max-w-md text-center bg-background p-8 rounded-2xl shadow-xl space-y-4 border">
         {status === "loading" && (
           <>
-            <Loader2 className="mx-auto h-12 w-12 text-gray-600 animate-spin" />
+            <Loader2 className="mx-auto h-12 w-12 text-gray-600 dark:text-white animate-spin" />
             <h2 className="text-xl font-semibold text-gray-700">Activating your account...</h2>
             <p className="text-base text-gray-500">Please wait while we process your activation.</p>
           </>

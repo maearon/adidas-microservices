@@ -17,7 +17,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
   if (!keyword) return null
 
   return (
-    <div className="absolute right-0 mt-3 z-50 w-[600px] bg-white border border-gray-200 shadow-md flex">
+    <div className="absolute right-0 mt-3 z-50 w-[600px] bg-white dark:bg-black text-foreground border border-gray-200 shadow-md flex">
       {/* LEFT COLUMN */}{/* SUGGESTIONS */}
       <div className="w-1/2 p-4">
         <h4 className="font-bold mb-2">SUGGESTIONS</h4>
@@ -35,7 +35,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
         </ul>
         <Link
           href={`/search?q=${encodeURIComponent(keyword)}`}
-          className="block mt-6 text-base font-semibold text-black underline hover:opacity-80"
+          className="block mt-6 text-base font-semibold text-foreground underline hover:opacity-80"
         >
           SEE ALL "{keyword.toUpperCase()}"
         </Link>

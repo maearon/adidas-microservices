@@ -20,7 +20,7 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
 
   const colorOptions = [
     { name: "Black", value: "black", color: "bg-black" },
-    { name: "White", value: "white", color: "bg-white border" },
+    { name: "White", value: "white", color: "bg-background border" },
     { name: "Blue", value: "blue", color: "bg-blue-600" },
     { name: "Red", value: "red", color: "bg-red-600" },
     { name: "Green", value: "green", color: "bg-green-600" },
@@ -30,13 +30,13 @@ export default function CategoryFilters({ category }: CategoryFiltersProps) {
   const priceRanges = ["$25 - $50", "$50 - $100", "$100 - $150", "$150 - $200", "$200+"]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 bg-white dark:bg-black text-black dark:text-white">
       {/* Size Filter */}
       <div>
         <h3 className="font-bold mb-4">Size</h3>
         <div className="grid grid-cols-3 gap-2">
           {sizeOptions.map((size) => (
-            <BaseButton key={size} variant="outline" size="sm" className="h-10 text-base hover:bg-black hover:text-white">
+            <BaseButton key={size} variant="outline" size="sm" className="h-10 text-base hover:bg-foreground hover:text-background">
               {size}
             </BaseButton>
           ))}

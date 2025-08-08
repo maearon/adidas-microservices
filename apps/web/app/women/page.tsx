@@ -94,7 +94,7 @@ export default function WomenPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* <Header /> */}
 
       <HeroBanner
@@ -123,7 +123,7 @@ export default function WomenPage() {
               className="flex flex-col items-center bg-[#EAEEEF] p-4 pt-0 hover:shadow-lg transition"
             >
               {/* Image block */}
-              <div className="w-[160px] h-[160px] bg-white mb-4 flex items-center justify-center">
+              <div className="w-[160px] h-[160px] bg-background mb-4 flex items-center justify-center">
                 <img
                   src={category.image}
                   alt={category.title}
@@ -132,7 +132,7 @@ export default function WomenPage() {
               </div>
 
               {/* Title */}
-              <h3 className="text-black text-base font-bold underline uppercase text-center">
+              <h3 className="text-background text-base font-bold underline uppercase text-center">
                 {category.title}
               </h3>
             </a>
@@ -209,7 +209,7 @@ export default function WomenPage() {
                 <ul className="space-y-2">
                   {items.map((item, index) => (
                     <li key={index}>
-                      <a href="#" className="text-base text-gray-600 hover:underline">
+                      <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
                         {item}
                       </a>
                     </li>

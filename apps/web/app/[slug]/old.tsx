@@ -155,9 +155,9 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
   // ⛔ Handle lỗi sớm trước
   if (error  || !products) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4 text-center">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
         <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-white mb-4">
           There was a problem fetching products. Please check your internet connection or try again later.
         </p>
         <BaseButton onClick={() => refetch()} variant="default">
@@ -176,7 +176,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 mb-6">
         <div className="grow min-w-0">
@@ -187,7 +187,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
             </span>
           </h1>
           {Object.keys(queryParams).length === 1 && (
-            <p className="text-gray-600 max-w-4xl truncate">{config.description}</p>
+            <p className="text-gray-600 dark:text-white max-w-4xl truncate">{config.description}</p>
           )}
         </div>
 
@@ -195,7 +195,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
           <BaseButton
             variant="outline"
             onClick={() => setShowFilters(true)}
-            className="hidden sm:flex items-center gap-2 ml-4 border border-black text-black rounded-none"
+            className="hidden sm:flex items-center gap-2 ml-4 border border-border text-background rounded-none"
           >
             {/* <Filter size={16} /> */}
             FILTER & SORT
@@ -204,7 +204,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
           <BaseButton
             variant="outline"
             onClick={() => setShowFilters(true)}
-            className="flex sm:hidden items-center justify-center p-2 ml-2 text-black"
+            className="flex sm:hidden items-center justify-center p-2 ml-2 text-background"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>
@@ -234,7 +234,7 @@ export default function CategoryPageClient({ params, searchParams }: CategoryPag
                   </Badge>
                 )
               })}
-              <button onClick={clearAllFilters} className="text-base text-gray-500 hover:text-black underline ml-2">
+              <button onClick={clearAllFilters} className="text-base text-gray-500 hover:text-background underline ml-2">
                 Clear All
               </button>
             </div>

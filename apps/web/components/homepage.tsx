@@ -76,7 +76,7 @@ export default function Homepage({ onNavigate }: Props) {
   const popularCategories = ["ultraboost", "samba", "campus", "soccer", "gazelle", "spezial"]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-gray-200">
         {/* Top bar */}
@@ -128,18 +128,18 @@ export default function Homepage({ onNavigate }: Props) {
           <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         </div>
         <div className="relative container mx-auto px-4 h-full flex items-end pb-8">
-          <div className="text-white">
+          <div className="text-foreground">
             <h1 className="text-4xl font-bold mb-2">ADIZERO EVO SL</h1>
             <p className="text-lg mb-4">Fast feels. For the speed of the city.</p>
             <div className="flex space-x-4">
               <Button
                 variant="outline"
-                className="bg-white text-black hover:bg-gray-100"
+                className="bg-background text-background hover:bg-gray-100"
                 onClick={() => onNavigate("men")}
               >
                 SHOP MEN
               </Button>
-              <Button variant="outline" className="bg-white text-black hover:bg-gray-100">
+              <Button variant="outline" className="bg-background text-background hover:bg-gray-100">
                 SHOP WOMEN
               </Button>
             </div>
@@ -172,7 +172,7 @@ export default function Homepage({ onNavigate }: Props) {
                   <Heart className="absolute top-4 right-4 h-5 w-5 cursor-pointer" />
                 </div>
                 <div>
-                  <p className="text-base text-gray-600 mb-1">{product.category}</p>
+                  <p className="text-base text-gray-600 dark:text-white mb-1">{product.category}</p>
                   <h3 className="font-medium mb-2">{product.name}</h3>
                   <p className="font-bold">{product.price}</p>
                 </div>
@@ -195,11 +195,11 @@ export default function Homepage({ onNavigate }: Props) {
               >
                 <div className="absolute inset-0 bg-black bg-opacity-40"></div>
               </div>
-              <CardContent className="relative h-full flex flex-col justify-end p-6 text-white">
+              <CardContent className="relative h-full flex flex-col justify-end p-6 text-foreground">
                 <h3 className="font-bold text-lg mb-1">{tile.title}</h3>
                 {tile.subtitle && <p className="text-base mb-2">{tile.subtitle}</p>}
                 <p className="text-base mb-4">{tile.description}</p>
-                <Button variant="outline" size="sm" className="w-fit bg-white text-black hover:bg-gray-100">
+                <Button variant="outline" size="sm" className="w-fit bg-background text-background hover:bg-gray-100">
                   {tile.cta}
                 </Button>
               </CardContent>

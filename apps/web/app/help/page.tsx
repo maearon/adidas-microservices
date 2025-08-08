@@ -59,7 +59,7 @@ const Help: NextPage = () => {
             href={link.href}
             
             rel="noopener noreferrer"
-            className="border-2 border-black bg-white text-black p-6 text-center font-semibold hover:bg-black hover:text-white transition rounded"
+            className="border-2 border-border bg-background text-background p-6 text-center font-semibold hover:bg-foreground hover:text-background transition rounded"
           >
             {link.text}
           </a>
@@ -75,14 +75,14 @@ const Help: NextPage = () => {
               typeof item === 'string' ? (
                 <div
                   key={idx}
-                  className="border border-gray-300 hover:border-black p-4 rounded-none transition"
+                  className="border border-gray-300 hover:border-border p-4 rounded-none transition"
                 >
                   <span className="font-medium">{item}</span>
                 </div>
               ) : (
                 <div
                   key={idx}
-                  className="border border-gray-300 hover:border-black p-4 rounded-none transition"
+                  className="border border-gray-300 hover:border-border p-4 rounded-none transition"
                 >
                   <div className="font-medium">{item.title}</div>
                   <div className="text-gray-500 text-base">{item.subtitle}</div>
@@ -95,12 +95,12 @@ const Help: NextPage = () => {
 
       {/* 📞 Contact */}
       <div className="border border-gray-300 p-6 mt-12 rounded-none">
-        <h3 className="text-base text-gray-600 mb-2">Still can't find your answer?</h3>
+        <h3 className="text-base text-gray-600 dark:text-white mb-2">Still can't find your answer?</h3>
         <p className="text-base text-gray-800 mb-2">ASK OUR CUSTOMER SERVICE</p>
         <p className="text-base text-gray-500 mb-4">Mon - Sun : 5:00 AM to 8:00 PM</p>
         <Link
           href="mailto:support@adidas.com"
-          className="inline-block border border-black px-4 py-2 text-base font-semibold hover:bg-black hover:text-white transition"
+          className="inline-block border border-border px-4 py-2 text-base font-semibold hover:bg-foreground hover:text-background transition"
         >
           Contact Us
         </Link>

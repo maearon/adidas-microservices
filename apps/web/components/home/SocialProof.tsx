@@ -13,7 +13,7 @@ export default function SocialProof() {
           {stats.map((stat, index) => (
             <div key={index}>
               <div className="text-3xl font-bold text-blue-600 mb-2">{stat.number}</div>
-              <div className="text-gray-600">{stat.label}</div>
+              <div className="text-gray-600 dark:text-white">{stat.label}</div>
             </div>
           ))}
         </div>

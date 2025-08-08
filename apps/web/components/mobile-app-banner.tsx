@@ -12,7 +12,7 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
   if (!isOpen) return null
 
   return (
-    <div className="sm:hidden bg-white border-b border-gray-200 px-4 py-3">
+    <div className="sm:hidden bg-background border-b border-gray-200 px-4 py-3">
       <div className="flex items-center justify-between">
         <button onClick={onClose} className="p-1">
           <X className="h-5 w-5 text-gray-500" />
@@ -33,7 +33,7 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
           {/* App Info */}
           <div className="flex-1">
             <div className="font-semibold text-base">ADIDAS - SPORTS & STYLE</div>
-            <div className="flex items-center space-x-1 text-xs text-gray-600">
+            <div className="flex items-center space-x-1 text-xs text-gray-600 dark:text-white">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-yellow-400">

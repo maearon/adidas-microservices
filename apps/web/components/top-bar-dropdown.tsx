@@ -36,7 +36,7 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
       {/* Dropdown Panel */}
       <div
         className={`
-          fixed inset-0 bg-white z-50 
+          fixed inset-0 bg-white dark:bg-black z-50 
           md:absolute md:top-0 md:left-0 md:right-0 md:inset-auto
           transform transition-transform duration-200 ease-out
           ${isOpen ? "translate-y-0" : "-translate-y-full"}
@@ -48,7 +48,7 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
           <div className="flex justify-end p-4 md:p-6">
             <button
               onClick={onClose}
-              className="w-10 h-10 border border-black flex items-center justify-center 
+              className="w-10 h-10 border border-border flex items-center justify-center 
               cursor-pointer transition-colors duration-150"
             >
               <X className="w-5 h-5" />
@@ -61,10 +61,10 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
               {/* adiClub Section */}
               <div>
                 <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">FREE STANDARD SHIPPING WITH ADICLUB</h2>
-                <p className="text-gray-700 mb-6 md:mb-8 leading-relaxed">
+                <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
                   Sign up for adiClub to enjoy free standard shipping and earn points on every order.
                 </p>
-                <button className="text-black font-bold underline hover:no-underline transition-all duration-150">
+                <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
                   JOIN ADICLUB FOR FREE
                 </button>
               </div>
@@ -72,10 +72,10 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
               {/* Prime Section */}
               <div>
                 <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">FAST, FREE DELIVERY WITH PRIME</h2>
-                <p className="text-gray-700 mb-6 md:mb-8 leading-relaxed">
+                <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
                   Get fast, free delivery on eligible items with Prime.
                 </p>
-                <button className="text-black font-bold underline hover:no-underline transition-all duration-150">
+                <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
                   FAST, FREE PRIME DELIVERY
                 </button>
               </div>

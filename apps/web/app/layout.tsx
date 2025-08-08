@@ -1,7 +1,7 @@
 'use client'
 
 // app/layout.tsx
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider } from '@/components/theme-provider'
 import type React from "react"
 // import type { Metadata } from "next"
 import { Barlow } from "next/font/google"
@@ -27,6 +27,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { store } from "@/store/store"
 import { fetchUser } from "@/store/sessionSlice"
 import { Provider } from "react-redux"
+import clsx from 'clsx'
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -51,15 +52,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={barlow.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={clsx(
+        barlow.className,
+        "bg-white dark:bg-black text-black dark:text-white"
+      )} >
         <GoogleOAuthProvider clientId={'588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com'}>
           <Provider store={store}>
             <AuthProvider>
               <ReactQueryProvider>
                 <ThemeProvider
                   attribute="class"
-                  defaultTheme="system"
+                  defaultTheme="dark"
                   enableSystem
                   disableTransitionOnChange
                 >

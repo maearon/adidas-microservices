@@ -90,7 +90,7 @@ export default function OrderPage({ params }: OrderPageProps) {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold">Đơn hàng #{orderId}</h1>
-            <p className="text-gray-600 mt-1">Đặt ngày {order.date}</p>
+            <p className="text-gray-600 dark:text-white mt-1">Đặt ngày {order.date}</p>
           </div>
           <div className="mt-4 md:mt-0">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-base font-medium bg-blue-100 text-blue-800">
@@ -111,7 +111,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                     <h3 className={`font-medium ${step.completed ? "text-green-600" : "text-gray-900"}`}>
                       {step.title}
                     </h3>
-                    {step.date && <p className="text-base text-gray-600 mt-1">{step.date}</p>}
+                    {step.date && <p className="text-base text-gray-600 dark:text-white mt-1">{step.date}</p>}
                   </div>
                 </div>
               ))}
@@ -135,7 +135,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-base text-gray-600">
+                      <p className="text-base text-gray-600 dark:text-white">
                         Kích cỡ: {item.size} | Màu: {item.color} | Số lượng: {item.quantity}
                       </p>
                     </div>
@@ -173,8 +173,8 @@ export default function OrderPage({ params }: OrderPageProps) {
               <h2 className="text-xl font-bold mb-4">Địa chỉ giao hàng</h2>
               <div className="text-base">
                 <p className="font-medium">{order.shippingAddress.name}</p>
-                <p className="text-gray-600">{order.shippingAddress.phone}</p>
-                <p className="text-gray-600 mt-2">{order.shippingAddress.address}</p>
+                <p className="text-gray-600 dark:text-white">{order.shippingAddress.phone}</p>
+                <p className="text-gray-600 dark:text-white mt-2">{order.shippingAddress.address}</p>
               </div>
             </div>
 

@@ -21,7 +21,7 @@ export default function CheckoutLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-white">
+          <div className="min-h-screen bg-background">
             <CheckoutHeader />
             {children}
             <CheckoutFooter />
@@ -34,7 +34,7 @@ export default function CheckoutLayout({
 
 function CheckoutFooter() {
   return (
-    <footer className="bg-gray-800 text-white py-6 mt-16">
+    <footer className="bg-gray-800 text-background py-6 mt-16">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center text-base">
           <div className="flex items-center space-x-4">

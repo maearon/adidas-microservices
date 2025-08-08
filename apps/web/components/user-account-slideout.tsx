@@ -71,7 +71,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
       {isOpen && <div className="fixed inset-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-40" onClick={onClose} />}
 
       <div
-        className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-96 bg-white dark:bg-black text-foreground shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -130,7 +130,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
                   onClick={() => setActiveTab(tab)}
                   className={`flex-1 py-3 px-2 text-xs font-medium border-b-2 ${
                     activeTab === tab
-                      ? "border-black text-black"
+                      ? "border-border text-background"
                       : "border-transparent text-gray-500 hover:text-gray-700"
                   }`}
                 >
@@ -148,7 +148,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-medium text-base mb-1">{offer.title}</h3>
-                        <p className="text-xs text-gray-600">{offer.description}</p>
+                        <p className="text-xs text-gray-600 dark:text-white">{offer.description}</p>
                       </div>
                       <ChevronRight className="h-4 w-4 text-gray-400 ml-2" />
                     </div>
@@ -171,7 +171,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
           </div>
 
           <div className="p-6 border-t">
-            <Button onClick={handleLogoutWithClose} variant="outline" className="w-full">
+            <Button onClick={handleLogoutWithClose} variant="outline" className="w-full bg-black dark:bg-white">
               Log Out
             </Button>
           </div>

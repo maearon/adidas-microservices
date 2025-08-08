@@ -156,13 +156,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white p-0 rounded-none"
+        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
       >
         {/* Close button - Square border style */}
-        <div className="absolute bg-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+        <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
-            className="w-12 h-12 border border-black flex items-center 
+            className="w-12 h-12 border border-border flex items-center 
             justify-center cursor-pointer transition-colors duration-150"
           >
             <X className="w-5 h-5" />
@@ -188,7 +188,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Title */}
           {/* <div className="text-center mb-6">
             <h2 className="text-2xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-            <p className="text-gray-600 text-base">
+            <p className="text-gray-600 dark:text-white text-base">
               Enjoy members-only access to exclusive products, experiences, offers and more.
             </p>
           </div> */}
@@ -196,7 +196,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Social Login Text */}
           <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
           <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
-          {/* <p className="text-black text-base">
+          {/* <p className="text-background text-base">
             Enjoy members-only access to exclusive products, experiences, offers and more.
           </p> */}
 
@@ -422,12 +422,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     </Dialog>
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white p-0 rounded-none">
+      <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white dark:bg-black p-0 rounded-none">
         {/* Close button - Square border style */}
-        <div className="absolute bg-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+        <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
-            className="w-12 h-12 border border-black flex items-center 
+            className="w-12 h-12 border border-border flex items-center 
             justify-center cursor-pointer transition-colors duration-150"
           >
             <X className="w-5 h-5" />
@@ -447,7 +447,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
             {/* Title + Content */}
             <h2 className="text-xl font-bold mb-2">ACTIVATE YOUR ACCOUNT</h2>
-            <p className="text-black text-base">
+            <p className="text-foreground text-base">
               Looks like you already have an account. We’ve sent you an email to activate it and get full access to adiClub benefits.
             </p>
           </div>

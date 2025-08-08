@@ -85,7 +85,7 @@ export default function ProductCard({
     >
       <Card
         className={cn(
-          "group flex flex-col justify-between border border-transparent hover:border-black transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
+          "group flex flex-col justify-between border border-transparent hover:border-border transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
           minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[470px]"
         )}
       >
@@ -146,16 +146,16 @@ export default function ProductCard({
           <div className={cn("px-2 pb-0 space-y-1", minimalMobile && "hidden sm:block")}>
             <ProductPrice price={String(product.price)} compareAtPrice={String(product.compare_at_price)} />
             <h3 className="font-medium text-base leading-tight line-clamp-2">{product.name}</h3>
-            {product.sport && <p className="text-gray-600 text-sm">
+            {product.sport && <p className="text-gray-600 dark:text-white text-sm">
               {product.gender ? `${product.gender}'s` : ''} 
               {product.gender && product.sport ? ' ' : ''}
               {product.sport}
             </p>}
             {hasVariants && (
-              <p className="text-gray-600 text-sm">{product.variants.length} colors</p>
+              <p className="text-gray-600 dark:text-white text-sm">{product.variants.length} colors</p>
             )}
             {(product?.tags?.length || 0) > 0 && (
-              <p className="text-black text-sm font-medium">{product?.tags?.[0]}</p>
+              <p className="text-foreground text-sm font-medium">{product?.tags?.[0]}</p>
             )}
             {showAddToBag && (
               <Button className="w-full bg-black text-white hover:bg-gray-800 mt-3" onClick={handleAddToBag}>

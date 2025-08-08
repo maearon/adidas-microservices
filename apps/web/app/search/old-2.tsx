@@ -145,7 +145,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
 
   if (loading && products.length === 0) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-background">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -194,7 +194,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
             Search for: "{query.toUpperCase()}" [{totalResults}]
           </h1>
           {totalResults > 0 && (
-            <p className="text-gray-600 truncate">
+            <p className="text-gray-600 dark:text-white truncate">
               Showing {products.length} of {totalResults} results
             </p>
           )}
@@ -206,7 +206,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="hidden sm:flex items-center gap-2 border border-black text-black"
+            className="hidden sm:flex items-center gap-2 border border-border text-background"
           >
             <Filter size={16} />
             FILTER & SORT
@@ -217,7 +217,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="flex sm:hidden items-center justify-center p-2 border border-black text-black"
+            className="flex sm:hidden items-center justify-center p-2 border border-border text-background"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>
@@ -228,7 +228,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {error && (
         <div className="text-center py-4">
           <h3 className="text-lg font-semibold mb-2 text-red-600">Search Error</h3>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-600 dark:text-white mb-4">{error}</p>
           {/* <Button shadow={false} theme="black" onClick={() => performSearch(filters)}>Try Again</Button> */}
         </div>
       )}
@@ -237,7 +237,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {!loading && !error && products.length === 0 && query && (
         <div className="text-center py-4">
           <h3 className="text-lg font-semibold mb-2">No results found</h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-white mb-4">
             We couldn't find any products matching "{query}". Try adjusting your search terms or filters.
           </p>
           <div className="space-y-2">

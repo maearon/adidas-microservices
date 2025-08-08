@@ -164,9 +164,9 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
       <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)]" onClick={onClose} />
 
       {/* Sidebar */}
-      <div className="absolute right-0 top-0 h-full w-96 bg-white shadow-xl overflow-y-auto">
+      <div className="absolute right-0 top-0 h-full w-96 bg-white dark:bg-black text-black dark:text-white shadow-xl overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 z-10">
+        <div className="sticky top-0 bg-background border-b border-gray-200 p-4 z-10">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Filter & Sort</h2>
             <div className="flex items-center space-x-2">
@@ -189,7 +189,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                 if (Array.isArray(value) && value.length > 0) {
                   return value.map((item) => (
                     <div key={`${key}-${item}`} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
-                      <span>{item}</span>
+                      <span className="bg-white dark:bg-black text-black dark:text-white">{item}</span>
                       <button
                         onClick={() => handleFilterChange(key, item, false)}
                         className="ml-1 text-gray-500 hover:text-gray-700"
@@ -201,7 +201,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                 } else if (typeof value === "string" && value) {
                   return (
                     <div key={key} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
-                      <span>{value}</span>
+                      <span className="bg-white dark:bg-black text-black dark:text-white">{value}</span>
                       <button
                         onClick={() => setFilters((prev: any) => ({ ...prev, [key]: undefined }))}
                         className="ml-1 text-gray-500 hover:text-gray-700"
@@ -296,7 +296,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                     onClick={() => handleFilterChange("size", size, !(filters.size || []).includes(size))}
                     className={`p-2 text-base border rounded transition-colors ${
                       (filters.size || []).includes(size)
-                        ? "border-black bg-black text-white"
+                        ? "border-border bg-black text-white"
                         : "border-gray-300 hover:border-gray-500"
                     }`}
                   >
@@ -326,7 +326,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                     }
                     className={`w-8 h-8 rounded border-2 transition-all ${
                       (filters.color || []).includes(color.value)
-                        ? "border-black scale-110"
+                        ? "border-border scale-110"
                         : "border-gray-300 hover:border-gray-500"
                     }`}
                     style={{ backgroundColor: color.hex }}
@@ -348,7 +348,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
             </button>
             {expandedSections.price && (
               <div className="space-y-4">
-                <div className="text-center text-base text-gray-600">
+                <div className="text-center text-base text-gray-600 dark:text-white">
                   ${priceRange.min} – ${priceRange.max}
                 </div>
                 <div className="flex gap-2">
@@ -387,7 +387,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
         </div>
 
         {/* Apply Button */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+        <div className="sticky bottom-0 bg-background border-t border-gray-200 p-4">
           <Button
             pressEffect={true}
             fullWidth={false}

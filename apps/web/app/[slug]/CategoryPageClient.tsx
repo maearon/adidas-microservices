@@ -228,18 +228,18 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
               {pageTitle} <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
             {products.length > 0 && (
-              <p className="text-gray-600 break-words text-sm">
+              <p className="text-gray-600 dark:text-white break-words text-sm">
                 Showing {products.length} of {totalCount} results
               </p>
             )}
           </div>
 
           {/* Filter Button */}
-          <div className="shrink-0 flex items-center">
+          <div className="shrink-0 flex items-center bg-white dark:bg-black text-black dark:text-white">
             <BaseButton
               variant="outline"
               onClick={() => setIsFiltersOpen(true)}
-              className="hidden sm:flex items-center gap-2 border border-black text-black rounded-none"
+              className="hidden sm:flex items-center gap-2 border border-border bg-white dark:bg-black text-black dark:text-white rounded-none"
             >
               FILTER & SORT
               <SlidersHorizontal className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             <BaseButton
               variant="outline"
               onClick={() => setIsFiltersOpen(true)}
-              className="flex sm:hidden items-center justify-center p-2 text-black"
+              className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white"
             >
               <SlidersHorizontal className="w-5 h-5" />
             </BaseButton>
@@ -256,9 +256,9 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   
         {/* Error State */}
         {isError && (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4 text-center">
+            <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
               <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-white mb-4">
                 There was a problem fetching products. Please check your internet connection or try again later.
               </p>
               <BaseButton onClick={() => refetch()} variant="default">
@@ -274,7 +274,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         {isEmpty && !isError && (
           <div className="text-center py-4">
             <h3 className="text-lg font-semibold mb-2">No results found</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-white mb-4">
               We couldn't find any products matching "{query}". Try adjusting
               your search terms or filters.
             </p>
@@ -302,7 +302,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             ))}
             {isFetchingNextPage && (
               <div className="col-span-full flex justify-center py-4">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-6 w-6 animate-spin text-black dark:text-white" />
               </div>
             )}
           </InfiniteScrollContainer>

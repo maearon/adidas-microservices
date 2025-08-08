@@ -29,7 +29,7 @@ export default function TileCard({
     <a
       key={`${tile.title}-${index}`}
       href={tile.href}
-      className="group relative box-border border border-transparent hover:border-black transition duration-300 h-full flex flex-col"
+      className="group relative box-border border border-transparent hover:border-border transition duration-300 h-full flex flex-col"
     >
       {/* Image section */}
       <div className="aspect-3/4 w-full overflow-hidden">

@@ -35,7 +35,7 @@ export default function OrderHistoryPage() {
 
   if (loading) {
     return (
-      <div className="bg-white border rounded-lg p-8">
+      <div className="bg-background border rounded-lg p-8">
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
@@ -48,14 +48,14 @@ export default function OrderHistoryPage() {
   }
 
   return (
-    <div className="bg-white border rounded-lg p-8">
+    <div className="bg-background border rounded-lg p-8">
       <h1 className="text-2xl font-bold mb-6">ORDER HISTORY</h1>
 
       {orders.length === 0 ? (
         <div className="text-center py-4">
           <div className="text-6xl mb-4">📦</div>
           <h2 className="text-xl font-bold mb-4">NO ORDERS YET</h2>
-          <p className="text-gray-600 mb-6">Once you place an order, it will appear here.</p>
+          <p className="text-gray-600 dark:text-white mb-6">Once you place an order, it will appear here.</p>
           <Link
             href="/"
             className="bg-black text-white px-8 py-3 font-bold hover:bg-gray-800 transition-colors inline-block"
@@ -70,7 +70,7 @@ export default function OrderHistoryPage() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-bold">Order #{order.order_number}</h3>
-                  <p className="text-base text-gray-600">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
+                  <p className="text-base text-gray-600 dark:text-white">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold">${order.total.toFixed(2)}</p>
@@ -101,12 +101,12 @@ export default function OrderHistoryPage() {
                         />
                         <div>
                           <p className="text-base font-medium">{item.name}</p>
-                          <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
+                          <p className="text-xs text-gray-600 dark:text-white">Qty: {item.quantity}</p>
                         </div>
                       </div>
                     ))}
                     {order.items.length > 2 && (
-                      <p className="text-base text-gray-600">+{order.items.length - 2} more items</p>
+                      <p className="text-base text-gray-600 dark:text-white">+{order.items.length - 2} more items</p>
                     )}
                   </div>
                 </div>
@@ -115,11 +115,11 @@ export default function OrderHistoryPage() {
                   <div className="space-y-2">
                     <Link
                       href={`/order-tracker?order=${order.order_number}`}
-                      className="text-black underline text-base font-medium"
+                      className="text-background underline text-base font-medium"
                     >
                       Track Order
                     </Link>
-                    <Link href={`/my-account/orders/${order.id}`} className="text-black underline text-base font-medium">
+                    <Link href={`/my-account/orders/${order.id}`} className="text-background underline text-base font-medium">
                       View Details
                     </Link>
                   </div>

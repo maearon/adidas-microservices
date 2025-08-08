@@ -101,7 +101,7 @@ const LoginPage = () => {
   // if (!hasMounted || isLoading || !minimumLoadingDone) {
   //   return (
   //     <div
-  //       className={`z-50 bg-white flex ${
+  //       className={`z-50 bg-background flex ${
   //         centered ? "items-center justify-center" : ""
   //       }`}
   //     >
@@ -119,7 +119,7 @@ const LoginPage = () => {
 
   if (user?.email) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">You're already logged in</h1>
           <Link href="/my-account" className="underline text-blue-600">
@@ -131,13 +131,13 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative bg-white md:py-8 pt-1 pb-1">
+    <div className="min-h-screen bg-background">
+      <div className="relative bg-background md:py-8 pt-1 pb-1">
         <div className="container mx-auto px-4">
           <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
             {/* Left promo section */}
             <div className="space-y-6">
-              <div className="bg-white md:p-8 p-1 rounded-none">
+              <div className="bg-background md:p-8 p-1 rounded-none">
                 <Image
                   src="/assets/login/account-portal-page-inline.jpeg"
                   alt="Adiclub Benefits"
@@ -147,11 +147,11 @@ const LoginPage = () => {
                 />
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold text-xl">a</span>
+                    <span className="text-background font-bold text-xl">a</span>
                   </div>
                   <h2 className="text-2xl font-bold">JOIN ADICLUB TO UNLOCK MORE REWARDS</h2>
                 </div>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-white mb-6">
                   Join adiClub for free and enjoy immediate access to these Level 1 rewards:
                 </p>
                 <ul className="space-y-2 text-base">
@@ -161,7 +161,7 @@ const LoginPage = () => {
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Early Access to Sales</li>
                   <li className="flex items-center"><span className="text-green-500 mr-2">✓</span>Access to Limited Editions</li>
                 </ul>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-white mb-6">
                   Start earning adiClub points every time you shop, track a run on the adidas Running app and share a product review.
                   The more points you earn, the faster you'll level up and unlock rewards such as a Birthday Gift, Free Personalisation, Priority Customer Service, Premium Event Tickets and more.
                 </p>
@@ -169,7 +169,7 @@ const LoginPage = () => {
             </div>
 
             {/* Login Form section */}
-            <div className="bg-white md:p-8 p-1 rounded-none">
+            <div className="bg-background md:p-8 p-1 rounded-none">
               <div className="flex items-center space-x-4">
               {/* adiClub Logo */}
               <AdidasLogo className="w-15 h-auto" />
@@ -189,7 +189,7 @@ const LoginPage = () => {
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
                 <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-                <p className="text-gray-600 text-base">
+                <p className="text-gray-600 dark:text-white text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
                 </p>
               </div> */}
@@ -204,7 +204,7 @@ const LoginPage = () => {
                   <button
                     key={name}
                     onClick={name === "google" ? handleGoogleLogin : undefined}
-                    className="border border-black p-3 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                    className="border border-border p-3 flex items-center justify-center hover:bg-gray-50 transition-colors"
                     aria-label={`Login with ${name}`}
                   >
                     <img src={`/icons/${name}.svg`} alt={name} className="h-5" />
@@ -234,7 +234,7 @@ const LoginPage = () => {
                         name="email"
                         type="email"
                         placeholder="EMAIL *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
                       />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
                     </div>
@@ -244,12 +244,12 @@ const LoginPage = () => {
                         name="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="PASSWORD *"
-                        className="w-full border border-black p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
+                        className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute top-3 right-3 text-gray-600 text-xs"
+                        className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
                       >
                         {showPassword ? (
                           <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
@@ -262,7 +262,7 @@ const LoginPage = () => {
 
                     {/* <div className="flex items-center space-x-2">
                       <Field type="checkbox" name="rememberMe" checked={values.rememberMe} />
-                      <label className="text-base text-gray-600">
+                      <label className="text-base text-gray-600 dark:text-white">
                         Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
                       </label>
                     </div> */}
@@ -294,7 +294,7 @@ const LoginPage = () => {
                       CONTINUE
                     </Button>
 
-                    <div className="mt-4 text-base text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
                       Don't have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
                     </div>
                     <div className="mt-2 text-base text-center">

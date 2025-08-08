@@ -82,7 +82,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
               <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
             {products.length > 0 && (
-              <p className="text-gray-600 break-words text-sm">
+              <p className="text-gray-600 dark:text-white break-words text-sm">
                 Showing {products.length} of {totalCount} results
               </p>
             )}
@@ -97,7 +97,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
               "{query}" <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
             {products.length > 0 && (
-              <p className="text-gray-600 break-words text-sm">
+              <p className="text-gray-600 dark:text-white break-words text-sm">
                 Showing {products.length} of {totalCount} results
               </p>
             )}
@@ -105,12 +105,12 @@ export default function SearchResults({ query }: SearchResultsProps) {
         </div>
 
         {/* Right: Filter button */}
-        <div className="shrink-0 flex items-center">
+        <div className="shrink-0 flex items-center bg-white dark:bg-black text-black dark:text-white">
           {/* Desktop button */}
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="hidden sm:flex items-center gap-2 border border-black text-black rounded-none"
+            className="hidden sm:flex items-center gap-2 border border-border bg-white dark:bg-black text-black dark:text-white rounded-none"
           >
             FILTER & SORT
             <SlidersHorizontal className="w-4 h-4" />
@@ -120,7 +120,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           <BaseButton
             variant="outline"
             onClick={() => setIsFiltersOpen(true)}
-            className="flex sm:hidden items-center justify-center p-2 text-black"
+            className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </BaseButton>
@@ -131,7 +131,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {isError && (
         <div className="text-center py-4">
           <h3 className="text-lg font-semibold mb-2 text-red-600">Search Error</h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-white mb-4">
             Failed to search products. Please try again.
           </p>
           <div className="flex justify-center">
@@ -155,7 +155,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       {isEmpty && !isError && (
         <div className="text-center py-4">
           <h3 className="text-lg font-semibold mb-2">No results found</h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-white mb-4">
             We couldn't find any products matching "{query}". Try adjusting
             your search terms or filters.
           </p>
@@ -183,7 +183,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           ))}
           {isFetchingNextPage && (
             <div className="col-span-full flex justify-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              <Loader2 className="h-6 w-6 animate-spin text-black dark:text-white" />
             </div>
           )}
         </InfiniteScrollContainer>

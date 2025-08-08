@@ -52,7 +52,7 @@ export default function FeedbackWidget() {
       {/* Sliding panel from right */}
       <div
         className={cn(
-          "fixed right-0 top-0 z-50 h-full w-96 bg-white shadow-2xl",
+          "fixed right-0 top-0 z-50 h-full w-96 bg-white dark:bg-black shadow-2xl",
           "transition-all duration-700 ease-in-out",
           "will-change-transform transform-style-3d backface-hidden",
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -95,7 +95,7 @@ export default function FeedbackWidget() {
 
                 {/* Rating scale */}
                 <div className="space-y-3">
-                  <div className="flex justify-between text-xs text-gray-600">
+                  <div className="flex justify-between text-xs text-gray-600 dark:text-white">
                     <span>Very unlikely</span>
                     <span>Very likely</span>
                   </div>
@@ -122,8 +122,8 @@ export default function FeedbackWidget() {
                 onClick={handleSubmit}
                 disabled={rating === null}
                 className={cn(
-                  "w-full py-3 px-6 text-base font-bold text-white",
-                  "bg-black hover:bg-gray-800 disabled:bg-gray-300",
+                  "w-full py-3 px-6 text-base font-bold text-white dark:text-black",
+                  "bg-black dark:bg-white hover:bg-gray-800 disabled:bg-gray-300",
                   "disabled:cursor-not-allowed transition-colors",
                   "flex items-center justify-center space-x-2",
                 )}

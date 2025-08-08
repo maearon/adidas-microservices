@@ -48,8 +48,8 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
               className={`px-4 py-2 border text-sm sm:text-base whitespace-nowrap transition-all
                 ${
                   activeTab === tab.id
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-black border-gray-300 hover:bg-gray-100"
+                    ? "bg-background text-black dark:text-white border-black dark:border-white"
+                    : "bg-background text-foreground border-gray-300 dark:border-gray-500"
                 }`}
             >
               {tab.label}

@@ -99,7 +99,7 @@ const LoginPage: NextPage = () => {
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold mb-4">Welcome back!</h1>
-          <p className="text-gray-600 mb-4">You are already logged in.</p>
+          <p className="text-gray-600 dark:text-white mb-4">You are already logged in.</p>
           <Link href="/my-account" className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800">
             Go to My Account
           </Link>
@@ -109,7 +109,7 @@ const LoginPage: NextPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <div className="relative bg-gray-100 py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -122,14 +122,14 @@ const LoginPage: NextPage = () => {
                             className="w-full h-auto object-cover mb-6 rounded"
                           />
             <div className="space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-xs">
+              <div className="bg-background p-8 rounded-lg shadow-xs">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold text-xl">a</span>
+                    <span className="text-background font-bold text-xl">a</span>
                   </div>
                   <h2 className="text-2xl font-bold">JOIN ADICLUB. GET A 15% DISCOUNT.</h2>
                 </div>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-white mb-6">
                   As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and
                   receive immediate access to these Level 1 benefits:
                 </p>
@@ -144,13 +144,13 @@ const LoginPage: NextPage = () => {
             </div>
 
             {/* Login form */}
-            <div className="bg-white p-8 rounded-lg shadow-lg">
+            <div className="bg-background p-8 rounded-lg shadow-lg">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                   <span className="text-blue-600 font-bold text-2xl">adiclub</span>
                 </div>
                 <h2 className="text-xl font-bold mb-2">YOUR ADICLUB BENEFITS AWAIT</h2>
-                <p className="text-gray-600 text-base">
+                <p className="text-gray-600 dark:text-white text-base">
                   Get free shipping, discount vouchers and members only products when you're in adiClub.
                 </p>
               </div>
@@ -201,7 +201,7 @@ const LoginPage: NextPage = () => {
 
                     <div className="flex items-start space-x-2">
                       <Field type="checkbox" name="rememberMe" value="1" className="mt-1" checked={values.rememberMe === "1"} />
-                      <label className="text-base text-gray-600">
+                      <label className="text-base text-gray-600 dark:text-white">
                         Keep me logged in. Applies to all options. <Link href="#" className="text-blue-600 underline">More info</Link>
                       </label>
                     </div>
@@ -215,7 +215,7 @@ const LoginPage: NextPage = () => {
                       CONTINUE
                     </Button>
 
-                    <div className="mt-4 text-base text-gray-600 text-center">
+                    <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
                       Don't have an account yet?{" "}
                       <Link href="/signup" className="underline text-blue-600">
                         Sign up

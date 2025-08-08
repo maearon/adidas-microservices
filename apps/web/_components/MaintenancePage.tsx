@@ -2,13 +2,13 @@
 
 export default function MaintenancePage() {
   return (
-    <div className="fixed inset-0 z-1000 w-screen h-screen bg-white text-black overflow-y-auto">
+    <div className="fixed inset-0 z-1000 w-screen h-screen bg-background text-foreground overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 py-10 flex flex-col items-center text-center space-y-6">
         {/* Logo (chữ thay cho ảnh) */}
         <div className="text-3xl font-bold tracking-wide">adidas</div>
 
         {/* Reference Error */}
-        <p className="text-base text-gray-600">Reference Error: 18.83e6ab71.1752472560.8c21dccb</p>
+        <p className="text-base text-gray-600 dark:text-white">Reference Error: 18.83e6ab71.1752472560.8c21dccb</p>
 
         {/* Main message */}
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase">

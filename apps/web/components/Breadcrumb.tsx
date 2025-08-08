@@ -35,7 +35,7 @@ export default function Breadcrumb({
         <>
           <button
             onClick={handleBack}
-            className="flex items-center gap-2 text-base hover:bg-black hover:text-white cursor-pointer"
+            className="flex items-center gap-2 text-base hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black cursor-pointer"
           >
             <ArrowLeft size={16} />
             BACK
@@ -44,7 +44,7 @@ export default function Breadcrumb({
         </>
       )}
 
-      <Link href="/" className="text-base hover:underline hover:bg-black hover:text-white">
+      <Link href="/" className="text-base hover:underline hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black">
         Home
       </Link>
 
@@ -55,13 +55,13 @@ export default function Breadcrumb({
           <div key={index} className="flex items-center gap-2">
             <span className="text-gray-400 cursor-default">/</span>
             {isLast && useLastItemHighlight ? (
-              <span className="text-base text-gray-600 cursor-default select-none">
+              <span className="text-base text-gray-600 dark:text-white cursor-default select-none">
                 {crumb.label}
               </span>
             ) : (
               <Link
                 href={crumb.href}
-                className="text-base hover:underline hover:bg-black hover:text-white"
+                className="text-base hover:underline hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
               >
                 {crumb.label}
               </Link>

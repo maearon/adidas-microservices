@@ -33,9 +33,9 @@ const ForgotPassword: NextPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
+      <div className="w-full max-w-md bg-background rounded-2xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Forgot your password?</h2>
-        <p className="text-base text-gray-600 text-center mb-6">
+        <p className="text-base text-gray-600 dark:text-white text-center mb-6">
           Enter your email and we’ll send you a link to reset your password.
         </p>
 

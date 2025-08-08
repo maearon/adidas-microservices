@@ -5,7 +5,7 @@ export default function AppleSignInButton() {
   return (
     <BaseButton
       variant="outline"  
-      className="bg-white text-black hover:bg-gray-100 hover:text-black border border-black rounded-full"
+      className="bg-background text-background hover:bg-gray-100 hover:text-background border border-border rounded-full"
       asChild
     >
       <Link href="/account-login/apple" className="flex w-full items-center gap-2">

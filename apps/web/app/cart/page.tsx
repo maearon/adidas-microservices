@@ -54,11 +54,12 @@ export default function CartPage() {
         <main className="grow container mx-auto px-2 py-28">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-4xl font-bold mb-10">YOUR BAG IS EMPTY</h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-white mb-6">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <div className="max-w-[180px] w-full">
             <Button
+              border
               theme="black"
               showArrow
               pressEffect
@@ -90,7 +91,7 @@ export default function CartPage() {
               </div>
 
               <h1 className="text-2xl font-bold mb-2">YOUR BAG</h1>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-white mb-4">
                 TOTAL: ({totalItems} items) ${subtotal.toFixed(2)}
               </p>
               <p className="text-base text-gray-500 mb-6">
@@ -108,12 +109,12 @@ export default function CartPage() {
                       <div className="flex justify-between">
                         <div>
                           <h3 className="font-bold">{item.name}</h3>
-                          <p className="text-base text-gray-600">{item.color}</p>
-                          <p className="text-base text-gray-600">SIZE: {item.size}</p>
+                          <p className="text-base text-gray-600 dark:text-white">{item.color}</p>
+                          <p className="text-base text-gray-600 dark:text-white">SIZE: {item.size}</p>
                           {item.customization && (
                             <>
-                              <p className="text-base text-gray-600">NAME: {item.customization.name}</p>
-                              <p className="text-base text-gray-600">NUMBER: {item.customization.number}</p>
+                              <p className="text-base text-gray-600 dark:text-white">NAME: {item.customization.name}</p>
+                              <p className="text-base text-gray-600 dark:text-white">NUMBER: {item.customization.number}</p>
                             </>
                           )}
                         </div>
@@ -121,7 +122,7 @@ export default function CartPage() {
                           <p className="font-bold">
                             ${(Number.parseFloat(item.price.replace("$", "")) * item.quantity).toFixed(2)}
                           </p>
-                          <button onClick={() => handleRemoveItem(item.id)} className="text-gray-500 hover:text-black">
+                          <button onClick={() => handleRemoveItem(item.id)} className="text-gray-500 hover:text-background">
                             <X size={18} />
                           </button>
                         </div>
@@ -141,7 +142,7 @@ export default function CartPage() {
                           </select>
                           <ChevronDown size={16} className="absolute right-3 top-3 pointer-events-none" />
                         </div>
-                        <button className="text-gray-600 hover:text-black" onClick={() => handleMoveToWishlist(item)}>
+                        <button className="text-gray-600 dark:text-white hover:text-background" onClick={() => handleMoveToWishlist(item)}>
                           <Heart size={18} />
                         </button>
                       </div>

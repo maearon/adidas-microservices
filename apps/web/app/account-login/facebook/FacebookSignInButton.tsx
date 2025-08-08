@@ -5,7 +5,7 @@ export default function FacebookSignInButton() {
   return (
     <BaseButton
       variant="outline"  
-      className="bg-white text-black hover:bg-gray-100 hover:text-black border border-black rounded-full"
+      className="bg-background text-background hover:bg-gray-100 hover:text-background border border-border rounded-full"
       asChild
     >
       <Link href="/account-login/facebook" className="flex w-full items-center gap-2">

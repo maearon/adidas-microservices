@@ -140,7 +140,7 @@ export default function ImageLightbox({
         onClick={onClose}
         className="absolute top-4 right-4 z-10 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
       >
-        <X size={24} className="text-black" />
+        <X size={24} className="text-background" />
       </button>
 
       {/* Navigation Arrows */}
@@ -149,7 +149,7 @@ export default function ImageLightbox({
           onClick={() => onNavigate(currentIndex - 1)}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
         >
-          <ChevronLeft size={24} className="text-black" />
+          <ChevronLeft size={24} className="text-background" />
         </button>
       )}
 
@@ -158,7 +158,7 @@ export default function ImageLightbox({
           onClick={() => onNavigate(currentIndex + 1)}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
         >
-          <ChevronRight size={24} className="text-black" />
+          <ChevronRight size={24} className="text-background" />
         </button>
       )}
 
@@ -180,13 +180,13 @@ export default function ImageLightbox({
 
       {/* Instructions */}
       {/* <div className="absolute bottom-4 right-4 flex gap-2"> */}
-      {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-base text-black"> */}
-      <div className="absolute bottom-4 left-4 bg-gray-100 px-3 py-2 rounded-none text-base text-black">
+      {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-base text-background"> */}
+      <div className="absolute bottom-4 left-4 bg-gray-100 px-3 py-2 rounded-none text-base text-background">
         Click to {zoom === 1 ? "zoom in" : "zoom out"} • {zoom > 1 && "Drag to pan • "}ESC to close
       </div>
 
       {/* Image Counter */}
-      <div className="absolute top-4 left-4 bg-gray-100 px-3 py-1 rounded-none text-base text-black">
+      <div className="absolute top-4 left-4 bg-gray-100 px-3 py-1 rounded-none text-base text-background">
         {currentIndex + 1} / {images.length}
       </div>
 
@@ -198,14 +198,14 @@ export default function ImageLightbox({
             key={index}
             onClick={() => onNavigate(index)}
             className={`w-12 h-12 border-2 rounded-none overflow-hidden ${
-              index === currentIndex ? "border-black" : "border-gray-300"
+              index === currentIndex ? "border-border" : "border-gray-300"
             }`}
           >
             <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />
           </button>
         ))}
         {/* {images.length > 5 && (
-          <div className="w-12 h-12 bg-gray-100 border-2 border-gray-300 rounded-none flex items-center justify-center text-xs text-black">
+          <div className="w-12 h-12 bg-gray-100 border-2 border-gray-300 rounded-none flex items-center justify-center text-xs text-background">
             +{images.length - 5}
           </div>
         )} */}

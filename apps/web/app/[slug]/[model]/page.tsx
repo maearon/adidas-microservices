@@ -27,7 +27,7 @@ const ProductDetailPage = async (props: ProductDetailPageProps) => {
   if (!slug || !model) notFound();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <Suspense fallback={<Loading />}>
         <ProductDetailPageClient
           params={{

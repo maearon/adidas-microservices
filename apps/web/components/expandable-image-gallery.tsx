@@ -150,7 +150,7 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                 shadow={false}
                 showArrow={false}
                 variant="outline"
-                className="border-black text-black bg-white hover:bg-white hover:text-gray-500 transition-colors duration-200 rounded-none px-8 py-3 text-sm"
+                className="border-border text-black dark:text-white bg-background hover:bg-background hover:text-gray-500 transition-colors duration-200 rounded-none px-8 py-3 text-sm"
                 onClick={() => setShowAllImages(!showAllImages)}
               >
                 {showAllImages ? (

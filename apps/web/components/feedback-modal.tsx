@@ -48,7 +48,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               </svg>
             </div>
             <h2 className="text-xl font-bold text-black mb-2">Thank You!</h2>
-            <p className="text-gray-600">Your feedback has been submitted successfully.</p>
+            <p className="text-gray-600 dark:text-white">Your feedback has been submitted successfully.</p>
           </div>
         </DialogContent>
       </Dialog>
@@ -64,7 +64,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             onClick={onClose}
             className="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <X className="h-5 w-5 text-gray-600" />
+            <X className="h-5 w-5 text-gray-600 dark:text-white" />
           </button> */}
 
           <div className="p-8">
@@ -98,8 +98,8 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               {/* Rating Scale */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-base text-gray-600">Very unlikely</span>
-                  <span className="text-base text-gray-600">Very likely</span>
+                  <span className="text-base text-gray-600 dark:text-white">Very unlikely</span>
+                  <span className="text-base text-gray-600 dark:text-white">Very likely</span>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -111,7 +111,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                           rating === value ? "bg-black border-black" : "bg-white border-gray-300 hover:border-gray-400"
                         }`}
                       />
-                      <span className="text-xs text-gray-600 mt-1">{value}</span>
+                      <span className="text-xs text-gray-600 dark:text-white mt-1">{value}</span>
                     </div>
                   ))}
                 </div>

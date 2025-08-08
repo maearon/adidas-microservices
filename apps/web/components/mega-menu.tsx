@@ -109,7 +109,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
 
   return (
     <div
-      className="absolute left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50"
+      className="absolute left-0 right-0 bg-white dark:bg-black text-foreground border-t border-gray-200 shadow-lg z-50"
       onMouseLeave={onClose}
     >
       <div className="container mx-auto px-4 py-8">

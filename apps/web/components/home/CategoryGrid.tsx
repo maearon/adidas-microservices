@@ -40,7 +40,7 @@ export default function CategoryGrid() {
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-end p-6">
                   <div>
-                    <h3 className="text-white text-xl font-bold mb-2">{category.title}</h3>
+                    <h3 className="text-foreground text-xl font-bold mb-2">{category.title}</h3>
                     <Button variant="secondary" size="sm">
                       Khám phá
                     </Button>

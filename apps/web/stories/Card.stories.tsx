@@ -38,7 +38,7 @@ export const WithButton: Story = {
         <input className="w-full px-3 py-2 border rounded" placeholder="Your email" />
       </CardContent>
       <CardFooter>
-        <button className="ml-auto px-4 py-2 bg-blue-600 text-white rounded">Subscribe</button>
+        <button className="ml-auto px-4 py-2 bg-blue-600 text-background rounded">Subscribe</button>
       </CardFooter>
     </Card>
   ),

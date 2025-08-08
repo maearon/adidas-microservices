@@ -37,7 +37,7 @@ const getProductById = (id: string) => {
         { name: "Medium Grey Heather", color: "bg-gray-400", selected: true },
         { name: "Black", color: "bg-black" },
         { name: "Navy", color: "bg-blue-900" },
-        { name: "White", color: "bg-white border" },
+        { name: "White", color: "bg-background border" },
         { name: "Red", color: "bg-red-600" },
         { name: "Green", color: "bg-green-600" },
         { name: "Blue", color: "bg-blue-600" },
@@ -159,11 +159,11 @@ const ProductDetailPage = () => {
   const isWishlisted = wishlistItems.some((item) => item.id === product.id)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* <Header /> */}
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="text-base text-gray-600 mb-6">
+        <nav className="text-base text-gray-600 dark:text-white mb-6">
           <span>← Back / Home / Men</span>
         </nav>
 
@@ -183,7 +183,7 @@ const ProductDetailPage = () => {
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
                   className={`aspect-square bg-gray-100 border-2 ${
-                    currentImageIndex === index ? "border-black" : "border-transparent"
+                    currentImageIndex === index ? "border-border" : "border-transparent"
                   }`}
                 >
                   <img
@@ -208,7 +208,7 @@ const ProductDetailPage = () => {
                   <Star
                     key={i}
                     size={16}
-                    className={i < Math.floor(productRails.rating) ? "fill-black text-black" : "text-gray-300"}
+                    className={i < Math.floor(productRails.rating) ? "fill-black text-background" : "text-gray-300"}
                   />
                 ))}
               </div>
@@ -245,7 +245,7 @@ const ProductDetailPage = () => {
                     key={index}
                     onClick={() => setSelectedColor(variant.color ?? "")}
                     className={`w-12 h-12 rounded border-2 ${
-                      selectedColor === variant.color ? "border-black" : "border-gray-300"
+                      selectedColor === variant.color ? "border-border" : "border-gray-300"
                     }`}
                   >
                     <div className={`w-full h-full rounded ${
@@ -254,14 +254,14 @@ const ProductDetailPage = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-base text-gray-600 mt-2">Grey Mel / White Melange</p>
+              <p className="text-base text-gray-600 dark:text-white mt-2">Grey Mel / White Melange</p>
             </div>
 
             {/* Sizes */}
             <div>
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-bold mb-3">Sizes</h3>
-                <button className="text-base underline">Size guide</button>
+                <button className="text-base text-black dark:text-white underline">Size guide</button>
               </div>
               <div className="grid grid-cols-6 gap-2">
                 {product.variants?.[0]?.size?.map((size) => (
@@ -269,7 +269,7 @@ const ProductDetailPage = () => {
                     key={size}
                     onClick={() => handleSizeSelect(size)}
                     className={`py-3 border text-center font-medium ${
-                      selectedSize === size ? "border-black bg-black text-white" : "border-gray-300 hover:border-black"
+                      selectedSize === size ? "border-border bg-black text-white" : "border-gray-300 hover:border-border"
                     }`}
                   >
                     {size}
@@ -301,7 +301,7 @@ const ProductDetailPage = () => {
             <div className="space-y-2">
               {productRails.features.map((feature, index) => (
                 <div key={index} className="flex items-center space-x-2 text-base">
-                  <span className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
+                  <span className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-background text-xs">
                     ✓
                   </span>
                   <span>{feature}</span>
@@ -311,7 +311,7 @@ const ProductDetailPage = () => {
 
             {/* Wishlist Button */}
             <button onClick={handleToggleWishlist} className="flex items-center space-x-2 text-base hover:underline">
-              <Heart size={16} className={isWishlisted ? "fill-black text-black" : "text-gray-600"} />
+              <Heart size={16} className={isWishlisted ? "fill-black text-background" : "text-gray-600 dark:text-white"} />
               <span>{isWishlisted ? "Remove from wishlist" : "Add to wishlist"}</span>
             </button>
            </div>
@@ -338,13 +338,13 @@ const ProductDetailPage = () => {
                         <Star
                           key={i}
                           size={16}
-                          className={i < Math.floor(productRails.rating) ? "fill-black text-black" : "text-gray-300"}
+                          className={i < Math.floor(productRails.rating) ? "fill-black text-background" : "text-gray-300"}
                         />
                       ))}
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-600">Customer reviews and ratings would appear here.</p>
+                <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
               </div>
             )}
           </div>
@@ -360,7 +360,7 @@ const ProductDetailPage = () => {
             </button>
             {expandedSections.description && (
               <div className="pb-4">
-                <p className="text-gray-600">{productRails.description}</p>
+                <p className="text-gray-600 dark:text-white">{productRails.description}</p>
               </div>
             )}
           </div>
@@ -376,7 +376,7 @@ const ProductDetailPage = () => {
             </button>
             {expandedSections.details && (
               <div className="pb-4">
-                <p className="text-gray-600">{productRails.details}</p>
+                <p className="text-gray-600 dark:text-white">{productRails.details}</p>
               </div>
             )}
           </div>
@@ -392,7 +392,7 @@ const ProductDetailPage = () => {
             </button>
             {expandedSections.care && (
               <div className="pb-4">
-                <p className="text-gray-600">{product.care}</p>
+                <p className="text-gray-600 dark:text-white">{product.care}</p>
               </div>
             )}
           </div>
@@ -408,7 +408,7 @@ const ProductDetailPage = () => {
             </button>
             {expandedSections.sizeStyle && (
               <div className="pb-4">
-                <p className="text-gray-600">{productRails.sizeGuide}</p>
+                <p className="text-gray-600 dark:text-white">{productRails.sizeGuide}</p>
               </div>
             )}
           </div>

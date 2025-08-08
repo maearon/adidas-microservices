@@ -97,7 +97,7 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
           <BaseButton
             variant="outline"
             size="icon"
-            className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+            className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-border bg-background hover:bg-muted rounded-none z-20"
             onClick={prevSlide}
           >
             <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
@@ -107,7 +107,7 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
           <BaseButton
             variant="outline"
             size="icon"
-            className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+            className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-border bg-background hover:bg-muted rounded-none z-20"
             onClick={nextSlide}
           >
             <ArrowRight className="h-5 w-5" strokeWidth={1.5} />

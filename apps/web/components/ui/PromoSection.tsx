@@ -12,7 +12,7 @@ export default function PromoSection() {
               Giảm giá lên đến 50% cho các sản phẩm được chọn lọc. Cơ hội tuyệt vời để sở hữu những món đồ yêu thích.
             </p>
             <Link href="/sale">
-              <Button size="lg" className="bg-white text-black hover:bg-gray-100">
+              <Button size="lg" className="bg-background text-background hover:bg-gray-100">
                 Mua ngay
               </Button>
             </Link>

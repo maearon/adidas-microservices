@@ -145,7 +145,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
 
   return (
     typeMobileResponsive === "accordion1x4" ? (
-      <section className="bg-white container mx-auto px-4 xl:px-20 py-2 mb-2">
+      <section className="bg-background container mx-auto px-4 xl:px-20 py-2 mb-2">
         {/* Mobile - Accordion 1x4 */}
         <div className="block sm:hidden divide-y divide-gray-200">
           {Object.entries(selectedCategories).map(([category, items]) => (
@@ -160,7 +160,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
               <ul className={`pl-4 pb-4 space-y-2 ${openCategory === category ? "block" : "hidden"}`}>
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
-                    <a href="#" className="text-base text-gray-600 hover:underline">
+                    <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
                       {item}
                     </a>
                   </li>
@@ -180,7 +180,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
               <ul className="space-y-2">
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
-                    <a href="#" className="text-base text-gray-600 hover:underline">
+                    <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
                       {item}
                     </a>
                   </li>
@@ -193,14 +193,14 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
     ) : (
       <>
       {/* Desktop layout (≥sm) */}
-      <section className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 bg-white container mx-auto px-4 py-4">
+      <section className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 bg-background container mx-auto px-4 py-4">
         {sectionEntries.map(([section, items]) => (
           <div key={section}>
             <h3 className="font-bold mb-4 text-md capitalize">{section}</h3>
             <ul className="space-y-2">
               {items.map((item, index) => (
                 <li key={index}>
-                  <a href="#" className="text-base text-gray-600 hover:underline">
+                  <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
                     {item}
                   </a>
                 </li>
@@ -211,7 +211,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
       </section>
 
       {/* Mobile layout (<sm)  - Accordion 2x2 */}
-      <section className="sm:hidden bg-white container mx-auto px-4 py-4 space-y-6">
+      <section className="sm:hidden bg-background container mx-auto px-4 py-4 space-y-6">
         {rows.map((pair, rowIndex) => (
           <div key={rowIndex} className="flex gap-4">
             {pair.map(([section, items]) => (
@@ -239,7 +239,7 @@ export default function PageFooter({currentPage = "home", onNavigate, typeMobile
                       <li key={index}>
                         <a
                           href="#"
-                          className="block text-base text-gray-600 hover:text-black transition-colors"
+                          className="block text-base text-gray-600 dark:text-white hover:text-background transition-colors"
                         >
                           {item}
                         </a>

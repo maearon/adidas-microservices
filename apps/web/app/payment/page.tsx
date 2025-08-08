@@ -307,9 +307,9 @@ export default function CheckoutPaymentPage() {
                   <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-16 h-16 object-cover" />
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-base text-gray-600">{item.color}</p>
-                    <p className="text-base text-gray-600">Size: {item.size}</p>
-                    <p className="text-base text-gray-600">Qty: {item.quantity}</p>
+                    <p className="text-base text-gray-600 dark:text-white">{item.color}</p>
+                    <p className="text-base text-gray-600 dark:text-white">Size: {item.size}</p>
+                    <p className="text-base text-gray-600 dark:text-white">Qty: {item.quantity}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold">

@@ -40,7 +40,7 @@ export const Default: Story = {
     return (
       <div className="min-h-screen bg-gray-50">
         <button
-          className="m-4 px-4 py-2 bg-blue-500 text-white rounded"
+          className="m-4 px-4 py-2 bg-blue-500 text-background rounded"
           onClick={() => setIsOpen(true)}
         >
           Open Filter

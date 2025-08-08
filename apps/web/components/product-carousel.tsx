@@ -75,7 +75,7 @@ export default function ProductCarousel({
           <div className="col-span-full flex justify-center">
             {/* <BaseButton
               variant="outline"
-              className="rounded-none border border-black text-black font-bold hover:bg-gray-100 text-base px-6 py-0 leading-none"
+              className="rounded-none border border-border text-background font-bold hover:bg-gray-100 text-base px-6 py-0 leading-none"
               onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
             >
               VIEW ALL
@@ -83,7 +83,7 @@ export default function ProductCarousel({
             <div className="col-span-full">
               <BaseButton
                 variant="outline"
-                className="w-full rounded-none border border-black text-black font-bold hover:bg-gray-100 text-base px-6 py-3 leading-none text-left"
+                className="w-full rounded-none border border-border text-foreground font-bold hover:bg-gray-100 text-base px-6 py-3 leading-none text-left"
                 onClick={() => (window.location.href = viewMoreHref || "/new-arrivals")}
               >
                 VIEW ALL
@@ -145,7 +145,7 @@ export default function ProductCarousel({
             <BaseButton
               variant="outline"
               size="icon"
-              className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+              className="w-12 h-12 absolute left-1 top-1/2 -translate-y-1/2 border border-border bg-background hover:bg-muted rounded-none z-20"
               onClick={prevSlide}
             >
               <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
@@ -155,7 +155,7 @@ export default function ProductCarousel({
             <BaseButton
               variant="outline"
               size="icon"
-              className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-black bg-white hover:bg-gray-50 rounded-none z-20"
+              className="w-12 h-12 absolute right-1 top-1/2 -translate-y-1/2 border border-border bg-background hover:bg-muted rounded-none z-20"
               onClick={nextSlide}
             >
               <ArrowRight className="h-5 w-5" strokeWidth={1.5} />

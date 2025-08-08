@@ -144,9 +144,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   // ⛔ Handle lỗi sớm trước
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4 text-center">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
         <h2 className="text-2xl font-semibold text-red-600 mb-2">Product not available</h2>
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-white mb-4">
           We couldn’t load this product. Please check your connection or try again later.
         </p>
         <BaseButton onClick={() => refetch()}>Retry</BaseButton>
@@ -225,10 +225,17 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                         </div>
                       </div>
                     </div>
-                    <Button className="mb-4 border-black text-black bg-transparent hover:bg-white hover:text-gray-500 rounded-none">
+                    <Button
+                      theme="transparent"
+                      border={true}
+                      href={`/${slugify(product.name || "product")}/${variant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
+                      pressEffect={false}
+                      shadow={false}
+                      className="bg-transparent border border-black dark:border-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                    >
                       WRITE A REVIEW
                     </Button>
-                    <p className="text-gray-600">Customer reviews and ratings would appear here.</p>
+                    <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
                   </div>
                 )}
               </div>
@@ -244,7 +251,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </button>
                 {expandedSections.description && (
                   <div className="pb-6">
-                    <p className="text-gray-600 leading-relaxed">{productDetails.description}</p>
+                    <p className="text-gray-600 dark:text-white leading-relaxed">{productDetails.description}</p>
                   </div>
                 )}
               </div>
@@ -262,7 +269,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   <div className="pb-6">
                     <ul className="space-y-2">
                       {productDetails.details.map((detail, index) => (
-                        <li key={index} className="text-gray-600">
+                        <li key={index} className="text-gray-600 dark:text-white">
                           • {detail}
                         </li>
                       ))}
@@ -277,7 +284,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <>
           {/* Mid-page Promotional Banner */}
           {/* F50 Messi Prestigio Section */}      
-          <div className="hidden mt-[80px] pt-[6px] relative w-full lg:h-[500px] bg-black lg:flex items-center justify-center text-white text-center overflow-hidden">
+          <div className="hidden mt-[80px] pt-[6px] relative w-full lg:h-[500px] bg-black lg:flex items-center justify-center text-background text-center overflow-hidden">
             <Image
               src="/assets/product/football_fw25_messi_pdp_launch_d_1213df14f1.jpg?height=500&width=1200"
               alt="F50 Messi Prestigio"
@@ -325,13 +332,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         {/* Right Column */}
         <aside className="w-full lg:w-1/3">
 
-          <div className="sticky top-4 bg-white p-4 rounded-none border-l px-[20px] sm:px-12">
+          <div className="sticky top-4 bg-background p-4 rounded-none border-l px-[20px] sm:px-12">
 
             {/* Desktop Product Title */}
             <div className="hidden lg:block">
               {/* Gender • Sport + Reviews */}
               <div className="flex items-center justify-between mb-2">
-                <p className="text-base text-gray-600">
+                <p className="text-base text-gray-600 dark:text-white">
                   {product.gender ? `${product.gender}'s` : ''} 
                   {product.gender && product.sport ? ' • ' : ''}
                   {product.sport}
@@ -364,11 +371,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 <ProductPrice price={String(variant?.price)} compareAtPrice={String(variant?.compare_at_price)} />
               </div>
 
-              <p className="text-base text-black mb-6">Promo codes will not apply to this product.</p>
+              <p className="text-base text-black dark:text-white mb-6">Promo codes will not apply to this product.</p>
             </div>
 
             <div className="flex lg:hidden mt-[40px]">
-                <p className="text-base text-black">Promo codes will not apply to this product.</p>
+                <p className="text-base text-black dark:text-white">Promo codes will not apply to this product.</p>
             </div>
 
 
@@ -393,7 +400,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       onMouseEnter={() => setHoveredColor(variant.color)} // only change displayColor when hover 
                       className={cn(
                         `w-[${size}px] h-[${size}px] block overflow-hidden border-b-4`,
-                        isActive ? "border-black" : "border-transparent hover:border-black"
+                        isActive ? "border-border" : "border-transparent hover:border-border"
                       )}
                     >
                       <Image
@@ -417,7 +424,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             <div>
               <div className="flex justify-between items-center mt-[40px]">
                 <h3 className="font-bold text-base">Sizes</h3>
-                <button className="text-sm underline flex items-center text-black hover:opacity-80">
+                <button className="text-sm underline flex items-center text-black dark:text-white hover:opacity-80">
                   <span className="mr-1">📏</span>
                   Size guide
                 </button>
@@ -435,7 +442,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       disabled={isSoldOut}
                       className={`
                         relative py-3 border text-center text-sm font-medium rounded-none
-                        ${isSelected ? "bg-black text-white border-black" : "border-gray-300 hover:border-black"}
+                        ${isSelected ? "bg-black text-white border-border" : "border-gray-300 hover:border-border"}
                         ${isSoldOut ? "text-gray-400 cursor-not-allowed" : ""}
                       `}
                     >
@@ -443,7 +450,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       {isSoldOut && (
                         <span className="absolute top-1 right-0.5 text-xs">
                           {/* 🔔 */}
-                          <BellRing className="absolute top-1 right-0.5 w-4 h-4 text-black" />
+                          <BellRing className="absolute top-1 right-0.5 w-4 h-4 text-background" />
                         </span>
                       )}
                     </button>
@@ -455,11 +462,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 <p className="text-red-600 text-sm mt-2 font-medium">{sizeError}</p>
               )}
 
-              <div className="mt-4 p-3 border border-gray-300 rounded-none bg-white text-sm">
-                <div className="flex items-start text-gray-700 leading-snug">
-                  <span className="mr-2 mt-[2px] text-black">
+              <div className="mt-4 p-3 border border-gray-300 rounded-none bg-background text-sm">
+                <div className="flex items-start text-gray-700 dark:text-white leading-snug">
+                  <span className="mr-2 mt-[2px] text-background">
                     {/* ℹ️ */}
-                    <Info className="text-black w-4 h-4 mr-2" />
+                    <Info className="text-background w-4 h-4 mr-2" />
                   </span>
                   <span>
                     <strong>True to size.</strong> We recommend ordering your usual size.
@@ -471,6 +478,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             {/* Add to Bag & Wishlist - Side by Side */}
             <div className="flex gap-4  mt-6">
               <Button
+                border
                 theme="black"
                 pressEffect
                 onClick={handleAddToBag}
@@ -483,14 +491,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 shadow={false}
                 showArrow={false}
                 onClick={handleToggleWishlist}
-                className="w-12 h-12 border border-black rounded-none flex items-center justify-center hover:bg-white hover:text-black transition-colors translate-y-[3px]"
+                className="w-12 h-12 border border-border rounded-none flex items-center justify-center hover:bg-background hover:text-background transition-colors translate-y-[3px]"
               >
                 <Heart className={`w-[22px] h-[22px] ${isWishlisted ? "fill-current" : ""}`} />
               </ButtonWish>
             </div>
 
             {/* Klarna Payment */}
-            <div className="flex flex-wrap items-center text-base text-gray-700 mt-6">
+            <div className="flex flex-wrap items-center text-base text-gray-700 dark:text-white mt-6">
               <p className="mr-1">
                 From <span className="font-bold">$24.24/month</span>, or 4 payments at 0% interest with
               </p>
@@ -505,9 +513,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             {/* Gray divider dash */}
             <div className="border-t border-gray-200 my-4" />
 
-            <div className="flex items-center gap-3 text-gray-700 underline ">
+            <div className="flex items-center gap-3 text-gray-700 dark:text-white underline ">
               <RefreshCw className="h-5 w-5" />
-              <div className="cursor-pointer hover:underline hover:bg-black hover:text-white">
+              <div className="cursor-pointer hover:underline hover:bg-foreground hover:text-background">
                 <p className="font-medium">Get delivery dates</p>
               </div>
             </div>
@@ -516,7 +524,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             <div className="border-t border-gray-200 my-4" />
 
             {/* Features */}
-            <div className="flex items-center gap-3 text-black">
+            <div className="flex items-center gap-3 text-gray-700 dark:text-white">
               <Truck className="h-5 w-5" />
               <div>
                 <Link href="#" className="underline">
@@ -524,7 +532,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </Link>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-black">
+            <div className="flex items-center gap-3 text-gray-700 dark:text-white">
               <CreditCard className="h-5 w-5" />
               <div>
                 <Link href="#" className="underline">
@@ -583,10 +591,18 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       </div>
                     </div>
                   </div>
-                  <Button className="mb-4 border-black text-black bg-transparent hover:bg-white hover:text-gray-500 rounded-none">
+                  <Button
+                    border
+                    theme="transparent"
+                    border={true}
+                    href={`/${slugify(product.name || "product")}/${variant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
+                    pressEffect={false}
+                    shadow={false}
+                    className="bg-transparent border border-black dark:border-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  >
                     WRITE A REVIEW
                   </Button>
-                  <p className="text-gray-600">Customer reviews and ratings would appear here.</p>
+                  <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
                 </div>
               )}
             </div>
@@ -602,7 +618,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </button>
               {expandedSections.description && (
                 <div className="pb-6">
-                  <p className="text-gray-600 leading-relaxed">{productDetails.description}</p>
+                  <p className="text-gray-600 dark:text-white leading-relaxed">{productDetails.description}</p>
                 </div>
               )}
             </div>
@@ -620,7 +636,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 <div className="pb-6">
                   <ul className="space-y-2">
                     {productDetails.details.map((detail, index) => (
-                      <li key={index} className="text-gray-600">
+                      <li key={index} className="text-gray-600 dark:text-white">
                         • {detail}
                       </li>
                     ))}
@@ -635,7 +651,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         <>
         {/* Mid-page Promotional Banner */}
         {/* F50 Messi Prestigio Section */}
-        <div className="flex lg:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-white text-center overflow-hidden">
+        <div className="flex lg:hidden mt-[80px] pt-[6px] relative w-full h-[582px] sm:h-[400px] md:h-[500px] bg-black sm:flex items-center justify-center text-background text-center overflow-hidden">
           <Image
             src="/assets/product/football_fw25_messi_pdp_launch_m_ba9cdf23e1.jpg?height=1004&width=750"
             alt="F50 Messi Prestigio"
