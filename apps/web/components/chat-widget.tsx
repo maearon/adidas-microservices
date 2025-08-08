@@ -252,12 +252,9 @@ export default function ChatWidget() {
                   <div key={message.id} className={`${message.isBot ? "text-left" : "text-right"}`}>
                     {message.isBot ? (
                       <div className="flex items-start space-x-2">
-                        <img
-                          src={getGravatarUrl(message.users?.email)}
-                          alt={message.users?.name || "User"}
-                          title={message.users?.email} // 👈 show email when hover
-                          className="w-8 h-8 rounded-full"
-                        />
+                        <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                          <span className="text-white dark:text-black text-xs font-bold">A</span>
+                        </div>
                         {!message.users ? (
                           <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
@@ -269,10 +266,8 @@ export default function ChatWidget() {
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-[#0066FF]">{message.users?.email}</p>
-                            <p className="text-base text-[#538E76]">{message.users?.name}</p>
-                            <p className="text-base mt-1">{message.content}</p>
+                          <div className="bg-black dark:bg-white rounded-lg p-3 max-w-xs">
+                            <p className="text-base text-white dark:text-black">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
@@ -309,11 +304,11 @@ export default function ChatWidget() {
                 {/* Typing indicator */}
                 {isTyping && (
                   <div className="flex items-start space-x-2">
-                    <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                      <span className="text-foreground text-xs font-bold">A</span>
+                    <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                      <span className="text-white dark:text-black text-xs font-bold">A</span>
                     </div>
-                    <div className="bg-gray-100 rounded-lg p-3">
-                      <p className="text-base text-gray-500">Typing...</p>
+                    <div className="bg-black dark:bg-white rounded-lg p-3">
+                      <p className="text-base text-white dark:text-black">Typing....</p>
                     </div>
                   </div>
                 )}
