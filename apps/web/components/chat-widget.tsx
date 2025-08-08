@@ -252,15 +252,14 @@ export default function ChatWidget() {
                   <div key={message.id} className={`${message.isBot ? "text-left" : "text-right"}`}>
                     {message.isBot ? (
                       <div className="flex items-start space-x-2">
-                        <div className="w-8 h-8 bg-white dark:bg-black rounded-full">
-                          <span 
-                            className="text-black dark:text-white text-xs font-bold"
-                            alt={message.users?.name || "User"}
-                            title={message.users?.email}
-                          >A</span>
-                        </div>
+                        <img
+                          src={getGravatarUrl(message.users?.email)}
+                          alt={message.users?.name || "User"}
+                          title={message.users?.email} // 👈 show email when hover
+                          className="w-8 h-8 rounded-full"
+                        />
                         {!message.users ? (
-                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
+                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
                             <p className="text-base text-[#0066FF]">User Email: [System message] Admin</p>
                             <p className="text-base text-[#538E76]">User Name: [System message]</p>
@@ -270,7 +269,7 @@ export default function ChatWidget() {
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
+                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
                             <p className="text-base text-[#0066FF]">{message.users?.email}</p>
                             <p className="text-base text-[#538E76]">{message.users?.name}</p>
                             <p className="text-base mt-1">{message.content}</p>
