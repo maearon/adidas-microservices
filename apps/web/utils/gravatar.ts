@@ -8,5 +8,5 @@ export const getGravatarUrl = (
   if (!email) return fallbackUrl
   const finalEmail = email?.trim().toLowerCase() || fallbackEmail
   const hash = md5(finalEmail.trim().toLowerCase())
-  return `https://www.gravatar.com/avatar/${hash}?d=identicon`
+  return `https://secure.gravatar.com/avatar/${hash}?s=${50}`
 }
