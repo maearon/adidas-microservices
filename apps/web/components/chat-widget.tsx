@@ -14,8 +14,8 @@ interface ChatMessage {
   id: string
   content: string
   isBot: boolean
-  timestamp: Date
-  user?: {
+  created_at: Date
+  users?: {
     id: string
     name: string
     email: string
@@ -84,13 +84,13 @@ export default function ChatWidget() {
       socket.on('message_history', (data: { messages: any[] }) => {
         console.log("messages", data.messages)
         const formattedMessages = data.messages.map((msg: any) => {
-          const isBot = msg.user?.email?.includes('admin') || msg.user?.email?.includes('support');
+          const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
           return {
             id: msg.id,
             content: msg.content,
             isBot: !!isBot,
-            timestamp: msg.createdAt ? new Date(msg.createdAt) : new Date(),
+            created_at: msg.created_at ? new Date(msg.created_at) : new Date(),
             user: msg.user
           }
         })
@@ -99,20 +99,20 @@ export default function ChatWidget() {
       })
 
       socket.on('new_message', (message: any) => {
-        console.log("message.user", message.user)
-        const isBot = message.user?.email?.includes('admin') || message.user?.email?.includes('support');
+        console.log("message.user", message.users)
+        const isBot = message.users?.email?.includes('admin') || message.users?.email?.includes('support');
 
         const formattedMessage: ChatMessage = {
           id: message.id,
           content: message.content,
           isBot: !!isBot,
-          timestamp: message.createdAt ? new Date(message.createdAt) : new Date(),
-          user: message.user ?? null,
+          created_at: message.created_at ? new Date(message.created_at) : new Date(),
+          users: message.users ?? null,
         }
 
         setMessages(prev => [...prev, formattedMessage])
 
-        if (message.user?.email !== sessionState?.value?.email) {
+        if (message.users?.email !== sessionState?.value?.email) {
           playSound('/sounds/receive.wav')
         }
       })
@@ -237,12 +237,12 @@ export default function ChatWidget() {
                     {message.isBot ? (
                       <div className="flex items-start space-x-2">
                         <img
-                          src={getGravatarUrl(message.user?.email)}
-                          alt={message.user?.name || "User"}
-                          title={message.user?.email} // 👈 show email when hover
+                          src={getGravatarUrl(message.users?.email)}
+                          alt={message.users?.name || "User"}
+                          title={message.users?.email} // 👈 show email when hover
                           className="w-8 h-8 rounded-full"
                         />
-                        {!message.user ? (
+                        {!message.users ? (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
                           </div>
@@ -274,9 +274,9 @@ export default function ChatWidget() {
                           </p>
                         </div>
                         <img
-                          src={getGravatarUrl(message.user?.email)}
-                          title={message.user?.email} // 👈 show email when hover
-                          alt={message.user?.name || "User"}
+                          src={getGravatarUrl(message.users?.email)}
+                          title={message.users?.email} // 👈 show email when hover
+                          alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
                         />
                       </div>
