@@ -119,7 +119,11 @@ export default function ChatWidget() {
           type: msg.type,
           updated_at: msg.updated_at ? new Date(msg.updated_at) : new Date(),
           user_id: msg.user_id,
-          users: msg.users.users ?? null,
+          users: {
+            email: userData.email,
+            name: userData.name,
+            id: msg.user_id ?? null,
+          },
         }
 
         setMessages(prev => [...prev, formattedMessage])
@@ -219,8 +223,8 @@ export default function ChatWidget() {
           {/* Chat Header */}
           <div className="bg-background border-b border-gray-200 p-4 flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 overflow-hidden">
-              <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-                <span className="text-foreground text-xs font-bold">A</span>
+              <div className="w-8 h-8 bg-white dark:bg-black rounded-full flex items-center justify-center">
+                <span className="text-black dark:text-white text-xs font-bold">A</span>
               </div>
               <div className="truncate">
                 <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
@@ -248,14 +252,15 @@ export default function ChatWidget() {
                   <div key={message.id} className={`${message.isBot ? "text-left" : "text-right"}`}>
                     {message.isBot ? (
                       <div className="flex items-start space-x-2">
-                        <img
-                          src={getGravatarUrl(message.users?.email)}
-                          alt={message.users?.name || "User"}
-                          title={message.users?.email} // 👈 show email when hover
-                          className="w-8 h-8 rounded-full"
-                        />
+                        <div className="w-8 h-8 bg-white dark:bg-black rounded-full">
+                          <span 
+                            className="text-black dark:text-white text-xs font-bold"
+                            alt={message.users?.name || "User"}
+                            title={message.users?.email}
+                          >A</span>
+                        </div>
                         {!message.users ? (
-                          <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
+                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
                             <p className="text-base text-gray-500 italic">[System message]</p>
                             <p className="text-base text-[#0066FF]">User Email: [System message] Admin</p>
                             <p className="text-base text-[#538E76]">User Name: [System message]</p>
@@ -265,10 +270,9 @@ export default function ChatWidget() {
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-gray-500 italic">[Not System message] Have .users</p>
-                            <p className="text-base text-[#0066FF]">User Email: {message.users?.email} Admin</p>
-                            <p className="text-base text-[#538E76]">User Name: {message.users?.name}</p>
+                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
+                            <p className="text-base text-[#0066FF]">{message.users?.email}</p>
+                            <p className="text-base text-[#538E76]">{message.users?.name}</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
@@ -285,8 +289,8 @@ export default function ChatWidget() {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-[#0066FF]">User Email: {message.users?.email} Not Admin</p>
-                          <p className="text-base text-[#538E76]">User Name: {message.users?.name}</p>
+                          <p className="text-base text-[#0066FF]">{message.users?.email}</p>
+                          <p className="text-base text-[#538E76]">{message.users?.name}</p>
                           <p className="text-base mt-1">{message.content}</p>
                           <p className="text-xs text-gray-300 dark:text-black mt-1">
                             {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
