@@ -248,10 +248,11 @@ export default function ChatWidget() {
                           </div>
                         ) : (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-[#538E76]">{message.user?.email} Admin</p>
+                            <p className="text-base text-[#0066FF]">User Email: {message.users?.email} Admin</p>
+                            <p className="text-base text-[#538E76]">User Name: {message.users?.name}</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
-                              {message.timestamp.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
                           </div>
                         )}
@@ -265,10 +266,11 @@ export default function ChatWidget() {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-[#538E76]">{message.user?.email} Not Admin</p>
+                          <p className="text-base text-[#0066FF]">User Email: {message.users?.email} Not Admin</p>
+                          <p className="text-base text-[#538E76]">User Name: {message.users?.name}</p>
                           <p className="text-base mt-1">{message.content}</p>
                           <p className="text-xs text-gray-300 dark:text-black mt-1">
-                            {message.timestamp.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                            {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
                         <img
