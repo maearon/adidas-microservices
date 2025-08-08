@@ -11,15 +11,19 @@ import { useCurrentUser } from "@/api/hooks/useCurrentUser";
 import { playSound } from "@/utils/play-sound"
 
 interface ChatMessage {
-  id: string
   content: string
   isBot: boolean
   created_at: Date
+  id: string
+  room_id: string
+  type: string
+  updated_at: Date
+  user_id: string
   users?: {
+    email: string
     id: string
     name: string
-    email: string
-    avatar?: string
+    // avatar?: string
   }
 }
 
@@ -87,32 +91,40 @@ export default function ChatWidget() {
           const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
           return {
-            id: msg.id,
             content: msg.content,
             isBot: !!isBot,
             created_at: msg.created_at ? new Date(msg.created_at) : new Date(),
-            user: msg.user
+            id: msg.id,
+            room_id: msg.room_id,
+            type: msg.type,
+            updated_at: msg.updated_at ? new Date(msg.updated_at) : new Date(),
+            user_id: msg.user_id,
+            users: msg.users ?? null,
           }
         })
 
         setMessages(formattedMessages)
       })
 
-      socket.on('new_message', (message: any) => {
-        console.log("message.user", message.users)
-        const isBot = message.users?.email?.includes('admin') || message.users?.email?.includes('support');
+      socket.on('new_message', (msg: any) => {
+        console.log("message.user", msg.users)
+        const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
         const formattedMessage: ChatMessage = {
-          id: message.id,
-          content: message.content,
+          content: msg.content,
           isBot: !!isBot,
-          created_at: message.created_at ? new Date(message.created_at) : new Date(),
-          users: message.users ?? null,
+          created_at: msg.created_at ? new Date(msg.created_at) : new Date(),
+          id: msg.id,
+          room_id: msg.room_id,
+          type: msg.type,
+          updated_at: msg.updated_at ? new Date(msg.updated_at) : new Date(),
+          user_id: msg.user_id,
+          users: msg.users.users ?? null,
         }
 
         setMessages(prev => [...prev, formattedMessage])
 
-        if (message.users?.email !== sessionState?.value?.email) {
+        if (msg.users?.email !== sessionState?.value?.email) {
           playSound('/sounds/receive.wav')
         }
       })
@@ -245,9 +257,16 @@ export default function ChatWidget() {
                         {!message.users ? (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
+                            <p className="text-base text-[#0066FF]">User Email: [System message] Admin</p>
+                            <p className="text-base text-[#538E76]">User Name: [System message]</p>
+                            <p className="text-base mt-1">{message.content}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                            </p>
                           </div>
                         ) : (
                           <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
+                            <p className="text-base text-gray-500 italic">[Not System message] Have .users</p>
                             <p className="text-base text-[#0066FF]">User Email: {message.users?.email} Admin</p>
                             <p className="text-base text-[#538E76]">User Name: {message.users?.name}</p>
                             <p className="text-base mt-1">{message.content}</p>
