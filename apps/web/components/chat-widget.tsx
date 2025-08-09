@@ -267,7 +267,7 @@ export default function ChatWidget() {
                           </div>
                         ) : (
                           <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-white">{message.content}</p>
+                            <p className="text-base text-white">{message.content.replace(/<3/g, "❤️")}</p>
                           </div>
                         )}
                       </div>
@@ -280,7 +280,7 @@ export default function ChatWidget() {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-white">{message.content}</p>
+                          <p className="text-base text-white">{message.content.replace(/<3/g, "❤️")}</p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}
