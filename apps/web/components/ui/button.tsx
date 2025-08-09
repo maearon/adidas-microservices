@@ -62,7 +62,7 @@ export function Button({
     : "border-transparent"
   const borderClass = !isIconButton
     ? border
-      ? `border ${isBlack ? "border-black dark:border-white" : isTransparent ? "border-black dark:border-white" : "border-black dark:border-white"}`
+      ? `border ${isBlack ? "border-black dark:border-white" : isTransparent ? "border-black dark:border-white" : "border-black dark:border-black"}`
       : "border border-transparent"
     : "border border-transparent"
 
