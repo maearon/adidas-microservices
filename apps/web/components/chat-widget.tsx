@@ -205,11 +205,27 @@ export default function ChatWidget() {
   }
 
 const parseMessage = (text: string) => {
-  let parsed = text;
-  for (const [key, value] of Object.entries(emojiMap)) {
-    const regex = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
-    parsed = parsed.replace(regex, value);
+  // Regex cho từng emoji, đảm bảo chỉ match khi không có thêm ) hoặc (
+  const patterns: Record<string, RegExp> = {
+    "<3": /<3/g,
+    ":D": /:D/g,
+    ":P": /:P/g,
+    ":\\)": /:\\)(?!\\))/g,   // match ":)" nhưng KHÔNG có thêm ")"
+    ":\\(": /:\\((?!\\()/g,   // match ":(" nhưng KHÔNG có thêm "("
+  };
+
+  let parsed: (string | JSX.Element)[] = [text];
+
+  for (const [key, regex] of Object.entries(patterns)) {
+    parsed = parsed.flatMap(part =>
+      typeof part === "string"
+        ? part.split(regex).flatMap((p, i, arr) =>
+            i < arr.length - 1 ? [p, emojiMap[key]] : [p]
+          )
+        : [part]
+    );
   }
+
   return parsed;
 }
 
