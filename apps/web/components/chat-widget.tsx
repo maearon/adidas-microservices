@@ -268,9 +268,6 @@ export default function ChatWidget() {
                         ) : (
                           <div className="bg-black dark:bg-white rounded-lg p-3 max-w-xs">
                             <p className="text-base text-white dark:text-black">{message.content}</p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
-                            </p>
                           </div>
                         )}
                       </div>
@@ -282,17 +279,12 @@ export default function ChatWidget() {
                       //   </p>
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
-                        <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-[#0066FF]">{message.users?.email}</p>
-                          <p className="text-base text-[#538E76]">{message.users?.name}</p>
-                          <p className="text-base mt-1">{message.content}</p>
-                          <p className="text-xs text-gray-300 dark:text-black mt-1">
-                            {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
-                          </p>
+                        <div className="bg-black dark:bg-white rounded-lg p-3 max-w-xs ml-auto">
+                          <p className="text-base text-white dark:text-black">{message.content}</p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}
-                          title={message.users?.email} // 👈 show email when hover
+                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
                         />
