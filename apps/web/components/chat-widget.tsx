@@ -204,29 +204,21 @@ export default function ChatWidget() {
   ":F": "😛",
   }
 
-const parseMessage = (text: string) => {
-  // Regex cho từng emoji, đảm bảo chỉ match khi không có thêm ) hoặc (
-  const patterns: Record<string, RegExp> = {
-    "<3": /<3/g,
-    ":D": /:D/g,
-    ":P": /:P/g,
-    ":\\)": /:\\)(?!\\))/g,   // match ":)" nhưng KHÔNG có thêm ")"
-    ":\\(": /:\\((?!\\()/g,   // match ":(" nhưng KHÔNG có thêm "("
-  };
+// Regex patterns để chỉ match 1 ký tự cười/buồn, không match nhiều
+const patterns: Record<string, RegExp> = {
+  ":\\)": /:\)(?!\))/g,     // match ":)" nhưng không match :))
+  ":\\(": /:\((?!\()/g,     // match ":(" nhưng không match :((
+  ":P": /:P(?!P)/gi,        // match ":P" nhưng không match :PP
+  ":D": /:D(?!D)/gi,        // match ":D" nhưng không match :DD
+  "<3": /<3(?!3)/g,         // match "<3" nhưng không match <33
+};
 
-  let parsed: (string | JSX.Element)[] = [text];
-
-  for (const [key, regex] of Object.entries(patterns)) {
-    parsed = parsed.flatMap(part =>
-      typeof part === "string"
-        ? part.split(regex).flatMap((p, i, arr) =>
-            i < arr.length - 1 ? [p, emojiMap[key]] : [p]
-          )
-        : [part]
-    );
+// Hàm thay thế emoji
+function replaceEmojis(text: string): string {
+  for (const [symbol, pattern] of Object.entries(patterns)) {
+    text = text.replace(pattern, emojiMap[symbol]);
   }
-
-  return parsed;
+  return text;
 }
 
   return (
@@ -301,7 +293,7 @@ const parseMessage = (text: string) => {
                           </div>
                         ) : (
                           <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-white">{parseMessage(message.content)}</p>
+                            <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                           </div>
                         )}
                       </div>
@@ -314,7 +306,7 @@ const parseMessage = (text: string) => {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-white">{parseMessage(message.content)}</p>
+                          <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}
