@@ -171,7 +171,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
           </div>
 
           <div className="p-6 border-t">
-            <Button onClick={handleLogoutWithClose} variant="outline" border>
+            <Button onClick={handleLogoutWithClose} variant="outline" theme="dark" border fullWidth>
               Log Out
             </Button>
           </div>
