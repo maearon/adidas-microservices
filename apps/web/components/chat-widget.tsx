@@ -206,12 +206,12 @@ export default function ChatWidget() {
 
 // Regex patterns để chỉ match 1 ký tự cười/buồn, không match nhiều
 const patterns: Record<string, RegExp> = {
-  ":)": /<)(?!))/g,     // match ":)" nhưng không match :))
-  ":(": /<((?!()/g,     // match ":(" nhưng không match :((
+  ":)": /:)(?!))/g,     // match ":)" nhưng không match :))
+  ":(": /:((?!()/g,     // match ":(" nhưng không match :((
   ":P": /:P(?!P)/g,        // match ":P" nhưng không match :PP
   ":D": /:D(?!D)/g,        // match ":D" nhưng không match :DD
   "<3": /<3(?!3)/g,         // match "<3" nhưng không match <33
-  ":F": /<F(?!F)/g,
+  ":F": /:F(?!F)/g,
 };
 
 // Hàm thay thế emoji
