@@ -52,7 +52,7 @@ export default function ChatWidget() {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, isMinimized, isOpen])
 
   // Initialize socket connection
   useEffect(() => {
