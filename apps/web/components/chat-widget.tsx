@@ -195,6 +195,24 @@ export default function ChatWidget() {
     setIsMinimized(prev => !prev)
   }
 
+  const emojiMap: Record<string, string> = {
+  "<3": "❤️",
+  ":)": "😊",
+  ":(": "🙁",
+  ":P": "👍",
+  ":D": "😄",
+  ":F": "😛",
+  }
+
+const parseMessage = (text: string) => {
+  let parsed = text;
+  for (const [key, value] of Object.entries(emojiMap)) {
+    const regex = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+    parsed = parsed.replace(regex, value);
+  }
+  return parsed;
+}
+
   return (
     <>
       {/* Chat Widget Button */}
@@ -267,7 +285,7 @@ export default function ChatWidget() {
                           </div>
                         ) : (
                           <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-white">{message.content.replace(/<3/g, "❤️")}</p>
+                            <p className="text-base text-white">{parseMessage(message.content)}</p>
                           </div>
                         )}
                       </div>
@@ -280,7 +298,7 @@ export default function ChatWidget() {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-white">{message.content.replace(/<3/g, "❤️")}</p>
+                          <p className="text-base text-white">{parseMessage(message.content)}</p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}
