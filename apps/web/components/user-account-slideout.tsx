@@ -130,7 +130,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
                   onClick={() => setActiveTab(tab)}
                   className={`flex-1 py-3 px-2 text-xs font-medium border-b-2 ${
                     activeTab === tab
-                      ? "border-border text-background"
+                      ? "border-border text-black dark:text-white"
                       : "border-transparent text-gray-500 hover:text-gray-700"
                   }`}
                 >
@@ -171,7 +171,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
           </div>
 
           <div className="p-6 border-t">
-            <Button onClick={handleLogoutWithClose} variant="outline" className="w-full bg-black dark:bg-white">
+            <Button onClick={handleLogoutWithClose} variant="outline" border>
               Log Out
             </Button>
           </div>
