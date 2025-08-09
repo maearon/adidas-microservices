@@ -128,7 +128,7 @@ export default function ChatWidget() {
 
         setMessages(prev => [...prev, formattedMessage])
 
-        if (msg.users?.email !== sessionState?.value?.email) {
+        if (msg.users?.email !== userData?.email) {
           playSound('/sounds/receive.wav')
         }
       })
@@ -266,8 +266,8 @@ export default function ChatWidget() {
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-black dark:bg-white rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-white dark:text-black">{message.content}</p>
+                          <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
+                            <p className="text-base text-white">{message.content}</p>
                           </div>
                         )}
                       </div>
@@ -279,8 +279,8 @@ export default function ChatWidget() {
                       //   </p>
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
-                        <div className="bg-black dark:bg-white rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-white dark:text-black">{message.content}</p>
+                        <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
+                          <p className="text-base text-white">{message.content}</p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}
