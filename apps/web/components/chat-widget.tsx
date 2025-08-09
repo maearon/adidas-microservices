@@ -223,8 +223,8 @@ export default function ChatWidget() {
           {/* Chat Header */}
           <div className="bg-background border-b border-gray-200 p-4 flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 overflow-hidden">
-              <div className="w-8 h-8 bg-white dark:bg-black rounded-full flex items-center justify-center">
-                <span className="text-black dark:text-white text-xs font-bold">A</span>
+              <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
+                <span className="text-white dark:text-black text-xs font-bold">A</span>
               </div>
               <div className="truncate">
                 <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
