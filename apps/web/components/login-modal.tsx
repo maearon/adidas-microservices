@@ -329,6 +329,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
                   {/* Continue Button */}
                   <Button
+                    border
                     theme={"black"}
                     shadow={true}
                     pressEffect={true}
