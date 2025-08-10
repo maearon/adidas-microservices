@@ -111,7 +111,7 @@ export default function ChatWidget() {
       socket.on('new_message', async (msg: any) => {
         console.log("message.user", msg.users)
         const isBot =
-          repliedMessages.current.has(msg.content) ||
+          repliedMessages.current.has(msg.content.slice(0, 150)) ||
           msg.users?.email?.includes('admin') ||
           msg.users?.email?.includes('support');
 
@@ -146,14 +146,13 @@ export default function ChatWidget() {
               body: JSON.stringify({ message: msg.content })
             }).then(res => res.json());
 
-            // Đánh dấu đã trả lời
-            repliedMessages.current.add(botReply.text.slice(0, 50),);
+            // ✅ Đánh dấu là gemini đã trả lời trước khi emit
+            repliedMessages.current.add(botReply.text.slice(0, 150));
 
             socket.emit('message', {
               roomId: 'general',
-              content: botReply.text.slice(0, 50), // Giới hạn hiện 50 ký tự
-              type: 'text',
-              isBot: true
+              content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
+              type: 'text'
             });
           } catch (err) {
             console.error("Bot reply error:", err);
@@ -173,12 +172,26 @@ export default function ChatWidget() {
       })
 
       return () => {
+        socket.off('connect');
+        socket.off('disconnect');
+        socket.off('message_history');
+        socket.off('new_message');
+        socket.off('user_typing');
+        socket.off('error');
+
         socket.disconnect()
         socketRef.current = null
         setIsConnected(false)
       }
     }
   }, [isLoggedIn, userToken, isOpen, sessionState?.value?.email])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      repliedMessages.current.clear();
+    }, 60000); // 1 phút
+    return () => clearInterval(interval);
+  }, []);
 
   // Don't show chat widget if user is not logged in
   if (!isLoggedIn) {
