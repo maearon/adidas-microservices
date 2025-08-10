@@ -37,6 +37,7 @@ export default function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const repliedMessages = useRef<Set<string>>(new Set());
 
   // Get user data from Redux
   const sessionState = useAppSelector((state) => state.session)
@@ -106,9 +107,10 @@ export default function ChatWidget() {
         setMessages(formattedMessages)
       })
 
+      // Khi nhận tin nhắn mới
       socket.on('new_message', async (msg: any) => {
         console.log("message.user", msg.users)
-        const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
+        const isBot = msg.isBot || msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
         const formattedMessage: ChatMessage = {
           content: msg.content,
@@ -132,7 +134,15 @@ export default function ChatWidget() {
           playSound('/sounds/receive.wav')
         }
 
-        // 🚀 Auto-reply logic nếu không phải admin
+        // Nếu đã trả lời hoặc là bot thì bỏ qua
+        if (isBot || repliedMessages.current.has(msg.id)) {
+          return;
+        }
+
+        // Đánh dấu đã trả lời
+        repliedMessages.current.add(msg.id);
+
+        // 🚀 Auto-reply logic nếu không phải admin và chưa trả lời Gọi AI reply
         if (!isBot) {
           try {
             const botReply = await fetch("/api/ai-reply", {
@@ -143,7 +153,7 @@ export default function ChatWidget() {
 
             socket.emit('message', {
               roomId: 'general',
-              content: botReply.text,
+              content: botReply.text.slice(0, 50), // Giới hạn hiện 50 ký tự
               type: 'text',
               isBot: true
             });
