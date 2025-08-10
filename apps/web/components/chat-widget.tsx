@@ -144,7 +144,8 @@ export default function ChatWidget() {
             socket.emit('message', {
               roomId: 'general',
               content: botReply.text,
-              type: 'text'
+              type: 'text',
+              isBot: true
             });
           } catch (err) {
             console.error("Bot reply error:", err);
@@ -314,6 +315,9 @@ function replaceEmojis(text: string): string {
                         ) : (
                           <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
                             <p className="text-base text-white">{replaceEmojis(message.content)}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -327,6 +331,9 @@ function replaceEmojis(text: string): string {
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
                           <p className="text-base text-white">{replaceEmojis(message.content)}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                          </p>
                         </div>
                         <img
                           src={getGravatarUrl(message.users?.email)}

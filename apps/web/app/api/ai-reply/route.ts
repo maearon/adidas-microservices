@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { message } = await req.json();
+    const prompt = `Bạn là chatbot hỗ trợ. Trả lời ngắn gọn (tối đa 2 câu, ~15 từ). Câu hỏi: ${message}`;
 
     const geminiRes = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
@@ -16,8 +17,7 @@ export async function POST(req: Request) {
           contents: [
             {
               parts: [
-                { text: "Bạn là bot hỗ trợ khách hàng Adidas clone." },
-                { text: message }
+                { text: prompt }
               ]
             }
           ]
