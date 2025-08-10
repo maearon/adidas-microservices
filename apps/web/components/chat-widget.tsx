@@ -154,9 +154,9 @@ export default function ChatWidget() {
               // content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
               // type: 'text'
             // });
-          } catch (err) {
-            console.error("Bot reply error:", err);
-          }
+          // } catch (err) {
+            // console.error("Bot reply error:", err);
+          //}
         }
       })
 
