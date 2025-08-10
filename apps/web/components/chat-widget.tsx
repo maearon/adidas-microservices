@@ -37,7 +37,7 @@ export default function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false)
   const socketRef = useRef<Socket | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const repliedMessages = useRef<Set<string>>(new Set());
+  // const repliedMessages = useRef<Set<string>>(new Set());
 
   // Get user data from Redux
   const sessionState = useAppSelector((state) => state.session)
@@ -111,7 +111,7 @@ export default function ChatWidget() {
       socket.on('new_message', async (msg: any) => {
         console.log("message.user", msg.users)
         const isBot =
-          repliedMessages.current.has(msg.content.slice(0, 150)) ||
+          // repliedMessages.current.has(msg.content.slice(0, 150)) ||
           msg.users?.email?.includes('admin') ||
           msg.users?.email?.includes('support');
 
@@ -138,22 +138,22 @@ export default function ChatWidget() {
         }
 
         // 🚀 Auto-reply logic nếu không phải admin và chưa trả lời Gọi AI reply
-        if (!isBot) {
-          try {
-            const botReply = await fetch("/api/ai-reply", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ message: msg.content })
-            }).then(res => res.json());
+        // if (!isBot) {
+          // try {
+            // const botReply = await fetch("/api/ai-reply", {
+              // method: "POST",
+              // headers: { "Content-Type": "application/json" },
+              // body: JSON.stringify({ message: msg.content })
+// }).then(res => res.json());
 
             // ✅ Đánh dấu là gemini đã trả lời trước khi emit
-            repliedMessages.current.add(botReply.text.slice(0, 150));
+            // repliedMessages.current.add(botReply.text.slice(0, 150));
 
-            socket.emit('message', {
-              roomId: 'general',
-              content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
-              type: 'text'
-            });
+            // socket.emit('message', {
+              // roomId: 'general',
+              // content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
+              // type: 'text'
+            // });
           } catch (err) {
             console.error("Bot reply error:", err);
           }
