@@ -157,7 +157,7 @@ export default function ChatWidget() {
           // } catch (err) {
             // console.error("Bot reply error:", err);
           //}
-        }
+        // }
       })
 
 
