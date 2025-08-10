@@ -106,7 +106,7 @@ export default function ChatWidget() {
         setMessages(formattedMessages)
       })
 
-      socket.on('new_message', (msg: any) => {
+      socket.on('new_message', async (msg: any) => {
         console.log("message.user", msg.users)
         const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
@@ -130,6 +130,25 @@ export default function ChatWidget() {
 
         if (msg.users?.email !== userData?.email) {
           playSound('/sounds/receive.wav')
+        }
+
+        // 🚀 Auto-reply logic nếu không phải admin
+        if (!isBot) {
+          try {
+            const botReply = await fetch("/api/ai-reply", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message: msg.content })
+            }).then(res => res.json());
+
+            socket.emit('message', {
+              roomId: 'general',
+              content: botReply.text,
+              type: 'text'
+            });
+          } catch (err) {
+            console.error("Bot reply error:", err);
+          }
         }
       })
 
