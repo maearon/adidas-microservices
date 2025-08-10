@@ -110,7 +110,10 @@ export default function ChatWidget() {
       // Khi nhận tin nhắn mới
       socket.on('new_message', async (msg: any) => {
         console.log("message.user", msg.users)
-        const isBot = msg.isBot || msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
+        const isBot =
+          repliedMessages.current.has(msg.content) ||
+          msg.users?.email?.includes('admin') ||
+          msg.users?.email?.includes('support');
 
         const formattedMessage: ChatMessage = {
           content: msg.content,
@@ -121,7 +124,7 @@ export default function ChatWidget() {
           type: msg.type,
           updated_at: msg.updated_at ? new Date(msg.updated_at) : new Date(),
           user_id: msg.user_id,
-          users: {
+          users: msg.users ?? {
             email: userData.email,
             name: userData.name,
             id: msg.user_id ?? null,
@@ -134,14 +137,6 @@ export default function ChatWidget() {
           playSound('/sounds/receive.wav')
         }
 
-        // Nếu đã trả lời hoặc là bot thì bỏ qua
-        if (isBot || repliedMessages.current.has(msg.id)) {
-          return;
-        }
-
-        // Đánh dấu đã trả lời
-        repliedMessages.current.add(msg.id);
-
         // 🚀 Auto-reply logic nếu không phải admin và chưa trả lời Gọi AI reply
         if (!isBot) {
           try {
@@ -150,6 +145,9 @@ export default function ChatWidget() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ message: msg.content })
             }).then(res => res.json());
+
+            // Đánh dấu đã trả lời
+            repliedMessages.current.add(botReply.text.slice(0, 50),);
 
             socket.emit('message', {
               roomId: 'general',
