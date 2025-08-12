@@ -10,18 +10,9 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
-    "seed": "tsx prisma/seed.ts",
     "studio": "prisma studio",
     "lint": "eslint src --ext .ts",
     "test": "jest"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
   },
   "keywords": [
     "chat",
