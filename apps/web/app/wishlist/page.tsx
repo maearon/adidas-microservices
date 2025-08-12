@@ -96,8 +96,9 @@ export default function WishlistPage() {
                     <p className="font-bold">{item.price}</p>
                     <h3 className="text-base text-gray-700">{item.name}</h3>
                     <Button
+                      theme="black"
                       border
-                      className="w-full bg-black text-white hover:bg-gray-800"
+                      className="w-full hover:bg-gray-800"
                       onClick={() => handleAddToBag(item)}
                     >
                       ADD TO BAG
@@ -109,19 +110,19 @@ export default function WishlistPage() {
           </div>
 
           {/* App promotion section */}
-          <div className="bg-gray-100 p-8 rounded-lg">
+          <div className="bg-white dark:bg-black p-8 rounded-lg">
             <h2 className="text-2xl font-bold mb-6">Get more from your wishlist through the app</h2>
             <ul className="space-y-3 mb-4">
               <li className="flex items-center">
-                <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
+                <span className="w-2 h-2 bg-black dark:bg-white rounded-full mr-3"></span>
                 Instant notifications on items on sale or low in stock
               </li>
               <li className="flex items-center">
-                <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
+                <span className="w-2 h-2 bg-black dark:bg-white rounded-full mr-3"></span>
                 Share your wishlist with friends and family
               </li>
               <li className="flex items-center">
-                <span className="w-2 h-2 bg-black rounded-full mr-3"></span>
+                <span className="w-2 h-2 bg-black dark:bg-white rounded-full mr-3"></span>
                 See which wishlist items are eligible for a voucher
               </li>
             </ul>
@@ -129,7 +130,7 @@ export default function WishlistPage() {
               <div>
                 <p className="font-bold mb-2">Scan to download the adidas app</p>
               </div>
-              <div className="w-24 h-24 bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center">
+              <div className="w-24 h-24 bg-background border-2 border-border flex items-center justify-center">
                 <span className="text-xs">QR CODE</span>
               </div>
             </div>
