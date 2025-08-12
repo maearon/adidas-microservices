@@ -29,12 +29,12 @@ export default function CheckoutPage() {
   }, [])
   
   useEffect(() => {
-    javaService.getCart(page)
-      .then(response => {
-        setCartItemsRails(response.data)
-        setTotalCount(response.data.length || 1)
-      })
-      .catch(console.error)
+    // javaService.getCart(page)
+    //   .then(response => {
+    //     setCartItemsRails(response.data)
+    //     setTotalCount(response.data.length || 1)
+    //   })
+    //   .catch(console.error)
   }, [page])
 
   const [formData, setFormData] = useState({
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
   const subtotal = cartItemsRails.reduce(
     (sum, item) =>
       sum +
-      (item.variant.price !== undefined && item.variant.price !== null && item.variant.price.toString().replace("$", "")
+      (item.variant.price !== undefined && item.variant.price !== null && item.variant.price
         ? Number(item.variant.price) * item.quantity
         : 0),
     0,
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
                   <CardContent className="flex p-4">
                     <div className="w-20 h-20 mr-4">
                       <img
-                        src={item.variant.images[0] || "/placeholder.png"}
+                        src={item?.variant?.images?.[0] || "/placeholder.png"}
                         alt={item.product.name}
                         className="w-full h-full object-cover"
                       />

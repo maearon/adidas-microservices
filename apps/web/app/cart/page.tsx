@@ -43,7 +43,7 @@ export default function CartPage() {
 
   // Calculate totals
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + Number.parseFloat(item.price.replace("$", "")) * item.quantity,
+    (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
     0,
   )
   const salesTax = subtotal * 0.12 // Assuming 12% tax rate
@@ -124,7 +124,7 @@ export default function CartPage() {
                         </div>
                         <div className="text-right">
                           <p className="font-bold">
-                            ${(Number.parseFloat(item.price.replace("$", "")) * item.quantity).toFixed(2)}
+                            ${(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
                           </p>
                           <button onClick={() => handleRemoveItem(item.id)} className="text-gray-500 hover:text-background">
                             <X size={18} />
