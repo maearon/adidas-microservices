@@ -17,9 +17,9 @@ export default function MyAccountPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white dark:bg-black">
       {/* Header Section */}
-      <div className="bg-background border-b">
+      <div className="bg-white dark:bg-black border-b">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-between">
             <div>
@@ -42,7 +42,7 @@ export default function MyAccountPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`pb-2 font-medium ${
-                  activeTab === tab.id ? "border-b-2 border-border text-background" : "text-gray-600 dark:text-white hover:text-background"
+                  activeTab === tab.id ? "border-b-2 border-border text-black dark:text-white" : "text-gray-600"
                 }`}
               >
                 {tab.label}
@@ -57,7 +57,7 @@ export default function MyAccountPage() {
         {activeTab === "FEED" && (
           <div className="space-y-8">
             {/* Your Vouchers */}
-            <div className="bg-background rounded-lg p-6">
+            <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">YOUR VOUCHERS</h2>
               <p className="text-gray-600 dark:text-white mb-2">You don't have any vouchers currently.</p>
               <p className="text-gray-600 dark:text-white mb-4">
@@ -69,7 +69,7 @@ export default function MyAccountPage() {
             </div>
 
             {/* More of What You Love */}
-            <div className="bg-background rounded-lg p-6">
+            <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-2xl font-bold mb-4">MORE OF WHAT YOU LOVE</h2>
               <p className="text-gray-600 dark:text-white mb-6">
                 We've collected some of our favourite products based on your preferences and purchases.
@@ -85,7 +85,7 @@ export default function MyAccountPage() {
                         alt="Product"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
-                      <button className="absolute top-3 right-3 p-2 bg-background rounded-full shadow-md hover:bg-gray-50">
+                      <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                         <Heart className="h-4 w-4" />
                       </button>
                     </div>
@@ -100,7 +100,7 @@ export default function MyAccountPage() {
         )}
 
         {activeTab === "ORDERS" && (
-          <div className="bg-background rounded-lg p-8 text-center">
+          <div className="bg-white dark:bg-black rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">NO ORDERS YET</h2>
             <p className="text-gray-600 dark:text-white mb-6">Once you place an order, it will appear here.</p>
             <Link
@@ -114,14 +114,14 @@ export default function MyAccountPage() {
 
         {activeTab === "ACCOUNT" && (
           <div className="space-y-6">
-            <div className="bg-background rounded-lg p-6">
+            <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">ACCOUNT OVERVIEW</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="font-bold mb-4">PERSONAL INFORMATION</h3>
                   <Link
                     href="/my-account/profile"
-                    className="text-background hover:underline flex items-center justify-between p-3 border rounded"
+                    className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
                   >
                     <span>Edit your personal details</span>
                     <span>→</span>
@@ -131,7 +131,7 @@ export default function MyAccountPage() {
                   <h3 className="font-bold mb-4">ADDRESS BOOK</h3>
                   <Link
                     href="/my-account/addresses"
-                    className="text-background hover:underline flex items-center justify-between p-3 border rounded"
+                    className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
                   >
                     <span>Manage your addresses</span>
                     <span>→</span>
@@ -140,19 +140,19 @@ export default function MyAccountPage() {
               </div>
             </div>
 
-            <div className="bg-background rounded-lg p-6">
+            <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">PREFERENCES</h2>
               <div className="space-y-3">
                 <Link
                   href="/my-account/preferences"
-                  className="flex items-center justify-between p-3 border rounded hover:bg-gray-50"
+                  className="flex items-center justify-between p-3 border rounded hover:bg-white dark:hover:bg-black"
                 >
                   <span>Communication preferences</span>
                   <span>→</span>
                 </Link>
                 <Link
                   href="/my-account/size-profile"
-                  className="flex items-center justify-between p-3 border rounded hover:bg-gray-50"
+                  className="flex items-center justify-between p-3 border rounded hover:bg-white dark:hover:bg-black"
                 >
                   <span>Size profile</span>
                   <span>→</span>

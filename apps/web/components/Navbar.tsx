@@ -305,7 +305,7 @@ export default function Navbar() {
                 )}
                 {/* Cart Empty Tooltip */}
                     {cartItemsCount === 0 && (
-                      <div className="absolute top-8 right-0 bg-white border shadow-lg p-4 rounded hidden group-hover:block z-10 whitespace-nowrap">
+                      <div className="absolute top-8 right-0 bg-white dark:bg-black text-black dark:text-white border shadow-lg p-4 rounded hidden group-hover:block z-10 whitespace-nowrap">
                         <p className="font-bold">YOUR CART IS EMPTY</p>
                       </div>
                     )}
@@ -402,7 +402,7 @@ export default function Navbar() {
         onSearch={handleSearchSubmit}
       />
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <UserAccountSlideout isOpen={showUserSlideout} onClose={() => setShowUserSlideout(false)} />
+      <UserAccountSlideout isOpen={showUserSlideout} onClose={() => setShowUserSlideout(false)} /> {/* onLogout missing */}
     </>
   )
 }

@@ -17,7 +17,8 @@ import {
 } from "@/components/modal-providers"
 import FeedbackWidget from "@/components/feedback-widget"
 import ScrollToTop from "@/components/scroll-to-top"
-import { AuthProvider } from "@/context/AuthContext"
+// import { AuthProvider } from "@/context/AuthContext"
+// import AuthProvider from "@/components/AuthProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import ReactQueryProvider from "./ReactQueryProvider"
 import RedirectListener from "@/components/RedirectListener" // ✅ THÊM DÒNG NÀY
@@ -59,7 +60,7 @@ export default function RootLayout({
       )} >
         <GoogleOAuthProvider clientId={'588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com'}>
           <Provider store={store}>
-            <AuthProvider>
+            {/* <AuthProvider> */}
               <ReactQueryProvider>
                 <ThemeProvider
                   attribute="class"
@@ -83,7 +84,7 @@ export default function RootLayout({
                 </ThemeProvider>
               </ReactQueryProvider>
               <Toaster />
-            </AuthProvider>
+            {/* </AuthProvider> */}
           </Provider>
         </GoogleOAuthProvider>
       </body>

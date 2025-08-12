@@ -23,7 +23,7 @@ export function useLogout() {
 
   return useCallback(async () => {
     try {
-      await javaService.logout()
+      // await javaService.logout()
       dispatch(logout())
       clearTokens()
       await dispatch(fetchUser()) // ✅ Redux fetch user sau logout

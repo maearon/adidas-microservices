@@ -6,8 +6,12 @@ import { Heart, X, ChevronDown } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { removeFromCart, updateQuantity } from "@/store/cartSlice"
 import { addToWishlist } from "@/store/wishlistSlice"
+import { useSelector } from "react-redux"
+import { selectUser } from "@/store/sessionSlice"
+import { capitalizeTitle } from "@/utils/sanitizeMenuTitleOnly"
 
 export default function CartPage() {
+  const { value: current_user, status } = useSelector(selectUser)
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.cart.items)
 
@@ -54,7 +58,7 @@ export default function CartPage() {
         <main className="grow container mx-auto px-2 py-28">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-4xl font-bold mb-10">YOUR BAG IS EMPTY</h1>
-            <p className="text-gray-600 dark:text-white mb-6">
+            <p className="bg-white dark:bg-black text-gray-600 dark:text-white mb-6">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <div className="max-w-[180px] w-full">
@@ -86,8 +90,8 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Cart items */}
             <div className="lg:col-span-2">
-              <div className="bg-gray-100 p-4 mb-6">
-                <h2 className="font-bold">HI, MANH!</h2>
+              <div className="bg-white dark:bg-black text-black dark:text-white p-4 mb-6">
+                <h2 className="font-bold">HI, {capitalizeTitle(current_user?.given_name || current_user?.name || "User")}!</h2>
               </div>
 
               <h1 className="text-2xl font-bold mb-2">YOUR BAG</h1>
@@ -152,7 +156,7 @@ export default function CartPage() {
               ))}
 
               {/* Custom design notice */}
-              <div className="bg-gray-100 p-4 mb-6 text-base">
+              <div className="bg-white dark:bg-black text-black dark:text-white p-4 mb-6 text-base">
                 <p>
                   We start working on your custom design right away. As a result, no changes can be made after order is
                   placed. Customized products can only be returned in case of manufacturing defects.
@@ -212,7 +216,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Checkout buttons */}
-                <Button href="/checkout" theme="black" shadow={true} pressEffect={true}>
+                <Button border href="/checkout" theme="black" shadow={true} pressEffect={true}>
                   CHECKOUT
                 </Button>
               </div>

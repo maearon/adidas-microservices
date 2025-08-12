@@ -188,12 +188,13 @@ const SignupPage = () => {
                     </div>
 
                     <Button
-                      theme={"black"}
+                      border
+                      theme="black"
                       showArrow
                       pressEffect
                       shadow
-                      type="submit"
                       loading={isSubmitting || signupMutation.isPending}
+                      type="submit"
                       className="w-full py-3 font-semibold transition-colors"
                     >
                       CREATE MY ACCOUNT

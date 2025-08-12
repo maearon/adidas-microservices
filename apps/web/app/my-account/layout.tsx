@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils"
 import { useLogout } from "@/api/hooks/useLoginMutation"
 import flashMessage from "@/components/shared/flashMessages"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
+import { clearTokens } from "@/lib/token"
 
 const accountMenuItems = [
   { name: "Account Overview", href: "/my-account", icon: "👤" },
@@ -56,9 +57,10 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
 
   const handleLogoutWithToLogin = async () => {
     try {
+      clearTokens()
       await logoutHandler()           // 🟢 Gọi logout  
       flashMessage("success", "Logged out successfully")
-      router.replace("/account-login")   // ✅ To login
+      router.push("/account-login")   // ✅ To login
     } catch (error) {
       flashMessage("error", "Logout failed")
     }
@@ -97,8 +99,8 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center px-3 py-2 text-base rounded hover:bg-gray-100 transition-colors",
-                    pathname === item.href ? "bg-gray-100 font-medium" : "",
+                    "flex items-center px-3 py-2 text-base rounded hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors",
+                    pathname === item.href ? "bg-gray-100 dark:bg-gray-700 font-medium" : "",
                   )}
                 >
                   <span className="mr-3">{item.icon}</span>
@@ -116,7 +118,7 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
                     }
                     router.push("/")
                   }}
-                  className="flex items-center px-3 py-2 text-base text-red-600 hover:bg-red-50 rounded w-full text-left"
+                  className="flex items-center px-3 py-2 text-base text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500 rounded w-full text-left"
                 >
                   <span className="mr-3" onClick={handleLogoutWithToLogin}>🚪</span>
                   Log out

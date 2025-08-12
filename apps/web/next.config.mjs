@@ -37,12 +37,18 @@ const nextConfig = {
       },
     ],
   },
-  env: {  
-    CLIENT_ID: process.env.CLIENT_ID,  
-    REDIRECT_URI: process.env.REDIRECT_URI, 
-    SCOPE: process.env.SCOPE,
-    CLIENT_SECRET: process.env.CLIENT_SECRET,
-    API_KEY: process.env.API_KEY
+  env: {
+    AUTH_URL: process.env.AUTH_URL, 
+    NEXT_PUBLIC_AUTH_URL: process.env.NEXT_PUBLIC_AUTH_URL, 
+    AUTH_SECRET: process.env.AUTH_SECRET,  
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,  
+    GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI, 
+    GOOGLE_APIS_YOUTUBE_FORCE_SSL_SCOPE: process.env.GOOGLE_APIS_YOUTUBE_FORCE_SSL_SCOPE,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
   webpack(config) {
     // 👇 Cấu hình @svgr/webpack

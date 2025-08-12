@@ -1,9 +1,12 @@
 // Định dạng chuẩn BCP 47: "en-US", "vi-VN", ...
-export type SupportedLocale = "en-US"| "en-UK" | "vi-VN";
+export type SupportedLocale = 
+"en-US"
+// | "en-UK" 
+| "vi-VN";
 
 export const localeDisplayMap: Record<SupportedLocale, string> = {
   "en-US": "English (US)",
-  "en-UK": "English (UK)",
+  // "en-UK": "English (UK)",
   "vi-VN": "Tiếng Việt",
 };
 
@@ -15,7 +18,7 @@ export const countryDisplayMap: Record<string, string> = {
 
 export const countryToLocaleMap: Record<string, SupportedLocale> = {
   "united-states": "en-US",
-  "united-kingdom": "en-UK",
+  // "united-kingdom": "en-UK",
   "vietnam": "vi-VN",
 };
 

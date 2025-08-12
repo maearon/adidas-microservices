@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
 import flashMessage from "./shared/flashMessages"
 import { useLogout } from "@/api/hooks/useLoginMutation"
+import { useRouter } from "next/navigation"
+import { clearTokens } from "@/lib/token"
 
 interface UserAccountSlideoutProps {
   isOpen: boolean
@@ -19,19 +21,22 @@ interface UserAccountSlideoutProps {
 }
 
 export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }: UserAccountSlideoutProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState("JUST FOR YOU")
 
   // Cho phép inject user từ props, fallback về Redux nếu không có
   const userData = user || useAppSelector(selectUser)?.value || { name: undefined }
 
   const dispatch = useDispatch<AppDispatch>()
-  const logoutHandler = onLogout || useLogout()
+  const logoutHandler = useLogout()
 
   const handleLogoutWithClose = async () => {
     try {
+      clearTokens()
       await logoutHandler()
       flashMessage("success", "Logged out successfully")
       onClose()
+      router.push("/account-login")   // ✅ To login
     } catch (error) {
       flashMessage("error", "Logout failed")
     }
@@ -90,7 +95,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
                 </div>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded">
+            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-black cursor-pointer rounded">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -111,15 +116,23 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
             <Link
               href="/my-account"
               onClick={onClose}
-              className="flex items-center justify-between py-3 hover:bg-gray-50 -mx-2 px-2 rounded"
+              className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-black -mx-2 px-2 rounded"
             >
               <span className="font-medium">VISIT YOUR ACCOUNT</span>
               <ChevronRight className="h-4 w-4" />
             </Link>
-            <button className="flex items-center justify-between py-3 hover:bg-gray-50 -mx-2 px-2 rounded w-full text-left">
+            {/* <button className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-black -mx-2 px-2 rounded w-full text-left">
               <span className="font-medium">POINTS HISTORY</span>
               <ChevronRight className="h-4 w-4" />
-            </button>
+            </button> */}
+            <Link
+              href="/points-history"
+              onClick={onClose}
+              className="flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-black -mx-2 px-2 rounded"
+            >
+              <span className="font-medium">POINTS HISTORY</span>
+              <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
 
           <div className="border-b">
@@ -144,7 +157,7 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
             {activeTab === "JUST FOR YOU" && (
               <div className="p-6 space-y-4">
                 {offers.map((offer, index) => (
-                  <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                  <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-black cursor-pointer">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-medium text-base mb-1">{offer.title}</h3>

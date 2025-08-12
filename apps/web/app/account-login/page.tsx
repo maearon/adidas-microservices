@@ -213,11 +213,11 @@ const LoginPage = () => {
               </div> */}
 
               <div className="grid grid-cols-1 gap-2 mb-6">
-                <FacebookSignInButton />
+                {/* <FacebookSignInButton /> */}
                 <GoogleSignInButton />
-                <XSignInButton />
+                {/* <XSignInButton />
                 <AppleSignInButton />
-                <YahooSignInButton />
+                <YahooSignInButton /> */}
               </div>
 
               <Formik
@@ -283,6 +283,7 @@ const LoginPage = () => {
                     </div>
 
                     <Button
+                      border
                       theme="black"
                       showArrow
                       pressEffect

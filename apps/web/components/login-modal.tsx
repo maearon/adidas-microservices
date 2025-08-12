@@ -2,28 +2,32 @@
 
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { BaseButton } from "@/components/ui/base-button"
-import LoadingButton from "@/components/LoadingButton"
+// import { BaseButton } from "@/components/ui/base-button"
+// import LoadingButton from "@/components/LoadingButton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { X, Apple } from "lucide-react"
+import { 
+  X
+  // , Apple 
+} from "lucide-react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
 import { fetchUser } from "@/store/sessionSlice"
 import flashMessage from "./shared/flashMessages"
-import javaService from "@/api/services/javaService"
+// import javaService from "@/api/services/javaService"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { useSignupMutation } from "@/api/hooks/useSignupMutation"
 import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
-import FacebookSignInButton from "@/app/account-login/facebook/FacebookSignInButton"
-import YahooSignInButton from "@/app/account-login/yahoo/YahooSignInButton"
-import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
+// import FacebookSignInButton from "@/app/account-login/facebook/FacebookSignInButton"
+// import YahooSignInButton from "@/app/account-login/yahoo/YahooSignInButton"
+// import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
 import AdidasLogo from "./adidas-logo"
-import XSignInButton from "@/app/account-login/x/XSignInButton"
+// import XSignInButton from "@/app/account-login/x/XSignInButton"
+// import GoogleButton from "./buttons/GoogleButton"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -258,11 +262,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div> */}
           
           <div className="grid grid-cols-1 gap-3 mb-6">
-            <FacebookSignInButton />
+            {/* <FacebookSignInButton /> */}
             <GoogleSignInButton />
-            <XSignInButton />
+            {/* <GoogleButton /> */}
+            {/* <XSignInButton />
             <AppleSignInButton />
-            <YahooSignInButton />
+            <YahooSignInButton /> */}
           </div>
           
           {/* Email Form */}
@@ -330,14 +335,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   {/* Continue Button */}
                   <Button
                     border
-                    theme={"black"}
-                    shadow={true}
-                    pressEffect={true}
-                    type="submit"
-                    fullWidth={true}
+                    theme="black"
+                    showArrow
+                    pressEffect
+                    shadow
                     loading={isPending}
+                    type="submit"
+                    className="w-full py-3 font-semibold transition-colors"
                   >
-                    {isPending ? "LOADING..." : "CONTINUE"}
+                    CONTINUE
                   </Button>
                 </Form>
               )}

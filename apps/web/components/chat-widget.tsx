@@ -6,7 +6,7 @@ import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
 import { useAppSelector } from "@/store/hooks"
 import { io, Socket } from "socket.io-client"
-import { getGravatarUrl } from "@/utils/gravatar"
+import { getUiAvatarUrl } from "@/utils/ui-avatar"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser";
 import { playSound } from "@/utils/play-sound"
 
@@ -186,12 +186,12 @@ export default function ChatWidget() {
     }
   }, [isLoggedIn, userToken, isOpen, sessionState?.value?.email])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      repliedMessages.current.clear();
-    }, 60000); // 1 phút
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     repliedMessages.current.clear();
+  //   }, 60000); // 1 phút
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Don't show chat widget if user is not logged in
   if (!isLoggedIn) {
@@ -357,7 +357,7 @@ function replaceEmojis(text: string): string {
                           </p>
                         </div>
                         <img
-                          src={getGravatarUrl(message.users?.email)}
+                          src={getUiAvatarUrl(message.users?.name)}
                           title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
