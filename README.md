@@ -54,9 +54,9 @@ This monorepo implements a sophisticated microservices architecture designed to 
              |   (e.g., Redis or in memory)|
              +-----------------------------+
 ```
-
+https://www.better-auth.com/docs/concepts/database#core-schema
 ```
-✅ 2. Authentication flows
+✅ 2. Authentication flows drizzle-orm neon-postgres
 🟦 A. Regular login (Email / Password)
 [Next.js]
 ⇨ Send email/password to: POST /api/auth/login
@@ -72,6 +72,18 @@ This monorepo implements a sophisticated microservices architecture designed to 
 ⇨ Find or create user in DB
 ⇨ Return JWT
 ⇨ Save to cookie or localStorage
+```
+```
+PS C:\Users\manhn\adidas-microservices\apps\web> npx drizzle-kit generate
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'C:\Users\manhn\adidas-microservices\apps\web\drizzle.config.ts'
+4 tables
+account 13 columns 0 indexes 1 fks
+session 8 columns 0 indexes 1 fks
+user 7 columns 0 indexes 0 fks
+verification 6 columns 0 indexes 0 fks
+
+[✓] Your SQL migration file ➜ drizzle\0000_keen_arachne.sql 🚀
 ```
 
 ## 🛠️ Tech Stack
