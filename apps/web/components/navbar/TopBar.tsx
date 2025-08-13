@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { ChevronDown } from "lucide-react"
 import TopBarDropdown from "../top-bar-dropdown"
 
-const TopBar = async () => {
+const TopBar = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
   const [showTopBarDropdown, setShowTopBarDropdown] = useState(false)
 
