@@ -2,7 +2,7 @@
 import { createAuthClient } from "better-auth/client";
 
 export const authClient = createAuthClient({
-  baseURL: "/api/auth", // trỏ vào [...all]
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL + "/api/auth" // ✅ trỏ vào [...all]
 });
 // import { auth } from "@/lib/auth"
 // import { createAuthClient } from "better-auth/client"

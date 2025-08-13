@@ -38,6 +38,7 @@ const nextConfig = {
     ],
   },
   env: {
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     AUTH_URL: process.env.AUTH_URL, 
     NEXT_PUBLIC_AUTH_URL: process.env.NEXT_PUBLIC_AUTH_URL, 
     AUTH_SECRET: process.env.AUTH_SECRET,  
