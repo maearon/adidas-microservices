@@ -1,8 +1,9 @@
-import { createAuthClient } from "better-auth/react" // make sure to import from better-auth/react
- 
-export const authClient =  createAuthClient({
-    //you can pass client configuration here
-})
+// lib/auth-client.ts
+import { createAuthClient } from "better-auth/client";
+
+export const authClient = createAuthClient({
+  baseURL: "/api/auth", // trỏ vào [...all]
+});
 // import { auth } from "@/lib/auth"
 // import { createAuthClient } from "better-auth/client"
 // import { inferAdditionalFields } from "better-auth/client/plugins"

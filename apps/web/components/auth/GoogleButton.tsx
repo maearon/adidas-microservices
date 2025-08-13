@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function GoogleButton() {
   const [isHovering, setIsHovering] = useState(false)
   const handleLogin = async () =>
-    await authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
+    await authClient.signIn.social({ provider: 'google', callbackURL: window.location.pathname })
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}

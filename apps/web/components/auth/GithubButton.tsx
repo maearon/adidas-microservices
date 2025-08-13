@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function GithubButton() {
   const [isHovering, setIsHovering] = useState(false)
   const handleLogin = async () =>
-    await authClient.signIn.social({ provider: 'github', callbackURL: '/dashboard' })
+    await authClient.signIn.social({ provider: 'github', callbackURL: window.location.pathname })
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}

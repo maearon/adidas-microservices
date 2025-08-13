@@ -8,7 +8,7 @@ const SignIn = () => {
   const [isHovering, setIsHovering] = useState(false)
   
   const handleLogin = async () =>
-    authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
+    authClient.signIn.social({ provider: 'google', callbackURL: window.location.pathname })
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black overflow-hidden">
