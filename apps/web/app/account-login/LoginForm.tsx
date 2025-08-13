@@ -1,0 +1,170 @@
+import AdidasLogo from "@/components/adidas-logo"
+import LoginButtons from "@/components/auth/LoginButtons"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { ErrorMessage, Field, Form, Formik } from "formik"
+import { Eye, EyeOff } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
+import * as Yup from "yup"
+import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
+import { useLoginMutation } from "@/api/hooks/useLoginMutation"
+import flashMessage from "@/components/shared/flashMessages"
+import { useRouter } from "next/navigation"
+import { handleApiError } from "@/components/shared/handleApiError"
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+})
+
+const LoginForm = async () => {
+  const router = useRouter()
+  const [errors, setErrors] = useState<ErrorMessageType>({})
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
+  const loginMutation = useLoginMutation()
+
+  const handleSubmit = async (values: { email: string; password: string; keepLoggedIn: boolean }) => {
+    setErrors({})
+    setKeepLoggedIn(values.keepLoggedIn)
+
+    const { email, password } = values
+
+    loginMutation.mutate(
+    {
+      email,
+      password,
+      keepLoggedIn: keepLoggedIn
+    },
+    {
+      onSuccess: () => {
+        flashMessage("success", "Login successful.")
+        router.push("/")
+      },
+      onError: (error: any) => {
+        const parsed = handleApiError(error)
+        setErrors(parsed)
+        if (parsed?.general?.[0]) flashMessage("error", parsed.general[0])
+      },
+    })
+  }
+
+  return (
+    <div className="bg-background md:p-8 p-1 rounded-none">
+      <div className="flex items-center space-x-4">
+      {/* adiClub Logo */}
+      <AdidasLogo className="w-15 h-auto" />
+      <div className="w-px h-6 bg-gray-300" />
+        <div className="text-center">
+          <div className="inline-flex justify-center">
+            <span className="text-2xl font-bold">adi</span>
+            <span className="text-2xl font-bold text-blue-600 italic">club</span>
+            <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
+              <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN</h1>
+      <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
+
+      <div className="grid grid-cols-1 gap-2 mb-6">
+        <LoginButtons />
+      </div>
+
+      <Formik
+        initialValues={{ email: "", password: "", keepLoggedIn: true }}
+        validationSchema={LoginSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, values, setFieldValue }) => (
+          <Form className="space-y-4">
+            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
+
+            <div>
+              <Field
+                name="email"
+                type="email"
+                placeholder="EMAIL *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+              />
+              <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            <div className="relative">
+              <Field
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="PASSWORD *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
+              >
+                {showPassword ? (
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                ) : (
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                )}
+              </button>
+              <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            {/* Keep me logged in */}
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="keepLoggedIn"
+                checked={values.keepLoggedIn}
+                onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
+              />
+              <label htmlFor="keepLoggedIn" className="text-base">
+                Keep me logged in. Applies to all options.{" "}
+                <button type="button" className="underline">
+                  More info
+                </button>
+              </label>
+            </div>
+
+            <Button
+              border
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              loading={isSubmitting || loginMutation.isPending}
+              type="submit"
+              className="w-full py-3 font-semibold transition-colors"
+            >
+              CONTINUE
+            </Button>
+
+            <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
+              Don't have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
+            </div>
+            <div className="mt-2 text-base text-center">
+              Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" >Reset it here</Link>
+            </div>
+            {/* Terms */}
+            <div className="mt-6 text-xs text-gray-500">
+              <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
+              <p>
+                By clicking the "Continue" button, you are joining adiClub, will receive emails with the latest news and
+                updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
+                <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
+                <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the
+                adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of
+                our <button className="underline">CALIFORNIA PRIVACY NOTICE</button> for details.
+              </p>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  )
+}
+
+export default LoginForm
