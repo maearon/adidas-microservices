@@ -27,7 +27,7 @@ import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
 // import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
 import AdidasLogo from "./adidas-logo"
 // import XSignInButton from "@/app/account-login/x/XSignInButton"
-// import GoogleButton from "./buttons/GoogleButton"
+import GoogleButton from "./buttons/GoogleButton"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -264,7 +264,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="grid grid-cols-1 gap-3 mb-6">
             {/* <FacebookSignInButton /> */}
             <GoogleSignInButton />
-            {/* <GoogleButton /> */}
+            <GoogleButton />
             {/* <XSignInButton />
             <AppleSignInButton />
             <YahooSignInButton /> */}

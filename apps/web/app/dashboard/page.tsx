@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { SignOutButton } from '../../components/SignOutButton'
 import { headers } from 'next/headers'
-import { auth } from '@/auth'
+import { auth } from '@/lib/auth'
 
 export default async function Dashboard() {
   const response = await auth.api.getSession({ headers: await headers() })

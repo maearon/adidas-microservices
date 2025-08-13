@@ -37,7 +37,7 @@ export default function GoogleButton() {
         ></path>
       </svg>
       <div className="px-2"></div>
-      <span>Sign In with Google</span>
+      <span>Using your preferred login method preferrer Google</span>
     </button>
   );
 }
