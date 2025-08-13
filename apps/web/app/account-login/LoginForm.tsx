@@ -1,3 +1,5 @@
+'use client'
+
 import AdidasLogo from "@/components/adidas-logo"
 import LoginButtons from "@/components/auth/LoginButtons"
 import { Button } from "@/components/ui/button"
