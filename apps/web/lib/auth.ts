@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 // import { signIn } from 'next-auth/react';
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -9,7 +10,8 @@ export const auth = betterAuth({
     provider: "pg",
   }),
   pages: {
-    signIn: "/account-login",
+    signIn: "/",
+    signOut: "/",
   },
   socialProviders: {
     google: {
