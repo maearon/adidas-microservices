@@ -1,6 +1,6 @@
 // /apps/web/stories/UserAccountSlideout.stories.tsx
 import type { Meta, StoryObj } from "@storybook/nextjs"
-import UserAccountSlideout from "@/components/user-account-slideout"
+import UserAccountSlideout from "@/components/navbar/UserAccountSlideOut"
 
 const meta: Meta<typeof UserAccountSlideout> = {
   title: "Components/UserAccountSlideout",

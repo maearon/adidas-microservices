@@ -49,4 +49,4 @@ export const getSession = async () => auth.api.getSession({
 //     plugins: [inferAdditionalFields()],
 // })
 
-// export type Session = typeof auth.$Infer.Session
+export type Session = typeof auth.$Infer.Session // 👈 Lấy type Session

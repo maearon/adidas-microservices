@@ -8,7 +8,7 @@ import { Barlow } from "next/font/google"
 import "./globals.css"
 import 'mapbox-gl/dist/mapbox-gl.css'
 // import { Providers } from "@/components/providers"
-import Navbar from "@/components/Navbar"
+import Navbar from "@/components/navbar/NavbarClient"
 import Footer from "@/components/footer"
 import ChatWidget from "@/components/chat-widget"
 import { 

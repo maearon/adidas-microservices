@@ -8,11 +8,11 @@ import { selectUser } from "@/store/sessionSlice"
 import Link from "next/link"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
-import flashMessage from "./shared/flashMessages"
+import flashMessage from "../shared/flashMessages"
 import { useLogout } from "@/api/hooks/useLoginMutation"
 import { useRouter } from "next/navigation"
 import { clearTokens } from "@/lib/token"
-import { SignOutButton } from "./auth/SignOutButton"
+import { SignOutButton } from "../auth/SignOutButton"
 
 interface UserAccountSlideoutProps {
   isOpen: boolean
@@ -21,7 +21,7 @@ interface UserAccountSlideoutProps {
   onLogout?: () => Promise<void>
 }
 
-export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }: UserAccountSlideoutProps) {
+export default function UserAccountSlideOut({ isOpen, onClose, user, onLogout }: UserAccountSlideoutProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("JUST FOR YOU")
 

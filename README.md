@@ -392,3 +392,52 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Built with ❤️ by the Adidas Clone Team**
+
+```
+Về nguyên tắc React one-way data flow thì đúng là không có cách nào để con trực tiếp “đẩy” data lên cha ngoài việc cha tự đưa cho con một cái “ống” (callback hoặc state updater) để con gọi.
+
+Nhưng… nếu mở rộng phạm vi ra thì vẫn còn vài cách khác, nhưng chúng không phải là “React thuần” nữa:
+
+1. Callback / setState truyền từ cha xuống (chuẩn nhất) ✅
+Cách bạn đang làm.
+
+Giữ cho data flow rõ ràng, dễ debug.
+
+Đây là “best practice” React.
+
+2. State nâng lên chung (Lifting state up)
+Nếu cha và con ở khá xa nhau, có thể nâng state lên component cao hơn để cả hai dùng chung.
+
+Vẫn dựa vào props nhưng tránh vòng qua nhiều tầng.
+
+3. Context API
+Nếu bạn không muốn props drilling (truyền callback qua quá nhiều tầng), có thể cho state sống trong React Context, con dùng useContext() để lấy và cập nhật.
+
+Bản chất vẫn là cha quản lý state, nhưng “ống” kết nối là context chứ không phải props.
+
+4. Global state (Redux, Zustand, Jotai, Recoil, …)
+Lưu state ở store toàn cục → mọi component đều có thể đọc & ghi.
+
+Tránh phải truyền callback nhiều tầng.
+
+Dùng khi state phức tạp hoặc chia sẻ rộng.
+
+5. Event Emitter / Pub-Sub pattern (ít dùng trong React thuần)
+Có thể tạo một “event bus” riêng (ví dụ với Node.js EventEmitter hoặc libs như mitt) → con emit event, cha subscribe.
+
+Dùng trong ứng dụng lớn, nhưng dễ loạn luồng dữ liệu nếu không cẩn thận.
+
+6. URL Params / Query / LocalStorage / SessionStorage
+Nếu data không cần real-time và được lưu ở nơi chung (như URL hoặc storage), cả cha và con đều có thể truy xuất.
+
+Thường áp dụng khi muốn đồng bộ state với đường dẫn hoặc dữ liệu bền hơn.
+
+💡 Tóm lại:
+
+React thuần → chỉ có callback từ cha xuống hoặc context (thực chất là biến thể của callback) để truyền ngược data.
+
+Các cách khác → dựa vào global store hoặc cơ chế ngoài React.
+
+Nếu bạn muốn, mình có thể vẽ sơ đồ dòng dữ liệu minh họa các cách này để bạn nhìn rõ hơn sự khác nhau.
+Bạn có muốn mình vẽ luôn không?
+```

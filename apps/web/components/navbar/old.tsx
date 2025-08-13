@@ -9,14 +9,14 @@ import { usePathname, useRouter } from "next/navigation"
 // import { Input } from "@/components/ui/input"
 import { Search, ShoppingBag, User, Heart, MenuIcon, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import MegaMenu from "./mega-menu"
-import LoginModal from "./login-modal"
-import UserAccountSlideout from "./user-account-slideout"
-import AdidasLogo from "./adidas-logo"
-import TopBarDropdown from "./top-bar-dropdown"
-import MobileMenu from "./mobile-menu"
-import MobileAppBanner from "./mobile-app-banner"
-import MobileSearchOverlay from "./mobile-search-overlay"
+import MegaMenu from "../mega-menu"
+import LoginModal from "../login-modal"
+import UserAccountSlideOut from "./UserAccountSlideOut"
+import AdidasLogo from "../adidas-logo"
+import TopBarDropdown from "../top-bar-dropdown"
+import MobileMenu from "../mobile-menu"
+import MobileAppBanner from "../mobile-app-banner"
+import MobileSearchOverlay from "../mobile-search-overlay"
 import { useInitSession } from "@/api/hooks/useLoginMutation"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUser } from "@/store/sessionSlice"
@@ -25,15 +25,15 @@ import { Nullable } from "@/types/common"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setLocale } from "@/store/localeSlice"
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
-import SearchField from "./SearchField"
+import SearchField from "../SearchField"
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { getSession } from "@/lib/auth"
+// import { getSession } from "@/lib/auth"
 // import SignOutButton from "./navbar/SignOutButton"
 // import SignInButton from "./navbar/SignInButton"
 
 const Navbar = async () => {
-  // const { value: user, status } = useSelector(selectUser)
-  const session = await getSession()
+  const { value: user, status } = useSelector(selectUser)
+  // const session = await getSession()
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const dispatch = useAppDispatch()
@@ -93,7 +93,7 @@ const Navbar = async () => {
   }, [])
 
   useEffect(() => {
-    if (!session?.user?.email) {
+    if (!user?.email) {
       const interval = setInterval(() => {
         setLoginBadgeAnimate(true)
         const timeout = setTimeout(() => setLoginBadgeAnimate(false), 900)
@@ -101,13 +101,13 @@ const Navbar = async () => {
       }, 3000)
       return () => clearInterval(interval)
     }
-  }, [session?.user?.email])
+  }, [user?.email])
 
   const handleMouseEnter = (menuName: string) => setActiveMenu(menuName)
   const handleMouseLeave = () => setActiveMenu(null)
 
   const handleUserIconClick = () => {
-    if (session?.user?.email) setShowUserSlideout(true)
+    if (user?.email) setShowUserSlideout(true)
     else
     {
       setShowLoginModal(true)
@@ -281,7 +281,7 @@ const Navbar = async () => {
 
               <button onClick={handleUserIconClick} className="relative cursor-pointer">
                 <User className="h-5 w-5" />
-                {!session?.user?.email && (
+                {user?.email && (
                   <span className={cn(
                     "absolute -top-3 -right-2 bg-[#FFD619] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
                     loginBadgeAnimate && "animate-bounce",
@@ -313,7 +313,7 @@ const Navbar = async () => {
                     )}
               </Link>
 
-              {session?.user?.email ? (
+              {user?.email ? (
                 <></>
                 // <button onClick={logoutHandler}>
                 //   <LogOut className="h-5 w-5" />
@@ -356,7 +356,7 @@ const Navbar = async () => {
           <div className="flex items-center space-x-4">
             <button onClick={handleUserIconClick} className="relative cursor-pointer">
               <User className="h-5 w-5" />
-              {!session?.user?.email && (
+              {user?.email && (
                 <span className={cn(
                   "absolute -top-3 -right-2 bg-[#FFD619] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
                   loginBadgeAnimate && "animate-bounce",
@@ -374,7 +374,7 @@ const Navbar = async () => {
                 </span>
               )}
             </Link>
-            {session?.user?.email ? (
+            {user?.email ? (
               <></>
               // <button onClick={logoutHandler}>
               //   <LogOut className="h-5 w-5" />
@@ -404,7 +404,7 @@ const Navbar = async () => {
         onSearch={handleSearchSubmit}
       />
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <UserAccountSlideout isOpen={showUserSlideout} onClose={() => setShowUserSlideout(false)} /> {/* onLogout missing */}
+      <UserAccountSlideOut isOpen={showUserSlideout} onClose={() => setShowUserSlideout(false)} /> {/* onLogout missing */}
     </>
   )
 }
