@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { SignOutButton } from '../../components/SignOutButton'
+import { SignOutButton } from '../../components/auth/SignOutButton'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 

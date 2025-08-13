@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
@@ -10,60 +10,57 @@ import { Button } from "@/components/ui/button"
 import flashMessage from "@/components/shared/flashMessages"
 import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
-import { useCurrentUser } from "@/api/hooks/useCurrentUser"
+// import { useCurrentUser } from "@/api/hooks/useCurrentUser"
 import Image from "next/image"
 import { Eye, EyeOff } from "lucide-react"
-import AdidasSpinner from "@/components/ui/AdidasSpinner"
 import { handleApiError } from "@/components/shared/handleApiError"
 import { Checkbox } from "@/components/ui/checkbox"
-import GoogleSignInButton from "./google/GoogleSignInButton"
-import FacebookSignInButton from "./facebook/FacebookSignInButton"
-import AppleSignInButton from "./apple/AppleSignInButton"
-import YahooSignInButton from "./yahoo/YahooSignInButton"
 import AdidasLogo from "@/components/adidas-logo"
-import XSignInButton from "./x/XSignInButton"
+import LoginButtons from "@/components/auth/LoginButtons"
+import { getSession } from "@/lib/auth"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
 })
 
-const LoginPage = () => {
+const LoginPage = async () => {
   const router = useRouter()
   const loginMutation = useLoginMutation()
-  const { data: user, isLoading, isError, isFetched } = useCurrentUser()
+  // const { data: user, isLoading, isError, isFetched } = useCurrentUser()
+  const session = await getSession()
   const [keepLoggedIn, setKeepLoggedIn] = useState(true)
   const [errors, setErrors] = useState<ErrorMessageType>({})
-  const [hasMounted, setHasMounted] = useState(false)
+  // const [hasMounted, setHasMounted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [minimumLoadingDone, setMinimumLoadingDone] = useState(false)
-  const [centered, setCentered] = useState(false)
+  // const [minimumLoadingDone, setMinimumLoadingDone] = useState(false)
+  // const [centered, setCentered] = useState(false)
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
 
+  // useEffect(() => {
+  //   setHasMounted(true)
+
+  //   const timer1 = setTimeout(() => setCentered(true), 2000)
+  //   const timer2 = setTimeout(() => {
+  //     setMinimumLoadingDone(true)
+  //   }, 4000)
+
+  //   return () => {
+  //     clearTimeout(timer1)
+  //     clearTimeout(timer2)
+  //   }
+  // }, [])
+
+  // useEffect(() => setHasMounted(true), [])
+
   useEffect(() => {
-    setHasMounted(true)
-
-    const timer1 = setTimeout(() => setCentered(true), 2000)
-    const timer2 = setTimeout(() => {
-      setMinimumLoadingDone(true)
-    }, 4000)
-
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-    }
-  }, [])
-
-  useEffect(() => setHasMounted(true), [])
-
-  useEffect(() => {
-    if (isFetched && user?.email) {
+    if (session?.user?.email) {
       setTimeout(() => router.replace("/my-account"), 0)
     }
-  }, [isFetched, user, router])
+  }, [session?.user, router])
 
   const handleSubmit = async (values: { email: string; password: string; keepLoggedIn: boolean }) => {
     setErrors({})
@@ -90,13 +87,13 @@ const LoginPage = () => {
     })
   }
 
-  const handleGoogleLogin = () => {
-    const clientId = "588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com"
-    const redirectUri = `${window.location.origin}/oauth/callback`
-    const scope = "openid email profile"
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`
-    window.location.href = authUrl
-  }
+  // const handleGoogleLogin = () => {
+  //   const clientId = "588366578054-bqg4hntn2fts7ofqk0s19286tjddnp0v.apps.googleusercontent.com"
+  //   const redirectUri = `${window.location.origin}/oauth/callback`
+  //   const scope = "openid email profile"
+  //   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`
+  //   window.location.href = authUrl
+  // }
 
   // if (!hasMounted || isLoading || !minimumLoadingDone) {
   //   return (
@@ -109,15 +106,15 @@ const LoginPage = () => {
   //     </div>
   //   )
   // }
-  if (isLoading) {
-    <FullScreenLoader />
-  }
+  // if (isLoading) {
+  //   <FullScreenLoader />
+  // }
 
-  if (isError) {
-    // flashMessage("error", "Session expired or unauthorized. Please login again.")
-  }
+  // if (isError) {
+  //   // flashMessage("error", "Session expired or unauthorized. Please login again.")
+  // }
 
-  if (user?.email) {
+  if (session?.user?.email) {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16 text-center">
@@ -129,6 +126,8 @@ const LoginPage = () => {
       </div>
     )
   }
+
+  if(session) redirect('/home');
 
   return (
     <div className="min-h-screen bg-background">
@@ -213,11 +212,7 @@ const LoginPage = () => {
               </div> */}
 
               <div className="grid grid-cols-1 gap-2 mb-6">
-                {/* <FacebookSignInButton /> */}
-                <GoogleSignInButton />
-                {/* <XSignInButton />
-                <AppleSignInButton />
-                <YahooSignInButton /> */}
+                <LoginButtons />
               </div>
 
               <Formik

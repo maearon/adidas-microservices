@@ -2,32 +2,21 @@
 
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-// import { BaseButton } from "@/components/ui/base-button"
-// import LoadingButton from "@/components/LoadingButton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { 
-  X
-  // , Apple 
-} from "lucide-react"
+import { X } from "lucide-react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
 import { fetchUser } from "@/store/sessionSlice"
 import flashMessage from "./shared/flashMessages"
-// import javaService from "@/api/services/javaService"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { useSignupMutation } from "@/api/hooks/useSignupMutation"
-import GoogleSignInButton from "@/app/account-login/google/GoogleSignInButton"
-// import FacebookSignInButton from "@/app/account-login/facebook/FacebookSignInButton"
-// import YahooSignInButton from "@/app/account-login/yahoo/YahooSignInButton"
-// import AppleSignInButton from "@/app/account-login/apple/AppleSignInButton"
 import AdidasLogo from "./adidas-logo"
-// import XSignInButton from "@/app/account-login/x/XSignInButton"
-import GoogleButton from "./buttons/GoogleButton"
+import LoginButtons from "./auth/LoginButtons"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -262,12 +251,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div> */}
           
           <div className="grid grid-cols-1 gap-3 mb-6">
-            {/* <FacebookSignInButton /> */}
-            <GoogleSignInButton />
-            <GoogleButton />
-            {/* <XSignInButton />
-            <AppleSignInButton />
-            <YahooSignInButton /> */}
+            <LoginButtons />
           </div>
           
           {/* Email Form */}

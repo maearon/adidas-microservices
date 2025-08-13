@@ -4,10 +4,10 @@ import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-export default function GoogleButton() {
+export default function GithubButton() {
   const [isHovering, setIsHovering] = useState(false)
   const handleLogin = async () =>
-    authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
+    await authClient.signIn.social({ provider: 'github', callbackURL: '/dashboard' })
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -29,7 +29,7 @@ export default function GoogleButton() {
         <motion.span 
           className="relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
         >
-          Login preferrer Google
+          Login preferrer Github
         </motion.span>
         
         <motion.svg 

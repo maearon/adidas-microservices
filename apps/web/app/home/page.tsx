@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { SignOutButton } from "@/components/SignOutButton";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 export default async function Home() {
   const { data: session } = await authClient.getSession()

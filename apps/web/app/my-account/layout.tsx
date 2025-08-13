@@ -16,6 +16,7 @@ import { useLogout } from "@/api/hooks/useLoginMutation"
 import flashMessage from "@/components/shared/flashMessages"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser"
 import { clearTokens } from "@/lib/token"
+import { SignOutButton } from "@/components/auth/SignOutButton"
 
 const accountMenuItems = [
   { name: "Account Overview", href: "/my-account", icon: "👤" },
@@ -110,7 +111,7 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
               ))}
 
               <div className="pt-4 border-t">
-                <button
+                {/* <button
                   onClick={() => {
                     if (typeof window !== "undefined") {
                     localStorage.clear()
@@ -122,7 +123,8 @@ export default function MyAccountLayout({ children }: { children: React.ReactNod
                 >
                   <span className="mr-3" onClick={handleLogoutWithToLogin}>🚪</span>
                   Log out
-                </button>
+                </button> */}
+                <SignOutButton />
               </div>
             </nav>
           </div>

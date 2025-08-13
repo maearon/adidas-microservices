@@ -12,6 +12,7 @@ import flashMessage from "./shared/flashMessages"
 import { useLogout } from "@/api/hooks/useLoginMutation"
 import { useRouter } from "next/navigation"
 import { clearTokens } from "@/lib/token"
+import { SignOutButton } from "./auth/SignOutButton"
 
 interface UserAccountSlideoutProps {
   isOpen: boolean
@@ -184,9 +185,10 @@ export default function UserAccountSlideout({ isOpen, onClose, user, onLogout }:
           </div>
 
           <div className="p-6 border-t">
-            <Button onClick={handleLogoutWithClose} variant="outline" theme="black" border fullWidth>
+            {/* <Button onClick={handleLogoutWithClose} variant="outline" theme="black" border fullWidth>
               Log Out
-            </Button>
+            </Button> */}
+            <SignOutButton />
           </div>
         </div>
       </div>

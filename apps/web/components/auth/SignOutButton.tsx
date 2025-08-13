@@ -7,7 +7,11 @@ export const SignOutButton = () => {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    await authClient.signOut()
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => router.push('/account-login'),
+      }
+    });
     router.refresh()
   }
 
