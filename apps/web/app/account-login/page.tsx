@@ -1,5 +1,3 @@
-"use client"
-
 import { redirect, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
