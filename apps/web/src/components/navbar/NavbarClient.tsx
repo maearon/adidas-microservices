@@ -1,3 +1,5 @@
+'use client'
+
 import type React from "react"
 import { useEffect, useState } from "react"
 import Link from "next/link"
@@ -15,8 +17,8 @@ import UserAccountSlideOut from "./UserAccountSlideOut"
 import MobileMenuSlideOut from "./MobileMenuSideOut"
 import { useInitSession } from "@/api/hooks/useLoginMutation"
 import FullScreenLoader from "../ui/FullScreenLoader"
-import { selectUser } from "@/store/sessionSlice"
-import { useSelector } from "react-redux"
+// import { selectUser } from "@/store/sessionSlice"
+// import { useSelector } from "react-redux"
 import type { Session } from "@/lib/auth"
 import { useRouter } from "next/navigation"
 import { useAppSelector } from "@/store/hooks"
@@ -26,9 +28,9 @@ interface NavbarClientProps {
 }
 
 export default function NavbarClient({ session }: NavbarClientProps) {
-  const current_user = session?.user
-  const { value: userRedux, status } = useSelector(selectUser)
-  const userLoading = status === "loading"
+  // const current_user = session?.user
+  // const { value: userRedux, status } = useSelector(selectUser)
+  // const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const router = useRouter()
 
@@ -92,7 +94,9 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     }
   }
 
-  if (!hasMounted || userLoading) return <FullScreenLoader />
+  if (!hasMounted 
+    // || userLoading
+  ) return <FullScreenLoader />
 
   return (
     <>
@@ -122,9 +126,9 @@ export default function NavbarClient({ session }: NavbarClientProps) {
             wishlistItemsCount={wishlistItemsCount}
             handleUserIconClick={handleUserIconClick}
             handleMouseEnter={handleMouseEnter}
-            handleMouseLeave={handleMouseLeave}
-            setShowUserSlideOut={setShowUserSlideOut}
-            setShowLoginModal={setShowLoginModal}
+            // handleMouseLeave={handleMouseLeave}
+            // setShowUserSlideOut={setShowUserSlideOut}
+            // setShowLoginModal={setShowLoginModal}
           />
         </div>
 
@@ -136,9 +140,9 @@ export default function NavbarClient({ session }: NavbarClientProps) {
           wishlistItemsCount={wishlistItemsCount}
           handleUserIconClick={handleUserIconClick}
           setShowMobileMenu={setShowMobileMenu}
-          setShowUserSlideOut={setShowUserSlideOut}
-          setShowLoginModal={setShowLoginModal}
-          setShowMobileSearch={setShowMobileSearch}
+          // setShowUserSlideOut={setShowUserSlideOut}
+          // setShowLoginModal={setShowLoginModal}
+          // setShowMobileSearch={setShowMobileSearch}
           handleMobileSearchClick={handleMobileSearchClick}
         />
 
@@ -155,7 +159,11 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         onSearch={handleSearchSubmit}
       />
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <UserAccountSlideOut isOpen={showUserSlideOut} onClose={() => setShowUserSlideOut(false)} /> {/* onLogout missing */}
+      <UserAccountSlideOut 
+        isOpen={showUserSlideOut} 
+        onClose={() => setShowUserSlideOut(false)}
+        user={session?.user}
+      /> {/* onLogout missing */}
     </>
   )
 }

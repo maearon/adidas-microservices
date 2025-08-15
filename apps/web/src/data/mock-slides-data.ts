@@ -1,7 +1,6 @@
 // /data/mock-slides-data.ts
 // ✅ Mock slides data
 import { Slide } from "@/components/promo-carousel";
-import { Product } from "@/types/product"
 
 export const mockSlides: Slide[] = [
 {

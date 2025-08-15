@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-const LoginForm = async () => { 
+const PromoSection = async () => { 
   return (
     <div className="space-y-6">
       <div className="bg-background md:p-8 p-1 rounded-none">
@@ -29,11 +29,11 @@ const LoginForm = async () => {
         </ul>
         <p className="text-gray-600 dark:text-white mb-6">
           Start earning adiClub points every time you shop, track a run on the adidas Running app and share a product review.
-          The more points you earn, the faster you'll level up and unlock rewards such as a Birthday Gift, Free Personalisation, Priority Customer Service, Premium Event Tickets and more.
+          The more points you earn, the faster you&apos;ll level up and unlock rewards such as a Birthday Gift, Free Personalisation, Priority Customer Service, Premium Event Tickets and more.
         </p>
       </div>
     </div>
   )
 }
 
-export default LoginForm
+export default PromoSection

@@ -1,11 +1,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/hooks/useTranslations"
 import { cn } from "@/lib/utils"
-import { useRouter } from "next/navigation"
-import { useAppSelector } from "@/store/hooks"
-import { selectLocale } from "@/store/localeSlice"
-import { getTranslations } from "@/lib/locale"
 
 interface HeroBannerProps {
   backgroundClassName?: "bg-hero" | "bg-hero-men" | "bg-hero-women" | "bg-hero-kids" | null | undefined
@@ -25,11 +22,7 @@ export default function HeroBanner({
   backgroundClassName = "bg-hero",
   content,
 }: HeroBannerProps) {
-  const locale = useAppSelector(selectLocale)
-  const t = getTranslations(locale, "hero") || {} // fallback tránh lỗi
-
-  const router = useRouter()
-
+  const t = useTranslations("hero") || {} // fallback tránh lỗi
   const title = content?.title || t.heroTitle || "A TRUE MIAMI ORIGINAL"
   const description = content?.description || t.heroDesc || "Dream big and live blue in the iconic Inter Miami CF 2025 Third Jersey."
   const buttons = content?.buttons?.length
@@ -46,7 +39,7 @@ export default function HeroBanner({
   return (
     <section
       className={cn(
-        "relative h-[83vh] bg-cover bg-top text-white",
+        "hero-section relative h-[83vh] bg-cover bg-top text-white",
         backgroundClassName
       )}
     >

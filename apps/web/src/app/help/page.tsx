@@ -95,7 +95,7 @@ const Help: NextPage = () => {
 
       {/* 📞 Contact */}
       <div className="border border-gray-300 p-6 mt-12 rounded-none">
-        <h3 className="text-base text-gray-600 dark:text-white mb-2">Still can't find your answer?</h3>
+        <h3 className="text-base text-gray-600 dark:text-white mb-2">Still can&apos;t find your answer?</h3>
         <p className="text-base text-gray-800 mb-2">ASK OUR CUSTOMER SERVICE</p>
         <p className="text-base text-gray-500 mb-4">Mon - Sun : 5:00 AM to 8:00 PM</p>
         <Link

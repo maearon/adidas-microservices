@@ -1,4 +1,4 @@
-import { Optional } from "@/types/common"
+// import { Optional } from "@/types/common"
 
 /** 👟 Size type (used in Product Variant and CartItem) */
 export interface Size {
@@ -38,7 +38,7 @@ export interface Product {
   id: number | string
   tags?: string[]
   breadcrumb?: string
-  jan_code: string
+  model_number?: string
   title: string
   name: string
   description: string
@@ -47,7 +47,7 @@ export interface Product {
   care: string
   gender: string
   franchise: string
-  producttype: string
+  product_type: string
   brand: string
   category: string
   sport: string
@@ -70,7 +70,6 @@ export interface Product {
   reviews_count: number
   average_rating: number
   url?: string
-  model_number: string
   __isPlaceholder?: boolean
 }
 
@@ -82,7 +81,7 @@ export interface ProductsResponse {
     total_pages: number
     total_count: number
     per_page: number
-    filters_applied: Record<string, any>
+    // filters_applied: Record<string, any>
     category_info: {
       title: string
       breadcrumb: string
@@ -92,9 +91,9 @@ export interface ProductsResponse {
 }
 
 // 🧾 Product detail (kế thừa từ Product)
-export interface ProductDetails extends Product {
-  // Extend here if needed
-}
+// export interface ProductDetails extends Product {
+//   // Extend here if needed
+// }
 
 // 👤 Product follow feature
 export interface ProductFollow {

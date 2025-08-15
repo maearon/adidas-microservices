@@ -31,7 +31,7 @@ export interface ProductMeta {
   total_pages: number
   total_count: number
   per_page: number
-  filters_applied: Record<string, any>
+  filters_applied: Record<string, unknown>
   category_info: {
     title: string
     breadcrumb: string
@@ -52,7 +52,7 @@ const rubyService = {
     try {
       const { data }  = await api.get<WithStatus<ProductListData>>("/products", { params })
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       handleNetworkError(error)
       throw error
     }
@@ -63,7 +63,7 @@ const rubyService = {
     try {
       const { data }  = await api.get<WithStatus<Product>>(`/products/${slug}/${modelNumber}`)
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       handleNetworkError(error)
       throw error
     }

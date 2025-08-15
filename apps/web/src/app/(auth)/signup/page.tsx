@@ -1,0 +1,43 @@
+import React from "react"
+import Link from "next/link"
+import PromoSection from "./PromoSection"
+import { getSession } from "@/lib/auth"
+import { redirect } from "next/navigation"
+import SignupForm from "./SignupForm"
+
+const SignupPage = async () => {
+  const session = await getSession()
+
+  if (session?.user?.email) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold mb-4">You&apos;re already logged in</h1>
+          <Link href="/my-account" className="underline text-blue-600">
+            Go to My Account
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if(session) redirect('/');
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="relative bg-background md:py-8 pt-1 pb-1">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
+            {/* Left info box */}
+            <PromoSection />
+
+            {/* Signup form */}
+            <SignupForm />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default SignupPage

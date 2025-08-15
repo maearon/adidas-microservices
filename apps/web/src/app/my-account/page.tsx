@@ -59,9 +59,9 @@ export default function MyAccountPage() {
             {/* Your Vouchers */}
             <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">YOUR VOUCHERS</h2>
-              <p className="text-gray-600 dark:text-white mb-2">You don't have any vouchers currently.</p>
+              <p className="text-gray-600 dark:text-white mb-2">You don&apos;t have any vouchers currently.</p>
               <p className="text-gray-600 dark:text-white mb-4">
-                You currently don't have enough adiClub points to unlock discount vouchers.
+                You currently don&apos;t have enough adiClub points to unlock discount vouchers.
               </p>
               <Link href="#" className="text-background underline font-medium">
                 HOW TO EARN MORE POINTS
@@ -72,7 +72,7 @@ export default function MyAccountPage() {
             <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-2xl font-bold mb-4">MORE OF WHAT YOU LOVE</h2>
               <p className="text-gray-600 dark:text-white mb-6">
-                We've collected some of our favourite products based on your preferences and purchases.
+                We&apos;ve collected some of our favourite products based on your preferences and purchases.
               </p>
 
               {/* Product Grid */}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, ShoppingBag, User, Heart, Menu } from "lucide-react"
+import Image from "next/image"
 
 interface Props {
   onNavigate: (page: "home" | "men") => void
@@ -182,9 +183,16 @@ export default function MenPage({ onNavigate }: Props) {
             <Card key={product.id} className="border-none shadow-none">
               <CardContent className="p-0">
                 <div className="relative mb-4">
-                  <img
+                  {/* <img
                     src={product.image || "/placeholder.png"}
                     alt={product.name}
+                    className="w-full h-64 object-cover"
+                  /> */}
+                  <Image
+                    src={product.image || "/placeholder.png"}
+                    alt={product.name}
+                    fill // need relative
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="w-full h-64 object-cover"
                   />
                   <Heart className="absolute top-4 right-4 h-5 w-5 cursor-pointer" />
@@ -201,12 +209,12 @@ export default function MenPage({ onNavigate }: Props) {
 
       {/* Men's Description */}
       <section className="container mx-auto px-2 py-4 text-center">
-        <h2 className="text-3xl font-bold mb-6">MEN'S SNEAKERS AND WORKOUT CLOTHES</h2>
+        <h2 className="text-3xl font-bold mb-6">MEN&apos;S SNEAKERS AND WORKOUT CLOTHES</h2>
         <div className="max-w-4xl mx-auto text-gray-600 dark:text-white space-y-4">
           <p>
-            Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men's shoes and
-            apparel that support your passion and define your style. Whether you're training for a marathon, playing
-            pickup basketball or just hanging out with friends, adidas men's clothing and shoes are designed to keep you
+            Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men&apos;s shoes and
+            apparel that support your passion and define your style. Whether you&apos;re training for a marathon, playing
+            pickup basketball or just hanging out with friends, adidas men&apos;s clothing and shoes are designed to keep you
             comfortable, so you feel confident and ready to take on whatever comes your way.
           </p>
         </div>
@@ -217,7 +225,7 @@ export default function MenPage({ onNavigate }: Props) {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold mb-4">MEN'S CLOTHING</h3>
+              <h3 className="font-bold mb-4">MEN&apos;S CLOTHING</h3>
               <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
@@ -242,7 +250,7 @@ export default function MenPage({ onNavigate }: Props) {
               </ul>
             </div>
             <div>
-              <h3 className="font-bold mb-4">MEN'S SHOES</h3>
+              <h3 className="font-bold mb-4">MEN&apos;S SHOES</h3>
               <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
@@ -267,51 +275,51 @@ export default function MenPage({ onNavigate }: Props) {
               </ul>
             </div>
             <div>
-              <h3 className="font-bold mb-4">MEN'S ACCESSORIES</h3>
+              <h3 className="font-bold mb-4">MEN&apos;S ACCESSORIES</h3>
               <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Bags
+                    Men&apos;s Bags
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Socks
+                    Men&apos;s Socks
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Hats
+                    Men&apos;s Hats
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Headphones
+                    Men&apos;s Headphones
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold mb-4">MEN'S COLLECTIONS</h3>
+              <h3 className="font-bold mb-4">MEN&apos;S COLLECTIONS</h3>
               <ul className="space-y-2 text-base">
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Soccer
+                    Men&apos;s Soccer
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Loungewear
+                    Men&apos;s Loungewear
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Training & Gym
+                    Men&apos;s Training & Gym
                   </a>
                 </li>
                 <li>
                   <a href="#" className="hover:underline">
-                    Men's Originals
+                    Men&apos;s Originals
                   </a>
                 </li>
               </ul>

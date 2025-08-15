@@ -2,24 +2,25 @@
 
 import Image from "next/image";
 
-import { signIn } from "next-auth/react";
+import { authClient, ProviderId } from '@/lib/auth-client';
+import { capitalizeTitle } from "@/utils/sanitizeMenuTitleOnly";
 
 type ClientSafeProvider = {
-  id: string;
+  id: ProviderId;
   name: string;
   type: string;
   signinUrl: string;
   callbackUrl: string;
 }
 
-const Icon = ({ provider }: { provider: string }) => {
+const Icon = ({ provider }: { provider: ProviderId }) => {
   let imagePath = "";
 
-  if (provider === "Google") {
+  if (provider === "google") {
     imagePath = "/images/icons/google.svg";
-  } else if (provider === "Discord") {
+  } else if (provider === "discord") {
     imagePath = "/images/icons/discord.svg";
-  } else if (provider === "Auth0") {
+  } else if (provider === "roblox") {
     imagePath = "/images/icons/auth0.svg";
   }
 
@@ -39,16 +40,23 @@ export default function LoginButton({
   auth: ClientSafeProvider | null;
 }) {
   console.log("Auth: ", auth);
+  const signinWithProvider = async () => {
+    if (!auth) return; // đảm bảo không undefined
+    await authClient.signIn.social({
+      callbackURL: "/",
+      provider: auth.id, // giờ chắc chắn có giá trị
+    });
+  };
   return (
     <button
       type="button"
       className="border shadow-1 rounded-md py-3 px-6 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      onClick={() => signIn(auth?.id as string)}
+      onClick={() => signinWithProvider()}
     >
       {auth ? (
         <div className="flex items-center">
-          <Icon provider={auth.name as string} />
-          Sign In with {auth.name as string}
+          <Icon provider={auth.id} />
+          Sign In with {capitalizeTitle(auth.id)}
         </div>
       ) : (
         "Custom Login Page"

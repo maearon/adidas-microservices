@@ -1,11 +1,17 @@
 import prisma from "@/lib/prisma"
 
+type AttachmentWithKey = {
+  active_storage_blobs?: {
+    key: string | null
+  } | null
+}
+
 export async function getImageUrlsByRecord(
   type: string,
   id: bigint | number,
   name: string = "images" // default là "images"
 ) {
-  const attachments = await prisma.active_storage_attachments.findMany({
+  const attachments: AttachmentWithKey[] = await prisma.active_storage_attachments.findMany({
     where: {
       record_type: type,
       record_id: BigInt(id),
@@ -19,6 +25,6 @@ export async function getImageUrlsByRecord(
 
   return attachments
     .map((att) => att.active_storage_blobs?.key)
-    .filter(Boolean)
+    .filter((key): key is string => Boolean(key))
     .map((key) => `https://res.cloudinary.com/dq7vadalc/image/upload/${key}`)
 }

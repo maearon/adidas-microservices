@@ -4,6 +4,7 @@ import { ProductData } from "@/lib/types"
 import Image from "next/image"
 import Link from "next/link"
 import { formatRelativeDate } from "@/lib/utils"
+import { slugify } from "@/utils/slugtify"
 
 interface ProductProps {
   product: ProductData
@@ -14,7 +15,7 @@ export default function Product({ product }: ProductProps) {
 
   return (
     <Link
-      href={`/products/${product.slug}`}
+      href={`/products/${slugify(product.name)}`}
       className="group block rounded-2xl bg-card shadow-xs transition hover:shadow-md"
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-t-2xl">

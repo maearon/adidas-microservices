@@ -14,13 +14,14 @@ import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import flashMessage from "@/components/shared/flashMessages"
 import { useRouter } from "next/navigation"
 import { handleApiError } from "@/components/shared/handleApiError"
+import { AxiosError } from "axios"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
 })
 
-const LoginForm = async () => {
+const LoginForm = () => {
   const router = useRouter()
   const [errors, setErrors] = useState<ErrorMessageType>({})
   const [keepLoggedIn, setKeepLoggedIn] = useState(true)
@@ -44,7 +45,7 @@ const LoginForm = async () => {
         flashMessage("success", "Login successful.")
         router.push("/")
       },
-      onError: (error: any) => {
+      onError: (error: AxiosError<{ error?: string }>) => {
         const parsed = handleApiError(error)
         setErrors(parsed)
         if (parsed?.general?.[0]) flashMessage("error", parsed.general[0])
@@ -145,7 +146,7 @@ const LoginForm = async () => {
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
-              Don't have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
+              Don&apos;t have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
             </div>
             <div className="mt-2 text-base text-center">
               Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" >Reset it here</Link>
@@ -154,7 +155,7 @@ const LoginForm = async () => {
             <div className="mt-6 text-xs text-gray-500">
               <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
               <p>
-                By clicking the "Continue" button, you are joining adiClub, will receive emails with the latest news and
+                By clicking the &quot;Continue&quot; button, you are joining adiClub, will receive emails with the latest news and
                 updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
                 <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
                 <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the

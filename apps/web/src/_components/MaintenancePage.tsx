@@ -40,9 +40,9 @@ export default function MaintenancePage() {
               your browser and disable them.
               <br />
               <br />
-              If this does not help, the issue might be caused by malware. If you're on a personal
-              connection you can run an anti-virus scan on your device to make sure it's not
-              affected by malware. If you're on a shared network, you could ask the system
+              If this does not help, the issue might be caused by malware. If you&apos;re on a personal
+              connection you can run an anti-virus scan on your device to make sure it&apos;s not
+              affected by malware. If you&apos;re on a shared network, you could ask the system
               administrator to run a scan looking for misconfigured or infected devices across the
               network.
             </p>

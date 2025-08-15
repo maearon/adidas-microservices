@@ -7,15 +7,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "./adidas-logo"
-import type { MenuCategory } from "@/types/common"
+import type { LocaleMenuItem, MenuCategory, MenuItem, MenuLeaf, MenuLevel, NavigationHistory } from "@/types/common"
 import { capitalizeWordsCountry } from "@/utils/upper-words"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { localeDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
-import { usePathname, useRouter } from "next/navigation"
+// import { usePathname, useRouter } from "next/navigation"
 import { setLocale } from "@/store/localeSlice"
-import { getTranslations } from "@/lib/locale";
-import { RadioGroup } from "@/components/ui/radio-group"
-import { RadioGroupItem } from "@/components/ui/radio-group"
+// import { useTranslations } from "@/hooks/useTranslations"
 import { colorMapping, mainMenuData } from "@/lib/menu-utils"
 
 interface MobileMenuProps {
@@ -23,21 +21,22 @@ interface MobileMenuProps {
   onClose: () => void
 }
 
-interface MenuLevel {
-  title: string
-  items: MenuCategory[]
-  parentTitle?: string
+function isMenuCategory(item: MenuItem): item is MenuCategory {
+  return "title" in item && "items" in item;
 }
 
-interface NavigationHistory {
-  level: MenuLevel
-  scrollPosition: number
+function isLocaleMenuItem(item: MenuItem): item is LocaleMenuItem {
+  return "value" in item && "flag" in item;
+}
+
+function isMenuLeaf(item: MenuItem): item is MenuLeaf {
+  return "name" in item && "href" in item;
 }
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
-  const pathname = usePathname()
-  const router = useRouter()
+  // const pathname = usePathname()
+  // const router = useRouter()
   const dispatch = useAppDispatch()
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
@@ -46,7 +45,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistory[]>([])
   const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English  
   const languageLabel = localeDisplayMap[locale]
-  const t = getTranslations(locale, "header")
+  // const t = useTranslations("header")
 
   const additionalMenuItems = [
     { name: "My Account", href: "/my-account" },
@@ -162,12 +161,13 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }
   }
 
-  const handleItemClick = (item: { name: string; href: string }) => {
-    onClose()
-    window.location.href = item.href
-  }
+  // const handleItemClick = (item: { name: string; href: string }) => {
+  //   onClose()
+  //   window.location.href = item.href
+  // }
 
   const handleBackClick = () => {
+    console.log('country', country);
     if (navigationHistory.length > 0) {
       const previousLevel = navigationHistory[navigationHistory.length - 1]
       setCurrentLevel(previousLevel.level)
@@ -200,9 +200,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     return null
   }
 
-  const hasSubmenu = (category: MenuCategory) => {
-    return category.items && category.items.length > 0
-  }
+  // const hasSubmenu = (category: MenuCategory) => {
+  //   return category.items && category.items.length > 0
+  // }
 
   const isMainMenu = currentLevel.title === "MENU"
 
@@ -369,7 +369,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 return (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={item.href || "#"}
                     onClick={handleClose}
                     className="block p-4 hover:bg-gray-50 border-b border-gray-100"
                   >
@@ -382,13 +382,32 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             // Submenu items
             <div>
               {currentLevel.items.map((item, index) => {
-                const isCategory = "items" in item && item.items && item.items.length > 0
-                const itemName = "title" in item ? item.title : item.name
-                const itemHref = "titleHref" in item ? item.titleHref : item.href
-                const itemValue = "value" in item ? item.value : undefined
-                const itemFlag = "flag" in item ? item.flag : undefined
-                const isCountryMenu = localeOptions.some(opt => opt.label === currentLevel.title)
+                let itemName: string
+                let itemHref: string | undefined
+                let itemValue: string | undefined
+                let itemFlag: string | undefined
 
+                if (isMenuCategory(item)) {
+                  itemName = item.title
+                  itemHref = item.titleHref
+                  itemValue = undefined
+                  itemFlag = undefined
+                } else if (isLocaleMenuItem(item)) {
+                  itemName = item.title
+                  itemHref = "#" // logic locale
+                  itemValue = item.value
+                  itemFlag = item.flag
+                } else if (isMenuLeaf(item)) {
+                  itemName = item.name
+                  itemHref = item.href
+                  itemValue = undefined
+                  itemFlag = undefined
+                } else {
+                  return null // an toàn cho TS
+                }
+
+                const isCategory = "items" in item && item.items && item.items.length > 0
+                const isCountryMenu = localeOptions.some(opt => opt.label === currentLevel.title)
                 const isSelected = itemValue === locale
 
                 if (isCountryMenu) {

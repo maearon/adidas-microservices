@@ -1,6 +1,6 @@
 import { BreadcrumbItem } from "@/types/bread-crumb";
 import { Product } from "@/types/product";
-import { getCategoryConfig, categoryConfigs } from "@/utils/category-config.auto"
+// import { getCategoryConfig, categoryConfigs } from "@/utils/category-config.auto"
 import { slugify } from "@/utils/slugtify";
 import { capitalizeTitle } from "./sanitizeMenuTitleOnly";
 
@@ -15,7 +15,7 @@ export function getBreadcrumbTrail(slug: string): BreadcrumbItem[] {
   const hrefParts: string[] = [];
 
   const items: BreadcrumbItem[] = [
-    ...parts.map((part, index) => {
+    ...parts.map((part) => {
       hrefParts.push(part);
       return {
         label: capitalizeTitle(part),

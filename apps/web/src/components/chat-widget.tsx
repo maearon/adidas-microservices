@@ -9,6 +9,7 @@ import { io, Socket } from "socket.io-client"
 import { getUiAvatarUrl } from "@/utils/ui-avatar"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser";
 import { playSound } from "@/utils/play-sound"
+import Image from "next/image"
 
 interface ChatMessage {
   content: string
@@ -24,7 +25,7 @@ interface ChatMessage {
     id: string
     name: string
     // avatar?: string
-  }
+  } | null
 }
 
 export default function ChatWidget() {
@@ -86,9 +87,9 @@ export default function ChatWidget() {
       })
 
       // Message events
-      socket.on('message_history', (data: { messages: any[] }) => {
+      socket.on('message_history', (data: { messages: ChatMessage[] }) => {
         console.log("messages", data.messages)
-        const formattedMessages = data.messages.map((msg: any) => {
+        const formattedMessages = data.messages.map((msg: ChatMessage) => {
           const isBot = msg.users?.email?.includes('admin') || msg.users?.email?.includes('support');
 
           return {
@@ -108,7 +109,7 @@ export default function ChatWidget() {
       })
 
       // Khi nhận tin nhắn mới
-      socket.on('new_message', async (msg: any) => {
+      socket.on('new_message', async (msg: ChatMessage) => {
         console.log("message.user", msg.users)
         const isBot =
           // repliedMessages.current.has(msg.content.slice(0, 150)) ||
@@ -126,7 +127,7 @@ export default function ChatWidget() {
           user_id: msg.user_id,
           users: msg.users ?? {
             email: userData.email,
-            name: userData.name,
+            name: userName,
             id: msg.user_id ?? null,
           },
         }
@@ -184,7 +185,7 @@ export default function ChatWidget() {
         setIsConnected(false)
       }
     }
-  }, [isLoggedIn, userToken, isOpen, sessionState?.value?.email])
+  }, [status, userData?.email, userName, isLoggedIn, userToken, isOpen, sessionState?.value?.email])
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -356,11 +357,19 @@ function replaceEmojis(text: string): string {
                             {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
-                        <img
+                        {/* <img
                           src={getUiAvatarUrl(message.users?.name)}
                           title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
+                        /> */}
+                        <Image
+                          src={getUiAvatarUrl(message.users?.name)}
+                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                          alt={message.users?.name || "User"}
+                          width={32} // must set width
+                          height={32} // must set height
+                          className="w-8 h-8 rounded-full" // 2rem
                         />
                       </div>
                     )}

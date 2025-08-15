@@ -1,13 +1,10 @@
-// Order-related types
-
-// TODO: Add code here...
-
-// 📁 @types/order.ts
+// 📁 src/types/order/order.ts
+import type { Address } from "../common/address";
 
 /** 📦 Order creation payload */
 export interface OrderData {
-  shipping_address: any;
-  billing_address: any;
+  shipping_address: Address;
+  billing_address: Address;
   payment_method: string;
 }
 
@@ -18,7 +15,19 @@ export interface Order {
   total: number;
   created_at: string;
   updated_at: string;
-  [key: string]: any;
+  shipping_address: Address;
+  billing_address: Address;
+  payment_method: string;
+  items?: OrderItem[];
+}
+
+/** 🛒 Order item */
+export interface OrderItem {
+  product_id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  [key: string]: string | number | undefined;
 }
 
 /** 📋 Order list response */

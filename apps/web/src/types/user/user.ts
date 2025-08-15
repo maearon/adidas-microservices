@@ -1,5 +1,7 @@
 // 📁 @types/user.ts
 
+import { Nullable, Optional } from "../common/utility"
+
 // ...
 export interface RegisterInput {
   email: string
@@ -47,8 +49,6 @@ export interface UserUpdateResponse<UserEdit> {
 
 // 📁 @types/user.ts
 
-import { Micropost } from "@/types/micropost/micropost";
-
 /** 👤 Thông tin user cơ bản */
 export interface User {
   id: string;
@@ -86,14 +86,6 @@ export interface UserShow {
   following: number;
   followers: number;
   current_user_following_user: boolean;
-}
-
-/** 🧾 Response đầy đủ khi gọi API `/users/:id` */
-export interface ShowResponse<T> {
-  user: T;
-  id_relationships?: number;
-  microposts: Micropost[];
-  total_count: number;
 }
 
 /** ✏️ Thông tin để sửa user */
@@ -136,7 +128,7 @@ export interface Response {
 /** 📄 Kết quả phân trang danh sách user */
 export interface ListParams {
   page?: number;
-  [key: string]: any;
+  [key: string]: Optional<Nullable<unknown>>;
 }
 
 export interface ListResponse<T> {

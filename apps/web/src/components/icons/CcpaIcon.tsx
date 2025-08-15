@@ -1,7 +1,12 @@
 "use client";
 
-const CcpaIcon = () => (
+import React from "react";
+
+type CcpaIconProps = React.SVGProps<SVGSVGElement>;
+
+const CcpaIcon: React.FC<CcpaIconProps> = (props) => (
   <svg
+    {...props} // để truyền className, style, v.v.
     version="1.1"
     id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"

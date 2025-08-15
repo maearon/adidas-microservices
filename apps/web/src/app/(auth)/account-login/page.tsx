@@ -11,7 +11,7 @@ const LoginPage = async () => {
     return (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">You're already logged in</h1>
+          <h1 className="text-2xl font-bold mb-4">You&apos;re already logged in</h1>
           <Link href="/my-account" className="underline text-blue-600">
             Go to My Account
           </Link>
@@ -20,7 +20,7 @@ const LoginPage = async () => {
     )
   }
 
-  if(session) redirect('/home');
+  if(session) redirect('/');
 
   return (
     <div className="min-h-screen bg-background">

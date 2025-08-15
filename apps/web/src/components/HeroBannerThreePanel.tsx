@@ -1,11 +1,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
 
 export default function HeroBannerThreePanel() {
-  const router = useRouter()
-
   return (
     <section className="relative h-[500px] bg-gray-100 overflow-hidden">
       {/* Hero Section - Three Panel Layout */}

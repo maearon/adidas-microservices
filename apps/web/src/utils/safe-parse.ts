@@ -9,10 +9,10 @@ export function safeParseResponse<T extends object>(
     return fallback as T
   }
 
-  const cleaned: Record<string, any> = { ...fallback }
+  const cleaned: Record<string, unknown> = { ...fallback }
 
   for (const key in data as object) {
-    const value = (data as Record<string, any>)[key]
+    const value = (data as Record<string, unknown>)[key]
     try {
       // Nếu là object lồng, parse sâu 1 mức
       if (typeof value === "object" && value !== null) {

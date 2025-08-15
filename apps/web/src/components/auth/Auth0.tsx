@@ -1,12 +1,16 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { authClient } from '@/lib/auth-client'
 
 export default function Auth0Button() {
+  const signinWithAuth0 = async () => await authClient.signIn.social({
+      callbackURL: "/",
+      provider: "roblox",
+    });
   return (
     <button
       className="border border-slate-300 rounded px-5 py-4 flex items-center"
-      onClick={() => signIn("auth0")}
+      onClick={() => signinWithAuth0()}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

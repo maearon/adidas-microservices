@@ -2,7 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
-import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/product-card"
 import type { Product } from "@/types/product" // ✅ dùng chung type đã khai báo
 
@@ -17,7 +16,7 @@ interface ProductGridProps {
   }
   onPageChange?: (page: number) => void
   slug?: string
-  columns?: number
+  // columns?: number
 }
 
 export default function ProductGrid({
@@ -26,7 +25,7 @@ export default function ProductGrid({
   pagination,
   onPageChange,
   slug,
-  columns = 4,
+  // columns = 4,
 }: ProductGridProps) {
   if (loading) {
     return (
@@ -62,19 +61,19 @@ export default function ProductGrid({
             product={{
               ...product,
               id: Number(product.id),
-              price: String(product.price),
-              original_price: String(product.original_price),
+              price: product.price,
+              compare_at_price: product.compare_at_price,
             }}
           />
         ))}
       </div>
 
       {/* Pagination */}
-      {pagination.total_pages > 1 && (
+      {pagination && pagination.total_pages > 1 && (
         <div className="flex items-center justify-center gap-4">
           <BaseButton
             variant="outline"
-            onClick={() => onPageChange(pagination.current_page - 1)}
+            onClick={() => onPageChange?.(pagination.current_page - 1)}
             disabled={pagination.current_page <= 1}
             className="flex items-center gap-2"
           >
@@ -89,7 +88,7 @@ export default function ProductGrid({
 
           <BaseButton
             variant="outline"
-            onClick={() => onPageChange(pagination.current_page + 1)}
+            onClick={() => onPageChange?.(pagination.current_page + 1)}
             disabled={pagination.current_page >= pagination.total_pages}
             className="flex items-center gap-2"
           >

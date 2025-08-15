@@ -1,2 +1,4 @@
 // types/common/dictionary.ts
-export type Dictionary<T = any> = Record<string, T>
+import { Nullable, Optional } from "@/types/common/utility";
+
+export type Dictionary<T = Optional<Nullable<unknown>>> = Record<string, T>;

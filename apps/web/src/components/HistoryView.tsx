@@ -1,10 +1,9 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import ProductCarousel from "@/components/product-carousel"
 import { useEffect, useState } from "react"
 import { fakeLastVisitedProducts } from "@/data/fake-last-visited-products"
-import { LastVisitedProduct, Product } from "@/types/product"
+import { LastVisitedProduct } from "@/types/product"
 
 interface HistoryViewProps {
   title: React.ReactNode
@@ -15,8 +14,7 @@ export default function HistoryView({
   title = "RECENTLY VIEWED ITEMS",
   showIndicatorsInProductCarousel = false,
 }: HistoryViewProps) {
-  const router = useRouter()
-  const [stillInterestedProducts, setStillInterestedProducts] = useState<any[]>([])
+  const [stillInterestedProducts, setStillInterestedProducts] = useState<LastVisitedProduct[]>([])
 
   useEffect(() => {
     const visitedProducts: LastVisitedProduct[] = fakeLastVisitedProducts;

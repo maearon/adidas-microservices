@@ -2,7 +2,7 @@
 
 import { Store } from "@/types/store"
 import { MapPin } from "lucide-react"
-import StoreMap from "./StoreMap"
+import Image from "next/image"
 
 export default function StoreList({
   stores,
@@ -26,9 +26,16 @@ export default function StoreList({
           className={`border rounded p-3 cursor-pointer ${selectedId === store.id ? 'border-border' : ''}`}
         >
           <div className="xl:hidden">
-            <img
+            {/* <img
               src={mapUrl}
               alt={store.name}
+              className="w-full h-[200px] object-cover rounded"
+            /> */}
+            <Image
+              src={mapUrl}
+              alt={store.name}
+              fill // need relative
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="w-full h-[200px] object-cover rounded"
             />
           </div>

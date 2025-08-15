@@ -2,7 +2,7 @@
 
 import { QueryClient } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+// import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 
 // ⏱ Cache TTL

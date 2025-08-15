@@ -1,9 +1,7 @@
 import Link from "next/link"
 import SearchField from "../SearchField"
-import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { Heart, ShoppingBag, User } from "lucide-react"
-import { useAppSelector } from "@/store/hooks"
 import { ThemeToggle } from "../theme/ThemeToggle"
 import type { Session } from "@/lib/auth"
 import { cn } from "@/lib/utils"
@@ -16,9 +14,9 @@ interface MainNavbarProps {
   wishlistItemsCount: number;
   handleUserIconClick: () => void;
   handleMouseEnter: (menuName: string) => void;
-  handleMouseLeave: () => void;
-  setShowUserSlideOut: (value: boolean) => void;
-  setShowLoginModal: (value: boolean) => void;
+  // handleMouseLeave: () => void;
+  // setShowUserSlideOut: (value: boolean) => void;
+  // setShowLoginModal: (value: boolean) => void;
 }
 
 export default function MainNavbar({
@@ -29,9 +27,9 @@ export default function MainNavbar({
   wishlistItemsCount,
   handleUserIconClick,
   handleMouseEnter,
-  handleMouseLeave,
-  setShowUserSlideOut,
-  setShowLoginModal
+  // handleMouseLeave,
+  // setShowUserSlideOut,
+  // setShowLoginModal
 }: MainNavbarProps) {
   const pathname = usePathname()
 

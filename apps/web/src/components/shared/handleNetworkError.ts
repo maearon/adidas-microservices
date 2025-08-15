@@ -1,11 +1,9 @@
 // components/shared/handleNetworkError.ts
+export type NetworkErrorWithCode = Error & { code?: string };
 
-export function handleNetworkError(error: any): void {
-  if (error.name === "TypeError" && error.message === "Failed to fetch") {
-    error.code = "ERR_NETWORK"
+export function handleNetworkError(error: unknown): never {
+  if (error instanceof TypeError && error.message === "Failed to fetch") {
+    (error as NetworkErrorWithCode).code = "ERR_NETWORK";
   }
-
-  // Có thể thêm alert/toast ở đây nếu muốn
-  // flashMessage("error", "Lost connection to the server.")
-  throw error
+  throw error;
 }

@@ -2,46 +2,51 @@
 
 import { useState } from "react"
 import { X, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useAppSelector } from "@/store/hooks"
-import { selectUser } from "@/store/sessionSlice"
+// import { Button } from "@/components/ui/button"
+// import { useAppSelector } from "@/store/hooks"
+// import { selectUser } from "@/store/sessionSlice"
 import Link from "next/link"
-import { useDispatch } from "react-redux"
-import type { AppDispatch } from "@/store/store"
-import flashMessage from "../shared/flashMessages"
-import { useLogout } from "@/api/hooks/useLoginMutation"
-import { useRouter } from "next/navigation"
-import { clearTokens } from "@/lib/token"
-import { SignOutButton } from "../auth/SignOutButton"
+// import { useDispatch } from "react-redux"
+// import type { AppDispatch } from "@/store/store"
+// import flashMessage from "../shared/flashMessages"
+// import { useLogout } from "@/api/hooks/useLoginMutation"
+// import { useRouter } from "next/navigation"
+// import { clearTokens } from "@/lib/token"
+import { LogMeOutButton } from "@/components/auth/LogMeOutButton";
 
-interface UserAccountSlideoutProps {
+interface UserAccountSlideOutProps {
   isOpen: boolean
   onClose: () => void
   user?: { name?: string, email?: string }
-  onLogout?: () => Promise<void>
+  // onLogout?: () => Promise<void>
 }
 
-export default function UserAccountSlideOut({ isOpen, onClose, user, onLogout }: UserAccountSlideoutProps) {
-  const router = useRouter()
+export default function UserAccountSlideOut({ 
+  isOpen, 
+  onClose, 
+  user, 
+  // onLogout 
+}: UserAccountSlideOutProps) {
+  // const router = useRouter()
   const [activeTab, setActiveTab] = useState("JUST FOR YOU")
 
   // Cho phép inject user từ props, fallback về Redux nếu không có
-  const userData = user || useAppSelector(selectUser)?.value || { name: undefined }
+  // const userData = user || useAppSelector(selectUser)?.value || { name: undefined }
 
-  const dispatch = useDispatch<AppDispatch>()
-  const logoutHandler = useLogout()
+  // const dispatch = useDispatch<AppDispatch>()
+  // const logoutHandler = useLogout()
 
-  const handleLogoutWithClose = async () => {
-    try {
-      clearTokens()
-      await logoutHandler()
-      flashMessage("success", "Logged out successfully")
-      onClose()
-      router.push("/account-login")   // ✅ To login
-    } catch (error) {
-      flashMessage("error", "Logout failed")
-    }
-  }
+  // const handleLogoutWithClose = async () => {
+  //   try {
+  //     clearTokens()
+  //     await logoutHandler()
+  //     flashMessage("success", "Logged out successfully")
+  //     onClose()
+  //     router.push("/account-login")   // ✅ To login
+  //   } catch (error) {
+  //     flashMessage("error", "Logout failed")
+  //   }
+  // }
 
   const tabs = ["JUST FOR YOU", "POINTS SHOP", "EARN POINTS"]
 
@@ -84,7 +89,7 @@ export default function UserAccountSlideOut({ isOpen, onClose, user, onLogout }:
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b">
             <div>
-              <h2 className="text-xl font-bold">HI {userData?.name?.toUpperCase() || "MEMBER"}</h2>
+              <h2 className="text-xl font-bold">HI {user?.name?.toUpperCase() || "MEMBER"}</h2>
               <div className="flex items-center mt-2">
                 <div className="flex items-center">
                   <span className="text-base font-bold">adi</span>
@@ -185,10 +190,7 @@ export default function UserAccountSlideOut({ isOpen, onClose, user, onLogout }:
           </div>
 
           <div className="p-6 border-t">
-            {/* <Button onClick={handleLogoutWithClose} variant="outline" theme="black" border fullWidth>
-              Log Out
-            </Button> */}
-            <SignOutButton />
+            <LogMeOutButton/>
           </div>
         </div>
       </div>

@@ -104,7 +104,7 @@ export default function MobileSearchOverlay({
 
           {searchQuery && filteredSuggestions.length > 0 && (
             <button onClick={() => handleSuggestionClick(searchQuery)} className="mt-4 text-blue-600 text-base">
-              See all "{searchQuery}"
+              See all &ldquo;{searchQuery}&rdquo;
             </button>
           )}
         </div>

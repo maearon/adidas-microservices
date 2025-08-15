@@ -7,7 +7,7 @@ json.quantity    cart_item.quantity
 json.product do
   json.id              cart_item.product.id
   json.name            cart_item.product.name
-  json.jan_code        cart_item.product.jan_code
+  json.model_number        cart_item.product.model_number
   json.gender          cart_item.product.gender
   json.franchise       cart_item.product.franchise
   json.producttype     cart_item.product.producttype

@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-const buttonVariants = cva(
+const baseButtonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none [&>svg]:pointer-events-none [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
@@ -32,7 +32,7 @@ const buttonVariants = cva(
 
 export interface BaseButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof baseButtonVariants> {
   asChild?: boolean
 }
 
@@ -41,7 +41,7 @@ const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(baseButtonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       />
@@ -50,4 +50,4 @@ const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
 )
 BaseButton.displayName = "BaseButton"
 
-export { BaseButton, buttonVariants }
+export { BaseButton, baseButtonVariants }

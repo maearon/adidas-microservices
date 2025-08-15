@@ -37,7 +37,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
           href={`/search?q=${encodeURIComponent(keyword)}`}
           className="block mt-6 text-base font-semibold text-foreground underline hover:opacity-80"
         >
-          SEE ALL "{keyword.toUpperCase()}"
+          SEE ALL &ldquo;{keyword.toUpperCase()}&rdquo;
         </Link>
       </div>
 

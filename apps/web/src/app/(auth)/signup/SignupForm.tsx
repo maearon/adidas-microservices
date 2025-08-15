@@ -1,0 +1,266 @@
+'use client'
+
+import AdidasLogo from "@/components/adidas-logo"
+import { Button } from "@/components/ui/button"
+import { ErrorMessage, Field, Form, Formik } from "formik"
+import { Eye, EyeOff } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
+import * as Yup from "yup"
+import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
+import flashMessage from "@/components/shared/flashMessages"
+import { useRouter } from "next/navigation"
+import { AxiosError } from "axios"
+import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
+import { NetworkErrorWithCode } from "@/components/shared/handleNetworkError"
+
+interface SignupFormValues {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface ValidationErrorItem {
+  cause?: { field?: string };
+  defaultMessage?: string;
+}
+
+export interface ApiErrorResponse {
+  message?: string;
+  errors?: ValidationErrorItem[];
+}
+
+const SignupSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  password_confirmation: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Password confirmation is required"),
+})
+
+const SignupForm = () => {
+  const router = useRouter()
+  const [errors, setErrors] = useState<ErrorMessageType>({})
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    password_confirmation: false,
+  });
+  const signupMutation = useSignupMutation<SignupResponse>();
+
+  const togglePassword = (field: "password" | "password_confirmation") => {
+    setShowPassword(prev => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const handleSubmit = (values: SignupFormValues) => {
+    setErrors({})
+
+    const payload = {
+      user: {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        password_confirmation: values.password_confirmation,
+      },
+    }
+
+    signupMutation.mutate(payload, {
+      onSuccess: (response) => {
+        if (response?.success) {
+          flashMessage("success", response.message || "Signup successful.")
+          router.push("/account-login")
+          return
+        }
+        if (response?.errors) {
+          setErrors(response.errors)
+        }
+      },
+
+      onError: (error) => {
+        // Trường hợp lỗi mạng
+        const netErr = error as NetworkErrorWithCode
+        if (netErr.code === "ERR_NETWORK") {
+          flashMessage("error", "Cannot connect to the server. Please try again later.")
+          return
+        }
+
+        // Trường hợp lỗi từ API
+        const axiosErr = error as AxiosError<ApiErrorResponse>;
+        const resData = axiosErr.response?.data
+
+        if (Array.isArray(resData?.errors)) {
+          const fieldErrors: ErrorMessageType = {}
+          resData.errors.forEach((err) => {
+            const field = err?.cause?.field || "general"
+            const message = err.defaultMessage || "Invalid input"
+            if (!fieldErrors[field]) fieldErrors[field] = []
+            fieldErrors[field].push(message)
+          })
+          setErrors(fieldErrors)
+        } else if (resData?.message) {
+          setErrors({ general: [resData.message] })
+        } else {
+          flashMessage("error", "Something went wrong during signup.")
+        }
+      },
+    })
+  }
+
+  return (
+    <div className="bg-background md:p-8 p-1 rounded-none">
+      <div className="flex items-center space-x-4">
+      {/* adiClub Logo */}
+      <AdidasLogo className="w-15 h-auto" />
+      <div className="w-px h-6 bg-gray-300" />
+      <div className="text-center">
+        <div className="inline-flex justify-center">
+          <span className="text-2xl font-bold">adi</span>
+          <span className="text-2xl font-bold text-blue-600 italic">club</span>
+          <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
+            <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      
+      {/* Social Login Text */}
+      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">SIGN UP</h1>
+      <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
+
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          password_confirmation: "",
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className="space-y-4">
+            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
+
+            <div>
+              <Field
+                name="name"
+                type="text"
+                placeholder="NAME *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+              />
+              <ErrorMessage name="name" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            <div>
+              <Field
+                name="email"
+                type="email"
+                placeholder="EMAIL *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+              />
+              <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            {/* <div>
+              <Field
+                name="password"
+                type="password"
+                placeholder="PASSWORD *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+              />
+              <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
+            </div> */}
+
+            <div className="relative">
+              <Field
+                name="password"
+                type={showPassword.password ? "text" : "password"}
+                placeholder="PASSWORD *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => togglePassword("password")}
+                className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
+              >
+                {showPassword.password ? (
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                ) : (
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                )}
+              </button>
+              <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            {/* <div>
+              <Field
+                name="password_confirmation"
+                type="password"
+                placeholder="CONFIRM PASSWORD *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+              />
+              <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
+            </div> */}
+            <div className="relative">
+              <Field
+                name="password_confirmation"
+                type={showPassword.password_confirmation ? "text" : "password"}
+                placeholder="CONFIRM PASSWORD *"
+                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => togglePassword("password_confirmation")}
+                className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
+              >
+                {showPassword.password_confirmation ? (
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                ) : (
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                )}
+              </button>
+              <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
+            </div>
+
+            <Button
+              border
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              loading={isSubmitting || signupMutation.isPending}
+              type="submit"
+              className="w-full py-3 font-semibold transition-colors"
+            >
+              CREATE MY ACCOUNT
+            </Button>
+
+            <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
+              Already have an account?{" "}
+              <Link href="/account-login" className="underline text-blue-600">
+                Log in
+              </Link>
+            </div>
+
+            <div className="mt-2 text-base text-center">
+              Didn&apos;t get your activation email?{" "}
+              <Link
+                href="/account_activations/new"
+                className="underline text-blue-600"
+                
+              >
+                Resend activation
+              </Link>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  )
+}
+
+export default SignupForm

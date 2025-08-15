@@ -53,12 +53,22 @@ api.interceptors.request.use(
 )
 
 // 🔄 Token Refresh Logic
-let isRefreshing = false
-let failedQueue: any[] = []
+interface FailedRequest {
+  resolve: (token: string) => void
+  reject: (err: unknown) => void
+}
 
-const processQueue = (error: any, token: Nullable<string> = null) => {
+let failedQueue: FailedRequest[] = []
+
+let isRefreshing = false
+
+const processQueue = (error: unknown, token: Nullable<string> = null): void => {
   failedQueue.forEach((prom) => {
-    error ? prom.reject(error) : prom.resolve(token)
+    if (error) {
+      prom.reject(error)
+    } else {
+      prom.resolve(token as string)
+    }
   })
   failedQueue = []
 }

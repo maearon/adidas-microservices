@@ -13,6 +13,7 @@ const HeaderNavbar = () => {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    console.log('country', country);
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowCountrySelect(false)

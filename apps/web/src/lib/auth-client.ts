@@ -1,21 +1,9 @@
-// lib/auth-client.ts
-import { createAuthClient } from "better-auth/client";
-
-export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL + "/api/auth" // ✅ trỏ vào [...all]
-});
-// import { auth } from "@/lib/auth"
-// import { createAuthClient } from "better-auth/client"
-// import { inferAdditionalFields } from "better-auth/client/plugins"
-
-// export const authClient = createAuthClient({
-//   plugins: [inferAdditionalFields<typeof auth>()]
-// })
+import { createAuthClient } from "better-auth/react" // make sure to import from better-auth/react
  
-// const signIn = async () => {
-//     const data = await authClient.signIn.social({
-//         provider: "github"
-//     })
-// }
+export const authClient = createAuthClient({
+    //you can pass client configuration here
+});
 
-// export type Session = typeof authClient.$Infer.Session
+// Lấy type provider từ chính hàm signIn.social
+type SocialSignInArgs = Parameters<typeof authClient.signIn.social>[0];
+export type ProviderId = SocialSignInArgs["provider"];

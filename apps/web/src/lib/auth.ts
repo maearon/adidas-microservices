@@ -1,54 +1,31 @@
-import { signOut } from 'next-auth/react';
-// import { signIn } from 'next-auth/react';
-import { betterAuth } from "better-auth"
+import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { headers } from "next/headers";
+
 import { db } from "@/db";
-import { headers } from 'next/headers';
+
+export type Session = typeof auth.$Infer.Session // 👈 Lấy type Session
  
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: "pg", // or "pg" or "mysql"
   }),
   pages: {
     signIn: "/",
     signOut: "/",
   },
   socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    github: { 
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    google: { 
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
 });
 
 export const getSession = async () => auth.api.getSession({
-    headers: await headers(),
+  headers: await headers(),
 });
-
-// import { betterAuth } from "better-auth";
-// import { prismaAdapter } from "better-auth/adapters/prisma";
-// // import { PrismaClient } from "./src/generated/prisma";
-// import { PrismaClient } from "@prisma/client"
-// import { inferAdditionalFields } from "better-auth/client/plugins";
-
-// const prisma = new PrismaClient();
-
-
-// export const auth = betterAuth({
-//     database: prismaAdapter(prisma, {
-//         provider: "postgresql"
-//     }),
-//     socialProviders: {
-//         google: {
-//             clientId: process.env.GOOGLE_CLIENT_ID as string, 
-//             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-//         },
-//     },
-//     plugins: [inferAdditionalFields()],
-// })
-
-export type Session = typeof auth.$Infer.Session // 👈 Lấy type Session

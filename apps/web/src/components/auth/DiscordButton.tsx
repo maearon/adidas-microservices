@@ -1,12 +1,16 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { authClient } from '@/lib/auth-client'
 
 export default function DiscordButton() {
+  const signinWithDiscorde = async () => await authClient.signIn.social({
+        callbackURL: "/",
+        provider: "discord",
+      });
   return (
     <button
       className="border border-slate-300 rounded px-5 py-4 flex items-center"
-      onClick={() => signIn("discord")}
+      onClick={() => signinWithDiscorde()}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

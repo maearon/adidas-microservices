@@ -1,10 +1,17 @@
 // 📁 @types/product-adidas.ts
 
-import { Breadcrumb } from "../bread-crumb/bread-crumb"
+import { BreadcrumbItem } from "../bread-crumb/bread-crumb"
+import { Product } from "./product";
 
 //
 export interface LastVisitedProduct {
-  product: ProductData;
+  product: Product;
+  timestamp: number;
+  url: string;
+}
+
+export interface NewArrivalProduct {
+  product: Product;
   timestamp: number;
   url: string;
 }
@@ -37,7 +44,7 @@ export interface ProductData {
     sale?: boolean;
     // mở rộng tùy vào project
   };
-  breadcrumb_list?: Breadcrumb[];
+  breadcrumb_list?: BreadcrumbItem[];
   product_description?: {
     title?: string;
     text?: string;

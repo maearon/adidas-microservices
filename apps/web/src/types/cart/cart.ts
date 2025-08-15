@@ -4,8 +4,8 @@
 
 // 📦 Type definitions for Cart (Ruby Service)
 
-import { Micropost } from "@/types/micropost/micropost";
 import { Product, Variant } from "@/types/product";
+import { Nullable, Optional } from "../common";
 
 export interface CartCreate {
   readonly id: string;
@@ -17,7 +17,7 @@ export interface CartCreate {
 
 export interface ListParams {
   page?: number;
-  [key: string]: any;
+  [key: string]: Optional<Nullable<unknown>>;
 }
 
 export interface Meta {
@@ -73,13 +73,6 @@ export interface CartShow {
   following: number;
   followers: number;
   current_cart_following_cart: boolean;
-}
-
-export interface ShowResponse {
-  cart: CartShow;
-  id_relationships?: number;
-  microposts: Micropost[];
-  total_count: number;
 }
 
 export interface CartEdit {

@@ -12,9 +12,9 @@ interface MobileMenuSlideOutProps {
   wishlistItemsCount: number;
   handleUserIconClick: () => void;
   setShowMobileMenu: (value: boolean) => void;
-  setShowUserSlideOut: (value: boolean) => void;
-  setShowLoginModal: (value: boolean) => void;
-  setShowMobileSearch: (value: boolean) => void;
+  // setShowUserSlideOut: (value: boolean) => void;
+  // setShowLoginModal: (value: boolean) => void;
+  // setShowMobileSearch: (value: boolean) => void;
   handleMobileSearchClick: () => void;
 }
 
@@ -25,9 +25,9 @@ export default function MobileMenuSlideOut({
   wishlistItemsCount,
   handleUserIconClick,
   setShowMobileMenu,
-  setShowUserSlideOut,
-  setShowLoginModal,
-  setShowMobileSearch,
+  // setShowUserSlideOut,
+  // setShowLoginModal,
+  // setShowMobileSearch,
   handleMobileSearchClick
 }: MobileMenuSlideOutProps) {
   return (

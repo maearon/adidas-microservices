@@ -7,9 +7,13 @@ import Breadcrumb from "@/components/Breadcrumb"
 import BreadcrumbForDetailProductPage from "@/components/BreadcrumbForDetailProductPage"
 import { buildBreadcrumbFromProductDetail } from "@/utils/breadcrumb"
 import { Product } from "@/types/product"
-import { Badge, Star } from "lucide-react"
+import { 
+  // Badge, 
+  Star 
+} from "lucide-react"
 import { upperWords } from "@/utils/upper-words"
 import ProductPrice from "./ProductCardPrice"
+import Image from "next/image"
 
 interface ExpandableImageGalleryProps {
   images: string[]
@@ -52,7 +56,7 @@ export default function ExpandableImageGallery({ variant, images, productName, p
   }, [isMobile, lightboxOpen])
 
   const displayImages = showAllImages ? images.slice(0, 10) : images.slice(0, 4)
-  const remainingCount = Math.max(0, images.length - 4)
+  // const remainingCount = Math.max(0, images.length - 4)
 
   const openLightbox = (index: number) => {
     if (!isMobile) {
@@ -131,9 +135,18 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                 onClick={() => openLightbox(index)}
                 style={{ cursor: !isMobile ? getZoomCursor() : "default" }}
               >
-                <img
+                {/* <img
                   src={image || "/placeholder.svg"}
                   alt={`${productName} view ${index + 1}`}
+                  className={`w-full h-full object-cover transition-transform duration-300 ${
+                    !isMobile ? "group-hover:scale-110" : ""
+                  }`}
+                /> */}
+                <Image
+                  src={image || "/placeholder.svg"}
+                  alt={`${productName} view ${index + 1}`}
+                  fill // need relative
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className={`w-full h-full object-cover transition-transform duration-300 ${
                     !isMobile ? "group-hover:scale-110" : ""
                   }`}

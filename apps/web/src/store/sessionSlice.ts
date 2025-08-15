@@ -83,8 +83,11 @@ export const fetchUser = createAsyncThunk(
         }
       }
       return thunkAPI.rejectWithValue('Cannot fetch user')
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error?.message || 'Cannot fetch user')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return thunkAPI.rejectWithValue(error.message)
+      }
+      return thunkAPI.rejectWithValue('Cannot fetch user')
     }
   }
 )

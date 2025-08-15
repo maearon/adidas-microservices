@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 
@@ -13,21 +13,21 @@ export interface Slide {
   href?: string
 }
 
-interface PromoCarouselProps<T> {
+interface PromoCarouselProps<T extends Slide> {
   items: T[]
   renderItem: (item: T, index: number) => React.ReactNode
 }
 
-export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselProps<T>) {
+export default function PromoCarousel<T extends Slide>({
+  items,
+  renderItem,
+}: PromoCarouselProps<T>) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(false)
   const [itemsPerView, setItemsPerView] = useState(4)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const totalSlides = Math.ceil(items.length / itemsPerView)
-  // const totalSlides = useMemo(() => {
-  //   return Math.ceil(items.length / itemsPerView) No need to use useMemo in react 19
-  // }, [items.length, itemsPerView])
 
   useEffect(() => {
     const updateItems = () => {
@@ -47,17 +47,17 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
     setCurrentIndex(0)
   }, [itemsPerView])
 
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => Math.min(prev + 1, totalSlides - 1))
+  }, [totalSlides])
+
   useEffect(() => {
     if (!isAutoPlaying) return
     const interval = setInterval(() => {
       nextSlide()
     }, 5000)
     return () => clearInterval(interval)
-  }, [isAutoPlaying])
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, totalSlides - 1))
-  }
+  }, [isAutoPlaying, nextSlide])
 
   const prevSlide = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0))
@@ -74,7 +74,9 @@ export default function PromoCarousel<T>({ items, renderItem }: PromoCarouselPro
             ref={containerRef}
             className="flex transition-transform duration-500 ease-in-out gap-6"
             style={{
-              transform: `translateX(-${(100 / items.length) * itemsPerView * currentIndex}%)`,
+              transform: `translateX(-${
+                (100 / items.length) * itemsPerView * currentIndex
+              }%)`,
               width: `${(100 / itemsPerView) * items.length}%`,
             }}
           >

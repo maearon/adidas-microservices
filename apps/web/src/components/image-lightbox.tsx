@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useCallback } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import Image from "next/image"
 
 interface ImageLightboxProps {
   images: string[]
@@ -164,9 +165,23 @@ export default function ImageLightbox({
 
       {/* Image Container */}
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <img
+        {/* <img
           src={images[currentIndex] || "/placeholder.svg"}
           alt={`${productName} - Image ${currentIndex + 1}`}
+          className="max-w-full max-h-full object-contain transition-transform duration-200"
+          style={{
+            transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
+            cursor: getImageCursor(),
+          }}
+          onClick={handleImageClick}
+          onMouseDown={handleMouseDown}
+          draggable={false}
+        /> */}
+        <Image
+          src={images[currentIndex] || "/placeholder.svg"}
+          alt={`${productName} - Image ${currentIndex + 1}`}
+          fill // need relative
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="max-w-full max-h-full object-contain transition-transform duration-200"
           style={{
             transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
@@ -201,7 +216,14 @@ export default function ImageLightbox({
               index === currentIndex ? "border-border" : "border-gray-300"
             }`}
           >
-            <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />
+            {/* <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" /> */}
+            <Image
+              src={image || "/placeholder.svg"}
+              alt=""
+              fill // need relative
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="w-full h-full object-cover"
+            />
           </button>
         ))}
         {/* {images.length > 5 && (

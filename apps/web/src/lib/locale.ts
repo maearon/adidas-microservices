@@ -1,10 +1,10 @@
-// locale.server.ts — chỉ dùng ở server
+// src/lib/locale.ts
 import heroEn from "@/locales/en-US/hero.json"
 import heroVi from "@/locales/vi-VN/hero.json"
 import headerEn from "@/locales/en-US/header.json"
 import headerVi from "@/locales/vi-VN/header.json"
 
-const locales = {
+export const locales = {
   "en-US": {
     hero: heroEn,
     header: headerEn,
@@ -13,11 +13,8 @@ const locales = {
     hero: heroVi,
     header: headerVi,
   },
-}
+} as const
 
-type Locale = keyof typeof locales
-type Namespace = keyof typeof locales["en-US"]
-
-export function getTranslations(locale: Locale, namespace: Namespace) {
-  return locales[locale][namespace]
-}  
+export type Locale = keyof typeof locales
+export type Namespace = keyof typeof locales[Locale]
+export type TranslationKey<N extends Namespace> = keyof typeof locales[Locale][N]

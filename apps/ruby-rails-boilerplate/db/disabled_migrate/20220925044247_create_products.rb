@@ -2,7 +2,7 @@ class CreateProducts < ActiveRecord::Migration[6.0]
   def change
     create_table :products do |t|
       t.string :name
-      t.string :jan_code
+      t.string :model_number
       t.string :gender
       t.string :franchise
       t.string :producttype

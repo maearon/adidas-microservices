@@ -13,8 +13,10 @@ const axiosInstance = axios.create({
           return value;
         });
         return parsed;
-      } catch (err) {
+      // } catch (err) {
+      } catch {
         return data; // fallback nếu không phải JSON
+        // throw err
       }
     },
   ],

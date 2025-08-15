@@ -84,7 +84,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               </div>
 
               <p className="text-gray-800 mb-2">
-                Don't hold back. Good or bad - <strong>tell it like it is.</strong>
+                Don&apos;t hold back. Good or bad - <strong>tell it like it is.</strong>
               </p>
             </div>
 

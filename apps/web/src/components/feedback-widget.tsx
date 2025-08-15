@@ -4,7 +4,10 @@ import * as React from "react"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "@/components/adidas-logo"
-import { ToastContainer, toast } from 'react-toastify'
+import { 
+  // ToastContainer, 
+  toast 
+} from 'react-toastify'
 
 export default function FeedbackWidget() {
   const [isClosed, setIsClosed] = React.useState(false)
@@ -84,7 +87,7 @@ export default function FeedbackWidget() {
               </div>
 
               <p className="text-base leading-relaxed">
-                Don't hold back. Good or bad - <span className="font-semibold">tell it like it is</span>.
+                Don&apos;t hold back. Good or bad - <span className="font-semibold">tell it like it is</span>.
               </p>
 
               <div className="space-y-4">

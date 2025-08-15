@@ -80,11 +80,11 @@ end
 #   p = Product.create!(name: 'Loose Oversized Shirt',
 #                       gender: 'Men',
 #                       franchise: 'Tubular',
-#                       producttype: 'Wear',
+#                       product_type: 'Wear',
 #                       brand: 'Originals',
 #                       category: 'Shoes',
 #                       sport: 'Running',
-#                       jan_code: '0886'<<i.to_s,
+#                       model_number: '0886'<<i.to_s,
 #                       variants_attributes: {
 #                         0 => {
 #                           color: 'Black', price: '65', originalprice: '90', sku: 'AQ0886', stock: '1000'

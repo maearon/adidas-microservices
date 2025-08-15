@@ -1,20 +1,16 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query"
-import rubyService from "@/api/services/rubyService"
-import { Product, ProductFilters, ProductsResponse } from "@/types/product"
+import { InfiniteData, useQuery } from "@tanstack/react-query"
+import { ProductFilters } from "@/types/product"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
 import { useInfiniteQuery } from "@tanstack/react-query";
-import api from "@/api/client";
-import kyInstance from "@/lib/ky";
 import { ProductData, ProductsPage } from "@/lib/types";
 import axiosInstance from "@/lib/axios";
-
-const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
+import type { AxiosError } from "axios";
 
 export const useSearchProductsFeed = (query: string) => {
   return useInfiniteQuery({
     queryKey: ["product-feed", "search", query],
     queryFn: async ({ pageParam }) => {
-      const response = await axiosInstance.get<ProductsPage>("/api/search", {
+      const response = await axiosInstance.get<ProductsPage>("/api/search", { // search/route.ts
         params: {
           q: query,
           ...(pageParam ? { cursor: pageParam } : {}),
@@ -24,7 +20,7 @@ export const useSearchProductsFeed = (query: string) => {
     },
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: AxiosError<{ code?: string }>) => {
       if (error?.code === "ERR_NETWORK") return false;
       return failureCount < 1;
     }
@@ -49,12 +45,12 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
         const product = response.data;
         if (!product) throw new Error("Product not found")
         return product
-      } catch (error: any) {
+      } catch (error: unknown) {
         handleNetworkError(error)
         throw error
       }
     },
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: AxiosError<{ code?: string }>) => {
       if (error?.code === "ERR_NETWORK") return false
       return failureCount < 1
     }
@@ -65,26 +61,59 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
 // ✅ useProducts: Lấy danh sách sản phẩm
 // ===============================
 
+// export const useProducts = (filters: ProductFilters = {}) => {
+//   return useInfiniteQuery<ProductsPage, Error, ProductsPage, (string | ProductFilters)[], string | undefined>({
+//     queryKey: ["product-list", "search", filters],
+//     queryFn: async ({ pageParam = undefined }) => {
+//       const response = await axiosInstance.get<ProductsPage>("/api/search", {
+//         params: {
+//           q: 'a',
+//           ...(pageParam ? { cursor: pageParam } : {}),
+//         },
+//       });
+//       return response.data;
+//     },
+//     getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
+//     initialPageParam: undefined,
+//     retry: (failureCount, error) => {
+//       const axiosErr = error as import("axios").AxiosError<{ code?: string }>;
+//       if (axiosErr.code === "ERR_NETWORK") return false;
+//       return failureCount < 1;
+//     }
+//   });
+// };
+
 export const useProducts = (filters: ProductFilters = {}) => {
-  return useInfiniteQuery<ProductsPage, Error, ProductsPage, (string | ProductFilters)[], string | undefined>({
+  return useInfiniteQuery<
+    ProductsPage, // TQueryFnData
+    AxiosError<{ code?: string }>, // TError
+    InfiniteData<ProductsPage>, // TData (đảm bảo data.pages tồn tại)
+    (string | ProductFilters)[], // TQueryKey
+    string | undefined // TPageParam
+  >({
     queryKey: ["product-list", "search", filters],
     queryFn: async ({ pageParam = undefined }) => {
       const response = await axiosInstance.get<ProductsPage>("/api/search", {
-        params: {
-          q: 'a',
-          ...(pageParam ? { cursor: pageParam } : {}),
-        },
+        params: { q: "a", ...(pageParam ? { cursor: pageParam } : {}) },
       });
       return response.data;
     },
     getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
     initialPageParam: undefined,
-    retry: (failureCount, error: any) => {
-      if (error?.code === "ERR_NETWORK") return false;
+    retry: (failureCount, error) => {
+      if (error.code === "ERR_NETWORK") return false;
       return failureCount < 1;
     }
   });
 };
+
+// useInfiniteQuery<
+//   TQueryFnData, // 1️⃣ Dữ liệu trả về từ queryFn
+//   TError,       // 2️⃣ Kiểu error (mặc định: unknown)
+//   TData,        // 3️⃣ Dữ liệu sau khi transform (select)
+//   TQueryKey,    // 4️⃣ Kiểu queryKey
+//   TPageParam    // 5️⃣ Kiểu pageParam
+// >()
 
 // export function useProducts(
 //   filters: ProductFilters = {}

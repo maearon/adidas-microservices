@@ -44,7 +44,7 @@ def create_index_if_not_exists():
                     "brand":       { "type": "text" },
                     "category":    { "type": "keyword" },
                     "suggest":     { "type": "completion" },
-                    "jan_code":    { "type": "keyword" },
+                    "model_number":    { "type": "keyword" },
                     "gender":      { "type": "keyword" },
                     "franchise":   { "type": "keyword" },
                     "producttype": { "type": "keyword" },
@@ -82,7 +82,7 @@ def index_product_and_variants(data):
     # Index product
     product_doc = {
         "name":           data.get("name", ""),
-        "jan_code":       data.get("jan_code", ""),
+        "model_number":       data.get("model_number", ""),
         "gender":         data.get("gender", ""),
         "franchise":      data.get("franchise", ""),
         "producttype":    data.get("producttype", ""),

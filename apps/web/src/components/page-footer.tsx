@@ -6,11 +6,11 @@ import { useState } from "react"
 
 interface Props {
   currentPage: "home" | "men" | "women" | "kids";
-  onNavigate?: (page: "home" | "men" | "women" | "kids") => void
+  // onNavigate?: (page: "home" | "men" | "women" | "kids") => void
   typeMobileResponsive?: "accordion1x4" | "accordion2x2"
 }
 
-export default function PageFooter({currentPage = "home", onNavigate, typeMobileResponsive = "accordion1x4" }: Props) {
+export default function PageFooter({currentPage = "home", typeMobileResponsive = "accordion1x4" }: Props) {
   const [openCategory, setOpenCategory] = useState<string | null>(null)
 
   const toggleCategory = (category: string) => {

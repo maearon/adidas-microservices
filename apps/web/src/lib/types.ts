@@ -30,4 +30,5 @@ export type ProductData = Prisma.productsGetPayload<{
 export interface ProductsPage {
   products: ProductData[]
   nextCursor: string | null
+  totalCount: number; // thêm dòng này
 }

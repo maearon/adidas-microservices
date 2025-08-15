@@ -126,7 +126,7 @@ export async function GET(req: NextRequest) {
       serializeBigInt({
         products: productsWithImages,
         nextCursor,
-        totalCount,
+        totalCount,  // thêm dòng này
       })
     )
   } catch (error) {

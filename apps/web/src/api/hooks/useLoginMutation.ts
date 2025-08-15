@@ -13,6 +13,7 @@ import { clearTokens } from "@/lib/token"
 // ------------------------
 // apps/web/api/hooks/useInitSession.ts
 import { useCurrentUser } from "./useCurrentUser"
+import type { AxiosError } from "axios"
 
 export const useInitSession = () => {
   useCurrentUser()
@@ -61,7 +62,7 @@ export const useLoginMutation = () => {
         setTokens(access.token, refresh.token, keepLoggedIn)
 
         return response
-      } catch (error: any) {
+      } catch (error: unknown) {
         handleNetworkError(error)
         throw error
       }
@@ -73,21 +74,22 @@ export const useLoginMutation = () => {
           title: "Success",
           description: "Logged in successfully!",
         })
-      } catch (err) {
+      } catch (err) {      
         toast({
           variant: "default",
           title: "Logged in",
           description: "But failed to fetch user profile.",
         })
+        throw err
       }
     },
-    onError: (error: any) => {
-      const message = error?.response?.data?.error
+    onError: (error: AxiosError<{ error?: string }>) => {
+      const message = error.response?.data?.error
       toast({
         variant: "destructive",
         title: "Login Failed",
         description: message ? `Error: ${message}` : "Login failed. Please try again.",
       })
-    },
+    }
   })
 }

@@ -9,7 +9,10 @@ interface Props {
 }
 
 const AdidasLogo = ({ className }: Props) => {
-  const { theme, resolvedTheme } = useTheme()
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   // Avoid hydration mismatch

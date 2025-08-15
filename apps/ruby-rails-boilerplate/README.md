@@ -24,7 +24,7 @@ WHERE table_name = 'products';
 12	specifications	text
 13	care	text
 14	name	varchar
-15	jan_code	varchar
+15	model_number	varchar
 ```
 🔎 2. Cột trong bảng variants
 ```
@@ -230,10 +230,10 @@ ruby-rails-boilerplate(dev)> Product.first
 #<Product:0x00007cd380cd9a30
  id: 1,
  name: "Loose Oversized Shirt",
- jan_code: "08861",
+ model_number: "08861",
  gender: "Men",
  franchise: "Tubular",
- producttype: "Wear",
+ product_type: "Wear",
  brand: "Originals",
  category: "Shoes",
  sport: "Running",

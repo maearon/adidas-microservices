@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { BaseButton } from "@/components/ui/base-button"
 import ProductCarousel from "@/components/product-carousel"
 import { Product } from "@/types/product"
 import { useProducts } from "@/api/hooks/useProducts"
@@ -28,11 +27,13 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
   })
 
   const products =
-    !data?.products || error
+    !data?.pages.flatMap((page) => page.products) || error
       ? initialProductsByTab?.[activeTab] ?? []
-      : data.products
+      : data?.pages.flatMap((page) => page.products)
+  //     const products = data?.pages.flatMap((page) => page.products) || [];
+  // const totalCount = data?.pages?.[0]?.totalCount ?? 0;
 
-  const activeTabLabel = tabs.find((tab) => tab.id === activeTab)?.label
+  // const activeTabLabel = tabs.find((tab) => tab.id === activeTab)?.label
   const viewMoreHref = tabs.find((tab) => tab.id === activeTab)?.endpoint
 
   return (
@@ -77,7 +78,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
         <Loading />
       ) : products.length > 0 ? (
         <ProductCarousel
-          products={products}
+          products={products as Product[]}
           viewMoreHref={`/${viewMoreHref}`}
           carouselModeInMobile={false}
           minimalMobileForProductCard

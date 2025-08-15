@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X } from "lucide-react"
-import { Formik, Form, Field, ErrorMessage } from "formik"
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
@@ -14,7 +14,7 @@ import { fetchUser } from "@/store/sessionSlice"
 import flashMessage from "./shared/flashMessages"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
-import { useSignupMutation } from "@/api/hooks/useSignupMutation"
+import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import AdidasLogo from "./adidas-logo"
 import LoginButtons from "./auth/LoginButtons"
 
@@ -32,11 +32,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState("") // lưu email sau bước 1
   const [keepLoggedIn, setKeepLoggedIn] = useState(true) // lưu keepLoggedIn sau bước 1
   const [isLoading, setIsLoading] = useState(false)
-  const [socialLoading, setSocialLoading] = useState<"apple" | "facebook" | "google" | "yahoo" | null>(null)
+  // const [socialLoading, setSocialLoading] = useState<"apple" | "facebook" | "google" | "yahoo" | null>(null)
   const dispatch = useDispatch<AppDispatch>()
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-  }
+  // if (typeof window !== "undefined") {
+  //   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  // }
   const {
     mutateAsync: checkEmail, 
     isPending 
@@ -49,7 +49,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const {
     mutateAsync: signupMutation,
     isPending: isRegistering
-  } = useSignupMutation()
+  } = useSignupMutation<SignupResponse>();
 
   useEffect(() => {
     if (isOpen) {
@@ -93,6 +93,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       }
     } catch (err) {
       flashMessage("error", "Login failed")
+      throw err
     }
   }
 
@@ -106,7 +107,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       }
     }
     try {
-      const name = email.split("@")[0]
       const res = await signupMutation(payload)
       if (res?.success) {
         // flashMessage("success", "Account created!")
@@ -117,6 +117,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       }
     } catch (err) {
       flashMessage("error", "Something went wrong")
+      throw err
     }
   }
 
@@ -133,18 +134,17 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   //   return { handleSocialLogin }
   // }
 
-  const handleSocialLogin = (
-    provider: "apple" | "facebook" | "google" | "yahoo",
-    callback?: () => void,
-    delay: number = 3000
-  ) => {
-    setSocialLoading(provider)
-    setTimeout(() => {
-      setSocialLoading(null)
-      callback?.()
-    }, delay)
-  }
-
+  // const handleSocialLogin = (
+  //   provider: "apple" | "facebook" | "google" | "yahoo",
+  //   callback?: () => void,
+  //   delay: number = 3000
+  // ) => {
+  //   setSocialLoading(provider)
+  //   setTimeout(() => {
+  //     setSocialLoading(null)
+  //     callback?.()
+  //   }, delay)
+  // }
 
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -265,7 +265,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 <Form className="space-y-4">
                   <div>
                     <Field name="email">
-                      {({ field }: any) => (
+                      {({ field }: FieldProps) => (
                         <div className="relative">
                           <Input
                             {...field}
@@ -323,7 +323,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     showArrow
                     pressEffect
                     shadow
-                    loading={isPending}
+                    loading={isPending || isLoading}
                     type="submit"
                     className="w-full py-3 font-semibold transition-colors"
                   >
@@ -345,7 +345,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
                   <Field name="password">
-                    {({ field }: any) => (
+                    {({ field }: FieldProps) => (
                       <Input {...field} type="password" placeholder="Password *" />
                     )}
                   </Field>
@@ -380,14 +380,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
                   <Field name="password">
-                    {({ field }: any) => (
+                    {({ field }: FieldProps) => (
                       <Input {...field} type="password" placeholder="Create Password *" />
                     )}
                   </Field>
                   <Button
                     type="submit"
                     className="w-full bg-black text-white hover:bg-gray-800 py-3"
-                    loading={isRegistering}
+                    loading={isRegistering || isSubmitting}
                   >
                     {isRegistering ? "LOADING..." : "CREATE PASSWORD"}
                   </Button>
@@ -400,7 +400,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <div className="mt-6 text-xs text-gray-500">
             <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
             <p>
-              By clicking the "Continue" button, you are joining adiClub, will receive emails with the latest news and
+              By clicking the &quot;Continue&quot; button, you are joining adiClub, will receive emails with the latest news and
               updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
               <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
               <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the

@@ -9,13 +9,20 @@ import { Input } from "@/components/ui/input"
 interface FiltersSidebarProps {
   isOpen: boolean
   onClose: () => void
-  onApplyFilters: (filters: any) => void
-  slug: string
-  currentFilters: any
+  onApplyFilters: (filters: Record<string, string[] | string | number>) => void
+  currentFilters: Record<string, string[] | string | number>
 }
 
-export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, currentFilters }: FiltersSidebarProps) {
-  const [filters, setFilters] = useState<any>({})
+type FiltersState = Record<string, string | number | string[] | undefined>
+type Filters = Record<string, string[] | string | number | undefined>
+
+export default function FiltersSidebar({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  currentFilters,
+}: FiltersSidebarProps) {
+  const [filters, setFilters] = useState<FiltersState>({})
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     sort: true,
     shipping: false,
@@ -49,7 +56,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
   }
 
   const handleFilterChange = (filterType: string, value: string, checked: boolean) => {
-    setFilters((prev: any) => {
+    setFilters((prev: FiltersState) => {
       const newFilters = { ...prev }
 
       if (!newFilters[filterType]) {
@@ -57,12 +64,23 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
       }
 
       if (checked) {
-        if (!newFilters[filterType].includes(value)) {
-          newFilters[filterType] = [...newFilters[filterType], value]
+        const currentValues = Array.isArray(newFilters[filterType])
+          ? (newFilters[filterType] as string[])
+          : []
+
+        if (!currentValues.includes(value)) {
+          newFilters[filterType] = [...currentValues, value]
         }
       } else {
-        newFilters[filterType] = newFilters[filterType].filter((v: string) => v !== value)
-        if (newFilters[filterType].length === 0) {
+        const currentValues = Array.isArray(newFilters[filterType])
+          ? (newFilters[filterType] as string[])
+          : []
+
+        const updatedValues = currentValues.filter((v) => v !== value)
+
+        if (updatedValues.length > 0) {
+          newFilters[filterType] = updatedValues
+        } else {
           delete newFilters[filterType]
         }
       }
@@ -72,7 +90,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
   }
 
   const handleSortChange = (sortValue: string) => {
-    setFilters((prev: any) => ({
+    setFilters((prev: FiltersState) => ({
       ...prev,
       sort: sortValue,
     }))
@@ -83,7 +101,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
       ...prev,
       [type]: value,
     }))
-    setFilters((prev: any) => ({
+    setFilters((prev: FiltersState) => ({
       ...prev,
       min_price: type === "min" ? value : prev.min_price || priceRange.min,
       max_price: type === "max" ? value : prev.max_price || priceRange.max,
@@ -107,7 +125,7 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
 
   const getAppliedFiltersCount = () => {
     let count = 0
-    Object.values(filters).forEach((value: any) => {
+    Object.values(filters).forEach((value: unknown) => {
       if (Array.isArray(value)) {
         count += value.length
       } else if (value) {
@@ -134,28 +152,9 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
   ]
 
   const sizeOptions = [
-    "4",
-    "4.5",
-    "5",
-    "5.5",
-    "6",
-    "6.5",
-    "7",
-    "7.5",
-    "8",
-    "8.5",
-    "9",
-    "9.5",
-    "10",
-    "10.5",
-    "11",
-    "11.5",
-    "12",
-    "12.5",
-    "13",
-    "13.5",
-    "14",
-    "15",
+    "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5",
+    "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5",
+    "12", "12.5", "13", "13.5", "14", "15",
   ]
 
   return (
@@ -170,7 +169,10 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Filter & Sort</h2>
             <div className="flex items-center space-x-2">
-              <button onClick={clearAllFilters} className="text-base text-gray-500 hover:text-gray-700 underline">
+              <button
+                onClick={clearAllFilters}
+                className="text-base text-gray-500 hover:text-gray-700 underline"
+              >
                 Clear All
               </button>
               <button onClick={onClose}>
@@ -188,7 +190,10 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
               {Object.entries(filters).map(([key, value]) => {
                 if (Array.isArray(value) && value.length > 0) {
                   return value.map((item) => (
-                    <div key={`${key}-${item}`} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
+                    <div
+                      key={`${key}-${item}`}
+                      className="flex items-center bg-gray-100 rounded px-2 py-1 text-base"
+                    >
                       <span className="bg-white dark:bg-black text-black dark:text-white">{item}</span>
                       <button
                         onClick={() => handleFilterChange(key, item, false)}
@@ -200,10 +205,13 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
                   ))
                 } else if (typeof value === "string" && value) {
                   return (
-                    <div key={key} className="flex items-center bg-gray-100 rounded px-2 py-1 text-base">
+                    <div
+                      key={key}
+                      className="flex items-center bg-gray-100 rounded px-2 py-1 text-base"
+                    >
                       <span className="bg-white dark:bg-black text-black dark:text-white">{value}</span>
                       <button
-                        onClick={() => setFilters((prev: any) => ({ ...prev, [key]: undefined }))}
+                        onClick={() => setFilters((prev: Filters) => ({ ...prev, [key]: undefined }))}
                         className="ml-1 text-gray-500 hover:text-gray-700"
                       >
                         <X className="h-3 w-3" />
@@ -220,183 +228,199 @@ export default function FiltersSidebar({ isOpen, onClose, onApplyFilters, slug, 
         {/* Filter Sections */}
         <div className="p-4 space-y-6">
           {/* Sort By */}
-          <div>
-            <button
-              onClick={() => toggleSection("sort")}
-              className="flex items-center justify-between w-full text-left font-medium mb-3"
-            >
-              <span>SORT BY</span>
-              {expandedSections.sort ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
-            {expandedSections.sort && (
-              <div className="space-y-2">
-                {["PRICE (LOW - HIGH)", "NEWEST", "TOP SELLERS", "PRICE (HIGH - LOW)"].map((option) => (
-                  <label key={option} className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="sort"
-                      value={option}
-                      checked={filters.sort === option}
-                      onChange={(e) => handleSortChange(e.target.value)}
-                      className="w-4 h-4"
-                    />
-                    <span className="text-base">{option}</span>
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
+          <FilterSection
+            title="SORT BY"
+            expanded={expandedSections.sort}
+            onToggle={() => toggleSection("sort")}
+          >
+            {["PRICE (LOW - HIGH)", "NEWEST", "TOP SELLERS", "PRICE (HIGH - LOW)"].map((option) => (
+              <label key={option} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="sort"
+                  value={option}
+                  checked={filters.sort === option}
+                  onChange={(e) => handleSortChange(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <span className="text-base">{option}</span>
+              </label>
+            ))}
+          </FilterSection>
 
           {/* Gender */}
-          <div>
-            <button
-              onClick={() => toggleSection("gender")}
-              className="flex items-center justify-between w-full text-left font-medium mb-3"
-            >
-              <span>GENDER</span>
-              {expandedSections.gender ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
-            {expandedSections.gender && (
-              <div className="space-y-2">
-                {[
-                  { value: "women", label: "Women", count: 128 },
-                  { value: "men", label: "Men", count: 126 },
-                  { value: "unisex", label: "Unisex", count: 116 },
-                  { value: "kids", label: "Kids", count: 58 },
-                ].map((option) => (
-                  <label key={option.value} className="flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={(filters.gender || []).includes(option.value)}
-                        onCheckedChange={(checked) => handleFilterChange("gender", option.value, checked as boolean)}
-                      />
-                      <span className="text-base">{option.label}</span>
-                    </div>
-                    <span className="text-xs text-gray-500">({option.count})</span>
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
+          <FilterSection
+            title="GENDER"
+            expanded={expandedSections.gender}
+            onToggle={() => toggleSection("gender")}
+          >
+            {[
+              { value: "women", label: "Women", count: 128 },
+              { value: "men", label: "Men", count: 126 },
+              { value: "unisex", label: "Unisex", count: 116 },
+              { value: "kids", label: "Kids", count: 58 },
+            ].map((option) => (
+              <label key={option.value} className="flex items-center justify-between cursor-pointer">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={(Array.isArray(filters.gender) ? filters.gender : []).includes(option.value)}
+                    onCheckedChange={(checked) =>
+                      handleFilterChange("gender", option.value, checked as boolean)
+                    }
+                  />
+                  <span className="text-base">{option.label}</span>
+                </div>
+                <span className="text-xs text-gray-500">({option.count})</span>
+              </label>
+            ))}
+          </FilterSection>
 
           {/* Size */}
-          <div>
-            <button
-              onClick={() => toggleSection("size")}
-              className="flex items-center justify-between w-full text-left font-medium mb-3"
-            >
-              <span>SIZE</span>
-              {expandedSections.size ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
-            {expandedSections.size && (
-              <div className="grid grid-cols-5 gap-2">
-                {sizeOptions.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => handleFilterChange("size", size, !(filters.size || []).includes(size))}
-                    className={`p-2 text-base border rounded transition-colors ${
-                      (filters.size || []).includes(size)
-                        ? "border-border bg-black text-white"
-                        : "border-gray-300 hover:border-gray-500"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <FilterSection
+            title="SIZE"
+            expanded={expandedSections.size}
+            onToggle={() => toggleSection("size")}
+          >
+            <div className="grid grid-cols-5 gap-2">
+              {sizeOptions.map((size) => (
+                <button
+                  key={size}
+                  onClick={() =>
+                    handleFilterChange(
+                      "size",
+                      size,
+                      !(Array.isArray(filters.size) ? filters.size : []).includes(size)
+                    )
+                  }
+                  className={`p-2 text-base border rounded transition-colors ${
+                    (Array.isArray(filters.size) ? filters.size : []).includes(size)
+                      ? "border-border bg-black text-white"
+                      : "border-gray-300 hover:border-gray-500"
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </FilterSection>
 
           {/* Color */}
-          <div>
-            <button
-              onClick={() => toggleSection("color")}
-              className="flex items-center justify-between w-full text-left font-medium mb-3"
-            >
-              <span>COLOR</span>
-              {expandedSections.color ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
-            {expandedSections.color && (
-              <div className="grid grid-cols-8 gap-2">
-                {colorOptions.map((color) => (
-                  <button
-                    key={color.value}
-                    onClick={() =>
-                      handleFilterChange("color", color.value, !(filters.color || []).includes(color.value))
-                    }
-                    className={`w-8 h-8 rounded border-2 transition-all ${
-                      (filters.color || []).includes(color.value)
-                        ? "border-border scale-110"
-                        : "border-gray-300 hover:border-gray-500"
-                    }`}
-                    style={{ backgroundColor: color.hex }}
-                    title={color.label}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+          <FilterSection
+            title="COLOR"
+            expanded={expandedSections.color}
+            onToggle={() => toggleSection("color")}
+          >
+            <div className="grid grid-cols-8 gap-2">
+              {colorOptions.map((color) => (
+                <button
+                  key={color.value}
+                  onClick={() =>
+                    handleFilterChange(
+                      "color",
+                      color.value,
+                      !(Array.isArray(filters.color) ? filters.color : []).includes(color.value)
+                    )
+                  }
+                  className={`w-8 h-8 rounded border-2 transition-all ${
+                    (Array.isArray(filters.color) ? filters.color : []).includes(color.value)
+                      ? "border-border scale-110"
+                      : "border-gray-300 hover:border-gray-500"
+                  }`}
+                  style={{ backgroundColor: color.hex }}
+                  title={color.label}
+                />
+              ))}
+            </div>
+          </FilterSection>
 
           {/* Price */}
-          <div>
-            <button
-              onClick={() => toggleSection("price")}
-              className="flex items-center justify-between w-full text-left font-medium mb-3"
-            >
-              <span>PRICE</span>
-              {expandedSections.price ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </button>
-            {expandedSections.price && (
-              <div className="space-y-4">
-                <div className="text-center text-base text-gray-600 dark:text-white">
-                  ${priceRange.min} – ${priceRange.max}
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <label className="block text-xs text-gray-500 mb-1">Minimum</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                      <Input
-                        type="number"
-                        value={priceRange.min}
-                        onChange={(e) => handlePriceChange("min", Number.parseInt(e.target.value) || 65)}
-                        className="pl-6"
-                        min={65}
-                        max={300}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <label className="block text-xs text-gray-500 mb-1">Maximum</label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                      <Input
-                        type="number"
-                        value={priceRange.max}
-                        onChange={(e) => handlePriceChange("max", Number.parseInt(e.target.value) || 300)}
-                        className="pl-6"
-                        min={65}
-                        max={300}
-                      />
-                    </div>
-                  </div>
-                </div>
+          <FilterSection
+            title="PRICE"
+            expanded={expandedSections.price}
+            onToggle={() => toggleSection("price")}
+          >
+            <div className="space-y-4">
+              <div className="text-center text-base text-gray-600 dark:text-white">
+                ${priceRange.min} – ${priceRange.max}
               </div>
-            )}
-          </div>
+              <div className="flex gap-2">
+                <PriceInput
+                  label="Minimum"
+                  value={priceRange.min}
+                  onChange={(v) => handlePriceChange("min", v)}
+                />
+                <PriceInput
+                  label="Maximum"
+                  value={priceRange.max}
+                  onChange={(v) => handlePriceChange("max", v)}
+                />
+              </div>
+            </div>
+          </FilterSection>
         </div>
 
         {/* Apply Button */}
         <div className="sticky bottom-0 bg-background border-t border-gray-200 p-4">
           <Button
             pressEffect={true}
-            fullWidth={false}
             onClick={applyFilters}
             className="w-full bg-black text-white hover:bg-gray-800 py-3 text-base font-medium"
           >
             APPLY ({getAppliedFiltersCount()})
           </Button>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function FilterSection({
+  title,
+  expanded,
+  onToggle,
+  children,
+}: {
+  title: string
+  expanded: boolean
+  onToggle: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <div>
+      <button
+        onClick={onToggle}
+        className="flex items-center justify-between w-full text-left font-medium mb-3"
+      >
+        <span>{title}</span>
+        {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      </button>
+      {expanded && <div className="space-y-2">{children}</div>}
+    </div>
+  )
+}
+
+function PriceInput({
+  label,
+  value,
+  onChange,
+}: {
+  label: string
+  value: number
+  onChange: (value: number) => void
+}) {
+  return (
+    <div className="flex-1">
+      <label className="block text-xs text-gray-500 mb-1">{label}</label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+        <Input
+          type="number"
+          value={value}
+          onChange={(e) => onChange(Number.parseInt(e.target.value) || value)}
+          className="pl-6"
+          min={65}
+          max={300}
+        />
       </div>
     </div>
   )

@@ -1,26 +1,20 @@
 // 📁 @/lib/mappers/product-to-wishlist.ts
 
-import type { WishlistItem } from "@/types/wish"
+import type { Product } from "@/types/product";
+import type { WishlistItem } from "@/types/wish";
 
-interface PartialProductForWishlist {
-  id: number
-  name: string
-  price: string
-  sport?: string
-  image?: string
-  image_url?: string
-  category?: string
-  url?: string
-}
-
-export function mapProductToWishlistItem(product: PartialProductForWishlist): WishlistItem {
+/**
+ * Map a full Product object to a WishlistItem
+ * Ensures type safety and normalizes ID and price.
+ */
+export function mapProductToWishlistItem(product: Product): WishlistItem {
   return {
-    id: product.id,
-    name: product.name,
+    id: Number(product.id), // ✅ ép kiểu để luôn là number
+    name: product.name || "Unknown Product",
     sport: product.sport,
-    price: product.price,
+    price: String(product.price), // ✅ đảm bảo là string
     image: product.image || product.image_url || "/placeholder.png",
     category: product.category,
     url: product.url,
-  }
+  };
 }
