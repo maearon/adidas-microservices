@@ -5,8 +5,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL")
+  url       = env("PRISMA_DATABASE_URL")
+  directUrl = env("PRISMA_DATABASE_URL")
 }
 
 model active_storage_attachments {
