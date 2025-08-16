@@ -113,6 +113,9 @@
 }
 
 @layer base {
+  html {
+    @apply antialiased;
+  }
   * {
     @apply border-border outline-ring/50;
   }

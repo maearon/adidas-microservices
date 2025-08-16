@@ -49,10 +49,11 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const sessionStateRedux = useAppSelector((state) => state.session)
   // Get user data from Better Auth
   const sessionState = session
-  const isLoggedIn = sessionStateRedux?.loggedIn || false
+  const isLoggedIn = sessionState?.session?.id ? true : false
   const userName = sessionState?.user?.name || "Guest"
   const userLevel = sessionStateRedux?.value?.level || "LEVEL 1"
-  const userToken = sessionStateRedux?.value?.token // Assuming you have JWT token in session
+  // Assuming you have JWT token in session
+  const userToken = sessionStateRedux?.value?.token || sessionState?.session?.token
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -227,7 +228,7 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
     setInputMessage(e.target.value)
     
     // Send typing indicator
-    if (socketRef.current) {
+    if (socketRef.current && isOpen) {
       socketRef.current.emit('typing', {
         roomId: 'general',
         isTyping: e.target.value.length > 0
