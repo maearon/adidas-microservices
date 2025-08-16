@@ -1,6 +1,6 @@
 // locale.client.ts — chỉ dùng ở client
 export function getLocaleFromClient(): string {
-  if (typeof window === "undefined") return "en-US"
+  if (typeof window === "undefined") return "en_US"
 
   // Ưu tiên delivery-location (nếu đã chọn trước đó)
   // const deliveryLocale = localStorage.getItem("delivery-location")
@@ -15,5 +15,5 @@ export function getLocaleFromClient(): string {
   if (match?.[1]) return match[1]
 
   // Fallback
-  return "en-US"
+  return "en_US"
 }

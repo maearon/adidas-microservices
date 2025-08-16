@@ -43,7 +43,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     items: [],
   })
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistory[]>([])
-  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
   const languageLabel = localeDisplayMap[locale]
   // const t = useTranslations("header")
 
@@ -59,8 +59,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       name: languageLabel,
       hasSubmenu: true,
       items: [
-        { name: "English", value: "en-US", flag: "/flag/us-show.svg" },
-        { name: "Tiếng Việt", value: "vi-VN", flag: "/flag/vn-show.svg" },
+        { name: "English", value: "en_US", flag: "/flag/us-show.svg" },
+        { name: "Tiếng Việt", value: "vi_VN", flag: "/flag/vn-show.svg" },
       ],
     },
   ]
@@ -350,11 +350,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <Image
                           src={
                             countryData?.flagShow ||
-                            (locale === "en-US" ? "/flag/us-show.svg" : "/flag/vn-show.svg")
+                            (locale === "en_US" ? "/flag/us-show.svg" : "/flag/vn-show.svg")
                           }
                           alt={
                             countryData?.label ||
-                            capitalizeWordsCountry(locale === "en-US" ? "United States" : "Việt Nam")
+                            capitalizeWordsCountry(locale === "en_US" ? "United States" : "Việt Nam")
                           }
                           width={24}
                           height={16}
@@ -420,7 +420,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           dispatch(setLocale(itemValue as SupportedLocale));
                           document.cookie = `NEXT_LOCALE=${itemValue}; path=/; max-age=31536000`
                           localStorage.setItem("NEXT_LOCALE", itemValue)
-                          setCountry(itemValue === "en-US" ? "US" : "VN") // Cập nhật country dựa trên locale
+                          setCountry(itemValue === "en_US" ? "US" : "VN") // Cập nhật country dựa trên locale
                           handleClose()
                         }
                       }}

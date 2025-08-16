@@ -1,25 +1,25 @@
-// Định dạng chuẩn BCP 47: "en-US", "vi-VN", ...
+// Định dạng chuẩn BCP 47: "en_US", "vi_VN", ...
 export type SupportedLocale = 
-"en-US"
-// | "en-UK" 
-| "vi-VN";
+"en_US"
+// | "en_UK" 
+| "vi_VN";
 
 export const localeDisplayMap: Record<SupportedLocale, string> = {
-  "en-US": "English (US)",
-  // "en-UK": "English (UK)",
-  "vi-VN": "Tiếng Việt",
+  "en_US": "English (US)",
+  // "en_UK": "English (UK)",
+  "vi_VN": "Tiếng Việt",
 };
 
 export const countryDisplayMap: Record<string, string> = {
-  "en-US": "United States",
-  "en-UK": "United Kingdom",
-  "vi-VN": "Việt Nam",
+  "en_US": "United States",
+  "en_UK": "United Kingdom",
+  "vi_VN": "Việt Nam",
 };
 
 export const countryToLocaleMap: Record<string, SupportedLocale> = {
-  "united-states": "en-US",
-  // "united-kingdom": "en-UK",
-  "vietnam": "vi-VN",
+  "united-states": "en_US",
+  // "united-kingdom": "en_UK",
+  "vietnam": "vi_VN",
 };
 
 export interface LocaleOption {
@@ -32,13 +32,13 @@ export interface LocaleOption {
 export const localeOptions: LocaleOption[] = [
   {
     label: "English (US)",
-    value: "en-US",
+    value: "en_US",
     flagShow: "/flag/us-show.svg",
     flag: "/flag/us.svg",
   },
   {
     label: "Tiếng Việt",
-    value: "vi-VN",
+    value: "vi_VN",
     flagShow: "/flag/vn-show.svg",
     flag: "/flag/vn.svg",
   },

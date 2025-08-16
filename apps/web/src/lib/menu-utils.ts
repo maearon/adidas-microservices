@@ -135,8 +135,8 @@ export const additionalMenuItems = [
     name: "Language",
     hasSubmenu: true,
     items: [
-      { name: "English", value: "en-US", flag: "/flag/us-show.svg" },
-      { name: "Tiếng Việt", value: "vi-VN", flag: "/flag/vn-show.svg" },
+      { name: "English", value: "en_US", flag: "/flag/us-show.svg" },
+      { name: "Tiếng Việt", value: "vi_VN", flag: "/flag/vn-show.svg" },
     ],
   },
 ]

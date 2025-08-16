@@ -30,7 +30,7 @@ export function formatRelativeDate(from: Date | string | number | undefined | nu
 }
 
 export function formatNumber(n: number): string {
-  return Intl.NumberFormat("en-US", {
+  return Intl.NumberFormat("en_US", {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(n);

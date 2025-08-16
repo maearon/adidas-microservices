@@ -37,7 +37,7 @@ const Navbar = () => {
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const dispatch = useAppDispatch()
-  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
   const [showCountrySelect, setShowCountrySelect] = useState(false)
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -221,7 +221,7 @@ const Navbar = () => {
                           dispatch(setLocale(value as SupportedLocale));
                           document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000`
                           localStorage.setItem("NEXT_LOCALE", value)
-                          setCountry(value === "en-US" ? "US" : "VN") // Cập nhật country dựa trên locale
+                          setCountry(value === "en_US" ? "US" : "VN") // Cập nhật country dựa trên locale
                           setShowCountrySelect(false)
                         }}
                       />

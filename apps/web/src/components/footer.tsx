@@ -18,7 +18,7 @@ export default function Footer() {
     setMounted(true)
   }, [])
 
-  const locale = useAppSelector((state) => state.locale.locale) || "en-US" // Mặc định là US English
+  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English
   const { value: user } = useAppSelector(selectUser)
   const cartItemsCount = useAppSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)

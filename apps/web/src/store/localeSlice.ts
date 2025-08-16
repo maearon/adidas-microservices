@@ -9,7 +9,7 @@ interface LocaleState {
   locale: SupportedLocale;
 }
 
-const DEFAULT_LOCALE: SupportedLocale = "en-US";
+const DEFAULT_LOCALE: SupportedLocale = "en_US";
 
 const initialState: LocaleState = {
   locale: (getLocaleFromClient() as SupportedLocale) || DEFAULT_LOCALE,

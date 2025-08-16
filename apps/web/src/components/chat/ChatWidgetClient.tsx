@@ -339,14 +339,14 @@ function replaceEmojis(text: string): string {
                             <p className="text-base text-[#538E76]">User Name: [System message]</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
-                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                              {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
                           </div>
                         ) : (
                           <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
                             <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                             <p className="text-xs text-gray-500 mt-1">
-                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                              {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
                           </div>
                         )}
@@ -362,18 +362,18 @@ function replaceEmojis(text: string): string {
                         <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
                           <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                            {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
                         {/* <img
                           src={getUiAvatarUrl(message.users?.name)}
-                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                          title={message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
                         /> */}
                         <Image
                           src={getUiAvatarUrl(message.users?.name)}
-                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                          title={message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           width={32} // must set width
                           height={32} // must set height

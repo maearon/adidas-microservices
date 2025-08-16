@@ -15,16 +15,16 @@ interface LocationModalProps {
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
-  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vi-VN");
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vi_VN");
 
   const locations = [
     {
-      id: "vi-VN",
+      id: "vi_VN",
       name: "Vietnam",
       flag: "🇻🇳",
     },
     {
-      id: "en-US",
+      id: "en_US",
       name: "United States",
       flag: "🇺🇸",
     },

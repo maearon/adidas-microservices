@@ -1,15 +1,15 @@
 // src/lib/locale.ts
-import heroEn from "@/locales/en-US/hero.json"
-import heroVi from "@/locales/vi-VN/hero.json"
-import headerEn from "@/locales/en-US/header.json"
-import headerVi from "@/locales/vi-VN/header.json"
+import heroEn from "@/locales/en_US/hero.json"
+import heroVi from "@/locales/vi_VN/hero.json"
+import headerEn from "@/locales/en_US/header.json"
+import headerVi from "@/locales/vi_VN/header.json"
 
 export const locales = {
-  "en-US": {
+  "en_US": {
     hero: heroEn,
     header: headerEn,
   },
-  "vi-VN": {
+  "vi_VN": {
     hero: heroVi,
     header: headerVi,
   },
