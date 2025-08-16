@@ -80,6 +80,12 @@ export default function HeroBannerVideo() {
   }
 
   // 🔹 Video sources tách riêng
+  // const DESKTOP_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
+  // const MEDIUM_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_m_d995f0eb96.mp4"
+  // const MOBILE_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_t_950d8ded70.mp4"
   const DESKTOP_VIDEO =
     "/assets/videos/SƠN TÙNG M-TP _ THERE'S NO ONE AT ALL _ OFFICIAL MUSIC VIDEO.mp4"
   const MEDIUM_VIDEO =
