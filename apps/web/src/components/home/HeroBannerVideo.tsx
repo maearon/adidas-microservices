@@ -13,9 +13,9 @@ export default function HeroBannerVideo() {
   const [showVideo, setShowVideo] = useState(false)
 
   const MAX_LOOP_COUNT: number | "forever" = "forever" // chỉnh nếu muốn loop giới hạn
-  const SLOW_RATE = 1 // phát chậm 8x
+  const SLOW_RATE = 1 // phát chậm
 
-  // Callback để tránh recreate trong useEffect
+  // Callback khi video kết thúc
   const handleEnded = useCallback(() => {
     const video = videoRef.current
     if (!video) return
@@ -39,15 +39,15 @@ export default function HeroBannerVideo() {
     if (!video) return
 
     video.playbackRate = SLOW_RATE
-    video.loop = MAX_LOOP_COUNT === "forever"
 
-    video.play().then(() => setIsPlaying(!video.paused)).catch(() => setIsPlaying(false))
+    video.play()
+      .then(() => setIsPlaying(!video.paused))
+      .catch(() => setIsPlaying(false))
 
-    if (MAX_LOOP_COUNT !== "forever") {
-      video.addEventListener("ended", handleEnded)
-      return () => video.removeEventListener("ended", handleEnded)
-    }
-  }, [handleEnded]) // MAX_LOOP_COUNT không cần ở đây nữa
+    // Luôn nghe ended, kể cả forever
+    video.addEventListener("ended", handleEnded)
+    return () => video.removeEventListener("ended", handleEnded)
+  }, [handleEnded])
 
   // Pause khi mở modal
   useEffect(() => {
@@ -81,7 +81,6 @@ export default function HeroBannerVideo() {
         muted
         playsInline
         preload="auto"
-        loop={MAX_LOOP_COUNT === "forever" ? true : undefined}
       >
         <source
           src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
@@ -119,7 +118,7 @@ export default function HeroBannerVideo() {
         )}
       </Button>
 
-      {/* Loop counter */}    
+      {/* Loop counter */}
       <div className="absolute top-16 right-5 z-20 text-xs text-white bg-black/60 px-2 py-0.5 rounded backdrop-blur-xs">
         {MAX_LOOP_COUNT !== "forever"
           ? <>🔁 Played: {loopCount} / {MAX_LOOP_COUNT}</>
@@ -158,22 +157,6 @@ export default function HeroBannerVideo() {
                   {label}
                 </Button>
               ))}
-              {/* <Button
-                key={"video-button"}
-                theme="white"
-                size="sm"
-                border
-                shadow={false}
-                fullWidth={false}
-                variant="outline"
-                onClick={() => setShowVideo(true)}
-                showArrow={false}
-                sizeClass="h-8 px-3"
-                className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
-              >
-                <Play className="h-3.5 w-3.5" />
-                WATCH VIDEO
-              </Button> */}
             </div>
           </div>
         </div>
