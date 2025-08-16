@@ -280,7 +280,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       items: [],
                     })
                   }
-                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-gray-100 text-left"
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left"
                 >
                   <span
                     className={cn(
@@ -295,7 +295,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               ))}
 
               {/* Divider */}
-              <div className="h-2 bg-gray-50" />
+              <div className="h-2 bg-gray-50 dark:border-gray-700" />
 
               {/* Additional Menu Items */}
               {/* {additionalMenuItems.map((item) => (
@@ -344,7 +344,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           });
                         }, 0);
                       }}
-                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-100 flex items-center justify-between"
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-white dark:border-black flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-2">
                         <Image
