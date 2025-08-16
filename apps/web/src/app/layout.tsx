@@ -6,6 +6,10 @@ import { TRPCProvider } from "@/providers/trpc-provider";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LocationModalProvider } from "@/components/modal-providers";
+import ChatWidget from "@/components/chat-widget";
+import FeedbackWidget from "@/components/feedback-widget";
+import ScrollToTop from "@/components/scroll-to-top";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +56,10 @@ export default function RootLayout({
               <Navbar />
                 {children}
               <Footer />
+              <LocationModalProvider />
+              <ChatWidget />
+              <FeedbackWidget />
+              <ScrollToTop />
             </ThemeProvider>
           </TRPCProvider>
         </ReduxProvider>
