@@ -7,7 +7,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocationModalProvider } from "@/components/modal-providers";
-import ChatWidget from "@/components/chat/ChatWidgetClient";
+import ChatWidget from "@/components/chat/ChatWidget";
 import FeedbackWidget from "@/components/feedback-widget";
 import ScrollToTop from "@/components/scroll-to-top";
 
