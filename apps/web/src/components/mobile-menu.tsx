@@ -361,7 +361,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         />
                         <span className="text-base">{capitalizeWordsCountry(item.name)}</span>
                       </div>
-                      <span className="text-gray-400 text-base">{">"}</span>
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
                     </button>
                   );
                 }
