@@ -1,7 +1,7 @@
 import { getSession, Session } from "@/lib/auth"
 import ChatWidgetClient from "./ChatWidgetClient"
 
-const constChatWidgetPage = async () => {
+const ChatWidget = async () => {
   const session: Session | null = await getSession() // Session type-safe
 
   if (!session?.user?.email) return null
@@ -11,4 +11,4 @@ const constChatWidgetPage = async () => {
   )
 }
 
-export default constChatWidgetPage
+export default ChatWidget
