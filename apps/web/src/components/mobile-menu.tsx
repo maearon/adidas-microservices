@@ -217,7 +217,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:hidden">
         {/* Header */}
         <div
-          className="h-10 flex items-center justify-between p-4 border-b border-gray-200 min-h-[60px]"
+          className="h-10 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white min-h-[60px]" // border-b for end of menu 0
           onClick={() => {
             if (!isMainMenu) handleBackClick()
           }}
@@ -295,7 +295,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               ))}
 
               {/* Divider */}
-              <div className="h-2 bg-gray-50 dark:border-gray-700" />
+              <div className="h-1 border-b border-gray-200 dark:border-white" /> {/* Divider // border-b for end of menu 1 */}
 
               {/* Additional Menu Items */}
               {/* {additionalMenuItems.map((item) => (
@@ -344,7 +344,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           });
                         }, 0);
                       }}
-                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-white dark:border-black flex items-center justify-between"
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-50 flex items-center justify-between" // border-b for level ? menu
                     >
                       <div className="flex items-center space-x-2">
                         <Image
@@ -371,7 +371,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     key={item.name}
                     href={item.href || "#"}
                     onClick={handleClose}
-                    className="block p-4 hover:bg-gray-50 border-b border-gray-100"
+                    className="block p-4 hover:bg-gray-50 border-b border-white dark:border-black" // border-b for menu 2
                   >
                     <span className="text-base">{item.name}</span>
                   </Link>
@@ -449,7 +449,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <button
                       key={index}
                       onClick={() => handleSubcategoryClick(item as MenuCategory)}
-                      className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-gray-100 text-left"
+                      className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left" // border-b for level 2 menu
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
@@ -468,7 +468,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       key={index}
                       href={itemHref || "#"}
                       onClick={handleClose}
-                      className="block p-4 hover:bg-gray-50 border-b border-gray-100"
+                      className="block p-4 hover:bg-gray-50 border-b border-white dark:border-black" // border-b for end of menu 3
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
