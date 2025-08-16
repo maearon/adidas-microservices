@@ -425,7 +425,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         }
                       }}
                       className={cn(
-                        "w-full flex items-center justify-between p-4 border-b border-gray-100 text-left",
+                        "w-full flex items-center justify-between p-4 border-b border-white dark:border-black text-left", // border-b for language menu
                         isSelected ? "bg-gray-100 font-semibold" : "hover:bg-gray-50"
                       )}
                     >
