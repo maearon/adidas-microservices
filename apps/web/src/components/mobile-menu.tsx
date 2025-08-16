@@ -280,7 +280,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       items: [],
                     })
                   }
-                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left"
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left" // border-b for ?
                 >
                   <span
                     className={cn(
@@ -344,7 +344,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           });
                         }, 0);
                       }}
-                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-gray-50 flex items-center justify-between" // border-b for level ? menu
+                      className="w-full text-left p-4 hover:bg-gray-50 border-b border-white dark:border-black flex items-center justify-between" // border-b for end of all
                     >
                       <div className="flex items-center space-x-2">
                         <Image
@@ -449,7 +449,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <button
                       key={index}
                       onClick={() => handleSubcategoryClick(item as MenuCategory)}
-                      className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left" // border-b for level 2 menu
+                      className="w-full flex items-center justify-between p-4 hover:bg-gray-50 border-b border-white dark:border-black text-left" // border-b for menu 1 - level 2
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
@@ -468,7 +468,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       key={index}
                       href={itemHref || "#"}
                       onClick={handleClose}
-                      className="block p-4 hover:bg-gray-50 border-b border-white dark:border-black" // border-b for end of menu 3
+                      className="block p-4 hover:bg-gray-50 border-b border-white dark:border-black" // border-b for end of menu 1 - level 3
                     >
                       <div className="flex items-center">
                         {getColorSwatch(itemName, currentLevel.title)}
