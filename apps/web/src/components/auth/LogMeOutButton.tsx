@@ -26,6 +26,13 @@ export const LogMeOutButton = () => {
       fetchOptions: {
         onSuccess: () => {
           router.push("/");
+          
+  localStorage.clear();
+  sessionStorage.clear();
+  document.cookie.split(";").forEach((cookie) => {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+  });
         },
         onError: (err) => {
           console.error("Logout failed", err);
