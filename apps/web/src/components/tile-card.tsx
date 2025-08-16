@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+// import Image from "next/image"
 
 interface Tile {
   title: string,
@@ -35,18 +35,18 @@ export default function TileCard({
     >
       {/* Image section */}
       <div className="aspect-3/4 w-full overflow-hidden">
-        {/* <img
+        <img
           src={tile.image || "/placeholder.svg"}
           alt={tile.title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        /> */}
-        <Image
+        />
+        {/* <Image
           src={tile.image || "/placeholder.svg"}
           alt={tile.title}
           fill // need relative
           sizes="(max-width: 768px) 100vw, 50vw"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        /> */}
       </div>
 
       {/* Text section */}
