@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from "react"
 import { MessageCircle, X, Minus, Square, Send } from 'lucide-react'
 import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
-import { useAppSelector } from "@/store/hooks"
 import { io, Socket } from "socket.io-client"
 import { getUiAvatarUrl } from "@/utils/ui-avatar"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser";
 import { playSound } from "@/utils/play-sound"
 import Image from "next/image"
+import { Session } from "@/lib/auth"
+import { useAppSelector } from "@/store/hooks"
 
 interface ChatMessage {
   content: string
@@ -28,7 +29,11 @@ interface ChatMessage {
   } | null
 }
 
-export default function ChatWidget() {
+interface ChatWidgetClientProps {
+  session: Session | null;
+}
+
+export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const { data: userData, status } = useCurrentUser();
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
@@ -41,11 +46,13 @@ export default function ChatWidget() {
   // const repliedMessages = useRef<Set<string>>(new Set());
 
   // Get user data from Redux
-  const sessionState = useAppSelector((state) => state.session)
-  const isLoggedIn = sessionState?.loggedIn || false
-  const userName = sessionState?.value?.name || "Guest"
-  const userLevel = sessionState?.value?.level || "LEVEL 1"
-  const userToken = sessionState?.value?.token // Assuming you have JWT token in session
+  const sessionStateRedux = useAppSelector((state) => state.session)
+  // Get user data from Better Auth
+  const sessionState = session
+  const isLoggedIn = sessionStateRedux?.loggedIn || false
+  const userName = sessionState?.user?.name || "Guest"
+  const userLevel = sessionStateRedux?.value?.level || "LEVEL 1"
+  const userToken = sessionStateRedux?.value?.token // Assuming you have JWT token in session
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -163,7 +170,7 @@ export default function ChatWidget() {
 
 
       socket.on('user_typing', (data: { userEmail: string; isTyping: boolean }) => {
-        if (data.userEmail !== sessionState?.value?.email) {
+        if (data.userEmail !== sessionStateRedux?.value?.email) {
           setIsTyping(data.isTyping)
         }
       })
@@ -185,7 +192,7 @@ export default function ChatWidget() {
         setIsConnected(false)
       }
     }
-  }, [status, userData?.email, userName, isLoggedIn, userToken, isOpen, sessionState?.value?.email])
+  }, [status, userData?.email, userName, isLoggedIn, userToken, isOpen, sessionStateRedux?.value?.email])
 
   // useEffect(() => {
   //   const interval = setInterval(() => {

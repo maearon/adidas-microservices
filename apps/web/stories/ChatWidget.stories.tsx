@@ -1,4 +1,4 @@
-import ChatWidget from "@/components/chat-widget"
+import ChatWidget from "@/components/chat/ChatWidgetClient"
 import { Provider } from "react-redux"
 import { store } from "@/store/store"
 
