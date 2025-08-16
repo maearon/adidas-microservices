@@ -71,6 +71,20 @@ export default function HeroBannerVideo() {
     }
   }
 
+  // 🔹 Video sources tách riêng
+  // const DESKTOP_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
+  // const MEDIUM_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_m_d995f0eb96.mp4"
+  // const MOBILE_VIDEO =
+  //   "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_t_950d8ded70.mp4"
+  const DESKTOP_VIDEO =
+    "/assets/videos/SƠN TÙNG M-TP _ THERE'S NO ONE AT ALL _ OFFICIAL MUSIC VIDEO.mp4"
+  const MEDIUM_VIDEO =
+    "/assets/videos/SƠN TÙNG M-TP _ THERE'S NO ONE AT ALL _ OFFICIAL MUSIC VIDEO.mp4"
+  const MOBILE_VIDEO =
+    "/assets/videos/SƠN TÙNG M-TP _ THERE'S NO ONE AT ALL _ OFFICIAL MUSIC VIDEO.mp4"
+
   return (
     <section className="relative h-[83vh] overflow-hidden bg-white">
       {/* Video nền */}
@@ -83,17 +97,17 @@ export default function HeroBannerVideo() {
         preload="auto"
       >
         <source
-          src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
+          src={DESKTOP_VIDEO}
           type="video/mp4"
           media="(min-width: 1280px)"
         />
         <source
-          src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_m_d995f0eb96.mp4"
+          src={MEDIUM_VIDEO}
           type="video/mp4"
           media="(min-width: 1024px)"
         />
         <source
-          src="/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_t_950d8ded70.mp4"
+          src={MOBILE_VIDEO}
           type="video/mp4"
           media="(max-width: 768px)"
         />
