@@ -6,7 +6,7 @@ import MyAccountSideBar from "./MyAccountSideBar";
 export default async function MyAccountLayout({ children }: { children: React.ReactNode }) {
   const session: Session | null = await getSession() // Session type-safe
 
-  if(!session) redirect("/account_login");
+  if(!session) redirect("/account-login");
 
   return (
     <div className="container mx-auto px-4 py-8">
