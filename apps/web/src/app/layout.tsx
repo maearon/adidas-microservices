@@ -10,6 +10,7 @@ import { LocationModalProvider } from "@/components/modal-providers";
 import ChatWidget from "@/components/chat/ChatWidget";
 import FeedbackWidget from "@/components/feedback-widget";
 import ScrollToTop from "@/components/scroll-to-top";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const barlow = Barlow({
   variable: "--font-barlow",
