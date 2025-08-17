@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { BaseButton, BaseButtonProps } from "./ui/base-button";
+import { BaseButton, BaseButtonProps } from "./base-button";
 
 interface LoadingButtonProps extends BaseButtonProps {
   loading: boolean;

@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { X } from "lucide-react"
+import { Apple, X } from "lucide-react"
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
@@ -19,6 +19,8 @@ import AdidasLogo from "./adidas-logo"
 // import LoginButtons from "./auth/LoginButtons"
 import GoogleSignInButton from "@/app/(auth)/account-login/google/GoogleSignInButton"
 import GithubSignInButton from "@/app/(auth)/account-login/github/GithubSignInButton"
+import LoadingButton from "./ui/LoadingButton"
+import LoginButtons from "./auth/LoginButtons"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -34,7 +36,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState("") // lưu email sau bước 1
   const [keepLoggedIn, setKeepLoggedIn] = useState(true) // lưu keepLoggedIn sau bước 1
   const [isLoading, setIsLoading] = useState(false)
-  // const [socialLoading, setSocialLoading] = useState<"apple" | "facebook" | "google" | "yahoo" | null>(null)
+  const [socialLoading, setSocialLoading] = useState<"apple" | "facebook" | "google" | "yahoo" | null>(null)
   const dispatch = useDispatch<AppDispatch>()
   // if (typeof window !== "undefined") {
   //   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -136,17 +138,17 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   //   return { handleSocialLogin }
   // }
 
-  // const handleSocialLogin = (
-  //   provider: "apple" | "facebook" | "google" | "yahoo",
-  //   callback?: () => void,
-  //   delay: number = 3000
-  // ) => {
-  //   setSocialLoading(provider)
-  //   setTimeout(() => {
-  //     setSocialLoading(null)
-  //     callback?.()
-  //   }, delay)
-  // }
+  const handleSocialLogin = (
+    provider: "apple" | "facebook" | "google" | "yahoo",
+    callback?: () => void,
+    delay: number = 3000
+  ) => {
+    setSocialLoading(provider)
+    setTimeout(() => {
+      setSocialLoading(null)
+      callback?.()
+    }, delay)
+  }
 
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -196,7 +198,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </p> */}
 
           {/* Social Login Buttons */}
-          {/* <div className="grid grid-cols-4 gap-3 mb-6">
+          <div className="grid grid-cols-4 gap-3 mb-6">
             <LoadingButton 
               variant="outline" size="sm" 
               className="social-button"
@@ -250,12 +252,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             >
               <span className="text-purple-600 font-bold text-lg">Y!</span>
             </LoadingButton>
-          </div> */}
+          </div>
           
           <div className="grid grid-cols-1 gap-3 mb-6">
             <GoogleSignInButton />
             <GithubSignInButton />
-            {/* <LoginButtons /> */}
+            <LoginButtons />
           </div>
           
           {/* Email Form */}
