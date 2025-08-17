@@ -29,7 +29,7 @@ export default function GithubButton() {
         <motion.span 
           className="relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
         >
-          Login preferrer Github
+          Login preference Github
         </motion.span>
         
         <motion.svg 
