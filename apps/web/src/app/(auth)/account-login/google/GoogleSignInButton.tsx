@@ -1,7 +1,7 @@
 import { BaseButton } from "@/components/ui/base-button";
 import Link from "next/link";
 
-export default function GoggleSignInButton() {
+export default function GoogleSignInButton() {
   return (
     <BaseButton
       variant="outline"  

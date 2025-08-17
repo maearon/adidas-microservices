@@ -16,7 +16,9 @@ import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import AdidasLogo from "./adidas-logo"
-import LoginButtons from "./auth/LoginButtons"
+// import LoginButtons from "./auth/LoginButtons"
+import GoogleSignInButton from "@/app/(auth)/account-login/google/GoogleSignInButton"
+import GithubSignInButton from "@/app/(auth)/account-login/github/GithubSignInButton"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -251,7 +253,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div> */}
           
           <div className="grid grid-cols-1 gap-3 mb-6">
-            <LoginButtons />
+            <GoogleSignInButton />
+            <GithubSignInButton />
+            {/* <LoginButtons /> */}
           </div>
           
           {/* Email Form */}
