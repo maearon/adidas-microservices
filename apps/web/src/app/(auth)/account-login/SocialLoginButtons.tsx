@@ -107,7 +107,7 @@ const SocialLoginButtons = () => {
         <LoadingButton
           key={provider.id}
           variant="outline" size="sm" 
-          className="social-button"
+          className="social-button border border-black dark:border-white rounded-none"
           onClick={() => handleSocialLogin(provider, () => console.log(provider.id))}
           loading={socialLoading === provider.id}
         >
