@@ -6,7 +6,7 @@ export default function GithubSignInButton() {
   return (
     <BaseButton
       variant="outline"  
-      className="bg-background text-background hover:bg-gray-100 hover:text-background border border-border rounded-full"
+      className="bg-white dark:bg-black text-black dark:text-white hover:bg-gray-100 hover:text-background border border-border rounded-full"
       asChild
     >
       <Link href="/account-login/github" className="flex w-full items-center gap-2">
