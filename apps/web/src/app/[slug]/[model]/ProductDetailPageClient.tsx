@@ -400,7 +400,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       onMouseEnter={() => setHoveredColor(variant.color)} // only change displayColor when hover 
                       className={cn(
                         `w-[${size}px] h-[${size}px] block overflow-hidden border-b-4`,
-                        isActive ? "border-border" : "border-transparent hover:border-border"
+                        isActive ? 
+                        "border-black dark:border-[#538E76]"
+                        : "border-transparent hover:border-black dark:hover:border-[#538E76]",
                       )}
                     >
                       <Image
