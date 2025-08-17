@@ -16,7 +16,7 @@ export default function AppleSignInButton() {
   );
 }
 
-function AppleIcon() {
+export function AppleIcon() {
   return (
     <svg
       fill="currentColor"
