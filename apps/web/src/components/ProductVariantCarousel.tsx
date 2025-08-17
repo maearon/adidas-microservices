@@ -78,8 +78,8 @@ export default function ProductVariantCarousel({
               className={cn(
                 "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
                 isActive
-                  ? "border-b-2 border-black dark:border-[#538E76]"
-                  : "border-b-2 border-transparent"
+                  ? "border-b-2 border-b-black dark:border-b-[#538E76]"
+                  : "border-b-2 border-b-transparent"
               )}
             >
               {variant.avatar_url && (
