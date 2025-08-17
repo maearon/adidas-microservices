@@ -11,7 +11,7 @@ export default function GithubSignInButton() {
     >
       <Link href="/account-login/github" className="flex w-full items-center gap-2">
         <GithubIcon />
-        Log in with Goggle
+        Log in with Github
       </Link>
     </BaseButton>
   );
