@@ -15,6 +15,7 @@ import flashMessage from "@/components/shared/flashMessages"
 import { useRouter } from "next/navigation"
 import { handleApiError } from "@/components/shared/handleApiError"
 import { AxiosError } from "axios"
+import SocialLoginButtons from "./SocialLoginButtons"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -73,9 +74,7 @@ const LoginForm = () => {
       <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN</h1>
       <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
 
-      <div className="grid grid-cols-1 gap-2 mb-6">
-        <LoginButtons />
-      </div>
+      <SocialLoginButtons />
 
       <Formik
         initialValues={{ email: "", password: "", keepLoggedIn: true }}

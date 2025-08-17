@@ -189,11 +189,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Social Login Buttons */}
           <SocialLoginButtons />
           
-          <div className="grid grid-cols-1 gap-3 mb-6">
+          {/* <div className="grid grid-cols-1 gap-3 mb-6">
             <GoogleSignInButton />
             <GithubSignInButton />
             <LoginButtons />
-          </div>
+          </div> */}
           
           {/* Email Form */}
           {step === "email" && (

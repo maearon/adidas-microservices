@@ -6,6 +6,7 @@ import { useState } from "react"
 import { AppleIcon } from "./apple/AppleSignInButton"
 import { authClient, ProviderId } from "@/lib/auth-client";
 import { motion } from "framer-motion";
+import { GithubIcon } from "lucide-react";
 
 // Mở rộng ProviderId thêm Yahoo
 type ExtendedProviderId = ProviderId | "yahoo"
@@ -60,6 +61,11 @@ const providers: SocialProvider[] = [
     id: "yahoo",
     label: "Yahoo",
     icon: <span className="text-purple-600 font-bold text-lg">Y!</span>,
+  },
+  {
+    id: "github",
+    label: "Github",
+    icon: <GithubIcon />,
   },
 ]
 
