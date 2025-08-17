@@ -115,7 +115,7 @@ export const mainMenuData: Record<string, MenuCategory[]> = {
   MEN: menMenuDataWithColor,
   WOMEN: womenMenuDataWithColor,
   KIDS: kidsMenuDataWithColor,
-  "BACK TO SCHOOL": sanitizeMenuTitles(backToSchoolMenuData),
+  "BACK TO SCHOOL🔥": sanitizeMenuTitles(backToSchoolMenuData),
   "NEW & TRENDING": sanitizeMenuTitles(trendingMenuData),
   SALE: sanitizeMenuTitles(saleMenuData),
 }

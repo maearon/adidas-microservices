@@ -89,7 +89,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       const mainCategories: MenuCategory[] = Object.keys(mainMenuData).map((key) => ({
         title: key,
         titleHref:
-          key === "BACK TO SCHOOL"
+          key === "BACK TO SCHOOL🔥"
             ? "/back_to_school"
             : key === "NEW & TRENDING"
               ? "/trending"
@@ -272,7 +272,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     handleCategoryClick({
                       title: categoryName,
                       titleHref:
-                        categoryName === "BACK TO SCHOOL"
+                        categoryName === "BACK TO SCHOOL🔥"
                           ? "/back_to_school"
                           : categoryName === "NEW & TRENDING"
                             ? "/trending"
