@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/store/hooks"
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
 import Image from "next/image"
+import { X } from "lucide-react"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -59,6 +60,16 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md p-0 bg-white dark:bg-black">
+        {/* Close button - Square border style */}
+        <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+          <button
+            onClick={onClose}
+            className="w-12 h-12 border border-border flex items-center 
+            justify-center cursor-pointer transition-colors duration-150"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
         <div className="relative p-8">
           {/* Header */}
           <div className="mb-8">
