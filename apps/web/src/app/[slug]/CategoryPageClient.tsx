@@ -239,7 +239,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             <BaseButton
               variant="outline"
               onClick={() => setIsFiltersOpen(true)}
-              className="hidden sm:flex items-center gap-2 border border-border bg-white dark:bg-black text-black dark:text-white rounded-none"
+              className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
             >
               FILTER & SORT
               <SlidersHorizontal className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             <BaseButton
               variant="outline"
               onClick={() => setIsFiltersOpen(true)}
-              className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white"
+              className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white border-none"
             >
               <SlidersHorizontal className="w-5 h-5" />
             </BaseButton>
