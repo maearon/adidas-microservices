@@ -42,8 +42,8 @@ const HeaderNavbar = () => {
                 <Image
                   src={activeLocale?.flag || "/flag/us-show.svg"}
                   alt={activeLocale?.label || "Country Flag"}
-                  width={20}
-                  height={14}
+                  width={24}
+                  height={16}
                 />
               </>
             )

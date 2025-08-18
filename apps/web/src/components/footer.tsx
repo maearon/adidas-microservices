@@ -305,8 +305,8 @@ export default function Footer() {
                 <Image
                   src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
                   alt={`${localeDisplayMap[locale]} Flag`}
-                  width={20}
-                  height={14}
+                  width={24}
+                  height={16}
                   className="inline-block"
                 />
                 <span>{countryDisplayMap[locale]}</span>
