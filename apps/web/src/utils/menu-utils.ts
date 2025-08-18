@@ -7,6 +7,7 @@ import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
 import { capitalizeWords } from "@/utils/upper-words"
+import { localeOptions } from "@/lib/constants/localeOptions"
 
 //
 // COLOR ITEMS & MAPPING
@@ -132,11 +133,8 @@ export const additionalMenuItems = [
   { name: "Store Locator", href: "/stores" },
   { name: "Mobile Apps", href: "/mobile-apps" },
   {
-    name: "Language",
+    name: "Languages", // countryDisplayMap["en_US"],
     hasSubmenu: true,
-    items: [
-      { name: "English", value: "en_US", flag: "/flag/us-show.svg" },
-      { name: "Tiếng Việt", value: "vi_VN", flag: "/flag/vn-show.svg" },
-    ],
+    items: localeOptions,
   },
 ]

@@ -22,7 +22,7 @@ import {
   SupportedLocale,
 } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
-import { colorMapping, mainMenuData } from "@/lib/menu-utils"
+import { colorMapping, mainMenuData } from "@/utils/menu-utils"
 
 // ======================
 // Utils type guards
