@@ -368,8 +368,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       className="w-full flex items-center justify-between p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
                     >
                       <div className="flex items-center">
-                        {getColorSwatch(item.title, currentLevel.title)}
                         <span className="text-base">{item.title}</span>
+                        {getColorSwatch(item.title, currentLevel.title)}
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400" />
                     </button>
@@ -387,14 +387,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     onClick={handleClose}
                     className="block p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center">           
+                      <span className="text-base">
+                        {isMenuLeaf(item) ? item.name : item.title}
+                      </span>
                       {getColorSwatch(
                         isMenuLeaf(item) ? item.name : item.title,
                         currentLevel.title
                       )}
-                      <span className="text-base">
-                        {isMenuLeaf(item) ? item.name : item.title}
-                      </span>
                     </div>
                   </Link>
                 )
