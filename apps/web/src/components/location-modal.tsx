@@ -4,8 +4,9 @@ import { useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
-import { SupportedLocale } from "@/lib/constants/localeOptions"
+import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
+import Image from "next/image"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -62,7 +63,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
           {/* Header */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-black dark:text-white mb-2">PLEASE CHOOSE YOUR</h2>
-            <h2 className="text-2xl font-bold text-black">DELIVERY LOCATION</h2>
+            <h2 className="text-2xl font-bold text-black dark:text-white">DELIVERY LOCATION</h2>
           </div>
 
           {/* Location options */}
@@ -78,7 +79,18 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
                   className="w-5 h-5 text-black dark:text-white border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
                 <span className="text-lg font-medium text-black dark:text-white group-hover:underline">{location.name}</span>
-                <span className="text-2xl ml-auto">{location.flag}</span>
+                <span className="text-2xl ml-auto">
+                  {/* {location.flag} */}
+                  <Image
+                    src={
+                      localeOptions.find((o) => o.value === location.id)?.flag ||
+                      "/flag/us-show.svg"
+                    }
+                    alt="flag"
+                    width={24}
+                    height={16}
+                  />
+                </span>
               </label>
             ))}
           </div>
