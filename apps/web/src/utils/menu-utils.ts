@@ -38,7 +38,7 @@ export const colorMapping: Record<string, string> = Object.fromEntries(
 //
 // Shop by Color menu
 export const getShopByColorMenu = (gender: string): MenuCategory => ({
-  title: "Shop by Color",
+  title: "Shop by Color  🌸",
   items: [
     ...colorItems.map((color) => ({
       name: color.name,
@@ -138,3 +138,7 @@ export const additionalMenuItems = [
     items: localeOptions,
   },
 ]
+
+// function withColorEmoji(label: string) {
+//   return label.toLowerCase().includes("shop by color") ? `${label} 🌸` : label
+// }

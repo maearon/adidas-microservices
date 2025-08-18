@@ -64,10 +64,6 @@ function getColorSwatch(itemName: string, categoryTitle: string) {
   return null
 }
 
-function withColorEmoji(label: string) {
-  return label.toLowerCase().includes("shop by color") ? `${label} 🌸` : label
-}
-
 // ======================
 // Component
 // ======================
@@ -373,7 +369,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     >
                       <div className="flex items-center">
                         {getColorSwatch(item.title, currentLevel.title)}
-                        <span className="text-base">{withColorEmoji(item.title)}</span>
+                        <span className="text-base">{item.title}</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400" />
                     </button>
@@ -397,7 +393,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         currentLevel.title
                       )}
                       <span className="text-base">
-                        {withColorEmoji(isMenuLeaf(item) ? item.name : item.title)}
+                        {isMenuLeaf(item) ? item.name : item.title}
                       </span>
                     </div>
                   </Link>
