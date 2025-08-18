@@ -135,14 +135,14 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                 onClick={() => openLightbox(index)}
                 style={{ cursor: !isMobile ? getZoomCursor() : "default" }}
               >
-                {/* <img
+                <img
                   src={image || "/placeholder.svg"}
                   alt={`${productName} view ${index + 1}`}
                   className={`w-full h-full object-cover transition-transform duration-300 ${
                     !isMobile ? "group-hover:scale-110" : ""
                   }`}
-                /> */}
-                <Image
+                />
+                {/* <Image
                   src={image || "/placeholder.svg"}
                   alt={`${productName} view ${index + 1}`}
                   fill // need relative
@@ -150,7 +150,7 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                   className={`w-full h-full object-cover transition-transform duration-300 ${
                     !isMobile ? "group-hover:scale-110" : ""
                   }`}
-                />
+                /> */}
               </div>
             ))}
         </div>
