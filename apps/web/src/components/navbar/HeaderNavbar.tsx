@@ -52,7 +52,7 @@ const HeaderNavbar = () => {
 
         {/* Dropdown */}
         {showCountrySelect && (
-          <div className="absolute right-0 mt-2 w-60 bg-white shadow-xl border p-4 z-50">
+          <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-black shadow-xl border p-4 z-50">
             {localeOptions.map(({ value, label, flag }, index) => (
               <label key={`${value}-${index}`} className="flex items-center gap-2 mb-3">
                 <input
@@ -76,7 +76,7 @@ const HeaderNavbar = () => {
 
             <button
               onClick={() => setShowCountrySelect(false)}
-              className="mt-2 w-full bg-black text-white py-2 font-bold"
+              className="mt-2 w-full bg-black dark:bg-white text-white py-2 font-bold"
             >
               Save
             </button>
