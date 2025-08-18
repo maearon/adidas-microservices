@@ -216,14 +216,14 @@ export default function ImageLightbox({
               index === currentIndex ? "border-border" : "border-gray-300"
             }`}
           >
-            {/* <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" /> */}
-            <Image
+            <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />
+            {/* <Image
               src={image || "/placeholder.svg"}
               alt=""
               fill // need relative
               sizes="(max-width: 768px) 100vw, 50vw"
               className="w-full h-full object-cover"
-            />
+            /> */}
           </button>
         ))}
         {/* {images.length > 5 && (
