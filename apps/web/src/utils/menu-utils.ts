@@ -8,29 +8,33 @@ import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
 import { capitalizeWords } from "@/utils/upper-words"
 import { localeOptions } from "@/lib/constants/localeOptions"
+import { symbol } from "zod"
 
 //
 // COLOR ITEMS & MAPPING
 //
 // Shop by Color data
 export const colorItems = [
-  { name: "Black", color: "bg-black" },
-  { name: "Grey", color: "bg-gray-500" },
-  { name: "White", color: "bg-white border border-gray-300" },
-  { name: "Brown", color: "bg-amber-800" },
-  { name: "Red", color: "bg-red-500" },
-  { name: "Pink", color: "bg-pink-300" },
-  { name: "Orange", color: "bg-orange-500" },
-  { name: "Yellow", color: "bg-yellow-400" },
-  { name: "Green", color: "bg-green-500" },
-  { name: "Blue", color: "bg-blue-500" },
-  { name: "Purple", color: "bg-purple-500" },
+  { name: "Black", color: "bg-black", symbol: "⚫" },
+  { name: "Grey", color: "bg-gray-500", symbol: "🔘" },
+  { name: "White", color: "bg-white border border-gray-300", symbol: "⚪" },
+  { name: "Brown", color: "bg-amber-800", symbol: "🟤" },
+  { name: "Red", color: "bg-red-500", symbol: "🔴" },
+  { name: "Pink", color: "bg-pink-300", symbol: "⭕" },
+  { name: "Orange", color: "bg-orange-500", symbol: "🟠" },
+  { name: "Yellow", color: "bg-yellow-400", symbol: "🟡" },
+  { name: "Green", color: "bg-green-500", symbol: "🟢" },
+  { name: "Blue", color: "bg-blue-500", symbol: "🔵" },
+  { name: "Purple", color: "bg-purple-500", symbol: "🟣" },
 ]
 
 
 // Mapping for color swatch
-export const colorMapping: Record<string, string> = Object.fromEntries(
+export const colorMappingClass: Record<string, string> = Object.fromEntries(
   colorItems.map((color) => [color.name.toLowerCase(), color.color])
+)
+export const colorMappingSymbol: Record<string, string> = Object.fromEntries(
+  colorItems.map((color) => [color.name.toLowerCase(), color.symbol])
 )
 
 //

@@ -22,7 +22,7 @@ import {
   SupportedLocale,
 } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
-import { colorMapping, mainMenuData } from "@/utils/menu-utils"
+import { colorMappingClass, colorMappingSymbol, mainMenuData } from "@/utils/menu-utils"
 
 // ======================
 // Utils type guards
@@ -53,12 +53,17 @@ function buildMainCategories(): MenuCategory[] {
   }))
 }
 
+const USE_EMOJI_SWATCH = true // config
+
 function getColorSwatch(itemName: string, categoryTitle: string) {
   if (categoryTitle.toLowerCase().includes("color")) {
     const colorName = itemName.toLowerCase()
-    const colorClass = colorMapping[colorName]
-    if (colorClass) {
-      return <div className={cn("w-4 h-4 rounded-full mr-3", colorClass)} />
+    const colorClass = colorMappingClass[colorName]
+    const colorSymbol = colorMappingSymbol[colorName]
+    if (USE_EMOJI_SWATCH) {
+      return <span>{colorSymbol}</span>
+    } else {
+      return <div className={cn("w-4 h-4 rounded-full", colorClass)} />
     }
   }
   return null
@@ -368,7 +373,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       className="w-full flex items-center justify-between p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
                     >
                       <div className="flex items-center">
-                        <span className="text-base">{item.title}</span>
+                        <span className="text-base mr-3">{item.title}</span>
                         {getColorSwatch(item.title, currentLevel.title)}
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -388,7 +393,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     className="block p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
                   >
                     <div className="flex items-center">           
-                      <span className="text-base">
+                      <span className="text-base mr-3">
                         {isMenuLeaf(item) ? item.name : item.title}
                       </span>
                       {getColorSwatch(
