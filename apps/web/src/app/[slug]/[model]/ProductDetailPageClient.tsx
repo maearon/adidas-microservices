@@ -401,8 +401,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       className={cn(
                         `w-[${size}px] h-[${size}px] block overflow-hidden border-b-4`,
                         isActive ? 
-                        "border-black dark:border-[#538E76]"
-                        : "border-transparent hover:border-black dark:hover:border-[#538E76]",
+                        "border-black dark:border-[#E32B2B]"
+                        : "border-transparent hover:border-black dark:hover:border-[#E32B2B]",
                       )}
                     >
                       <Image

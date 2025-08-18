@@ -336,7 +336,7 @@ function replaceEmojis(text: string): string {
                           <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
                             <p className="text-base text-[#0066FF]">User Email: [System message] Admin</p>
-                            <p className="text-base text-[#538E76]">User Name: [System message]</p>
+                            <p className="text-base text-[#E32B2B]">User Name: [System message]</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}

@@ -78,7 +78,7 @@ export default function ProductVariantCarousel({
               className={cn(
                 "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all",
                 isActive
-                  ? "border-b-2 border-b-black dark:border-b-[#538E76]"
+                  ? "border-b-2 border-b-black dark:border-b-[#E32B2B]"
                   : "border-b-2 border-b-transparent"
               )}
             >
