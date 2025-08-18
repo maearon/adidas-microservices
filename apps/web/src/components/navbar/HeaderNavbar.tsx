@@ -76,7 +76,7 @@ const HeaderNavbar = () => {
 
             <button
               onClick={() => setShowCountrySelect(false)}
-              className="mt-2 w-full bg-black dark:bg-white text-white py-2 font-bold"
+              className="mt-2 w-full bg-black dark:bg-white text-white dark:text-black py-2 font-bold"
             >
               Save
             </button>
