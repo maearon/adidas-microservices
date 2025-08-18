@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import AdidasLogo from "@/components/adidas-logo"
 
 const meta: Meta<typeof AdidasLogo> = {

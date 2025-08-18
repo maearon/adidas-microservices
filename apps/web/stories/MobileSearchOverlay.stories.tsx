@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import MobileSearchOverlay from "@/components/navbar/mobile-search-overlay"
 import { useState } from "react"
 

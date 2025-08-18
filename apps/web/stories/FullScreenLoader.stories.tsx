@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import type { Meta, StoryObj } from '@storybook/nextjs'
 import FullScreenLoader from '@/components/ui/FullScreenLoader'
 
 const meta: Meta<typeof FullScreenLoader> = {

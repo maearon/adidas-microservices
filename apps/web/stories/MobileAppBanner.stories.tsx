@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import MobileAppBanner from "@/components/navbar/mobile-app-banner"
 
 const meta: Meta<typeof MobileAppBanner> = {

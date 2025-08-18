@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import MobileMenu from "@/components/mobile-menu"
 
 const meta: Meta<typeof MobileMenu> = {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import type { Meta, StoryObj } from '@storybook/nextjs'
 import { Input } from '@/components/ui/input'
 
 const meta: Meta<typeof Input> = {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import ProductGrid from "@/components/product-grid"
 import { Provider } from "react-redux"
 import { store } from "@/store/store"

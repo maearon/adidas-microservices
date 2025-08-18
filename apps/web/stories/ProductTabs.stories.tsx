@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import ProductTabs from "@/components/product-tabs"
 import { Provider } from "react-redux"
 import { store } from "@/store/store"

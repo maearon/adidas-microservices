@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { SliderWithValue } from "@/components/ui/SliderWithValue"
 
 const meta: Meta<typeof SliderWithValue> = {

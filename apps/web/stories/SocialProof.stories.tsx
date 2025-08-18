@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { SocialProof } from "@/components/ui/SocialProof"
 
 const meta: Meta<typeof SocialProof> = {

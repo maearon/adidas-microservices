@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import LoginModal from "@/components/login-modal"
 import { Provider } from "react-redux"
 import { store } from "@/store/store"

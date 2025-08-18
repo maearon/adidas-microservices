@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import Header from "@/components/navbar/NavbarClient"
 
 const meta: Meta<typeof Header> = {

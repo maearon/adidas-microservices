@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import CategoryFilters from "@/components/filter/category-filters"
 
 const meta: Meta<typeof CategoryFilters> = {

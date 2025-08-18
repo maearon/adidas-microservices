@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { LocationModalProvider } from "@/components/modal-providers"
 import { useEffect } from "react"
 import { useLocationModal } from "@/hooks/useLocationModal"

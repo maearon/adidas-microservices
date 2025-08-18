@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/nextjs-vite'
+import type { Preview } from '@storybook/nextjs'
 import '@/app/globals.css';
 import { ReduxProviderDecorator } from "../stories/storybook-redux-provider"
 import { AppProviders } from "../stories//app-providers"
