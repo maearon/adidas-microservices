@@ -213,7 +213,7 @@ export default function ImageLightbox({
             key={index}
             onClick={() => onNavigate(index)}
             className={`w-12 h-12 border-2 rounded-none overflow-hidden ${
-              index === currentIndex ? "border-border" : "border-gray-300"
+              index === currentIndex ? "border-black" : "border-gray-300"
             }`}
           >
             <img src={image || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />

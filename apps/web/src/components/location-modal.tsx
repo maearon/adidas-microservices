@@ -57,11 +57,11 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md p-0 bg-white">
+      <DialogContent className="sm:max-w-md p-0 bg-white dark:bg-black">
         <div className="relative p-8">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-black mb-2">PLEASE CHOOSE YOUR</h2>
+            <h2 className="text-2xl font-bold text-black dark:text-white mb-2">PLEASE CHOOSE YOUR</h2>
             <h2 className="text-2xl font-bold text-black">DELIVERY LOCATION</h2>
           </div>
 
@@ -75,9 +75,9 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
                   value={location.id}
                   checked={selectedLocation === location.id}
                   onChange={() => handleLocationSelect(location.id)}
-                  className="w-5 h-5 text-black border-2 border-gray-300 focus:ring-black focus:ring-2"
+                  className="w-5 h-5 text-black dark:text-white border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
-                <span className="text-lg font-medium text-black group-hover:underline">{location.name}</span>
+                <span className="text-lg font-medium text-black dark:text-white group-hover:underline">{location.name}</span>
                 <span className="text-2xl ml-auto">{location.flag}</span>
               </label>
             ))}
@@ -93,6 +93,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
           {/* GO button */}
           <Button
+            border
             pressEffect
             fullWidth={false}
             onClick={handleConfirm}
