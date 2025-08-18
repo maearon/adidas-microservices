@@ -165,7 +165,7 @@ export default function ImageLightbox({
 
       {/* Image Container */}
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        {/* <img
+        <img
           src={images[currentIndex] || "/placeholder.svg"}
           alt={`${productName} - Image ${currentIndex + 1}`}
           className="max-w-full max-h-full object-contain transition-transform duration-200"
@@ -176,8 +176,8 @@ export default function ImageLightbox({
           onClick={handleImageClick}
           onMouseDown={handleMouseDown}
           draggable={false}
-        /> */}
-        <Image
+        />
+        {/* <Image
           src={images[currentIndex] || "/placeholder.svg"}
           alt={`${productName} - Image ${currentIndex + 1}`}
           fill // need relative
@@ -190,7 +190,7 @@ export default function ImageLightbox({
           onClick={handleImageClick}
           onMouseDown={handleMouseDown}
           draggable={false}
-        />
+        /> */}
       </div>
 
       {/* Instructions */}
