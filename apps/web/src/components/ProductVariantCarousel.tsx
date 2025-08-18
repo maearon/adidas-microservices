@@ -76,7 +76,7 @@ export default function ProductVariantCarousel({
                 variant.avatar_url && onHover(variant.avatar_url, variantSlug) // 👈 pass up to parent url and src
               } 
               className={cn(
-                "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all border",
+                "relative w-8 h-8 rounded-none overflow-hidden cursor-pointer transition-all",
                 isActive
                   ? "border-b-2 border-b-black dark:border-b-[#538E76]"
                   : "border-b-2 border-b-transparent"

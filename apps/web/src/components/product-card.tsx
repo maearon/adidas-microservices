@@ -85,7 +85,7 @@ export default function ProductCard({
     >
       <Card
         className={cn(
-          "group flex flex-col justify-between border border-transparent hover:border-border transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
+          "group flex flex-col justify-between border border-transparent hover:border-black dark:hover:border-white transition-all duration-200 shadow-none cursor-pointer rounded-none overflow-visible",
           minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[470px]"
         )}
       >
