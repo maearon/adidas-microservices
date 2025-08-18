@@ -65,7 +65,7 @@ function getColorSwatch(itemName: string, categoryTitle: string) {
 }
 
 function withColorEmoji(label: string) {
-  return label.toLowerCase().includes("Shop by Color") ? `${label} 🌸` : label
+  return label.toLowerCase().includes("shop by color") ? `${label} 🌸` : label
 }
 
 // ======================
