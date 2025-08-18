@@ -187,10 +187,10 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                           href={getShopByColorItems(activeMenu.toLowerCase())[0].href}
                           className="hover:underline"
                         >
-                          SHOP BY COLOR 🌸
+                          SHOP BY COLOR 🎨
                         </Link>
                       </h3>
-                      {/* <h4 className="text-base font-semibold mb-2">Shop by Color 🌸</h4> */}
+                      {/* <h4 className="text-base font-semibold mb-2">Shop by Color 🎨</h4> */}
                       {/* <ul className="space-y-1">
                         {getShopByColorItems(activeMenu.toLowerCase()).map((colorItem, colorIndex) => (
                           <li key={colorIndex}>
