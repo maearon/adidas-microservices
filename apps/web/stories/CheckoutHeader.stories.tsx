@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import CheckoutHeader from "@/components/checkout-header"
+import CheckoutHeader from "@/app/checkout/checkout-header"
 
 const meta: Meta<typeof CheckoutHeader> = {
   title: "Components/CheckoutHeader",

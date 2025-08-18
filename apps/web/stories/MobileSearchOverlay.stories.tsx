@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import MobileSearchOverlay from "@/components/mobile-search-overlay"
+import MobileSearchOverlay from "@/components/navbar/mobile-search-overlay"
 import { useState } from "react"
 
 const meta: Meta<typeof MobileSearchOverlay> = {

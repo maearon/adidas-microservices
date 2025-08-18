@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import MegaMenu from "@/components/mega-menu"
+import MegaMenu from "@/components/navbar/mega-menu"
 import { useState } from "react"
 
 const meta: Meta<typeof MegaMenu> = {
