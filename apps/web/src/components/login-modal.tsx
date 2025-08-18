@@ -141,7 +141,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
       >
         {/* Close button - Square border style */}

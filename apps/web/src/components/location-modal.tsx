@@ -59,7 +59,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md p-0 bg-white dark:bg-black">
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="sm:max-w-md p-0 bg-white dark:bg-black">
         {/* Close button - Square border style */}
         <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
