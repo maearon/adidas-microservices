@@ -15,6 +15,10 @@ export const auth = betterAuth({
     signOut: "/",
   },
   socialProviders: {
+    facebook: { 
+      clientId: process.env.FACEBOOK_CLIENT_ID as string, 
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string, 
+    }, 
     github: { 
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
