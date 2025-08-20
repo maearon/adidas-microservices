@@ -448,11 +448,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                         ${isSoldOut ? "text-gray-400 cursor-not-allowed" : ""}
                       `}
                     >
-                      {size}
+                      <span className={isSoldOut ? "line-through" : ""}>{size}</span>
                       {isSoldOut && (
                         <span className="absolute top-1 right-0.5 text-xs">
                           {/* 🔔 */}
-                          <BellRing className="absolute top-1 right-0.5 w-4 h-4 text-background" />
+                          <BellRing className="absolute top-1 right-0.5 w-4 h-4 text-[#232323] dark:text-white" />
                         </span>
                       )}
                     </button>
