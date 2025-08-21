@@ -85,16 +85,24 @@ export const useProductDetail = ( slug: string, variant_code: string) => {
 
 export const useProducts = (filters: ProductFilters = {}) => {
   return useInfiniteQuery<
-    ProductsPage, // TQueryFnData
-    AxiosError<{ code?: string }>, // TError
-    InfiniteData<ProductsPage>, // TData (đảm bảo data.pages tồn tại)
-    (string | ProductFilters)[], // TQueryKey
-    string | undefined // TPageParam
+    ProductsPage, // dữ liệu trả về từ queryFn
+    AxiosError<{ code?: string }>, // error type
+    InfiniteData<ProductsPage>, // dữ liệu transform (data.pages)
+    (string | ProductFilters)[], // queryKey
+    string | undefined // pageParam (cursor)
   >({
-    queryKey: ["product-list", "search", filters],
+    queryKey: ["product-list", "filters", filters],
     queryFn: async ({ pageParam = undefined }) => {
-      const response = await axiosInstance.get<ProductsPage>("/api/search", {
-        params: { q: "a", ...(pageParam ? { cursor: pageParam } : {}) },
+    
+      const params: ProductFilters = {
+        ...(filters.gender ? { gender: filters.gender } : {}),
+        ...(filters.category ? { category: filters.category } : {}),
+        // ...(filters.priceMin ? { price_min: filters.priceMin } : {}),
+        // ...(filters.priceMax ? { price_max: filters.priceMax } : {}),
+        ...(pageParam ? { cursor: pageParam } : {}),
+      };
+      const response = await axiosInstance.get<ProductsPage>("/api/products", {
+        params,
       });
       return response.data;
     },

@@ -74,11 +74,12 @@ export async function GET(req: NextRequest) {
         product_id: v.product_id,
         created_at: v.created_at,
         updated_at: v.updated_at,
-        avatar_url: avatar[0] ?? "/placeholder.svg?height=300&width=250",
-        hover_url: hover[0] ?? "/placeholder.svg?height=300&width=250",
+        avatar_url: avatar[0] ?? "/placeholder.svg?height=300&width=300",
+        hover_url: hover[0] ?? "/placeholder.svg?height=300&width=300", // ✅ variant-specific hover
         image_urls: sortedImages ?? [],
-        image_url: mainImage[0] ?? "/placeholder.svg",
-        hover_image_url: hoverImage[0] ?? "/placeholder.svg",
+        image_url: avatar[0] ?? "/placeholder.svg",
+        hover_image: hover[0] ?? "/placeholder.svg",
+        hover_image_url: hover[0] ?? "/placeholder.svg",
       }
     })
 
@@ -176,6 +177,7 @@ export async function GET(req: NextRequest) {
         currencyFormat: "$",
         isFreeShipping: true,
         main_image_url: mainImage[0] ?? "/placeholder.svg",
+        hover_image: hoverImage[0] ?? "/placeholder.svg",
         hover_image_url: hoverImage[0] ?? "/placeholder.svg",
         variants: enrichedVariants,
         related_products: relatedData,

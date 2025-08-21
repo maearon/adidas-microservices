@@ -29,16 +29,11 @@ export default function ProductCard({
   minimalMobile = false,
 }: ProductCardProps) {
   const dispatch = useAppDispatch();
-  const defaultImage =
-    product.variants?.[0]?.avatar_url ??
-    product.image ??
-    product.image_url ??
-    "/placeholder.png";
   const fallbackUrl = `/${slugify(product.name || "product")}/${
-    product?.variants?.[0]?.variant_code
+    product.variants[0]?.variant_code
   }.html`;
-  const [currentImage, setCurrentImage] = useState(defaultImage);
-  const [currentUrl, setCurrentUrl] = useState(product.url ?? fallbackUrl);
+  const [currentVariant, setCurrentVariant] = useState(product.variants[0]);
+  const [currentUrl, setCurrentUrl] = useState(fallbackUrl);
   const isPlaceholder = product.__isPlaceholder || !product.name;
 
   const handleAddToBag = (e: React.MouseEvent) => {
@@ -49,7 +44,7 @@ export default function ProductCard({
         id: Number(product.id),
         name: product.name || "Unknown Product",
         price: String(product.price) || "0",
-        image: currentImage,
+        image: currentVariant?.avatar_url || "/placeholder.png",
         color: "Default",
         size: "M",
       })
@@ -75,12 +70,12 @@ export default function ProductCard({
     <Link
       href={currentUrl}
       onMouseEnter={() => {
-        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage);
-        setCurrentUrl(product.url ?? fallbackUrl);
+        setCurrentVariant(product.variants[0]);
+        setCurrentUrl(fallbackUrl);
       }}
       onMouseLeave={() => {
-        setCurrentImage(product.variants?.[0]?.avatar_url || defaultImage);
-        setCurrentUrl(product.url ?? fallbackUrl);
+        setCurrentVariant(product.variants[0]);
+        setCurrentUrl(fallbackUrl);
       }}
     >
       <Card
@@ -92,8 +87,8 @@ export default function ProductCard({
         <CardContent className="p-0">
           <div className="relative aspect-square overflow-hidden group/image mb-1">
             <Image
-              src={currentImage || "/placeholder.svg"}
-              alt={product?.name || ""}
+              src={currentVariant?.avatar_url || "/placeholder.png"}
+              alt={product.name || ""}
               fill
               className={cn(
                 "object-cover transition-opacity duration-300",
@@ -103,7 +98,7 @@ export default function ProductCard({
             />
             {hasHoverImage && (
               <Image
-                src={product.hover_image_url || "/placeholder.svg"}
+                src={currentVariant?.hover_url || "/placeholder.png"}
                 alt={product.name || ""}
                 fill
                 className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover/image:opacity-100"
@@ -132,11 +127,10 @@ export default function ProductCard({
               )}
             >
               <ProductVariantCarousel
-                productName={product.name || "product"}
-                variants={product.variants}
-                activeImage={currentImage}
-                onHover={(src, url) => {
-                  setCurrentImage(src);
+                product={product}
+                currentVariant={currentVariant}
+                onHover={(variant, url) => {
+                  setCurrentVariant(variant);
                   setCurrentUrl(url);
                 }}
               />

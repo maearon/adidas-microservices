@@ -2,10 +2,11 @@
 
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
-import { getProductSearchSelect } from "@/lib/types"
+// import { getProductSearchSelect } from "@/lib/types"
 import { serializeBigInt } from "@/lib/bigint"
+import { getImageUrlsByRecord } from "@/lib/attachments"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,102 +20,100 @@ export async function GET(req: NextRequest) {
       .map((word) => word + ":*")
       .join(" & ")
 
+    // ✅ Count total
     const totalCount = await prisma.products.count({
-      where: {
-        name: {
-          search: searchQuery,
-        },
-      },
+      where: { name: { search: searchQuery } },
     })
 
+    // ✅ Query products
     const products = await prisma.products.findMany({
       where: {
         name: {
           search: searchQuery, // maps to to_tsquery in PostgreSQL
         },
       },
-      select: getProductSearchSelect(),
+      // select: getProductSearchSelect(),
+      include: {
+        categories: { select: { name: true } },
+        products_tags: {
+          include: { tags: { select: { name: true } } },
+        },
+      },
       orderBy: { created_at: "desc" },
       take: pageSize + 1,
       ...(cursor ? { cursor: { id: BigInt(cursor) }, skip: 1 } : {}),
     })
 
-    const productsWithImages = await Promise.all(
+    // ✅ Enrich products
+    const enrichedProducts = await Promise.all(
       products.slice(0, pageSize).map(async (product) => {
-        // 1. Ảnh chính của product
-        const productAttachments = await prisma.active_storage_attachments.findMany({
-          where: {
-            record_type: "Product",
-            record_id: product.id,
-          },
-          orderBy: { id: "asc" },
-          select: {
-            active_storage_blobs: {
-              select: { key: true },
-            },
-          },
-        })
+        // Ảnh product
+        const [mainImage, hoverImage] = await Promise.all([
+          getImageUrlsByRecord("Product", product.id, "image"),
+          getImageUrlsByRecord("Product", product.id, "hover_image"),
+        ])
 
-        const productImages = productAttachments.map(att => {
-          const key = att.active_storage_blobs?.key
-          return key ? `https://res.cloudinary.com/dq7vadalc/image/upload/${key}` : null
-        }).filter(Boolean)
-
-        // 2. Variants & ảnh
+        // Variants
         const variants = await prisma.variants.findMany({
           where: { product_id: product.id },
-          // include: {
-          //   sizes: {
-          //     select: { label: true }
-          //   }
-          // }
+          include: { variant_sizes: { include: { sizes: true } } },
         })
 
-        const enrichedVariants = await Promise.all(variants.map(async (variant) => {
-          // Ảnh của từng variant
-          const variantAttachments = await prisma.active_storage_attachments.findMany({
-            where: {
-              record_type: "Variant",
-              record_id: variant.id,
-            },
-            orderBy: { id: "asc" },
-            select: {
-              active_storage_blobs: {
-                select: { key: true },
-              },
-            },
+        const variantImageResults = await Promise.all(
+          variants.map(async (v) => {
+            const [images, avatar, hover] = await Promise.all([
+              getImageUrlsByRecord("Variant", v.id, "images"),
+              getImageUrlsByRecord("Variant", v.id, "avatar"),
+              getImageUrlsByRecord("Variant", v.id, "hover"),
+            ])
+            return { v, images, avatar, hover }
           })
+        )
 
-          const image_urls = variantAttachments.map(att => {
-            const key = att.active_storage_blobs?.key
-            return key ? `https://res.cloudinary.com/dq7vadalc/image/upload/${key}` : null
-          }).filter(Boolean)
-
-          return {
-            id: variant.id,
-            variant_code: variant.variant_code,
-            color: variant.color,
-            price: variant.price,
-            compare_at_price: variant.compare_at_price,
-            stock: variant.stock,
-            product_id: variant.product_id,
-            created_at: variant.created_at,
-            updated_at: variant.updated_at,
-            // sizes: variant.sizes.map(s => s.label).filter(Boolean),
-            avatar_url: image_urls[0] || "/placeholder.svg?height=300&width=250",
-            images: image_urls,
-          }
+        const enrichedVariants = variantImageResults.map(({ v, images, avatar, hover }) => ({
+          id: v.id,
+          variant_code: v.variant_code,
+          color: v.color,
+          price: v.price,
+          compare_at_price: v.compare_at_price,
+          stock: v.stock,
+          product_id: v.product_id,
+          created_at: v.created_at,
+          updated_at: v.updated_at,
+          sizes: v.variant_sizes.map((vs) => vs.sizes.label),
+          avatar_url: avatar[0] ?? "/placeholder.svg?height=300&width=250",
+          hover_url: hover[0] ?? "/placeholder.svg?height=300&width=250",
+          image_urls: images ?? [],
         }))
 
         const firstVariant = enrichedVariants[0]
 
         return {
-          ...product,
+          id: product.id,
+          name: product.name,
+          slug: product.slug,
+          model_number: product.model_number,
+          gender: product.gender,
+          franchise: product.franchise,
+          product_type: product.product_type,
+          brand: product.brand,
+          sport: product.sport,
+          description_h5: product.description_h5,
+          description_p: product.description_p,
+          specifications: product.specifications,
+          care: product.care,
+          created_at: product.created_at,
+          updated_at: product.updated_at,
+          category: product.categories?.name ?? "",
+          tags: product.products_tags.map((pt) => pt.tags.name),
           price: firstVariant?.price ?? null,
           compare_at_price: firstVariant?.compare_at_price ?? null,
-          image_url: productImages[0] ?? "/placeholder.svg?height=300&width=250",
-          hover_image_url: productImages[1] ?? "/placeholder.svg?height=300&width=250",
+          main_image_url: mainImage[0] ?? "/placeholder.svg?height=300&width=250",
+          hover_image_url: hoverImage[0] ?? "/placeholder.svg?height=300&width=250",
           variants: enrichedVariants,
+          currencyId: "USD",
+          currencyFormat: "$",
+          isFreeShipping: true,
         }
       })
     )
@@ -124,9 +123,9 @@ export async function GET(req: NextRequest) {
 
     return Response.json(
       serializeBigInt({
-        products: productsWithImages,
+        products: enrichedProducts,
         nextCursor,
-        totalCount,  // thêm dòng này
+        totalCount,
       })
     )
   } catch (error) {

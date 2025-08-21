@@ -28,15 +28,18 @@ export interface Variant {
   updated_at?: string
   image_urls?: string[]
   images?: string[]
-  avatar_url?: string
+  avatar_url: string
+  hover_url: string
   image_url?: string
+  hover_image_url?: string
+  hover_image?: string
   available?: boolean
 }
 
 // 🛍 Product entity (thông tin đầy đủ)
 export interface Product {
   id: number | string
-  tags?: string[]
+  tags: string[]
   breadcrumb?: string
   model_number?: string
   title: string
@@ -60,7 +63,9 @@ export interface Product {
   created_at: string
   updated_at: string
   image?: string
+  main_image_url?: string
   image_url?: string
+  hover_image?: string
   hover_image_url?: string
   availableSizes: string[]
   collection: string

@@ -14,3 +14,11 @@ export interface ProductFilters {
   per_page?: number;
   limit?: number;
 }
+
+export interface ProductQueryParams {
+  gender?: string | string[];
+  category?: string | string[];
+  price_min?: number;
+  price_max?: number;
+  cursor?: string;
+}
