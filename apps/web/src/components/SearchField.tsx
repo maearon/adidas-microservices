@@ -60,7 +60,7 @@ export default function SearchField() {
             pr-1 
             py-1
             rounded-none
-            focus:rounded-sm
+            focus:rounded-[1px]
             focus:outline-hidden 
             focus:ring-1 
             focus:ring-black
