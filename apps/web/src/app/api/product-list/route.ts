@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
-    console.log("Products route called", req);
     const searchParams = req.nextUrl.searchParams;
     const cursorParam = searchParams.get("cursor");
     const cursor =
@@ -21,17 +20,29 @@ export async function GET(req: NextRequest) {
     // ===== Lấy filters =====
     const genders = searchParams.getAll("gender").filter(Boolean);
     const categories = searchParams.getAll("category").filter(Boolean);
-    const priceMin = searchParams.get("price_min")
-      ? parseFloat(searchParams.get("price_min")!)
+    const sports = searchParams.getAll("sport").filter(Boolean);
+    const activities = searchParams.getAll("activity").filter(Boolean);
+    const brands = searchParams.getAll("brand").filter(Boolean);
+    const models = searchParams.getAll("model").filter(Boolean);
+    const collections = searchParams.getAll("collection").filter(Boolean);
+
+    const priceMin = searchParams.get("min_price")
+      ? parseFloat(searchParams.get("min_price")!)
       : undefined;
-    const priceMax = searchParams.get("price_max")
-      ? parseFloat(searchParams.get("price_max")!)
+    const priceMax = searchParams.get("max_price")
+      ? parseFloat(searchParams.get("max_price")!)
       : undefined;
 
     // ===== Build where =====
     const where: Prisma.productsWhereInput = {};
     if (genders.length) where.gender = { in: genders };
     if (categories.length) where.category = { in: categories };
+    if (sports.length) where.sport = { in: sports };
+    if (activities.length) where.activity = { in: activities };
+    if (brands.length) where.brand = { in: brands };
+    if (models.length) where.model_number = { in: models };
+    if (collections.length) where.franchise = { in: collections };
+
     if (priceMin !== undefined || priceMax !== undefined) {
       where.variants = {
         some: {
@@ -100,7 +111,9 @@ export async function GET(req: NextRequest) {
             sizes: v.variant_sizes.map((vs) => vs.sizes.label),
             avatar_url: avatar[0] ?? "/placeholder.png?height=300&width=250",
             hover_url: hover[0] ?? "/placeholder.png?height=300&width=250",
-            image_urls: images ?? [],
+            image_urls: (images && images.length > 0)
+              ? images
+              : ["/placeholder.png?height=300&width=250"],
           })
         );
 

@@ -5,6 +5,7 @@ import { X, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Slider } from "@/components/ui/slider"
 
 interface FiltersSidebarProps {
   isOpen: boolean
@@ -342,6 +343,26 @@ export default function FiltersSidebar({
             <div className="space-y-4">
               <div className="text-center text-base text-gray-600 dark:text-white">
                 ${priceRange.min} – ${priceRange.max}
+              </div>
+              {/* Price Range */}
+              <div className="mb-6">
+                <h3 className="font-semibold mb-4">PRICE RANGE</h3>
+                <div className="px-2">
+                  <Slider
+                    value={[Number(filters.min_price) || 0, Number(filters.max_price) || 500]}
+                    onValueChange={([min, max]) => {
+                      handleFilterChange("min_price", String(min), true as boolean)
+                      handleFilterChange("max_price", String(max), true as boolean)
+                    }}
+                    max={500}
+                    step={10}
+                    className="mb-2"
+                  />
+                  <div className="flex justify-between text-base text-gray-600 dark:text-white">
+                    <span>${filters.min_price || 0}</span>
+                    <span>${filters.max_price || 500}</span>
+                  </div>
+                </div>
               </div>
               <div className="flex gap-2">
                 <PriceInput

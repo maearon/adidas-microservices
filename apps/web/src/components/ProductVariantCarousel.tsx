@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Product, Variant } from "@/types/product"
-import { slugify } from "@/utils/slugtify"
+import { slugify } from "@/utils/slugify"
 import { cn } from "@/lib/utils"
 
 interface ProductVariantCarouselProps {

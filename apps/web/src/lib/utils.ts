@@ -36,9 +36,12 @@ export function formatNumber(n: number): string {
   }).format(n);
 }
 
-export function slugify(input: string): string {
-  return input
+export const slugify = (name: unknown): string => {
+  if (typeof name !== "string") return "";
+
+  return name
     .toLowerCase()
-    .replace(/ /g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
+    .trim()
+    .replace(/[^\w\s-]/g, "") // bỏ ký tự đặc biệt
+    .replace(/\s+/g, "-");    // khoảng trắng => dấu gạch ngang
+};

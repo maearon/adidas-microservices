@@ -20,6 +20,7 @@ import ProductCard from "@/components/product-card"
 import { SearchFilters as SearchFiltersType } from "@/types/search";
 import Loading from "@/components/loading"
 import { Button } from "@/components/ui/button"
+// import { useUrlFilters } from "@/hooks/useUrlFilters"
 
 interface CategoryPageClientProps {
   params: { slug: string }
@@ -60,6 +61,7 @@ function getBreadcrumbTrail(slug: string): { label: string; href: string }[] {
 
 export default function CategoryPageClient({ params, searchParams, query }: CategoryPageClientProps) {
   // const searchParams = useSearchParams();
+  // const { query: productQuery, filters } = useUrlFilters(params.slug)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);

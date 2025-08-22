@@ -1,8 +1,8 @@
 import { BreadcrumbItem } from "@/types/bread-crumb";
 import { Product } from "@/types/product";
 // import { getCategoryConfig, categoryConfigs } from "@/utils/category-config.auto"
-import { slugify } from "@/utils/slugtify";
 import { capitalizeTitle } from "./sanitizeMenuTitleOnly";
+import { slugify } from "@/lib/utils";
 
 export function formatSlugTitle(slug: string): string {
   return slug

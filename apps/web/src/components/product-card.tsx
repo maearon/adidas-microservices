@@ -11,7 +11,7 @@ import { addToCart } from "@/store/cartSlice";
 import WishButton from "./wish-button";
 import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
-import { slugify } from "@/utils/slugtify";
+import { slugify } from "@/utils/slugify";
 import type { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import ProductPrice from "./ProductCardPrice";

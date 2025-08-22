@@ -4,7 +4,7 @@ import { ProductData } from "@/lib/types"
 import Image from "next/image"
 import Link from "next/link"
 import { formatRelativeDate } from "@/lib/utils"
-import { slugify } from "@/utils/slugtify"
+import { slugify } from "@/utils/slugify"
 
 interface ProductProps {
   product: ProductData
