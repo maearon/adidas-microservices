@@ -139,7 +139,7 @@ export default function ImageLightbox({
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
+        className="absolute top-4 right-4 z-10 w-10 h-10 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
       >
         <X size={24} className="text-background" />
       </button>
@@ -148,7 +148,7 @@ export default function ImageLightbox({
       {currentIndex > 0 && (
         <button
           onClick={() => onNavigate(currentIndex - 1)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
         >
           <ChevronLeft size={24} className="text-background" />
         </button>
@@ -157,7 +157,7 @@ export default function ImageLightbox({
       {currentIndex < images.length - 1 && (
         <button
           onClick={() => onNavigate(currentIndex + 1)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-200 rounded-none flex items-center justify-center transition-colors"
         >
           <ChevronRight size={24} className="text-background" />
         </button>
@@ -196,12 +196,12 @@ export default function ImageLightbox({
       {/* Instructions */}
       {/* <div className="absolute bottom-4 right-4 flex gap-2"> */}
       {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-base text-background"> */}
-      <div className="absolute bottom-4 left-4 bg-gray-100 px-3 py-2 rounded-none text-base text-background">
+      <div className="absolute bottom-4 left-4 bg-white dark:bg-black text-black dark:text-white px-3 py-2 rounded-none text-base">
         Click to {zoom === 1 ? "zoom in" : "zoom out"} • {zoom > 1 && "Drag to pan • "}ESC to close
       </div>
 
       {/* Image Counter */}
-      <div className="absolute top-4 left-4 bg-gray-100 px-3 py-1 rounded-none text-base text-background">
+      <div className="absolute top-4 left-4 bg-white dark:bg-black text-black dark:text-white px-3 py-1 rounded-none text-base">
         {currentIndex + 1} / {images.length}
       </div>
 
