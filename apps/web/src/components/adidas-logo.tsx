@@ -24,7 +24,7 @@ const AdidasLogo = ({ className }: Props) => {
 
   return (
     <Image
-      src={isDark ? "/logo-white.png" : "/logo.png"}
+      src={isDark ? "/logo_white_transparent.png" : "/logo.png"}
       alt="Adidas logo"
       width={80}
       height={80}
