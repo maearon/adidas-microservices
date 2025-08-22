@@ -3,14 +3,14 @@ import { Barlow } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/providers/redux-provider";
 import { TRPCProvider } from "@/providers/trpc-provider";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocationModalProvider } from "@/components/modal-providers";
 import ChatWidget from "@/components/chat/ChatWidget";
 import FeedbackWidget from "@/components/feedback-widget";
 import ScrollToTop from "@/components/scroll-to-top";
 import "mapbox-gl/dist/mapbox-gl.css";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -40,7 +40,7 @@ export default function RootLayout({
           <TRPCProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="light"
+              defaultTheme="dark"
               enableSystem
               disableTransitionOnChange
             >

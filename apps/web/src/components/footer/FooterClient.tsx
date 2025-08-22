@@ -5,13 +5,18 @@ import { selectUser } from "@/store/sessionSlice"
 import { Facebook, Instagram, Twitter, Youtube, Music, MapPin, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import CcpaIcon from "./icons/CcpaIcon"
-import { Button } from "./ui/button";
+import CcpaIcon from "../icons/CcpaIcon"
+import { Button } from "../ui/button";
 import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
 import { footerLinks } from "@/data/footer-links"
+import type { Session } from "@/lib/auth"
 
-export default function Footer() {
+interface FooterClientProps {
+  session: Session | null;
+}
+
+export default function FooterClient({ session }: FooterClientProps) {
   const [mounted, setMounted] = useState(false)
   
   useEffect(() => {
@@ -214,10 +219,10 @@ export default function Footer() {
             <div className="grid grid-cols-2">
               <div className="flex justify-center">
                 <Link
-                  href={user?.email ? "/my-account" : "/account-login"}
+                  href={session?.user?.email ? "/my-account" : "/account-login"}
                   className="font-bold text-base"
                 >
-                  {user?.email ? "My Account" : "Login"}
+                  {session?.user?.email ? "My Account" : "Login"}
                 </Link>
               </div>
               <div className="flex justify-center">

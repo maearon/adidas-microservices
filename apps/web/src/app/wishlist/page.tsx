@@ -4,8 +4,6 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import Header from "@/components/navbar/NavbarClient"
-import Footer from "@/components/footer"
 import WishButton from "@/components/wish-button"
 
 export default function WishlistPage() {
