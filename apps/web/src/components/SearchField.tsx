@@ -73,7 +73,7 @@ export default function SearchField() {
             onClick={clearInput}
           />
         ) : (
-          <SearchIcon className="absolute right-1 top-1/2 size-5 -translate-y-1/2 text-black" />
+          <SearchIcon className="absolute right-1 top-1/2 size-5 -translate-y-1/2 text-black dark:text-white" />
         )}
       </div>
 
