@@ -52,18 +52,19 @@ export default function SearchField() {
             border-none
             pe-10 
             bg-[#ECEFF1] dark:bg-[#374151]
-            rounded-none 
-            placeholder-black
+            placeholder-black dark:placeholder-white
             focus:placeholder-transparent 
             text-base
-            text-black
+            text-black dark:text-white
             pl-2
             pr-1 
             py-1
-            rounded-none 
+            rounded-none
+            focus:rounded-sm
             focus:outline-hidden 
             focus:ring-1 
-            focus:ring-black"
+            focus:ring-black
+            dark:focus:ring-white"
         />
 
         {searchText ? (
