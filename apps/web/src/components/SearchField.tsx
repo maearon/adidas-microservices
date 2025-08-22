@@ -51,7 +51,7 @@ export default function SearchField() {
           className="
             border-none
             pe-10 
-            bg-[#ECEFF1] 
+            bg-[#ECEFF1] dark:bg-[#374151]
             rounded-none 
             placeholder-black
             focus:placeholder-transparent 
