@@ -66,6 +66,18 @@ export default function ProductCard({
     );
   }
 
+  const productImage =
+    currentVariant?.avatar_url ||
+    currentVariant?.image_urls?.[0] ||
+    product.main_image_url ||
+    "/placeholder.png"
+
+  const hoverImage =
+    currentVariant?.hover_url ||
+    currentVariant?.image_urls?.[2] ||
+    product.hover_image_url ||
+    "/placeholder.png"
+
   return (
     <Link
       href={currentUrl}
@@ -87,8 +99,8 @@ export default function ProductCard({
         <CardContent className="p-0">
           <div className="relative aspect-square overflow-hidden group/image mb-1">
             <Image
-              src={currentVariant?.avatar_url || currentVariant?.image_urls?.[0] || "/placeholder.png"}
-              alt={product.name || ""}
+              src={productImage}
+              alt={product.name || "Product Name"}
               fill
               className={cn(
                 "object-cover transition-opacity duration-300",
@@ -98,8 +110,8 @@ export default function ProductCard({
             />
             {hasHoverImage && (
               <Image
-                src={currentVariant?.hover_url || currentVariant?.image_urls?.[2] || "/placeholder.png"}
-                alt={product.name || ""}
+                src={hoverImage}
+                alt={product.name || "Product Name"}
                 fill
                 className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover/image:opacity-100"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"

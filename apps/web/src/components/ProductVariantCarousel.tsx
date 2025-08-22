@@ -78,14 +78,22 @@ export default function ProductVariantCarousel({
                   : "border-b-2 border-b-transparent"
               )}
             >
-              {variant.avatar_url && (
-                <Image
-                  src={variant.avatar_url}
-                  alt={`Variant ${variant.color || idx}`}
-                  fill
-                  className="object-cover"
-                />
-              )}
+              {(() => {
+                const thumb =
+                  variant?.avatar_url?.trim() ||
+                  variant?.image_urls?.[0] ||
+                  product.main_image_url ||
+                  "/placeholder.png"
+
+                return (
+                  <Image
+                    src={thumb}
+                    alt={`Variant ${variant.color || idx}`}
+                    fill
+                    className="object-cover"
+                  />
+                )
+              })()}
             </Link>
           )
         })}

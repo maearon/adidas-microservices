@@ -28,8 +28,8 @@ export interface Variant {
   updated_at?: string
   image_urls?: string[]
   images?: string[]
-  avatar_url: string
-  hover_url: string
+  avatar_url?: string
+  hover_url?: string
   image_url?: string
   hover_image_url?: string
   hover_image?: string
