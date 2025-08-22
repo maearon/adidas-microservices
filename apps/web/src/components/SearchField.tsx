@@ -69,7 +69,7 @@ export default function SearchField() {
 
         {searchText ? (
           <X
-            className="absolute right-1 top-1/2 size-5 -translate-y-1/2 text-black cursor-pointer hover:opacity-70"
+            className="absolute right-1 top-1/2 size-5 -translate-y-1/2 text-black dark:text-white cursor-pointer hover:opacity-70"
             onClick={clearInput}
           />
         ) : (
