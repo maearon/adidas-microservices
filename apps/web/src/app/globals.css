@@ -128,15 +128,19 @@
 
   /* Override Chrome's default input autofill background color */
   /* Light mode */
-  input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #ECEFF1 inset;
-    -webkit-text-fill-color: black;
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #ECEFF1 inset !important;
+    -webkit-text-fill-color: black !important;
   }
 
   /* Dark mode */
-  .dark input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #374151 inset;
-    -webkit-text-fill-color: white;
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important;
+    -webkit-text-fill-color: white !important;
   }
 }
 
