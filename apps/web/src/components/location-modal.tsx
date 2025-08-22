@@ -17,7 +17,7 @@ interface LocationModalProps {
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
-  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vi_VN");
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("en_US");
 
   // const locations = [
   //   {
@@ -80,7 +80,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
           {/* Location options */}
           <div className="space-y-4 mb-6">
             {localeOptions.map(({ value, label, flagShow }, index) => (
-              <label key={value} className="flex items-center space-x-4 cursor-pointer group">
+              <label key={`${value}-${index}`} className="flex items-center space-x-4 cursor-pointer group">
                 <input
                   type="radio"
                   name="location"

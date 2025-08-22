@@ -61,7 +61,7 @@ export default function StoreDetail({ store }: { store: Store }) {
         {store.features.map((f) => (
           <span
             key={f}
-            className="text-black text-xs px-2 py-1 bg-gray-100 rounded border"
+            className="text-xs px-2 py-1 bg-gray-100 dark:bg-black rounded border"
           >
             {f}
           </span>
