@@ -383,9 +383,11 @@ export default function FiltersSidebar({
         {/* Apply Button */}
         <div className="sticky bottom-0 bg-background border-t border-gray-200 p-4">
           <Button
-            pressEffect={true}
+            border
+            shadow
+            pressEffect
             onClick={applyFilters}
-            className="w-full bg-black text-white hover:bg-gray-800 py-3 text-base font-medium"
+            fullWidth
           >
             APPLY ({getAppliedFiltersCount()})
           </Button>

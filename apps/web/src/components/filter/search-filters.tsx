@@ -192,21 +192,20 @@ export default function SearchFilters({
           {/* Apply Button */}
           <div className="pt-6 border-t">
             <Button
+              border
               shadow
               pressEffect
               onClick={applyFilters}
               fullWidth
-              className="w-full bg-black text-white hover:bg-gray-800 mb-3"
+              className="mb-3"
             >
               APPLY ({totalResults})
             </Button>
             <Button
-              shadow
-              pressEffect
+              border
               onClick={clearFilters}
               variant="outline"
               fullWidth
-              className="w-full"
             >
               Clear All Filters
             </Button>
