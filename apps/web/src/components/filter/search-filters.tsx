@@ -190,14 +190,13 @@ export default function SearchFilters({
           </div>
 
           {/* Apply Button */}
-          <div className="pt-6 border-t">
+          <div className="pt-6 border-t mb-3">
             <Button
               border
               shadow
               pressEffect
               onClick={applyFilters}
               fullWidth
-              className="mb-3"
             >
               APPLY ({totalResults})
             </Button>

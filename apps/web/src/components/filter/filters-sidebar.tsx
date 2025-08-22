@@ -193,9 +193,9 @@ export default function FiltersSidebar({
                   return value.map((item) => (
                     <div
                       key={`${key}-${item}`}
-                      className="flex items-center bg-gray-100 rounded px-2 py-1 text-base"
+                      className="flex items-center bg-gray-100 dark:bg-gray-700 rounded px-2 py-1 text-base"
                     >
-                      <span className="bg-white dark:bg-black text-black dark:text-white">{item}</span>
+                      <span>{item}</span>
                       <button
                         onClick={() => handleFilterChange(key, item, false)}
                         className="ml-1 text-gray-500 hover:text-gray-700"
