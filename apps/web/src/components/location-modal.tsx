@@ -19,18 +19,18 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
   const dispatch = useAppDispatch()
   const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("vi_VN");
 
-  const locations = [
-    {
-      id: "vi_VN",
-      name: "Vietnam",
-      flag: "🇻🇳",
-    },
-    {
-      id: "en_US",
-      name: "United States",
-      flag: "🇺🇸",
-    },
-  ] as const;
+  // const locations = [
+  //   {
+  //     id: "vi_VN",
+  //     name: "Vietnam",
+  //     flag: "🇻🇳",
+  //   },
+  //   {
+  //     id: "en_US",
+  //     name: "United States",
+  //     flag: "🇺🇸",
+  //   },
+  // ] as const;
 
   const handleLocationSelect = (locationId: SupportedLocale) => {
     setSelectedLocation(locationId);
@@ -79,28 +79,31 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
           {/* Location options */}
           <div className="space-y-4 mb-6">
-            {locations.map((location) => (
-              <label key={location.id} className="flex items-center space-x-4 cursor-pointer group">
+            {localeOptions.map(({ value, label, flagShow }, index) => (
+              <label key={value} className="flex items-center space-x-4 cursor-pointer group">
                 <input
                   type="radio"
                   name="location"
-                  value={location.id}
-                  checked={selectedLocation === location.id}
-                  onChange={() => handleLocationSelect(location.id)}
+                  value={value}
+                  checked={selectedLocation === value}
+                  onChange={() => handleLocationSelect(value)}
                   className="w-5 h-5 text-black dark:text-white border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
-                <span className="text-lg font-medium text-black dark:text-white group-hover:underline">{location.name}</span>
+                <span className="text-lg font-medium text-black dark:text-white group-hover:underline">
+                  {label}
+                </span>
                 <span className="text-2xl ml-auto">
                   {/* {location.flag} */}
-                  <Image
+                  <Image src={flagShow} alt={label} width={24} height={16} />
+                  {/* <Image
                     src={
-                      localeOptions.find((o) => o.value === location.id)?.flag ||
+                      localeOptions.find((o) => o.value === value)?.flagShow ||
                       "/flag/us-show.svg"
                     }
                     alt="flag"
                     width={24}
                     height={16}
-                  />
+                  /> */}
                 </span>
               </label>
             ))}
