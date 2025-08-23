@@ -37,13 +37,13 @@ export interface LocaleOption {
 // Tạo danh sách option dựa trên localeDisplayMap
 export const localeOptions: LocaleOption[] = [
   {
-    label: countryDisplayMap.en_US,
+    label: localeDisplayMap.en_US,
     value: "en_US",
     flagShow: "/flag/us-show.svg",
     flag: "/flag/us.svg",
   },
   {
-    label: countryDisplayMap.vi_VN,
+    label: localeDisplayMap.vi_VN,
     value: "vi_VN",
     flagShow: "/flag/vn-show.svg",
     flag: "/flag/vn.svg",
