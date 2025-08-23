@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
-import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
+import { countryDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
 import Image from "next/image"
 import { X } from "lucide-react"
@@ -90,7 +90,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
                   className="w-5 h-5 text-black dark:text-white border-2 border-gray-300 focus:ring-black focus:ring-2"
                 />
                 <span className="text-lg font-medium text-black dark:text-white group-hover:underline">
-                  {label}
+                  {countryDisplayMap[value]}
                 </span>
                 <span className="text-2xl ml-auto">
                   {/* {location.flag} */}

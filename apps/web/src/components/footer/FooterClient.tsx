@@ -7,7 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import CcpaIcon from "../icons/CcpaIcon"
 import { Button } from "../ui/button";
-import { countryDisplayMap, localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
+import { localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
 import { footerLinks } from "@/data/footer-links"
 import type { Session } from "@/lib/auth"
@@ -314,7 +314,7 @@ export default function FooterClient({ session }: FooterClientProps) {
                   height={16}
                   className="inline-block"
                 />
-                <span>{countryDisplayMap[locale]}</span>
+                <span>{localeDisplayMap[locale]}</span>
               </div>
             )}
           </div>

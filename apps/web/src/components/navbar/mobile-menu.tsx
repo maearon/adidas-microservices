@@ -17,7 +17,7 @@ import type {
 import { capitalizeWordsCountry } from "@/utils/upper-words"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
-  countryDisplayMap,
+  localeDisplayMap,
   localeOptions,
   SupportedLocale,
 } from "@/lib/constants/localeOptions"
@@ -89,7 +89,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   const dispatch = useAppDispatch()
   const locale = useAppSelector((s) => s.locale.locale) || "en_US"
-  const languageLabel = countryDisplayMap[locale]
+  const languageLabel = localeDisplayMap[locale]
 
   const additionalMenuItems = [
     { name: "My Account", href: "/my-account" },

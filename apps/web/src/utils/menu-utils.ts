@@ -137,7 +137,7 @@ export const additionalMenuItems = [
   { name: "Store Locator", href: "/stores" },
   { name: "Mobile Apps", href: "/mobile-apps" },
   {
-    name: "Languages", // countryDisplayMap["en_US"],
+    name: "Languages", // localeDisplayMap["en_US"],
     hasSubmenu: true,
     items: localeOptions,
   },
