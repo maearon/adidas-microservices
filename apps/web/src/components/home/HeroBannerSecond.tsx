@@ -3,8 +3,10 @@
 import { useState } from "react"
 import { Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function HeroBannerSecond() {
+  const t = useTranslations("secondHero")
   const [showVideo, setShowVideo] = useState(false)
 
   return (
@@ -14,16 +16,16 @@ export default function HeroBannerSecond() {
         <div className="w-full max-w-md text-left">
           <div className="flex flex-col gap-2 sm:gap-3">
             <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
-              PAST, PRESENT, FUTURE
+              {t?.secondHeroTitle ?? "A TRUE MIAMI ORIGINAL"}
             </h1>
             <p className="bg-white text-black text-xs sm:text-base px-1.5 py-0.5 w-fit leading-snug">
-              Explore the Superstar, now updated for the next generation.
+              {t?.secondHeroDesc ?? "A TRUE MIAMI ORIGINAL"}
             </p>
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
               {[
-                { label: "MEN", href: "/men-superstar" },
-                { label: "WOMEN", href: "/women-superstar" },
-                { label: "KIDS", href: "/kids-superstar" },
+                { label: t?.shopMen ?? "MEN", href: "/men-superstar" },
+                { label: t?.shopWomen ?? "WOMEN", href: "/women-superstar" },
+                { label: t?.shopKids ?? "KIDS", href: "/kids-superstar" },
               ].map(({ label, href }) => (
                 <Button
                   key={label}
@@ -55,7 +57,7 @@ export default function HeroBannerSecond() {
                 className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
               >
                 <Play className="h-3.5 w-3.5" />
-                WATCH VIDEO
+                {t?.watchVideo ?? "WATCH VIDEO"}
               </Button>
             </div>
           </div>
