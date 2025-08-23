@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
+import { useTheme } from "next-themes"
 
 interface FiltersSidebarProps {
   isOpen: boolean
@@ -42,6 +43,14 @@ export default function FiltersSidebar({
     collection: false,
   })
   const [priceRange, setPriceRange] = useState({ min: 65, max: 300 })
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Avoid hydration mismatch
+  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (currentFilters) {
@@ -158,6 +167,10 @@ export default function FiltersSidebar({
     "12", "12.5", "13", "13.5", "14", "15",
   ]
 
+  if (!mounted) return null
+
+  const isDark = resolvedTheme === "dark"
+
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
@@ -193,7 +206,7 @@ export default function FiltersSidebar({
                   return value.map((item) => (
                     <div
                       key={`${key}-${item}`}
-                      className="flex items-center bg-gray-100 dark:bg-gray-700 rounded px-2 py-1 text-base"
+                      className="flex items-center bg-gray-100 text-black rounded px-2 py-1 text-base"
                     >
                       <span>{item}</span>
                       <button
@@ -208,9 +221,9 @@ export default function FiltersSidebar({
                   return (
                     <div
                       key={key}
-                      className="flex items-center bg-gray-100 rounded px-2 py-1 text-base"
+                      className="flex items-center bg-gray-100 text-black rounded px-2 py-1 text-base"
                     >
-                      <span className="bg-white dark:bg-black text-black dark:text-white">{value}</span>
+                      <span>{value}</span>
                       <button
                         onClick={() => setFilters((prev: Filters) => ({ ...prev, [key]: undefined }))}
                         className="ml-1 text-gray-500 hover:text-gray-700"
@@ -388,6 +401,7 @@ export default function FiltersSidebar({
             pressEffect
             onClick={applyFilters}
             fullWidth
+            theme={isDark ? "black" : "white"}
           >
             APPLY ({getAppliedFiltersCount()})
           </Button>

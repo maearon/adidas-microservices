@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { X, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { SearchFilters as SearchFiltersType } from "@/types/search"
 import { BaseButton } from "../ui/base-button"
+import { useTheme } from "next-themes"
 
 interface SearchFiltersProps {
   isOpen: boolean
@@ -36,6 +37,14 @@ export default function SearchFilters({
     features: false,
     color: false,
   })
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Avoid hydration mismatch
+  useEffect(() => setMounted(true), [])
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({
@@ -68,6 +77,10 @@ export default function SearchFilters({
     setLocalFilters(clearedFilters)
     onFiltersChange(clearedFilters)
   }
+  
+  if (!mounted) return null
+
+  const isDark = resolvedTheme === "dark"
 
   if (!isOpen) return null
 
@@ -190,21 +203,24 @@ export default function SearchFilters({
           </div>
 
           {/* Apply Button */}
-          <div className="pt-6 border-t mb-3">
+          <div className="pt-6 border-t">
             <Button
               border
               shadow
               pressEffect
               onClick={applyFilters}
               fullWidth
+              theme={isDark ? "black" : "white"}
             >
               APPLY ({totalResults})
             </Button>
+            <div className="mb-3"></div>
             <Button
               border
               onClick={clearFilters}
               variant="outline"
               fullWidth
+              theme={isDark ? "black" : "white"}
             >
               Clear All Filters
             </Button>
