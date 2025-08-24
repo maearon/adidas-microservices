@@ -284,6 +284,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
 
           {/* Toolbar */}
           <ProductListToolbar
+            products={products}
             totalCount={totalCount}
             currentSort={currentSort}
             viewMode={viewMode}
