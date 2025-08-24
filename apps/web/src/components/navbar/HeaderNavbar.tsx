@@ -4,8 +4,10 @@ import Image from "next/image"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions";
 import { setLocale } from "@/store/localeSlice";
+import { useTranslations } from "@/hooks/useTranslations";
 
 const HeaderNavbar = () => {
+  const t = useTranslations("headerNavbar")
   const dispatch = useAppDispatch()
   const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
   const [showCountrySelect, setShowCountrySelect] = useState(false)
@@ -25,11 +27,11 @@ const HeaderNavbar = () => {
   
   return (
     <div className="flex justify-end items-center text-xs text-gray-700 dark:text-white px-12 py-2 w-full">
-      <Link href="/signup" className="hover:underline mr-3">sign up</Link>
-      <Link href="/help" className="hover:underline mr-3">help</Link>
-      <Link href="/orders" className="hover:underline mr-3">orders and returns</Link>
-      <Link href="/gift-cards" className="hover:underline mr-3">gift cards</Link>
-      <Link href="/join" className="hover:underline mr-3">join adiClub</Link>
+      <Link href="/signup" className="hover:underline mr-3">{t?.registerLink ?? "sign up"}</Link>
+      <Link href="/help" className="hover:underline mr-3">{t?.helpLink ?? "help"}</Link>
+      <Link href="/orders" className="hover:underline mr-3">{t?.ordersAndReturnsLink ?? "orders and returns"}</Link>
+      <Link href="/gift-cards" className="hover:underline mr-3">{t?.giftCardsLink ?? "gift cards"}</Link>
+      <Link href="/join" className="hover:underline mr-3">{t?.joinAdiClubLink ?? "join adiClub"}</Link>
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setShowCountrySelect((prev) => !prev)}
