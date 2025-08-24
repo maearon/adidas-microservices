@@ -1,0 +1,79 @@
+"use client"
+
+import { Loader2 } from "lucide-react"
+import ProductCard from "@/components/product-card"
+import { cn } from "@/lib/utils"
+import type { Product } from "@/types/product"
+
+interface ProductListContainerProps {
+  products: Product[]
+  hasNextPage: boolean
+  isFetchingNextPage: boolean
+  viewMode: 'grid' | 'list'
+  loadingComponent?: React.ReactNode
+  emptyComponent?: React.ReactNode
+  className?: string
+}
+
+export default function ProductListContainer({
+  products,
+  hasNextPage,
+  isFetchingNextPage,
+  viewMode,
+  loadingComponent,
+  emptyComponent,
+  className
+}: ProductListContainerProps) {
+  // Empty state
+  if (products.length === 0 && !isFetchingNextPage) {
+    return emptyComponent || (
+      <div className="text-center py-12">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          No products found
+        </h3>
+        <p className="text-gray-500 dark:text-gray-400">
+          Try adjusting your filters or search terms
+        </p>
+      </div>
+    )
+  }
+
+  // Grid layout classes based on view mode
+  const getGridClasses = () => {
+    if (viewMode === 'list') {
+      return "grid-cols-1 gap-6"
+    }
+    return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
+  }
+
+  return (
+    <div className={cn("w-full", className)}>
+      {/* Product Grid */}
+      <div className={cn("grid pb-8", getGridClasses())}>
+        {products.map((product, index) => (
+          <ProductCard
+            key={`${product.id}-${index}`}
+            product={product}
+            minimalMobile={viewMode === 'grid'}
+          />
+        ))}
+      </div>
+
+      {/* Loading indicator for next page */}
+      {isFetchingNextPage && (
+        <div className="col-span-full flex justify-center py-4">
+          <Loader2 className="h-6 w-6 animate-spin text-black dark:text-white" />
+        </div>
+      )}
+
+      {/* End of results */}
+      {/* {!hasNextPage && products.length > 0 && (
+        <div className="text-center py-8 border-t border-gray-200 dark:border-gray-800">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            You've reached the end of the results
+          </p>
+        </div>
+      )} */}
+    </div>
+  )
+}

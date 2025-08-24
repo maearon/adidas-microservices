@@ -78,7 +78,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
           {/* Mobile Title */}
           <div className="sm:hidden">
             <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
-              Search for: "{query}"{" "}
+              search for: "{query}"{" "}
               <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
             </h1>
             {products.length > 0 && (
@@ -91,7 +91,8 @@ export default function SearchResults({ query }: SearchResultsProps) {
           {/* Desktop Title */}
           <div className="hidden sm:flex flex-col">
             <p className="text-base text-gray-500">
-              You searched for '{query}', showing results for:
+              {/* You searched for '{query}', showing results for: */}
+              search for:
             </p>
             <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
               "{query}" <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>

@@ -18,20 +18,73 @@ export async function GET(req: NextRequest) {
 
     const pageSize = 10;
 
-    // ===== Lấy filters =====
-    const genders = searchParams.getAll("gender").filter(Boolean);
-    const categories = searchParams.getAll("category").filter(Boolean);
-    const priceMin = searchParams.get("price_min")
-      ? parseFloat(searchParams.get("price_min")!)
-      : undefined;
-    const priceMax = searchParams.get("price_max")
-      ? parseFloat(searchParams.get("price_max")!)
-      : undefined;
+    // ===== Lấy tất cả filters từ schema =====
+    // Handle both array format (gender[]=men) and single format (gender=men)
+    const getArrayParam = (paramName: string) => {
+      // Lấy cả dạng "gender" và "gender[]"
+      const values = [
+        ...searchParams.getAll(paramName),
+        ...searchParams.getAll(`${paramName}[]`),
+      ];
+      if (values.length > 0) return values.filter(Boolean);
 
-    // ===== Build where =====
+      const singleValue = searchParams.get(paramName);
+      return singleValue ? [singleValue] : [];
+    };
+
+    const genders = getArrayParam("gender");
+    const categories = getArrayParam("category");
+    const sports = getArrayParam("sport");
+    const productTypes = getArrayParam("product_type");
+    const brands = getArrayParam("brand");
+    const materials = getArrayParam("material");
+    const collections = getArrayParam("collection");
+    const activities = getArrayParam("activity");
+    const franchises = getArrayParam("franchise");
+    
+    // Price filters
+    const priceMin = searchParams.get("min_price")
+      ? parseFloat(searchParams.get("min_price")!)
+      : undefined;
+    const priceMax = searchParams.get("max_price")
+      ? parseFloat(searchParams.get("max_price")!)
+      : undefined;
+    
+    // Size and color filters
+    const sizes = getArrayParam("size");
+    const colors = getArrayParam("color");
+
+    console.log("Filters applied:", {
+      genders,
+      categories,
+      sports,
+      productTypes,
+      brands,
+      materials,
+      collections,
+      activities,
+      franchises,
+      priceMin,
+      priceMax,
+      sizes,
+      colors
+    });
+
+    // ===== Build where clause =====
     const where: Prisma.productsWhereInput = {};
-    if (genders.length) where.gender = { in: genders };
-    if (categories.length) where.category = { in: categories };
+    
+    // Basic filters
+    if (genders.length) where.gender = { in: genders, mode: "insensitive", };
+    if (categories.length) where.category = { in: categories, mode: "insensitive", };
+    if (sports.length) where.sport = { in: sports, mode: "insensitive", };
+    if (productTypes.length) where.product_type = { in: productTypes };
+    if (brands.length) where.brand = { in: brands };
+    if (materials.length) where.material = { in: materials };
+    if (collections.length) where.collection = { in: collections };
+    if (activities.length) where.activity = { in: activities };
+    if (franchises.length) where.franchise = { in: franchises };
+    
+    // Price filter through variants
     if (priceMin !== undefined || priceMax !== undefined) {
       where.variants = {
         some: {
@@ -42,9 +95,40 @@ export async function GET(req: NextRequest) {
         },
       };
     }
+    
+    // Size filter through variants
+    if (sizes.length) {
+      where.variants = {
+        ...where.variants,
+        some: {
+          ...where.variants?.some,
+          variant_sizes: {
+            some: {
+              sizes: {
+                label: { in: sizes }
+              }
+            }
+          }
+        }
+      };
+    }
+    
+    // Color filter through variants
+    if (colors.length) {
+      where.variants = {
+        ...where.variants,
+        some: {
+          ...where.variants?.some,
+          color: { in: colors }
+        }
+      };
+    }
+
+    console.log("Where clause:", JSON.stringify(where, null, 2));
 
     // ===== Count =====
     const totalCount = await prisma.products.count({ where });
+    console.log("Total count:", totalCount);
 
     // ===== Query products =====
     const products = await prisma.products.findMany({
@@ -54,12 +138,22 @@ export async function GET(req: NextRequest) {
         products_tags: {
           include: { tags: { select: { name: true } } },
         },
+        variants: {
+          include: { 
+            variant_sizes: { 
+              include: { sizes: true } 
+            } 
+          }
+        }
       },
       orderBy: { created_at: "desc" },
       take: pageSize + 1,
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     });
 
+    console.log("Products found:", products.length);
+
+    // ===== Enrich products with basic data (without images for now) =====
     // ===== Enrich ảnh + variants =====
     const enrichedProducts = await Promise.all(
       products.slice(0, pageSize).map(async (product) => {
@@ -98,9 +192,11 @@ export async function GET(req: NextRequest) {
             created_at: v.created_at,
             updated_at: v.updated_at,
             sizes: v.variant_sizes.map((vs) => vs.sizes.label),
-            avatar_url: avatar?.[0] ?? undefined,
-            hover_url: hover?.[0] ?? undefined,
-            image_urls: images ?? [],
+            avatar_url: avatar[0] ?? "/placeholder.png?height=300&width=250",
+            hover_url: hover[0] ?? "/placeholder.png?height=300&width=250",
+            image_urls: (images && images.length > 0)
+              ? images
+              : ["/placeholder.png?height=300&width=250"],
           })
         );
 
@@ -127,9 +223,9 @@ export async function GET(req: NextRequest) {
           price: firstVariant?.price ?? null,
           compare_at_price: firstVariant?.compare_at_price ?? null,
           main_image_url:
-            mainImage?.[0] ?? undefined,
+            mainImage[0] ?? "/placeholder.png?height=300&width=250",
           hover_image_url:
-            hoverImage?.[0] ?? undefined,
+            hoverImage[0] ?? "/placeholder.png?height=300&width=250",
           variants: enrichedVariants,
           currencyId: "USD",
           currencyFormat: "$",
@@ -141,6 +237,8 @@ export async function GET(req: NextRequest) {
     // ===== Cursor =====
     const nextCursor =
       products.length > pageSize ? products[pageSize].id.toString() : null;
+
+    console.log("API response successful, returning products:", enrichedProducts.length);
 
     return Response.json(
       serializeBigInt({

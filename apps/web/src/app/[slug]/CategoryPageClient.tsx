@@ -2,25 +2,18 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ArrowLeft, Filter, Loader2, SlidersHorizontal } from "lucide-react"
+import { SlidersHorizontal } from "lucide-react"
 
 import { BaseButton } from "@/components/ui/base-button"
-import { Badge } from "@/components/ui/badge"
-import ProductGrid from "@/components/product-grid"
 import FiltersSidebar from "@/components/filter/filters-sidebar"
-import { getCategoryConfig, categoryConfigs, formatSlugTitle } from "@/utils/category-config.auto"
+import { getCategoryConfig, formatSlugTitle } from "@/utils/category-config.auto"
 import type { ProductQuery } from "@/api/services/rubyService"
-import { useProducts, useSearchProductsFeed } from "@/api/hooks/useProducts"
-import Link from "next/link"
-import { buildBreadcrumbFromProductItem } from "@/utils/breadcrumb"
-import BreadcrumbSkeleton from "@/components/BreadcrumbSkeleton"
-import FullScreenLoader from "@/components/ui/FullScreenLoader"
-import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
-import ProductCard from "@/components/product-card"
-import { SearchFilters as SearchFiltersType } from "@/types/search";
+import { useProducts } from "@/api/hooks/useProducts"
 import Loading from "@/components/loading"
-import { Button } from "@/components/ui/button"
-// import { useUrlFilters } from "@/hooks/useUrlFilters"
+import { FilterBar, FilterChips, ProductListToolbar, ProductListContainer, ProductListHeader } from "./components"
+import type { Product } from "@/types/product"
+import { parseSlugToFilters, generateUrlFromFilters, generateQueryParams, type SlugFilters } from "@/utils/slug-parser"
+import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
 
 interface CategoryPageClientProps {
   params: { slug: string }
@@ -28,47 +21,29 @@ interface CategoryPageClientProps {
   query: string;
 }
 
-function searchParamsToString(obj?: Record<string, string | undefined>): string {
-  if (!obj) return ""
-  const params = new URLSearchParams()
-  for (const [key, value] of Object.entries(obj)) {
-    if (value != null) params.set(key, value)
-  }
-  return params.toString()
-}
-
-function getBreadcrumbTrail(slug: string): { label: string; href: string }[] {
-  const trail: { label: string; href: string }[] = []
-  let currentSlug = slug
-  let depth = 0
-
-  while (currentSlug && depth < 4) {
-    const config = getCategoryConfig(currentSlug)
-    trail.unshift({
-      label: config.breadcrumb || formatSlugTitle(currentSlug),
-      href: config.href || `/${currentSlug}`,
-    })
-
-    const parent = Object.entries(categoryConfigs).find(([_, c]) =>
-      c.tabs.some((tab) => tab.slug === currentSlug)
-    )
-    currentSlug = parent?.[0] || ""
-    depth++
-  }
-
-  return [{ label: "Home", href: "/" }, ...trail]
-}
-
 export default function CategoryPageClient({ params, searchParams, query }: CategoryPageClientProps) {
-  // const searchParams = useSearchParams();
-  // const { query: productQuery, filters } = useUrlFilters(params.slug)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
+
   const router = useRouter()
-  const [showFilters, setShowFilters] = useState(false)
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [currentSort, setCurrentSort] = useState('newest')
 
   const config = getCategoryConfig(params.slug)
+
+  // Initialize filters based on slug using the new parser
+  const [filters, setFilters] = useState<Record<string, any>>(() => {
+    const slugFilters = parseSlugToFilters(params.slug)
+    return slugFilters
+  })
+
+  // Update filters when slug changes
+  useEffect(() => {
+    const slugFilters = parseSlugToFilters(params.slug)
+    setFilters(slugFilters)
+  }, [params.slug])
 
   const allowedKeys: (keyof ProductQuery)[] = [
     "page", "sort", "gender", "category", "activity", "sport",
@@ -76,10 +51,19 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
     "collection", "min_price", "max_price", "shipping"
   ]
 
+  // Merge URL params with local filters
   const queryParams: ProductQuery = useMemo(() => {
     const query: Partial<ProductQuery> = { slug: params.slug }
     const search = searchParams || {}
 
+    // Add local filters
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && allowedKeys.includes(key as keyof ProductQuery)) {
+        query[key as keyof ProductQuery] = value as any
+      }
+    })
+
+    // Add URL params (these override local filters)
     for (const key of allowedKeys) {
       const value = search[key]
       if (!value) continue
@@ -93,239 +77,240 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
     }
 
     return query as ProductQuery
-  }, [searchParams, params.slug])
+  }, [searchParams, params.slug, filters])
 
-  // const { data, isLoading, isPlaceholderData, error, refetch } = useProducts(queryParams)
   const {
-      data,
-      fetchNextPage,
-      hasNextPage,
-      isFetching,
-      isFetchingNextPage,
-      status,
-      refetch,
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+    refetch,
   } = useProducts(queryParams)
 
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [filters, setFilters] = useState<SearchFiltersType>({});
-
+  // Map API response to Product type
+  const products: Product[] = data?.pages.flatMap((page) => 
+    page.products.map((productData: any): Product => ({
+      id: String(productData.id),
+      tags: productData.tags || [],
+      title: productData.name,
+      name: productData.name,
+      description: productData.description_p || '',
+      description_h5: productData.description_h5 || '',
+      specifications: productData.specifications || '',
+      care: productData.care || '',
+      gender: productData.gender || '',
+      franchise: productData.franchise || '',
+      product_type: productData.product_type || '',
+      brand: productData.brand || '',
+      category: productData.category || '',
+      sport: productData.sport || '',
+      currencyId: 'USD',
+      currencyFormat: '$',
+      isFreeShipping: true,
+      price: productData.price || 0,
+      compare_at_price: productData.compare_at_price || 0,
+      installments: 4,
+      created_at: productData.created_at?.toString() || '',
+      updated_at: productData.updated_at?.toString() || '',
+      main_image_url: productData.main_image_url || '',
+      hover_image_url: productData.hover_image_url || '',
+      availableSizes: productData.variants?.[0]?.sizes || [],
+      collection: '',
+      badge: '',
+      variants: productData.variants?.map((v: any) => ({
+        id: String(v.id),
+        color: v.color,
+        price: v.price,
+        compare_at_price: v.compare_at_price,
+        variant_code: v.variant_code,
+        stock: v.stock,
+        sizes: v.sizes || [],
+        avatar_url: v.avatar_url,
+        hover_url: v.hover_url,
+        image_urls: v.image_urls || []
+      })) || [],
+      slug: productData.slug || '',
+      reviews_count: 0,
+      average_rating: 0
+    }))
+  ) || [];
   
-
-  // const sitePath = searchParams.get("sitePath") || "us";
-
-  const handleFilterChange = (filters: Record<string, any>) => {
-  // const handleFiltersChange = (newFilters: Partial<SearchFiltersType>) => {
-      // const updatedFilters = { ...filters, ...newFilters, page: 1 };
-      // setFilters(updatedFilters);
-  
-      // const params = new URLSearchParams();
-      // params.set("q", updatedFilters.query || "");
-      // params.set("sitePath", sitePath);
-  
-      // Object.entries(updatedFilters).forEach(([key, value]) => {
-      //   if (
-      //     value !== undefined &&
-      //     value !== null &&
-      //     value !== "" &&
-      //     key !== "query"
-      //   ) {
-      //     params.set(key, value.toString());
-      //   }
-      // });
-  
-      // router.push(`/search?${params.toString()}`);
-  };
-
-  const products = data?.pages.flatMap((page) => page.products) || [];
   const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+
+  // Handle filter changes
+  const handleFilterChange = (newFilters: Record<string, any>) => {
+    setFilters(newFilters)
+    
+    // Generate new URL based on filters
+    const newUrl = generateUrlFromFilters(newFilters as SlugFilters, params.slug)
+    
+    // Generate query parameters
+    const queryParams = generateQueryParams(newFilters as SlugFilters)
+    
+    // Build URL with query parameters
+    const urlParams = new URLSearchParams()
+    Object.entries(queryParams).forEach(([key, values]) => {
+      values.forEach(value => {
+        urlParams.append(key, value)
+      })
+    })
+    
+    const finalUrl = urlParams.toString() ? `${newUrl}?${urlParams.toString()}` : newUrl
+    router.push(finalUrl, { scroll: false })
+  }
+
+  const handleClearFilters = () => {
+    // Keep only the basic filters from slug
+    const slugFilters = parseSlugToFilters(params.slug)
+    setFilters(slugFilters)
+    
+    // Navigate to base slug without query params
+    router.push(params.slug, { scroll: false })
+  }
+
+  const handleRemoveFilter = (filterKey: string, value?: string) => {
+    const newFilters = { ...filters }
+    
+    if (value && Array.isArray(newFilters[filterKey])) {
+      newFilters[filterKey] = newFilters[filterKey].filter((v: string) => v !== value)
+      if (newFilters[filterKey].length === 0) {
+        delete newFilters[filterKey]
+      }
+    } else {
+      delete newFilters[filterKey]
+    }
+    
+    handleFilterChange(newFilters)
+  }
+
+  const handleSortChange = (sort: string) => {
+    setCurrentSort(sort)
+    const newFilters = { ...filters, sort }
+    handleFilterChange(newFilters)
+  }
+
+  const handleViewChange = (view: 'grid' | 'list') => {
+    setViewMode(view)
+  }
+
+  const handleFilterToggle = () => {
+    setIsFiltersOpen(true)
+  }
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage()
+    }
+  }
 
   if (status === "pending") {
     return <Loading />;
   }
 
   const isError = status === "error";
-  const isEmpty = products.length === 0 && "a";
+  const isEmpty = products.length === 0 && !isError;
 
-  // const products = data?.products || []
-  // const meta = data?.meta || {
-  //   current_page: 1,
-  //   total_pages: 1,
-  //   total_count: 0,
-  //   per_page: 24,
-  //   filters_applied: {},
-  // }
-
-  // const currentTab = queryParams.category || config.tabs[0]?.slug || params.slug
-
-  // const handleTabChange = (tabHref: string) => router.push(tabHref)
-
-  // const handleFilterChange = (filters: Record<string, any>) => {
-  //   const newParams = new URLSearchParams()
-  //   Object.entries(filters).forEach(([key, value]) => {
-  //     if (value && !(Array.isArray(value) && value.length === 0)) {
-  //       newParams.set(key, Array.isArray(value) ? value.join(",") : value.toString())
-  //     }
-  //   })
-  //   router.push(`/${params.slug}?${newParams.toString()}`)
-  //   setShowFilters(false)
-  // }
-
-  // const handlePageChange = (page: number) => {
-  //   const newParams = new URLSearchParams(searchParamsToString(searchParams))
-  //   newParams.set("page", page.toString())
-  //   router.push(`/${params.slug}?${newParams.toString()}`)
-  // }
-
-  // const removeFilter = (key: string, valueToRemove?: string) => {
-  //   const paramsCopy = new URLSearchParams(searchParamsToString(searchParams))
-  //   if (valueToRemove && paramsCopy.get(key)?.includes(",")) {
-  //     const values = (paramsCopy.get(key)?.split(",") || []).filter((v) => v !== valueToRemove)
-  //     values.length ? paramsCopy.set(key, values.join(",")) : paramsCopy.delete(key)
-  //   } else {
-  //     paramsCopy.delete(key)
-  //   }
-  //   router.push(`/${queryParams.slug}?${paramsCopy.toString()}`)
-  // }
-
-  // const clearAllFilters = () => router.push(`/${params.slug}`)
-
-  const generateAppliedFiltersTitle = () => {
-    const parts: string[] = []
-    if (queryParams.gender) parts.push(queryParams.gender.split(",").map((g) => g.toUpperCase()).join(" + "))
-    if (queryParams.sport || queryParams.activity) parts.push((queryParams.sport || queryParams.activity)!.toUpperCase())
-    if (queryParams.product_type || queryParams.category) parts.push((queryParams.product_type || queryParams.category)!.toUpperCase())
-    if (queryParams.material) parts.push(queryParams.material.toUpperCase())
-    if (queryParams.collection) parts.push(queryParams.collection.toUpperCase())
-    return parts.length ? parts.join(" · ") : config.title
-  }
-
-  // // getBreadcrumbTrail(params.slug)
-  // const breadcrumbs =
-  // !isLoading && products.length > 0
-  //   ? buildBreadcrumbFromProductItem(products[0])
-  //   : getBreadcrumbTrail(params.slug)
-
-  const hasExtraFilters = Object.keys(queryParams).some(
-    (key) => key !== "slug" && key !== "page"
-  )
-
-  const pageTitle = hasExtraFilters
-    ? `${formatSlugTitle(params.slug)} | ${generateAppliedFiltersTitle()}`
-    : formatSlugTitle(params.slug)
-
-  // ⏳ Loading thực sự (lần đầu hoặc đang loading dữ liệu mới)
-  // if (isLoading || isPlaceholderData) {
-  //   return <FullScreenLoader />
-  // }
-
-  // const isError = status === "error";
-  // const isEmpty = products.length === 0 && "a";
+  const pageTitle = formatSlugTitle(params.slug)
 
   return (
-      <>
-        {/* Header */}
-        <div className="flex flex-nowrap items-start justify-between gap-2 sm:gap-4 mb-4">
-          <div className="grow min-w-0">
-            <h1 className="text-2xl md:text-3xl font-bold mb-1 break-words">
-              {pageTitle} <span className="text-xs text-[#7A7F7B]">[{totalCount}]</span>
-            </h1>
-            {products.length > 0 && (
-              <p className="text-gray-600 dark:text-white break-words text-sm">
-                Showing {products.length} of {totalCount} results
-              </p>
-            )}
-          </div>
+    <>
+      {/* Header */}
+      <ProductListHeader
+        title={pageTitle}
+        totalCount={totalCount}
+        onSearch={(query) => {
+          // Handle search - you can implement this later
+          console.log('Search query:', query)
+        }}
+        showSearchBar={false}
+      />
 
-          {/* Filter Button */}
-          <div className="shrink-0 flex items-center bg-white dark:bg-black text-black dark:text-white">
-            <BaseButton
-              variant="outline"
-              onClick={() => setIsFiltersOpen(true)}
-              className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
-            >
-              FILTER & SORT
-              <SlidersHorizontal className="w-4 h-4" />
-            </BaseButton>
-            <BaseButton
-              variant="outline"
-              onClick={() => setIsFiltersOpen(true)}
-              className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white border-none"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-            </BaseButton>
+      {/* Error State */}
+      {isError && (
+        <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
+          <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
+          <p className="text-gray-600 dark:text-white mb-4">
+            There was a problem fetching products. Please check your internet connection or try again later.
+          </p>
+          <BaseButton onClick={() => refetch()} variant="default">
+            Retry
+          </BaseButton>
+          <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-base text-gray-500">
+            ← Go Back
+          </BaseButton>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {isEmpty && !isError && (
+        <div className="text-center py-4">
+          <h3 className="text-lg font-semibold mb-2">No results found</h3>
+          <p className="text-gray-600 dark:text-white mb-4">
+            We couldn't find any products matching the current filters. Try adjusting
+            your filters or browse other categories.
+          </p>
+          <div className="space-y-2">
+            <p className="text-base text-gray-500">Suggestions:</p>
+            <ul className="text-base text-gray-500 space-y-1">
+              <li>• Try different filters</li>
+              <li>• Browse other categories</li>
+              <li>• Check for similar products</li>
+            </ul>
           </div>
         </div>
-  
-        {/* Error State */}
-        {isError && (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
-              <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
-              <p className="text-gray-600 dark:text-white mb-4">
-                There was a problem fetching products. Please check your internet connection or try again later.
-              </p>
-              <BaseButton onClick={() => refetch()} variant="default">
-                Retry
-              </BaseButton>
-              <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-base text-gray-500">
-                ← Go Back
-              </BaseButton>
-            </div>
-        )}
-  
-        {/* Empty State */}
-        {isEmpty && !isError && (
-          <div className="text-center py-4">
-            <h3 className="text-lg font-semibold mb-2">No results found</h3>
-            <p className="text-gray-600 dark:text-white mb-4">
-              We couldn't find any products matching "{query}". Try adjusting
-              your search terms or filters.
-            </p>
-            <div className="space-y-2">
-              <p className="text-base text-gray-500">Suggestions:</p>
-              <ul className="text-base text-gray-500 space-y-1">
-                <li>• Check your spelling</li>
-                <li>• Try more general terms</li>
-                <li>• Use fewer keywords</li>
-              </ul>
-            </div>
-          </div>
-        )}
-  
-        {/* Product Grid */}
-        {!isError && products.length > 0 && (
-          <InfiniteScrollContainer
-            className="grid grid-cols-2 sm:grid-cols-4 gap-2"
-            onBottomReached={() =>
-              hasNextPage && !isFetching && fetchNextPage()
-            }
-          >
-            {products.map((product, index) => (
-              <ProductCard key={`${product.id}-${index}`} product={product} />
-            ))}
-            {isFetchingNextPage && (
-              <div className="col-span-full flex justify-center py-4">
-                <Loader2 className="h-6 w-6 animate-spin text-black dark:text-white" />
-              </div>
-            )}
+      )}
+
+      {/* Product List */}
+      {!isError && products.length > 0 && (
+        <>
+          {/* Filter Bar */}
+          <FilterBar
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onClearFilters={handleClearFilters}
+            slug={params.slug}
+            totalCount={totalCount}
+          />
+
+          {/* Filter Chips */}
+          <FilterChips
+            filters={filters}
+            onRemoveFilter={handleRemoveFilter}
+            onClearAll={handleClearFilters}
+            slug={params.slug}
+          />
+
+          {/* Toolbar */}
+          <ProductListToolbar
+            totalCount={totalCount}
+            currentSort={currentSort}
+            viewMode={viewMode}
+            onSortChange={handleSortChange}
+            onViewChange={handleViewChange}
+            onFilterToggle={handleFilterToggle}
+          />
+
+          {/* Product Grid */}
+          <InfiniteScrollContainer onBottomReached={handleLoadMore}>
+            <ProductListContainer
+              products={products}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              viewMode={viewMode}
+            />
           </InfiniteScrollContainer>
-        )}
-  
-        {/* Sidebar Filters */}
-        {/* <SearchFilters
-          isOpen={isFiltersOpen}
-          onClose={() => setIsFiltersOpen(false)}
-          onFiltersChange={handleFiltersChange}
-          currentFilters={filters}
-          totalResults={products.length}
-        /> */}
-        {/* Filters Sidebar */}
-        <FiltersSidebar
-          isOpen={isFiltersOpen}
-          onClose={() => setIsFiltersOpen(false)}
-          onApplyFilters={handleFilterChange}
-          slug={params.slug}
-          currentFilters={queryParams}
-        />
-      </>
-    );
-  }
+        </>
+      )}
+
+      {/* Sidebar Filters */}
+      <FiltersSidebar
+        isOpen={isFiltersOpen}
+        onClose={() => setIsFiltersOpen(false)}
+        onApplyFilters={handleFilterChange}
+        currentFilters={filters as Record<string, string | number | string[]>}
+      />
+    </>
+  );
+}
