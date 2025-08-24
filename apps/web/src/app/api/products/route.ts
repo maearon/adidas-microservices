@@ -192,11 +192,9 @@ export async function GET(req: NextRequest) {
             created_at: v.created_at,
             updated_at: v.updated_at,
             sizes: v.variant_sizes.map((vs) => vs.sizes.label),
-            avatar_url: avatar[0] ?? "/placeholder.png?height=300&width=250",
-            hover_url: hover[0] ?? "/placeholder.png?height=300&width=250",
-            image_urls: (images && images.length > 0)
-              ? images
-              : ["/placeholder.png?height=300&width=250"],
+            avatar_url: avatar[0],
+            hover_url: hover[0],
+            image_urls: images,
           })
         );
 
@@ -223,9 +221,9 @@ export async function GET(req: NextRequest) {
           price: firstVariant?.price ?? null,
           compare_at_price: firstVariant?.compare_at_price ?? null,
           main_image_url:
-            mainImage[0] ?? "/placeholder.png?height=300&width=250",
+            mainImage[0],
           hover_image_url:
-            hoverImage[0] ?? "/placeholder.png?height=300&width=250",
+            hoverImage[0],
           variants: enrichedVariants,
           currencyId: "USD",
           currencyFormat: "$",
