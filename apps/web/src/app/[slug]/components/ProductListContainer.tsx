@@ -41,9 +41,9 @@ export default function ProductListContainer({
   // Grid layout classes based on view mode
   const getGridClasses = () => {
     if (viewMode === 'list') {
-      return "grid-cols-1 gap-6"
+      return "grid-cols-1 gap-2"
     }
-    return "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6"
+    return "grid grid-cols-2 sm:grid-cols-4 gap-2"
   }
 
   return (
