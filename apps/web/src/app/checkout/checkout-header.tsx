@@ -28,7 +28,12 @@ export default function CheckoutHeader() {
           {/* Right side - Cart and adiClub */}
           <div className="flex items-center space-x-6">
             <Link href="/cart" className="relative">
-              <ShoppingBag className="h-6 w-6" />
+              <ShoppingBag
+                className={cn(
+                  "h-6 w-6",
+                  cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
+                )}
+              />
               {cartCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-blue-600 text-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount}
