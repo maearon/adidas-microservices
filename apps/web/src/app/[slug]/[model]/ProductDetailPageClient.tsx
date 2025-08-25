@@ -43,7 +43,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
   const [selectedSize, setSelectedSize] = useState("")
   const [selectedVariant, setSelectedVariant] = useState(0)
-  const [expandedSections, setExpandedSections] = useState({ reviews: false, description: false, details: false })
+  const [expandedSections, setExpandedSections] = useState({
+    reviews: false,
+    description: false,
+    details: false,
+    highlights: false, // 👈 thêm
+  })
   const [sizeError, setSizeError] = useState("")
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [currentVariant, setCurrentVariant] = useState<any>(null)
@@ -94,7 +99,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   }
 
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections((prev) => ({ reviews: false, description: false, details: false, [section]: !prev[section] }))
+    setExpandedSections((prev) => ({
+      reviews: false,
+      description: false,
+      details: false,
+      highlights: false,        // 👈 reset thêm key mới
+      [section]: !prev[section],
+    }))
   }
 
   // Mock product details
@@ -114,6 +125,24 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
       "Imported",
       `Product color: ${variant?.color}`,
       `Product code: ${variant?.variant_code}`,
+    ],
+    highlights: [
+      {
+        title: "ACCELERATE STRONGER",
+        text: "Sprintframe 360 soleplate lets you explode off the mark, just like Messi breaking past defenders.",
+      },
+      {
+        title: "FIT LIKE MESSI",
+        text: "HybridTouch suede upper and burrito tongue match Messi’s preferred comfort and lockdown.",
+      },
+      {
+        title: "DRIBBLE FAST",
+        text: "Materials tuned to Messi’s playing style deliver lightweight, cushioned control.",
+      },
+      {
+        title: "EXPERIENCE LEVEL",
+        text: "Elite Level cleats are crafted for competition at an advanced level.",
+      },
     ],
     sizeGuide: "True to size. We recommend ordering your usual size.",
     breadcrumb: "Home / Women / Soccer",
@@ -271,6 +300,29 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       {productDetails.details.map((detail, index) => (
                         <li key={index} className="text-gray-600 dark:text-white">
                           • {detail}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* Highlights */}
+              <div className="border-b px-[15px] px-[30px]">
+                <button
+                  onClick={() => toggleSection("highlights")}
+                  className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
+                >
+                  <span>Highlights</span>
+                  {expandedSections.highlights ? <ChevronUp /> : <ChevronDown />}
+                </button>
+                {expandedSections.highlights && (
+                  <div className="pb-6">
+                    <ul className="space-y-6">
+                      {productDetails.highlights.map((h, i) => (
+                        <li key={i}>
+                          <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                          <p className="text-gray-600 dark:text-white">{h.text}</p>
                         </li>
                       ))}
                     </ul>
@@ -640,6 +692,29 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     {productDetails.details.map((detail, index) => (
                       <li key={index} className="text-gray-600 dark:text-white">
                         • {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* Highlights */}
+            <div className="border-b px-[15px] px-[30px]">
+              <button
+                onClick={() => toggleSection("highlights")}
+                className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
+              >
+                <span>Highlights</span>
+                {expandedSections.highlights ? <ChevronUp /> : <ChevronDown />}
+              </button>
+              {expandedSections.highlights && (
+                <div className="pb-6">
+                  <ul className="space-y-6">
+                    {productDetails.highlights.map((h, i) => (
+                      <li key={i}>
+                        <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                        <p className="text-gray-600 dark:text-white">{h.text}</p>
                       </li>
                     ))}
                   </ul>
