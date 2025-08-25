@@ -43,11 +43,24 @@ export default function FilterBar({
   // Get initial filters from slug
   const slugFilters = parseSlugToFilters(slug)
 
+  // const toggleFilter = (filterType: string) => {
+  //   setExpandedFilters(prev => ({
+  //     ...prev,
+  //     [filterType]: !prev[filterType]
+  //   }))
+  // }
   const toggleFilter = (filterType: string) => {
-    setExpandedFilters(prev => ({
-      ...prev,
-      [filterType]: !prev[filterType]
-    }))
+    setExpandedFilters(prev => {
+      const allClosed = Object.keys(prev).reduce((acc, key) => {
+        acc[key] = false
+        return acc
+      }, {} as Record<string, boolean>)
+
+      return {
+        ...allClosed,
+        [filterType]: !prev[filterType],  // mở/đóng cái đang click
+      }
+    })
   }
 
   const handleFilterChange = (filterType: string, value: string, checked: boolean) => {
