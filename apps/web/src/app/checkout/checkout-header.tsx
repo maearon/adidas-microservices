@@ -31,7 +31,7 @@ export default function CheckoutHeader() {
               <ShoppingBag
                 className={cn(
                   "h-6 w-6",
-                  cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
+                  cartCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
                 )}
               />
               {cartCount > 0 && (
