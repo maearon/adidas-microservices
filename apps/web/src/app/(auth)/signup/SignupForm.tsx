@@ -2,17 +2,18 @@
 
 import AdidasLogo from "@/components/adidas-logo"
 import { Button } from "@/components/ui/button"
-import { ErrorMessage, Field, Form, Formik } from "formik"
-import { Eye, EyeOff } from "lucide-react"
+import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik"
+import { Eye, EyeOff, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import * as Yup from "yup"
-import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
+import ShowErrors, { normalizeFormikErrors, type ErrorMessages } from "@/components/shared/errorMessages"
 import flashMessage from "@/components/shared/flashMessages"
 import { useRouter } from "next/navigation"
 import { AxiosError } from "axios"
 import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import { NetworkErrorWithCode } from "@/components/shared/handleNetworkError"
+import { Input } from "@/components/ui/input"
 
 interface SignupFormValues {
   name: string;
@@ -42,7 +43,7 @@ const SignupSchema = Yup.object().shape({
 
 const SignupForm = () => {
   const router = useRouter()
-  const [errors, setErrors] = useState<ErrorMessageType>({})
+  const [errors, setErrors] = useState<ErrorMessages>({})
   const [showPassword, setShowPassword] = useState({
     password: false,
     password_confirmation: false,
@@ -93,7 +94,7 @@ const SignupForm = () => {
         const resData = axiosErr.response?.data
 
         if (Array.isArray(resData?.errors)) {
-          const fieldErrors: ErrorMessageType = {}
+          const fieldErrors: ErrorMessages = {}
           resData.errors.forEach((err) => {
             const field = err?.cause?.field || "general"
             const message = err.defaultMessage || "Invalid input"
@@ -141,27 +142,83 @@ const SignupForm = () => {
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values, setFieldValue, errors, touched }) => (
           <Form className="space-y-4">
-            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
+            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={normalizeFormikErrors(errors)} />}
 
             <div>
-              <Field
-                name="name"
-                type="text"
-                placeholder="NAME *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
-              />
+              <Field name="name">
+                {({ field }: FieldProps) => (
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type="name"
+                      placeholder="NAME *"
+                      className={`w-full ${
+                        errors.name && touched.name
+                          ? "border-red-500 focus:border-red-500"
+                          : values.name && !errors.name
+                            ? "border-green-500 focus:border-green-500"
+                            : ""
+                      }`}
+                    />
+                    {values.name && !errors.name && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    {errors.name && touched.name && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <X className="h-5 w-5 text-red-500" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Field>
               <ErrorMessage name="name" component="div" className="text-red-500 text-base mt-1" />
             </div>
 
             <div>
-              <Field
-                name="email"
-                type="email"
-                placeholder="EMAIL *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
-              />
+              <Field name="email">
+                {({ field }: FieldProps) => (
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="EMAIL ADDRESS *"
+                      className={`w-full ${
+                        errors.email && touched.email
+                          ? "border-red-500 focus:border-red-500"
+                          : values.email && !errors.email
+                            ? "border-green-500 focus:border-green-500"
+                            : ""
+                      }`}
+                    />
+                    {values.email && !errors.email && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    {errors.email && touched.email && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <X className="h-5 w-5 text-red-500" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Field>
               <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
             </div>
 
@@ -176,12 +233,11 @@ const SignupForm = () => {
             </div> */}
 
             <div className="relative">
-              <Field
-                name="password"
-                type={showPassword.password ? "text" : "password"}
-                placeholder="PASSWORD *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
-              />
+              <Field name="password">
+                {({ field }: FieldProps) => (
+                  <Input {...field} type={showPassword.password ? "text" : "password"} placeholder="PASSWORD *" />
+                )}
+              </Field>
               <button
                 type="button"
                 onClick={() => togglePassword("password")}
@@ -206,12 +262,11 @@ const SignupForm = () => {
               <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
             </div> */}
             <div className="relative">
-              <Field
-                name="password_confirmation"
-                type={showPassword.password_confirmation ? "text" : "password"}
-                placeholder="CONFIRM PASSWORD *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
-              />
+              <Field name="password_confirmation">
+                {({ field }: FieldProps) => (
+                  <Input {...field} type={showPassword.password_confirmation ? "text" : "password"} placeholder="CONFIRM PASSWORD *" />
+                )}
+              </Field>
               <button
                 type="button"
                 onClick={() => togglePassword("password_confirmation")}

@@ -120,31 +120,31 @@ export function Button({
             onClick={(e) => loading && e.preventDefault()}
             className="w-full h-full flex items-center justify-between"
           >
-            {loading ? (
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            ) : (
-              <span className="-translate-y-px">{children}</span>
-            )}
-            {showArrow && !isIconButton && (
-              <span className="text-[22px] font-thin leading-none">⟶</span>
+            <span className="-translate-y-px">{children}</span>
+            {!isIconButton && (
+              loading ? (
+                <Loader2 className="ml-2 h-7 w-7 animate-spin" /> // 🔥 to hơn (3x so với arrow)
+              ) : (
+                showArrow && <span className="text-[22px] font-thin leading-none">⟶</span>
+              )
             )}
           </Link>
         ) : (
           <>
-            {loading ? (
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            ) : (
-              <span
-                className={cn(
-                  "flex items-center",
-                  !isIconButton && "-translate-y-px"
-                )}
-              >
-                {children}
-              </span>
-            )}
-            {showArrow && !isIconButton && !loading && (
-              <span className="text-[22px] font-thin leading-none">⟶</span>
+            <span
+              className={cn(
+                "flex items-center",
+                !isIconButton && "-translate-y-px"
+              )}
+            >
+              {children}
+            </span>
+            {!isIconButton && (
+              loading ? (
+                <Loader2 className="ml-2 h-7 w-7 animate-spin" /> // 🔥 big loader
+              ) : (
+                showArrow && <span className="text-[22px] font-thin leading-none">⟶</span>
+              )
             )}
           </>
         )}

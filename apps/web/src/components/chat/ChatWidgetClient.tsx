@@ -311,10 +311,10 @@ function replaceEmojis(text: string): string {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <button onClick={toggleMinimize} className="p-1 hover:bg-gray-100 rounded">
+              <button onClick={toggleMinimize} className="p-1 rounded">
                 {isMinimized ? <Square className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
               </button>
-              <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-gray-100 rounded">
+              <button onClick={() => setIsOpen(false)} className="p-1 rounded">
                 <X className="h-4 w-4" />
               </button>
             </div>

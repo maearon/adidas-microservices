@@ -1,21 +1,21 @@
 'use client'
 
 import AdidasLogo from "@/components/adidas-logo"
-import LoginButtons from "@/components/auth/LoginButtons"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ErrorMessage, Field, Form, Formik } from "formik"
-import { Eye, EyeOff } from "lucide-react"
+import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik"
+import { Eye, EyeOff, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import * as Yup from "yup"
-import ShowErrors, { type ErrorMessageType } from "@/components/shared/errorMessages"
+import ShowErrors, { normalizeFormikErrors, type ErrorMessages } from "@/components/shared/errorMessages"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import flashMessage from "@/components/shared/flashMessages"
 import { useRouter } from "next/navigation"
 import { handleApiError } from "@/components/shared/handleApiError"
 import { AxiosError } from "axios"
 import SocialLoginButtons from "./SocialLoginButtons"
+import { Input } from "@/components/ui/input"
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -24,7 +24,7 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const router = useRouter()
-  const [errors, setErrors] = useState<ErrorMessageType>({})
+  const [errors, setErrors] = useState<ErrorMessages>({})
   const [keepLoggedIn, setKeepLoggedIn] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const loginMutation = useLoginMutation()
@@ -81,27 +81,54 @@ const LoginForm = () => {
         validationSchema={LoginSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, values, setFieldValue }) => (
+        {({ isSubmitting, values, setFieldValue, errors, touched }) => (
           <Form className="space-y-4">
-            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={errors} />}
+            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={normalizeFormikErrors(errors)} />}
 
             <div>
-              <Field
-                name="email"
-                type="email"
-                placeholder="EMAIL *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
-              />
+              <Field name="email">
+                {({ field }: FieldProps) => (
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="EMAIL ADDRESS *"
+                      className={`w-full ${
+                        errors.email && touched.email
+                          ? "border-red-500 focus:border-red-500"
+                          : values.email && !errors.email
+                            ? "border-green-500 focus:border-green-500"
+                            : ""
+                      }`}
+                    />
+                    {values.email && !errors.email && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    {errors.email && touched.email && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <X className="h-5 w-5 text-red-500" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Field>
               <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
             </div>
 
             <div className="relative">
-              <Field
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="PASSWORD *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black pr-12"
-              />
+              <Field name="password">
+                {({ field }: FieldProps) => (
+                  <Input {...field} type={showPassword ? "text" : "password"} placeholder="Password *" />
+                )}
+              </Field>
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}

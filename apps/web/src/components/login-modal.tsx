@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { X } from "lucide-react"
+import { Eye, EyeOff, X } from "lucide-react"
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
@@ -16,10 +16,6 @@ import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import AdidasLogo from "./adidas-logo"
-// import LoginButtons from "./auth/LoginButtons"
-import GoogleSignInButton from "@/app/(auth)/account-login/google/GoogleSignInButton"
-import GithubSignInButton from "@/app/(auth)/account-login/github/GithubSignInButton"
-import LoginButtons from "./auth/LoginButtons"
 import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 
 interface LoginModalProps {
@@ -40,6 +36,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   // if (typeof window !== "undefined") {
   //   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
   // }
+  const [showPassword, setShowPassword] = useState(false)
   const {
     mutateAsync: checkEmail, 
     isPending 
@@ -145,7 +142,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
       >
         {/* Close button - Square border style */}
-        <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+        <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
             className="w-12 h-12 border border-border flex items-center 
@@ -285,11 +282,25 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
-                  <Field name="password">
-                    {({ field }: FieldProps) => (
-                      <Input {...field} type="password" placeholder="Password *" />
-                    )}
-                  </Field>
+                  <div className="relative">
+                    <Field name="password">
+                      {({ field }: FieldProps) => (
+                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder="Password *" />
+                      )}
+                    </Field>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
+                    >
+                      {showPassword ? (
+                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                      ) : (
+                        <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                      )}
+                    </button>
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
+                  </div>
                   <Button
                     type="submit"
                     loading={isLoggingIn || isSubmitting}
@@ -320,11 +331,25 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
-                  <Field name="password">
-                    {({ field }: FieldProps) => (
-                      <Input {...field} type="password" placeholder="Create Password *" />
-                    )}
-                  </Field>
+                  <div className="relative">
+                    <Field name="password">
+                      {({ field }: FieldProps) => (
+                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder="Password *" />
+                      )}
+                    </Field>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
+                    >
+                      {showPassword ? (
+                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                      ) : (
+                        <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                      )}
+                    </button>
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
+                  </div>
                   <Button
                     type="submit"
                     className="w-full bg-black text-white hover:bg-gray-800 py-3"

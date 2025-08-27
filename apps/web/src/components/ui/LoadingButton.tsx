@@ -19,7 +19,7 @@ export default function LoadingButton({
       {...props}
     >
       {loading ? (
-        <Loader2 className="size-5 animate-spin" />
+        <Loader2 className="h-6 w-6 animate-spin" />
       ) : (
         props.children
       )}

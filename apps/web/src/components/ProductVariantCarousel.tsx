@@ -47,19 +47,20 @@ export default function ProductVariantCarousel({
   )
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center">
       {/* Left scroll button */}
       {canScrollLeft && (
         <button
           onClick={handleScrollLeft}
-          className="p-1 hover:bg-gray-100 rounded-full bg-white shadow-sm"
+          className="p-1 rounded-none 
+          bg-white text-black hover:bg-black hover:text-white"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
       )}
 
       {/* Variant thumbnails */}
-      <div className="flex gap-1 overflow-hidden">
+      <div className="flex overflow-hidden mt-[1px]">
         {visibleVariants.map((variant, idx) => {
           const isActive = variant.variant_code === currentVariant.variant_code
           const variantSlug = `/${slugify(product.name || "f50-messi-elite-firm-ground-cleats")}/${variant?.variant_code}.html`
@@ -103,7 +104,8 @@ export default function ProductVariantCarousel({
       {canScrollRight && (
         <button
           onClick={handleScrollRight}
-          className="p-1 hover:bg-gray-100 rounded-full bg-white shadow-sm"
+          className="p-1 rounded-none 
+          bg-white text-black hover:bg-black hover:text-white"
         >
           <ChevronRight className="w-4 h-4" />
         </button>

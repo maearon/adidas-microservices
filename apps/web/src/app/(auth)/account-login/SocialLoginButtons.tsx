@@ -5,9 +5,8 @@ import LoadingButton from "@/components/ui/LoadingButton"
 import { useState } from "react"
 import { AppleIcon } from "./apple/AppleSignInButton"
 import { authClient, ProviderId } from "@/lib/auth-client";
-import { motion } from "framer-motion";
-import { GithubIcon } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaYahoo } from "react-icons/fa";
+import { cn } from "@/lib/utils";
 
 // Mở rộng ProviderId thêm Yahoo
 type ExtendedProviderId = ProviderId | "yahoo"
@@ -20,11 +19,11 @@ type SocialProvider = {
 }
 
 const providers: SocialProvider[] = [
-  // {
-  //   id: "apple",
-  //   label: "Apple",
-  //   icon: <AppleIcon />,
-  // },
+  {
+    id: "apple",
+    label: "Apple",
+    icon: <AppleIcon />,
+  },
   {
     id: "facebook",
     label: "Facebook",
@@ -58,11 +57,11 @@ const providers: SocialProvider[] = [
       </svg>
     ),
   },
-  // {
-  //   id: "yahoo",
-  //   label: "Yahoo",
-  //   icon: <span className="text-purple-600 font-bold text-lg">Y!</span>,
-  // },
+  {
+    id: "yahoo",
+    label: "Yahoo",
+    icon: <FaYahoo />,
+  },
   {
     id: "github",
     label: "Github",
@@ -103,16 +102,20 @@ const SocialLoginButtons = () => {
   }
 
   return (
-    <div className="grid grid-cols-4 gap-3 mb-6">
+    <div className="grid grid-cols-5 gap-2 mb-6">
       {providers.map((provider) => (
         <LoadingButton
           key={provider.id}
-          variant="outline" size="sm" 
-          className="social-button border border-black dark:border-white rounded-none"
+          variant="outline" size="lg" 
+          className={cn(
+            "social-button w-14 aspect-square border border-black dark:border-white",
+            "hover:bg-gray-700 rounded-none",
+            socialLoading === provider.id && "bg-gray-700",
+          )}
           onClick={() => handleSocialLogin(provider, () => console.log(provider.id))}
           loading={socialLoading === provider.id}
         >
-          {provider.icon}
+          <div className="text-2xl">{provider.icon}</div>
         </LoadingButton>
       ))}
     </div>

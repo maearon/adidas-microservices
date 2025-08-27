@@ -38,7 +38,12 @@ export default function MobileMenuSlideOut({
           <MenuIcon className="h-6 w-6" />
         </button>
         <Link href="/wishlist" className="relative">
-          <Heart className="h-5 w-5" />
+          <Heart
+            className={cn(
+              "h-5 w-5",
+              wishlistItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
+            )}
+          />
           {wishlistItemsCount > 0 && (
             <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               {wishlistItemsCount}
@@ -66,7 +71,12 @@ export default function MobileMenuSlideOut({
           <Search className="h-5 w-5" />
         </button>
         <Link href="/cart" className="relative">
-          <ShoppingBag className="h-5 w-5" />
+          <ShoppingBag
+            className={cn(
+              "h-5 w-5",
+              cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
+            )}
+          />
           {cartItemsCount > 0 && (
             <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
               {cartItemsCount}

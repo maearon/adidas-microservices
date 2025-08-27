@@ -141,7 +141,7 @@ export default function ImageLightbox({
         onClick={onClose}
         className="absolute top-4 right-4 z-10 w-10 h-10 bg-white rounded-none flex items-center justify-center transition-colors"
       >
-        <X size={24} className="text-background" />
+        <X size={24} className="text-black" />
       </button>
 
       {/* Navigation Arrows */}
@@ -150,7 +150,7 @@ export default function ImageLightbox({
           onClick={() => onNavigate(currentIndex - 1)}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-none flex items-center justify-center transition-colors"
         >
-          <ChevronLeft size={24} className="text-background" />
+          <ChevronLeft size={24} className="text-black" />
         </button>
       )}
 
@@ -159,7 +159,7 @@ export default function ImageLightbox({
           onClick={() => onNavigate(currentIndex + 1)}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-none flex items-center justify-center transition-colors"
         >
-          <ChevronRight size={24} className="text-background" />
+          <ChevronRight size={24} className="text-black" />
         </button>
       )}
 
