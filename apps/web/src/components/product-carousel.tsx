@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { Product } from "@/types/product"
 import { Optional } from "@/types/common"
 import { cn } from "@/lib/utils"
+import CarouselTitle from "./carousel/CarouselTitle"
 
 interface ProductCarouselProps {
   products: Product[]
@@ -61,13 +62,7 @@ export default function ProductCarousel({
   if (!carouselModeInMobile && itemsPerView >= 6 && viewMoreHref) {
     return (
       <section className="container mx-auto px-0 py-0">
-        {title && (
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
-              {title}
-            </h3>
-          </div>
-        )}
+        <CarouselTitle title={title} />
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
           {products.slice(0, 6).map((product) => (
             <ProductCard key={product.id} product={product} minimalMobile={minimalMobileForProductCard} />
@@ -101,13 +96,7 @@ export default function ProductCarousel({
 
   return (
     <section className="container mx-auto px-4 py-0">
-      {title && (
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-3xl font-extrabold tracking-tight leading-tight break-words">
-            {title}
-          </h3>
-        </div>
-      )}
+      <CarouselTitle title={title} />
 
       <div
         className="relative overflow-hidden"
