@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { getLastVisited } from "@/lib/recentlyViewed"
 import type { LastVisitedItem } from "@/lib/recentlyViewed"
 import CarouselTitle from "./carousel/CarouselTitle"
+import { mapProductDataToSimpleProduct } from "@/lib/mappers/product-data-to-simple-product"
 
 interface HistoryViewProps {
   title?: React.ReactNode
@@ -18,7 +19,11 @@ export default function HistoryView({
   const [stillInterestedProducts, setStillInterestedProducts] = useState<LastVisitedItem[]>([])
 
   useEffect(() => {
-    setStillInterestedProducts(getLastVisited())
+    const items = getLastVisited().map((item: LastVisitedItem) => ({
+      visitedAt: item.visitedAt,
+      product: mapProductDataToSimpleProduct(item.product),
+    }))
+    setStillInterestedProducts(items)
   }, [])
 
   if (!stillInterestedProducts.length) return null

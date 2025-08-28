@@ -5,6 +5,7 @@ import ProductCarousel from "@/components/product-carousel"
 import { Product } from "@/types/product"
 import { useProducts } from "@/api/hooks/useProducts"
 import Loading from "@/components/loading"
+import { mapProductDataToSimpleProduct } from "@/lib/mappers/product-data-to-simple-product"
 
 type ProductTabsProps = {
   initialProductsByTab?: {
@@ -35,11 +36,13 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
 
   const { data, isLoading, error } = useProducts(queryParams)
 
-  const products = error
+  const products: Product[] = error
   ? initialProductsByTab?.[activeTab] ?? []
-  : data?.pages.flatMap((page) => page.products) ??
-    initialProductsByTab?.[activeTab] ??
-    []
+  : (data?.pages.flatMap((page) =>
+      page.products.map((productData: unknown) =>
+        mapProductDataToSimpleProduct(productData)
+      )
+    ) ?? initialProductsByTab?.[activeTab] ?? []);
 
   const viewMoreHref = tabs.find((tab) => tab.id === activeTab)?.endpoint
 
@@ -85,7 +88,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
         <Loading />
       ) : products.length > 0 ? (
         <ProductCarousel
-          products={products as Product[]}
+          products={products}
           viewMoreHref={`/${viewMoreHref}`}
           carouselModeInMobile={false}
           minimalMobileForProductCard
