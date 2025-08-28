@@ -21,8 +21,8 @@ const tabs = [
 // build query params giống CategoryPageClient.tsx
 function buildQueryParams(tabId: string) {
   return {
-    category: tabId,
-    genders: ["men", "women"], // lọc thêm gender để query nhẹ hơn
+    categories: [tabId],        // <-- plural, truyền dạng mảng
+    genders: ["men", "women"],  // lọc thêm gender để query nhẹ hơn
     limit: 8,
   }
 }
