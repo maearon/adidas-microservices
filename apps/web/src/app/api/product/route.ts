@@ -74,12 +74,12 @@ export async function GET(req: NextRequest) {
         product_id: v.product_id,
         created_at: v.created_at,
         updated_at: v.updated_at,
-        avatar_url: avatar[0] ?? "/placeholder.svg?height=300&width=300",
-        hover_url: hover[0] ?? "/placeholder.svg?height=300&width=300", // ✅ variant-specific hover
+        avatar_url: avatar[0],
+        hover_url: hover[0], // ✅ variant-specific hover
         image_urls: sortedImages ?? [],
-        image_url: avatar[0] ?? "/placeholder.svg",
-        hover_image: hover[0] ?? "/placeholder.svg",
-        hover_image_url: hover[0] ?? "/placeholder.svg",
+        image_url: avatar[0],
+        hover_image: hover[0],
+        hover_image_url: hover[0],
       }
     })
 
@@ -141,13 +141,13 @@ export async function GET(req: NextRequest) {
         variants: [
           {
             variant_code: v?.variant_code ?? null,
-            avatar_url: avatar[0] ?? "/placeholder.svg",
-            hover_url: hover[0] ?? "/placeholder.svg",
+            avatar_url: avatar[0],
+            hover_url: hover[0],
             image_urls: images ?? [],
           },
         ],
-        image_url: relatedMainImages[i][0] ?? "/placeholder.svg",
-        hover_image_url: relatedHoverImages[i][0] ?? "/placeholder.svg",
+        image_url: relatedMainImages[i][0],
+        hover_image_url: relatedHoverImages[i][0],
       }
     })
 
@@ -176,9 +176,9 @@ export async function GET(req: NextRequest) {
         currencyId: "USD",
         currencyFormat: "$",
         isFreeShipping: true,
-        main_image_url: mainImage[0] ?? "/placeholder.svg",
-        hover_image: hoverImage[0] ?? "/placeholder.svg",
-        hover_image_url: hoverImage[0] ?? "/placeholder.svg",
+        main_image_url: mainImage[0],
+        hover_image: hoverImage[0],
+        hover_image_url: hoverImage[0],
         variants: enrichedVariants,
         related_products: relatedData,
         breadcrumb: [], // TODO: generate breadcrumb from slug or categories
