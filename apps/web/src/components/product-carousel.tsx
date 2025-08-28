@@ -110,7 +110,7 @@ export default function ProductCarousel({
       )}
 
       <div
-        className="group relative overflow-hidden"
+        className="relative overflow-hidden"
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >

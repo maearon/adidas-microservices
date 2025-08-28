@@ -97,6 +97,8 @@ export default function ProductCard({
     product.hover_image_url ||
     "/placeholder.png";
 
+  const shouldHideDetails = minimalMobile && isMobile
+
   return (
     <Link
       href={currentUrl}
@@ -113,8 +115,8 @@ export default function ProductCard({
           "hover:border-black dark:hover:border-white",
           // Khi hover thì ẩn border-bottom để info block nối tiếp
           hasVariantPanel && "hover:border-b-0",
-          minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[470px]",
           // hasVariantPanel && "border-b-0" // bỏ border dưới của card khi có variant
+          minimalMobile ? "min-h-fit" : "sm:min-h-[470px]"
         )}
       >
         <CardContent className="p-0 relative">
@@ -153,7 +155,7 @@ export default function ProductCard({
             </div>
 
             {/* VARIANTS PANEL */}
-            {hasVariants && (
+            {hasVariants && !shouldHideDetails && (
               <>
                 {isMobile ? (
                   <div
@@ -193,6 +195,7 @@ export default function ProductCard({
           </div>
 
           {/* INFO BLOCK */}
+          {!shouldHideDetails && (
           <div
             className={cn(
               "pb-1 space-y-1 relative bg-white dark:bg-black",
@@ -236,6 +239,7 @@ export default function ProductCard({
             )}
             </div>
           </div>
+          )}
         </CardContent>
       </Card>
     </Link>
