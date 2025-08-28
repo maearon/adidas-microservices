@@ -13,19 +13,10 @@ export function mapProductDataToSimpleProduct(productData: any): Product {
         v?.image_urls?.[0] ||
         productData.main_image_url ||
         "/placeholder.png",
-      hover_url: v?.hover_url ||
-        v?.image_urls?.[2] ||
-        productData.hover_image_url ||
-        "/placeholder.png",
-      image_urls: v?.images ?? [],
     })) || [],
     main_image_url: productData?.variants[0]?.avatar_url ||
         productData?.variants[0]?.image_urls?.[0] ||
         productData.main_image_url ||
-        "/placeholder.png",
-    hover_image_url: productData?.variants[0]?.hover_url ||
-        productData?.variants[0]?.image_urls?.[2] ||
-        productData.hover_image_url ||
         "/placeholder.png",
   };
 }
