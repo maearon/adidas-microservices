@@ -26,14 +26,12 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
     limit: 8,
   })
 
-  const products =
-    !data?.pages.flatMap((page) => page.products) || error
-      ? initialProductsByTab?.[activeTab] ?? []
-      : data?.pages.flatMap((page) => page.products)
-  //     const products = data?.pages.flatMap((page) => page.products) || [];
-  // const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+  const products = error
+  ? initialProductsByTab?.[activeTab] ?? []
+  : data?.pages.flatMap((page) => page.products) ??
+    initialProductsByTab?.[activeTab] ??
+    []
 
-  // const activeTabLabel = tabs.find((tab) => tab.id === activeTab)?.label
   const viewMoreHref = tabs.find((tab) => tab.id === activeTab)?.endpoint
 
   return (
