@@ -19,8 +19,8 @@ export function mapProductDataToProduct(productData: any): Product {
     currencyId: 'USD',
     currencyFormat: '$',
     isFreeShipping: true,
-    price: productData.price || 0,
-    compare_at_price: productData.compare_at_price || 0,
+    price: productData.variants[0].price || productData.price || 0,
+    compare_at_price: productData.variants[0].compare_at_price || productData.compare_at_price || 0,
     installments: 4,
     created_at: productData.created_at?.toString() || '',
     updated_at: productData.updated_at?.toString() || '',
@@ -37,9 +37,15 @@ export function mapProductDataToProduct(productData: any): Product {
       variant_code: v.variant_code,
       stock: v.stock,
       sizes: v.sizes || [],
-      avatar_url: v.avatar_url,
-      hover_url: v.hover_url,
-      image_urls: v.image_urls || []
+      avatar_url: v?.avatar_url ||
+        v?.image_urls?.[0] ||
+        productData.main_image_url ||
+        "/placeholder.png",
+      hover_url: v?.hover_url ||
+        v?.image_urls?.[2] ||
+        productData.hover_image_url ||
+        "/placeholder.png",
+      image_urls: [],
     })) || [],
     slug: productData.slug || '',
     reviews_count: 0,
