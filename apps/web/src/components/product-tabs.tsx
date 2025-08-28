@@ -18,13 +18,22 @@ const tabs = [
   { id: "new-to-sale", label: "New to Sale", endpoint: "sale" },
 ]
 
+// build query params giống CategoryPageClient.tsx
+function buildQueryParams(tabId: string) {
+  return {
+    category: tabId,
+    genders: ["men", "women"], // lọc thêm gender để query nhẹ hơn
+    limit: 8,
+  }
+}
+
 export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("new-arrivals")
 
-  const { data, isLoading, error } = useProducts({
-    category: activeTab,
-    limit: 8,
-  })
+  // query params cho tab hiện tại
+  const queryParams = buildQueryParams(activeTab)
+
+  const { data, isLoading, error } = useProducts(queryParams)
 
   const products = error
   ? initialProductsByTab?.[activeTab] ?? []
