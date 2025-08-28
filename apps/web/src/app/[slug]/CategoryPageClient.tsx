@@ -14,6 +14,7 @@ import { FilterBar, FilterChips, ProductListToolbar, ProductListContainer, Produ
 import type { Product } from "@/types/product"
 import { parseSlugToFilters, generateUrlFromFilters, generateQueryParams, type SlugFilters } from "@/utils/slug-parser"
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
+import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
 
 interface CategoryPageClientProps {
   params: { slug: string }
@@ -90,51 +91,8 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   } = useProducts(queryParams)
 
   // Map API response to Product type
-  const products: Product[] = data?.pages.flatMap((page) => 
-    page.products.map((productData: any): Product => ({
-      id: String(productData.id),
-      tags: productData.tags || [],
-      title: productData.name,
-      name: productData.name,
-      description: productData.description_p || '',
-      description_h5: productData.description_h5 || '',
-      specifications: productData.specifications || '',
-      care: productData.care || '',
-      gender: productData.gender || '',
-      franchise: productData.franchise || '',
-      product_type: productData.product_type || '',
-      brand: productData.brand || '',
-      category: productData.category || '',
-      sport: productData.sport || '',
-      currencyId: 'USD',
-      currencyFormat: '$',
-      isFreeShipping: true,
-      price: productData.price || 0,
-      compare_at_price: productData.compare_at_price || 0,
-      installments: 4,
-      created_at: productData.created_at?.toString() || '',
-      updated_at: productData.updated_at?.toString() || '',
-      main_image_url: productData.main_image_url || '',
-      hover_image_url: productData.hover_image_url || '',
-      availableSizes: productData.variants?.[0]?.sizes || [],
-      collection: '',
-      badge: '',
-      variants: productData.variants?.map((v: any) => ({
-        id: String(v.id),
-        color: v.color,
-        price: v.price,
-        compare_at_price: v.compare_at_price,
-        variant_code: v.variant_code,
-        stock: v.stock,
-        sizes: v.sizes || [],
-        avatar_url: v.avatar_url,
-        hover_url: v.hover_url,
-        image_urls: v.image_urls || []
-      })) || [],
-      slug: productData.slug || '',
-      reviews_count: 0,
-      average_rating: 0
-    }))
+  const products: Product[] = data?.pages.flatMap((page) =>
+    page.products.map((productData: any) => mapProductDataToProduct(productData))
   ) || [];
   
   const totalCount = data?.pages?.[0]?.totalCount ?? 0;

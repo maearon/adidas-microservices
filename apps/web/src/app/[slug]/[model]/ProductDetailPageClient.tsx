@@ -23,6 +23,8 @@ import Image from "next/image"
 import { ButtonWish } from "@/components/ui/button-wish"
 import { cn } from "@/lib/utils"
 import ProductPrice from "@/components/ProductCardPrice"
+import { addLastVisited } from "@/lib/recentlyViewed"
+import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -60,6 +62,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     setIsWishlisted(wishlistItems.some((item) => Number(item.id) === Number(product.id)))
     setCurrentVariant(product.variants[selectedVariant])
   }, [product, selectedVariant, wishlistItems])
+
+  // Thêm sản phẩm vào Recently Viewed
+  useEffect(() => {
+    // Map API response to Product type
+    if (product) addLastVisited(mapProductDataToProduct(product))
+  }, [product])
 
   const variant = product?.variants.find((v) => v.variant_code === params.model)
   const [hoveredColor, setHoveredColor] = useState<string | null>(null)
@@ -212,7 +220,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             {/* Expandable Sections - Full Width Below Main Content */}
             <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
               {/* Reviews */}
-              <div className="border-b px-[15px] px-[30px]">
+              <div className="border-b px-[30px]">
                 <button
                   onClick={() => toggleSection("reviews")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -260,7 +268,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       href={`/${slugify(product.name || "product")}/${variant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
                       pressEffect={false}
                       shadow={false}
-                      className="bg-transparent border border-black dark:border-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                      className="bg-transparent hover:bg-gray-100"
                     >
                       WRITE A REVIEW
                     </Button>
@@ -270,7 +278,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Description */}
-              <div className="border-b px-[15px] px-[30px]">
+              <div className="border-b px-[30px]">
                 <button
                   onClick={() => toggleSection("description")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -286,7 +294,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Details */}
-              <div className="border-b px-[15px] px-[30px]">
+              <div className="border-b px-[30px]">
                 <button
                   onClick={() => toggleSection("details")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -308,7 +316,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Highlights */}
-              <div className="border-b px-[15px] px-[30px]">
+              <div className="border-b px-[30px]">
                 <button
                   onClick={() => toggleSection("highlights")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -603,7 +611,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           {/* Expandable Sections - Full Width Below Main Content */}
           <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
             {/* Reviews */}
-            <div className="border-b px-[15px] px-[30px]">
+            <div className="border-b px-[30px]">
               <button
                 onClick={() => toggleSection("reviews")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -648,7 +656,6 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   <Button
                     border
                     theme="transparent"
-                    border={true}
                     href={`/${slugify(product.name || "product")}/${variant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
                     pressEffect={false}
                     shadow={false}
@@ -662,7 +669,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Description */}
-            <div className="border-b px-[15px] px-[30px]">
+            <div className="border-b px-[30px]">
               <button
                 onClick={() => toggleSection("description")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -678,7 +685,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Details */}
-            <div className="border-b px-[15px] px-[30px]">
+            <div className="border-b px-[30px]">
               <button
                 onClick={() => toggleSection("details")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -700,7 +707,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Highlights */}
-            <div className="border-b px-[15px] px-[30px]">
+            <div className="border-b px-[30px]">
               <button
                 onClick={() => toggleSection("highlights")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
