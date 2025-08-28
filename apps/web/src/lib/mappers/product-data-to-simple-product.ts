@@ -8,7 +8,7 @@ export function mapProductDataToSimpleProduct(productData: any): Product {
     model_number: productData.model_number,
     price: productData.variants[0].price || productData.price || 0,
     variants: [],
-    image_url: productData?.variants[0]?.avatar_url ||
+    main_image_url: productData?.variants[0]?.avatar_url ||
         productData?.variants[0]?.image_urls?.[0] ||
         productData.main_image_url ||
         "/placeholder.png",
