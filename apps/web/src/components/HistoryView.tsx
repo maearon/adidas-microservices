@@ -36,7 +36,7 @@ export default function HistoryView({
       <ProductCarousel
         products={stillInterestedProducts.map(({ product }) => product)}
         showIndicators={showIndicatorsInProductCarousel}
-        minimalMobileForProductCard
+        minimalMobileForProductCard={false}
       />
     </section>
   )
