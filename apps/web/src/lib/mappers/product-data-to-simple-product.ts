@@ -7,6 +7,7 @@ export function mapProductDataToSimpleProduct(productData: any): Product {
     sport: productData.sport || '',
     model_number: productData.model_number,
     price: productData.variants[0].price || productData.price || 0,
+    compare_at_price: productData.variants[0].compare_at_price || productData.compare_at_price || 0,
     variants: [productData.variants[0]]?.map((v: any) => ({
       variant_code: v.variant_code,
       avatar_url: v?.avatar_url ||

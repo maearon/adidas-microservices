@@ -16,7 +16,10 @@ export async function GET(req: NextRequest) {
         ? BigInt(cursorParam)
         : undefined;
 
-    const pageSize = 10;
+    // const limitParam = searchParams.get("limit");
+    // const pageSize = limitParam ? Math.min(parseInt(limitParam, 10), 50) : 10; 
+    // giới hạn max = 50 để tránh query quá nặng
+    const pageSize = 12
 
     // ===== Lấy tất cả filters từ schema =====
     // Handle both array format (gender[]=men) and single format (gender=men)

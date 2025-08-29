@@ -5,7 +5,10 @@
 
 export interface SlugFilters {
   gender?: string[]
-  category?: string[]
+  genders?: string[]
+  category?: string[] // nếu bạn chỉ cần 1 category
+  categories?: string[] // nếu muốn hỗ trợ nhiều category thì thêm field này
+  limit?: number;
   sport?: string[]
   product_type?: string[]
   brand?: string[]

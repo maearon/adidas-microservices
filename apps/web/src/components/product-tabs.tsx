@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import ProductCarousel from "@/components/product-carousel"
 import { Product } from "@/types/product"
 import { useProducts } from "@/api/hooks/useProducts"
 import Loading from "@/components/loading"
 import { mapProductDataToSimpleProduct } from "@/lib/mappers/product-data-to-simple-product"
+import { parseSlugToFilters } from "@/utils/slug-parser"
 
 type ProductTabsProps = {
   initialProductsByTab?: {
@@ -19,37 +20,68 @@ const tabs = [
   { id: "new-to-sale", label: "New to Sale", endpoint: "sale" },
 ]
 
-// build query params giống CategoryPageClient.tsx
-function buildQueryParams(tabId: string) {
-  return {
-    categories: [tabId],        // <-- plural, truyền dạng mảng
-    genders: ["men", "women"],  // lọc thêm gender để query nhẹ hơn
-    limit: 8,
+// Build filters for each tab
+function buildFiltersFromTab(tabId: string) {
+  let filters = parseSlugToFilters(tabId)
+
+  switch (tabId) {
+    case "new-arrivals":
+      filters = {
+        ...filters,
+        product_type: [tabId, "shoes"],
+        gender: ["men"],
+        limit: 12,
+      }
+      break
+
+    case "best-sellers":
+      filters = {
+        ...filters,
+        product_type: [tabId, "shoes"],
+        gender: ["women"],
+        limit: 12,
+      }
+      break
+
+    case "new-to-sale":
+      filters = {
+        ...filters,
+        product_type: [tabId, "shoes"],
+        gender: ["kids"],
+        limit: 12,
+      }
+      break
+
+    default:
+      filters = { ...filters, limit: 12 }
   }
+
+  return filters
 }
 
 export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("new-arrivals")
 
-  // query params cho tab hiện tại
-  const queryParams = buildQueryParams(activeTab)
+  // filters cho tab hiện tại
+  const filters = useMemo(() => buildFiltersFromTab(activeTab), [activeTab])
 
-  const { data, isLoading, error } = useProducts(queryParams)
+  // call hook với object filters trực tiếp
+  const { data, isLoading, error } = useProducts(filters)
 
   const products: Product[] = error
-  ? initialProductsByTab?.[activeTab] ?? []
-  : (data?.pages.flatMap((page) =>
-      page.products.map((productData: unknown) =>
-        mapProductDataToSimpleProduct(productData)
-      )
-    ) ?? initialProductsByTab?.[activeTab] ?? []);
+    ? initialProductsByTab?.[activeTab] ?? []
+    : (data?.pages.flatMap((page) =>
+        page.products.map((productData: unknown) =>
+          mapProductDataToSimpleProduct(productData)
+        )
+      ) ?? initialProductsByTab?.[activeTab] ?? [])
 
   const viewMoreHref = tabs.find((tab) => tab.id === activeTab)?.endpoint
 
   return (
     <section className="container mx-auto px-4">
       {/* Tabs & View All */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4"> {/* 4 x 4 = 16px margin bottom*/}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
         {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto">
           {tabs.map((tab) => (
@@ -79,29 +111,24 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
         </button>
       </div>
 
-      {/* Title */}
-      {/* <h2 className="text-2xl font-bold mb-6">{activeTabLabel}</h2> */}
-
       {/* Product Carousel or Loading/Error */}
       <div className="min-h-[605px] sm:min-h-[500px]">
-      {isLoading ? (
-        <Loading />
-      ) : products.length > 0 ? (
-        <ProductCarousel
-          products={products}
-          viewMoreHref={`/${viewMoreHref}`}
-          carouselModeInMobile={false}
-          minimalMobileForProductCard
-        />
-      ) : error ? (
-        <div className="text-center py-8 text-gray-500">
-          Failed to load products. Please try again.
-        </div>
-      ) : (
-        <div className="text-center text-gray-500">
-          No products available.
-        </div>
-      )}
+        {isLoading ? (
+          <Loading />
+        ) : products.length > 0 ? (
+          <ProductCarousel
+            products={products}
+            viewMoreHref={`/${viewMoreHref}`}
+            carouselModeInMobile={false}
+            minimalMobileForProductCard
+          />
+        ) : error ? (
+          <div className="text-center py-8 text-gray-500">
+            Failed to load products. Please try again.
+          </div>
+        ) : (
+          <div className="text-center text-gray-500">No products available.</div>
+        )}
       </div>
     </section>
   )

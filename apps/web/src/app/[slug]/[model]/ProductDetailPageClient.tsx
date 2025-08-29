@@ -383,7 +383,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <div className="mb-[80px]"></div>
           <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile minimalMobileForProductCard showIndicators />
           <div className="mb-[80px]"></div>
-          <HistoryView title="RECENTLY VIEWED ITEMS" showIndicatorsInProductCarousel={false} />
+          <HistoryView
+            title={
+              <>
+                RECENTLY VIEWED ITEMS
+              </>
+            }
+            showIndicatorsInProductCarousel={false}
+          />
           <div id="sticky-stopper" className="h-1 w-full" /> {/* Thêm div giả để quan sát chạm đáy */}
           </div>
 
@@ -774,7 +781,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         <div className="mb-[60px]"></div>
         <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile showIndicators />
         <div className="mb-[60px]"></div>
-        <HistoryView title="RECENTLY VIEWED ITEMS" showIndicatorsInProductCarousel={false} />
+        <HistoryView
+          title={
+            <>
+              RECENTLY VIEWED ITEMS
+            </>
+          }
+          showIndicatorsInProductCarousel={false}
+        />
         <div id="sticky-stopper" className="h-1 w-full" /> {/* Thêm div giả để quan sát chạm đáy */}
         </div>
       {/* </div> */}

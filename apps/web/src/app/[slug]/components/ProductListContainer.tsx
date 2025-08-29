@@ -52,7 +52,6 @@ export default function ProductListContainer({
           <div key={`${product.id}-${index}`} className="overflow-visible">
             <ProductCard
               product={product}
-              minimalMobile={viewMode === "grid"}
             />
           </div>
         ))}

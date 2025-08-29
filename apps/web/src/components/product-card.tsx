@@ -116,7 +116,7 @@ export default function ProductCard({
           // Khi hover thì ẩn border-bottom để info block nối tiếp
           hasVariantPanel && "hover:border-b-0",
           // hasVariantPanel && "border-b-0" // bỏ border dưới của card khi có variant
-          minimalMobile ? "min-h-fit" : "sm:min-h-[470px]"
+          // minimalMobile ? "min-h-fit" : "min-h-fit sm:min-h-[470px]"
         )}
       >
         <CardContent className="p-0 relative">
