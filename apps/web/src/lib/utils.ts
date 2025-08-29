@@ -19,32 +19,29 @@ export function formatNumber(n: number): string {
 
 export const formatPrice = (
   price?: number | string | null,
-  currency: SupportedLocale = "en_US"
+  locale: SupportedLocale = "en_US"
 ): string => {
+  if (price == null || price === "") return "";
+
   const num = Number(price);
+  if (isNaN(num)) return "";
 
-  if (price == null || isNaN(num)) {
-    return "";
-  }
+  // Map lại cho đúng chuẩn Intl
+  const localeMap: Record<SupportedLocale, { locale: string; currency: string; rate: number }> = {
+    en_US: { locale: "en-US", currency: "USD", rate: 1 },
+    vi_VN: { locale: "vi-VN", currency: "VND", rate: USD_TO_VND },
+  };
 
-  // Với "en-US" + currency: "USD" → format ra $1,234.00 ($ đứng trước).
-  // Với "vi-VN" + currency: "VND" → format ra 1.234.000 ₫ (₫ đứng sau).
-  if (currency === "vi_VN") {
-    const converted = num * USD_TO_VND;
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-      maximumFractionDigits: 0, // thường giá VNĐ không hiển thị thập phân
-    }).format(converted);
-  }
+  const { locale: intlLocale, currency, rate } = localeMap[locale];
+  const converted = num * rate;
 
-  // Mặc định là USD
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(intlLocale, {
     style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0, // thường giá VNĐ không hiển thị thập phân
-  }).format(num);
+    currency,
+    maximumFractionDigits: currency === "VND" ? 0 : 2,
+  }).format(converted);
 };
+
 
 export function formatRelativeDate(from: Date | string | number | undefined | null) {
   if (!from) return ""; // Trường hợp null/undefined

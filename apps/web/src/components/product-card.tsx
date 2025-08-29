@@ -62,7 +62,8 @@ export default function ProductCard({
       addToCart({
         id: Number(product.id),
         name: product.name || "Unknown Product",
-        price: String(formatPrice(product?.price, locale)) || "0",
+        price: product.price ?? 0, // ✅ raw number, không format
+        compareAtPrice: product.compare_at_price ?? null, // nếu cần
         image: currentVariant?.avatar_url || "/placeholder.png",
         color: currentVariant?.color || "Default",
         size: currentVariant?.sizes[0] || "M",
@@ -207,8 +208,10 @@ export default function ProductCard({
           >
             <div className="px-[10px] py-[10px] mb-[10px]">
             <ProductPrice
-              price={String(formatPrice(product?.price, locale))}
-              compareAtPrice={String(formatPrice(product?.compare_at_price, locale))}
+              price={product?.price ?? null}
+              compareAtPrice={product?.compare_at_price ?? null}
+              locale={locale}
+              fallback="—"
             />
             <h3 className="font-medium text-base leading-tight line-clamp-2">
               {product.name}

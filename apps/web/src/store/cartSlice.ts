@@ -3,7 +3,8 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 export interface CartItem {
   id: number
   name: string
-  price: string
+  price: number   // <-- sửa string thành number
+  compareAtPrice?: number | null // <-- thêm trường này nếu cần
   image: string
   color?: string
   size?: string
