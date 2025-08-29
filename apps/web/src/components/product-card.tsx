@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addToCart } from "@/store/cartSlice";
 import WishButton from "./wish-button";
 import ProductVariantCarousel from "./ProductVariantCarousel";
@@ -31,6 +31,7 @@ export default function ProductCard({
   const [isMobile, setIsMobile] = useState(false);
   const [variantHeight, setVariantHeight] = useState(0);
   const variantRef = useRef<HTMLDivElement>(null);
+  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -61,7 +62,7 @@ export default function ProductCard({
       addToCart({
         id: Number(product.id),
         name: product.name || "Unknown Product",
-        price: String(formatPrice(product?.price)) || "0",
+        price: String(formatPrice(product?.price, locale)) || "0",
         image: currentVariant?.avatar_url || "/placeholder.png",
         color: currentVariant?.color || "Default",
         size: currentVariant?.sizes[0] || "M",
@@ -206,8 +207,8 @@ export default function ProductCard({
           >
             <div className="px-[10px] py-[10px] mb-[10px]">
             <ProductPrice
-              price={String(formatPrice(product?.price))}
-              compareAtPrice={String(product?.compare_at_price)}
+              price={String(formatPrice(product?.price, locale))}
+              compareAtPrice={String(formatPrice(product?.compare_at_price, locale))}
             />
             <h3 className="font-medium text-base leading-tight line-clamp-2">
               {product.name}

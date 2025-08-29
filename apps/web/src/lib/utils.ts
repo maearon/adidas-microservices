@@ -1,16 +1,48 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { format, formatDistanceToNowStrict } from "date-fns";
+import { SupportedLocale } from "./constants/localeOptions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatPrice = (price?: number | string | null) => {
-  if (price == null || isNaN(Number(price))) {
+// Tỉ giá USD → VND (có thể lấy từ API hoặc config .env)
+const USD_TO_VND = 26375;
+
+export function formatNumber(n: number): string {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(n);
+}
+
+export const formatPrice = (
+  price?: number | string | null,
+  currency: SupportedLocale = "en_US"
+): string => {
+  const num = Number(price);
+
+  if (price == null || isNaN(num)) {
     return "";
   }
-  return `$${Number(price).toFixed(2)}`;
+
+  // Với "en-US" + currency: "USD" → format ra $1,234.00 ($ đứng trước).
+  // Với "vi-VN" + currency: "VND" → format ra 1.234.000 ₫ (₫ đứng sau).
+  if (currency === "vi_VN") {
+    const converted = num * USD_TO_VND;
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+      maximumFractionDigits: 0, // thường giá VNĐ không hiển thị thập phân
+    }).format(converted);
+  }
+
+  // Mặc định là USD
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(num);
 };
 
 export function formatRelativeDate(from: Date | string | number | undefined | null) {
@@ -30,13 +62,6 @@ export function formatRelativeDate(from: Date | string | number | undefined | nu
       return format(date, "MMM d, yyyy");
     }
   }
-}
-
-export function formatNumber(n: number): string {
-  return Intl.NumberFormat("en_US", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(n);
 }
 
 export const slugify = (name: unknown): string => {
