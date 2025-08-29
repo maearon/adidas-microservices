@@ -42,6 +42,7 @@ export const formatPrice = (
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    maximumFractionDigits: 0, // thường giá VNĐ không hiển thị thập phân
   }).format(num);
 };
 
