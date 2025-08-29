@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Search, ShoppingBag, User, Heart, Menu } from "lucide-react"
+import { formatPrice } from "@/lib/utils"
 
 interface Props {
   onNavigate: (page: "home" | "men") => void
@@ -174,7 +175,7 @@ export default function Homepage({ onNavigate }: Props) {
                 <div>
                   <p className="text-base text-gray-600 dark:text-white mb-1">{product.category}</p>
                   <h3 className="font-medium mb-2">{product.name}</h3>
-                  <p className="font-bold">{product.price}</p>
+                  <p className="font-bold">{formatPrice(product?.price)}</p>
                 </div>
               </CardContent>
             </Card>

@@ -6,8 +6,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatPrice = (price: number) => {
-  return `$${price.toFixed(2)}`;
+export const formatPrice = (price?: number | string | null) => {
+  if (price == null || isNaN(Number(price))) {
+    return "";
+  }
+  return `$${Number(price).toFixed(2)}`;
 };
 
 export function formatRelativeDate(from: Date | string | number | undefined | null) {

@@ -139,7 +139,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                         Kích cỡ: {item.size} | Màu: {item.color} | Số lượng: {item.quantity}
                       </p>
                     </div>
-                    <div className="font-bold">{formatPrice(item.price)}</div>
+                    <div className="font-bold">{formatPrice(item?.price)}</div>
                   </div>
                 ))}
               </div>

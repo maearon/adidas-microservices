@@ -5,6 +5,7 @@ import { addToCart } from "@/store/cartSlice"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import WishButton from "@/components/wish-button"
+import { formatPrice } from "@/lib/utils"
 
 export default function WishlistPage() {
   const dispatch = useAppDispatch()
@@ -15,7 +16,7 @@ export default function WishlistPage() {
       addToCart({
         id: item.id,
         name: item.name,
-        price: item.price,
+        price: formatPrice(item?.price),
         image: item.image,
         color: "Default",
         size: "M",
@@ -91,7 +92,7 @@ export default function WishlistPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <p className="font-bold">{item.price}</p>
+                    <p className="font-bold">{formatPrice(item?.price)}</p>
                     <h3 className="text-base text-gray-700">{item.name}</h3>
                     <Button
                       theme="black"

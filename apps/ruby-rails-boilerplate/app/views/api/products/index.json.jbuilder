@@ -24,7 +24,7 @@ json.products @products do |product|
 
   json.availableSizes variant&.sizes&.pluck(:label)&.uniq || []
   json.price variant&.price
-  json.compare_at_price variant&.compare_at_price
+  json?.compare_at_price variant&&.compare_at_price
   json.installments variant&.stock
 
   json.created_at product.created_at
@@ -36,7 +36,7 @@ json.products @products do |product|
     json.variant_code v.variant_code
     json.color v.color
     json.price v.price
-    json.compare_at_price v.compare_at_price
+    json?.compare_at_price v&.compare_at_price
     json.variant_code v.variant_code
     json.stock v.stock
     json.sizes v.sizes.pluck(:label).uniq

@@ -14,6 +14,7 @@ import {
 import { upperWords } from "@/utils/upper-words"
 import ProductPrice from "./ProductCardPrice"
 import Image from "next/image"
+import { formatPrice } from "@/lib/utils"
 
 interface ExpandableImageGalleryProps {
   images: string[]
@@ -112,11 +113,11 @@ export default function ExpandableImageGallery({ variant, images, productName, p
           </h1>
 
           <div className="flex items-center space-x-2 leading-[22px]">
-            {/* <span className="text-md font-bold">${variant?.price}</span>
+            {/* <span className="text-md font-bold">${formatPrice(variant?.price)}</span>
             {variant?.compare_at_price && (
               <span className="text-md text-gray-500 line-through">${variant?.compare_at_price}</span>
             )} */}
-            <ProductPrice price={String(variant?.price)} compareAtPrice={String(variant?.compare_at_price)} />
+            <ProductPrice price={String(formatPrice(variant?.price))} compareAtPrice={String(variant?.compare_at_price)} />
           </div>
         </div>
         <BreadcrumbForDetailProductPage items={breadcrumbItems} />

@@ -21,7 +21,7 @@ import Loading from "@/components/loading"
 import { BaseButton } from "@/components/ui/base-button"
 import Image from "next/image"
 import { ButtonWish } from "@/components/ui/button-wish"
-import { cn } from "@/lib/utils"
+import { cn, formatPrice } from "@/lib/utils"
 import ProductPrice from "@/components/ProductCardPrice"
 import { addLastVisited } from "@/lib/recentlyViewed"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
@@ -86,7 +86,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
       addToCart({
         id: Number(product.id),
         name: product.name,
-        price: `$${variant?.price}`,
+        price: `$${formatPrice(variant?.price).replace("$", "")}`,
         image: variant?.image_urls?.[0] || "/placeholder.png",
         color: variant?.color,
         size: selectedSize,
@@ -100,7 +100,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
       toggleWishlist({
         id: Number(product.id),
         name: product.name,
-        price: `$${variant?.price}`,
+        price: `$${formatPrice(variant?.price).replace("$", "")}`,
         image: variant?.image_urls?.[0] || "/placeholder.png",
       })
     )
@@ -431,11 +431,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <h1 className="text-3xl font-bold mb-4 leading-tight">{upperWords(product.name)}</h1>
 
               <div className="flex items-center space-x-2 mb-6">
-                {/* <span className="text-2xl font-bold">${variant?.price}</span>
+                {/* <span className="text-2xl font-bold">${formatPrice(variant?.price)}</span>
                 {variant?.compare_at_price && (
                   <span className="text-lg text-gray-500 line-through">${variant?.compare_at_price}</span>
                 )} */}
-                <ProductPrice price={String(variant?.price)} compareAtPrice={String(variant?.compare_at_price)} />
+                <ProductPrice price={String(formatPrice(variant?.price))} compareAtPrice={String(formatPrice(variant?.compare_at_price))} />
               </div>
 
               <p className="text-base text-black dark:text-white mb-6">Promo codes will not apply to this product.</p>

@@ -284,7 +284,7 @@ export default function FilterBar({
           {!slugFilters.max_price && (
             <FilterDropdown
               title="Price"
-              expanded={expandedFilters.price}
+              expanded={expandedFilters?.price}
               onToggle={() => toggleFilter('price')}
               customContent={
                 <div className="p-4 space-y-3">

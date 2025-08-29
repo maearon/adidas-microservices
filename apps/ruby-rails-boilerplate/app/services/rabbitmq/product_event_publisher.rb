@@ -31,7 +31,7 @@ module Rabbitmq
               id: variant.id,
               color: variant.color,
               price: variant.price,
-              compare_at_price: variant.compare_at_price,
+              compare_at_price: variant&.compare_at_price,
               variant_code: variant.variant_code,
               stock: variant.stock,
               product_id: variant.product_id,

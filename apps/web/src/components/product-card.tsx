@@ -13,7 +13,7 @@ import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
 import { slugify } from "@/utils/slugify";
 import type { Product } from "@/types/product";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import ProductPrice from "./ProductCardPrice";
 
 interface ProductCardProps {
@@ -61,7 +61,7 @@ export default function ProductCard({
       addToCart({
         id: Number(product.id),
         name: product.name || "Unknown Product",
-        price: String(product.price) || "0",
+        price: String(formatPrice(product?.price)) || "0",
         image: currentVariant?.avatar_url || "/placeholder.png",
         color: currentVariant?.color || "Default",
         size: currentVariant?.sizes[0] || "M",
@@ -206,8 +206,8 @@ export default function ProductCard({
           >
             <div className="px-[10px] py-[10px] mb-[10px]">
             <ProductPrice
-              price={String(product.price)}
-              compareAtPrice={String(product.compare_at_price)}
+              price={String(formatPrice(product?.price))}
+              compareAtPrice={String(product?.compare_at_price)}
             />
             <h3 className="font-medium text-base leading-tight line-clamp-2">
               {product.name}

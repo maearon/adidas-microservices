@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
         id: v.id,
         color: v.color,
         price: v.price,
-        compare_at_price: v.compare_at_price,
+        compare_at_price: v?.compare_at_price,
         variant_code: v.variant_code,
         category: product.categories?.name ?? "",
         stock: v.stock,

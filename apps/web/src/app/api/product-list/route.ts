@@ -103,7 +103,7 @@ export async function GET(req: NextRequest) {
             variant_code: v.variant_code,
             color: v.color,
             price: v.price,
-            compare_at_price: v.compare_at_price,
+            compare_at_price: v?.compare_at_price,
             stock: v.stock,
             product_id: v.product_id,
             created_at: v.created_at,

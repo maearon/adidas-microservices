@@ -9,6 +9,7 @@ import { addToWishlist } from "@/store/wishlistSlice"
 import { useSelector } from "react-redux"
 import { selectUser } from "@/store/sessionSlice"
 import { capitalizeTitle } from "@/utils/sanitizeMenuTitleOnly"
+import { formatPrice } from "@/lib/utils"
 
 export default function CartPage() {
   const { value: current_user, status } = useSelector(selectUser)
@@ -27,7 +28,7 @@ export default function CartPage() {
       addToWishlist({
         id: item.id,
         name: item.name,
-        price: item.price,
+        price: formatPrice(item?.price),
         image: item.image,
         category: item.category,
       }),
@@ -43,7 +44,7 @@ export default function CartPage() {
 
   // Calculate totals
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + Number.parseFloat(item.price) * item.quantity,
+    (sum, item) => sum + Number.parseFloat(formatPrice(item?.price.replace("$", ""))) * item.quantity,
     0,
   )
   const salesTax = subtotal * 0.12 // Assuming 12% tax rate
@@ -124,7 +125,7 @@ export default function CartPage() {
                         </div>
                         <div className="text-right">
                           <p className="font-bold">
-                            ${(Number.parseFloat(item.price) * item.quantity).toFixed(2)}
+                            ${(Number.parseFloat(formatPrice(item?.price.replace("$", ""))) * item.quantity).toFixed(2)}
                           </p>
                           <button onClick={() => handleRemoveItem(item.id)} className="text-gray-500 hover:text-background">
                             <X size={18} />

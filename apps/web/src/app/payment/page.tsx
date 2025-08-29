@@ -7,6 +7,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import flashMessage from "@/components/shared/flashMessages"
 import javaService from "@/api/services/javaService"
+import { formatPrice } from "@/lib/utils"
 
 const validationSchema = Yup.object({
   cardNumber: Yup.string().required("Card number is required"),
@@ -41,7 +42,7 @@ export default function CheckoutPaymentPage() {
   const [loading, setLoading] = useState(false)
 
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + Number.parseFloat(item.price.replace("$", "")) * item.quantity,
+    (sum, item) => sum + Number.parseFloat(formatPrice(item?.price).replace("$", "")) * item.quantity,
     0,
   )
   const tax = subtotal * 0.12
@@ -313,7 +314,7 @@ export default function CheckoutPaymentPage() {
                   </div>
                   <div className="text-right">
                     <p className="font-bold">
-                      ${(Number.parseFloat(item.price.replace("$", "")) * item.quantity).toFixed(2)}
+                      ${(Number.parseFloat(formatPrice(item?.price).replace("$", "")) * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>

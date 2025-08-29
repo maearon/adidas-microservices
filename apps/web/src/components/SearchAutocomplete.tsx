@@ -1,6 +1,7 @@
 "use client"
 
 import { searchSuggestions } from "@/data/searchSuggestions"
+import { formatPrice } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -58,7 +59,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
                 <div>
                   <div className="text-gray-500">{product.gender}</div>
                   <div className="font-medium">{product.title}</div>
-                  <div>${product.price.toFixed(2)}</div>
+                  <div>${formatPrice(product?.price.toFixed(2))}</div>
                 </div>
               </li>
             ))}

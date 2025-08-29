@@ -1,4 +1,5 @@
 import { Product } from "@/types/product";
+import { formatPrice } from "../utils";
 
 export function mapProductDataToProduct(productData: any): Product {
   return {
@@ -19,8 +20,10 @@ export function mapProductDataToProduct(productData: any): Product {
     currencyId: 'USD',
     currencyFormat: '$',
     isFreeShipping: true,
-    price: productData.variants[0].price || productData.price || 0,
-    compare_at_price: productData.variants[0].compare_at_price || productData.compare_at_price || 0,
+    price: Number(formatPrice(productData?.variants[0]?.price).replace("$", ""))
+    ||  Number(formatPrice(productData.price).replace("$", "")) || 0,
+    compare_at_price: Number(formatPrice(productData?.variants[0]?.compare_at_price).replace("$", "")) 
+    || Number(formatPrice(productData?.compare_at_price).replace("$", "")) || 0,
     installments: 4,
     created_at: productData.created_at?.toString() || '',
     updated_at: productData.updated_at?.toString() || '',
@@ -33,7 +36,7 @@ export function mapProductDataToProduct(productData: any): Product {
       id: String(v.id),
       color: v.color,
       price: v.price,
-      compare_at_price: v.compare_at_price,
+      compare_at_price: v?.compare_at_price,
       variant_code: v.variant_code,
       stock: v.stock,
       sizes: v.sizes || [],

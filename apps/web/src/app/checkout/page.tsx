@@ -13,6 +13,7 @@ import { CartItem } from "@/types/cart"
 import { User } from "@/types/user"
 import javaService from "@/api/services/javaService"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
+import { formatPrice } from "@/lib/utils"
 
 export default function CheckoutPage() {
   // const cartItems = useAppSelector((state) => state.cart.items)
@@ -59,8 +60,8 @@ export default function CheckoutPage() {
   const subtotal = cartItemsRails.reduce(
     (sum, item) =>
       sum +
-      (item.variant.price !== undefined && item.variant.price !== null && item.variant.price
-        ? Number(item.variant.price) * item.quantity
+      (formatPrice(item?.variant?.price) !== undefined && formatPrice(item?.variant?.price) !== null && item.variant?.price
+        ? Number(formatPrice(item?.variant?.price)) * item.quantity
         : 0),
     0,
   )
@@ -307,7 +308,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-base">{item.product.name}</h3>
-                      <p className="text-base font-bold">{item.variant.price}</p>
+                      <p className="text-base font-bold">{formatPrice(item?.variant?.price)}</p>
                       <p className="text-xs text-gray-600 dark:text-white">
                         Size: {item.size} / Quantity: {item.quantity}
                       </p>

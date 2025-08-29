@@ -61,8 +61,8 @@ export default function ProductGrid({
             product={{
               ...product,
               id: Number(product.id),
-              price: product.price,
-              compare_at_price: product.compare_at_price,
+              price: product?.price,
+              compare_at_price: product?.compare_at_price,
             }}
           />
         ))}

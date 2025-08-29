@@ -20,6 +20,7 @@ import { slugify } from "@/utils/slugify"
 import { useRouter } from "next/navigation"
 import ProductCarousel from "@/components/product-carousel"
 import { useProductDetail } from "@/api/hooks/useProducts"
+import { formatPrice } from "@/lib/utils"
 
 
 type Props = {
@@ -97,7 +98,7 @@ export default function ProductDetailPageClient({ params }: Props) {
       addToCart({
         id: Number(product.id),
         name: product.name,
-        price: `$${variant?.price}`,
+        price: `$${formatPrice(variant?.price)}`,
         image: variant?.image_urls?.[0] || "/placeholder.png",
         color: variant?.color,
         size: selectedSize,
@@ -111,7 +112,7 @@ export default function ProductDetailPageClient({ params }: Props) {
       toggleWishlist({
         id: Number(product.id),
         name: product.name,
-        price: `$${variant?.price}`,
+        price: `$${formatPrice(variant?.price).replace("$", "")}`,
         image: variant?.image_urls?.[0] || "/placeholder.png",
       })
     )
@@ -214,7 +215,7 @@ export default function ProductDetailPageClient({ params }: Props) {
   //           }`}
   //         >
   //           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
-  //           <p className="text-xl font-bold mb-4">${product.price}</p>
+  //           <p className="text-xl font-bold mb-4">${formatPrice(product?.price)}</p>
 
   //           {/* Variants */}
   //           <div className="mb-4">
@@ -379,7 +380,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                 <div className="lg:hidden">
                   <h1 className="text-xl font-bold mb-2">{product.name}</h1>
                   <div className="flex items-center space-x-2 mb-4">
-                    <span className="text-xl font-bold">${product.price}</span>
+                    <span className="text-xl font-bold">${formatPrice(product?.price)}</span>
                     {product.badge === "Best seller" && (
                       <Badge className="bg-gray-300 text-background text-xs rounded-none">BEST SELLER</Badge>
                     )}
@@ -416,7 +417,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                   <h1 className="text-3xl font-bold mb-4 leading-tight">{product.name}</h1>
 
                   <div className="flex items-center space-x-2 mb-6">
-                    <span className="text-2xl font-bold">${variant?.price}</span>
+                    <span className="text-2xl font-bold">${formatPrice(variant?.price)}</span>
                     {variant?.compare_at_price && (
                       <span className="text-lg text-gray-500 line-through">${variant?.compare_at_price}</span>
                     )}
@@ -655,7 +656,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                     />
                   </div>
                   <h3 className="font-medium text-base mb-2">{item.name}</h3>
-                  <p className="font-bold">${item.price}</p>
+                  <p className="font-bold">${formatPrice(item?.price)}</p>
                 </CardContent>
               </Card>
             ))}
@@ -692,7 +693,7 @@ export default function ProductDetailPageClient({ params }: Props) {
                     />
                   </div>
                   <h3 className="font-medium text-base mb-2">{item.name}</h3>
-                  <p className="font-bold">${item.price}</p>
+                  <p className="font-bold">${formatPrice(item?.price)}</p>
                 </CardContent>
               </Card>
             ))}

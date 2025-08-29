@@ -350,7 +350,7 @@ export default function FiltersSidebar({
           {/* Price */}
           <FilterSection
             title="PRICE"
-            expanded={expandedSections.price}
+            expanded={expandedSections?.price}
             onToggle={() => toggleSection("price")}
           >
             <div className="space-y-4">
