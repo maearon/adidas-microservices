@@ -1,21 +1,21 @@
 import { formatPrice } from "@/lib/utils"; 
-import { SupportedLocale } from "@/lib/constants/localeOptions";
+import { useAppSelector } from "@/store/hooks";
 
 interface ProductPriceProps {
   price?: number | string | null;          // giá đang bán (luôn là raw USD)
   compareAtPrice?: number | string | null; // giá gốc (luôn là raw USD)
-  locale?: SupportedLocale;                // mặc định "en_US"
-  fallback?: React.ReactNode
 }
 
 export default function ProductPrice({
   price,
   compareAtPrice,
-  locale = "en_US",
-  fallback = null,
 }: ProductPriceProps) {
   const priceNum = price ? Number(price) : null;
   const compareNum = compareAtPrice ? Number(compareAtPrice) : null;
+  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
+  const userLocale = navigator.language;
+  console.log("User locale:", userLocale); 
+  // ví dụ: "en-US", "vi-VN"
 
   const hasDiscount =
     priceNum !== null &&
@@ -23,7 +23,7 @@ export default function ProductPrice({
     compareNum > priceNum;
 
   if (!price && !compareAtPrice) {
-    return <span>{fallback}</span>
+    return <span>—</span>
   }
 
   if (hasDiscount) {

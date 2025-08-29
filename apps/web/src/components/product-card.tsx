@@ -6,14 +6,14 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/cartSlice";
 import WishButton from "./wish-button";
 import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
 import { slugify } from "@/utils/slugify";
 import type { Product } from "@/types/product";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import ProductPrice from "./ProductCardPrice";
 
 interface ProductCardProps {
@@ -31,7 +31,6 @@ export default function ProductCard({
   const [isMobile, setIsMobile] = useState(false);
   const [variantHeight, setVariantHeight] = useState(0);
   const variantRef = useRef<HTMLDivElement>(null);
-  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -210,8 +209,6 @@ export default function ProductCard({
             <ProductPrice
               price={product?.price ?? null}
               compareAtPrice={product?.compare_at_price ?? null}
-              locale={locale}
-              fallback="—"
             />
             <h3 className="font-medium text-base leading-tight line-clamp-2">
               {product.name}

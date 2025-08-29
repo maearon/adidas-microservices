@@ -428,14 +428,17 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </div>
               </div>
 
-              <h1 className="text-3xl font-bold mb-4 leading-tight">{upperWords(product.name)}</h1>
+              <h1 className="text-3xl font-bold mb-4 leading-tight">{upperWords(product.name || "Unknown Product")}</h1>
 
               <div className="flex items-center space-x-2 mb-6">
                 {/* <span className="text-2xl font-bold">${formatPrice(variant?.price)}</span>
                 {variant?.compare_at_price && (
                   <span className="text-lg text-gray-500 line-through">${variant?.compare_at_price}</span>
                 )} */}
-                <ProductPrice price={String(formatPrice(variant?.price))} compareAtPrice={String(formatPrice(variant?.compare_at_price))} />
+                <ProductPrice
+                  price={variant?.price ?? null}
+                  compareAtPrice={variant?.compare_at_price ?? null}
+                />
               </div>
 
               <p className="text-base text-black dark:text-white mb-6">Promo codes will not apply to this product.</p>
