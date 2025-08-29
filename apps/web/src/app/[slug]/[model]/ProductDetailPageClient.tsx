@@ -511,18 +511,23 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     <button
                       key={`${size}-${index}`}
                       onClick={() => handleSizeSelect(size)}
-                      disabled={isSoldOut}
+                      // disabled={isSoldOut}
                       className={`
-                        relative py-3 border text-center text-sm font-medium rounded-none
-                        ${isSelected ? "bg-black text-white border-border" : "border-gray-300 hover:border-border"}
-                        ${isSoldOut ? "text-gray-400 cursor-not-allowed" : ""}
+                        group relative py-3 text-center text-sm font-medium rounded-none
+                        ${isSoldOut
+                          ? isSelected
+                            ? "bg-[#767677] text-white"
+                            : "bg-[#FFFFFF] text-gray-500 hover:bg-[#767677] hover:text-white"
+                          : isSelected
+                            ? "bg-[#000000] text-white"
+                            : "bg-[#ECEFF1] text-black hover:bg-black hover:text-white"}
                       `}
                     >
                       <span className={isSoldOut ? "line-through" : ""}>{size}</span>
                       {isSoldOut && (
                         <span className="absolute top-1 right-0.5 text-xs">
                           {/* 🔔 */}
-                          <BellRing className="absolute top-1 right-0.5 w-4 h-4 text-[#232323] dark:text-white" />
+                          <BellRing className="absolute top-1 right-0.5 w-4 h-4" />
                         </span>
                       )}
                     </button>
@@ -534,7 +539,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 <p className="text-red-600 text-sm mt-2 font-medium">{sizeError}</p>
               )}
 
-              <div className="mt-4 p-3 border border-gray-300 rounded-none bg-background text-sm">
+              <div className="mt-4 p-3 rounded-none bg-background text-sm">
                 <div className="flex items-start text-gray-700 dark:text-white leading-snug">
                   <span className="mr-2 mt-[2px] text-background">
                     {/* ℹ️ */}
