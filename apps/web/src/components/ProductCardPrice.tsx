@@ -1,3 +1,5 @@
+"use client";
+
 import { formatPrice } from "@/lib/utils"; 
 import { useAppSelector } from "@/store/hooks";
 
