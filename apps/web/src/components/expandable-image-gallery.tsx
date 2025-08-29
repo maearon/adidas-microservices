@@ -117,7 +117,10 @@ export default function ExpandableImageGallery({ variant, images, productName, p
             {variant?.compare_at_price && (
               <span className="text-md text-gray-500 line-through">${variant?.compare_at_price}</span>
             )} */}
-            <ProductPrice price={String(formatPrice(variant?.price))} compareAtPrice={String(variant?.compare_at_price)} />
+            <ProductPrice
+              price={variant?.price ?? null}
+              compareAtPrice={variant?.compare_at_price ?? null}
+            />
           </div>
         </div>
         <BreadcrumbForDetailProductPage items={breadcrumbItems} />
