@@ -6,18 +6,20 @@ import StoreMap from '@/components/store/StoreMap'
 import StoreDetail from '@/components/store/StoreDetail'
 import { stores } from '@/data/stores'
 import { Store } from '@/types/store'
+import { useTranslations } from '@/hooks/useTranslations'
 
 export default function StoreFinderPage() {
+  const t = useTranslations("stores")
   const [selectedStore, setSelectedStore] = useState<Store>(stores[0])
 
   return (
     <div className="flex flex-col xl:flex-row h-[calc(100vh-64px)] overflow-hidden">
       {/* Sidebar - Full width on mobile, fixed width on desktop */}
       <div className="w-full xl:w-[320px] border-r overflow-y-auto p-4">
-        <h2 className="text-lg font-semibold mb-4">STORE FINDER</h2>
+        <h2 className="text-lg font-semibold mb-4">{t?.storeFinder || "STORE FINDER"}</h2>
         <input
           className="mb-4 w-full border rounded px-3 py-2 text-sm"
-          placeholder="Search city, zip, or address"
+          placeholder={t?.searchPlaceholder || "Search city, zip, or address"}
         />
         <StoreList
           stores={stores}

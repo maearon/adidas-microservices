@@ -37,6 +37,10 @@ import filterEn from "@/locales/en_US/filter.json"
 import filterVi from "@/locales/vi_VN/filter.json"
 import productDetailEn from "@/locales/en_US/product-detail.json"
 import productDetailVi from "@/locales/vi_VN/product-detail.json"
+import categoryPagesEn from "@/locales/en_US/category-pages.json"
+import categoryPagesVi from "@/locales/vi_VN/category-pages.json"
+import storesEn from "@/locales/en_US/stores.json"
+import storesVi from "@/locales/vi_VN/stores.json"
 
 export const locales = {
   "en_US": {
@@ -59,6 +63,8 @@ export const locales = {
     productList: productListEn,
     filter: filterEn,
     productDetail: productDetailEn,
+    categoryPages: categoryPagesEn,
+    stores: storesEn,
   },
   "vi_VN": {
     navbar: navbarVi,
@@ -80,6 +86,8 @@ export const locales = {
     productList: productListVi,
     filter: filterVi,
     productDetail: productDetailVi,
+    categoryPages: categoryPagesVi,
+    stores: storesVi,
   },
 } as const
 

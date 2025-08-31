@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "PAST, PRESENT, FUTURE",
+    "description": "Explore the Superstar, now updated for the next generation.",
+    "shopNow": "SHOP NOW"
+  },
+  "categoryTiles": {
+    "sneakers": "SNEAKERS",
+    "tops": "TOPS",
+    "hoodiesSweatshirts": "HOODIES & SWEATSHIRTS",
+    "pants": "PANTS",
+    "pantsTights": "PANTS & TIGHTS",
+    "matchingSets": "MATCHING SETS",
+    "youthTeens": "YOUTH AND TEENS",
+    "children": "CHILDREN",
+    "infantsToddlers": "INFANTS & TODDLERS",
+    "allKids": "ALL KIDS"
+  },
+  "promoTiles": {
+    "adizeroEvoSl": {
+      "title": "ADIZERO EVO SL",
+      "description": "Feel fast. In all aspects of life."
+    },
+    "campus": {
+      "title": "CAMPUS",
+      "description": "Street classic to keep you moving in style."
+    },
+    "realMadrid": {
+      "title": "REAL MADRID 25/26 HOME JERSEY",
+      "description": "Bring the Bernabéu Stadium to them."
+    },
+    "dropset3": {
+      "title": "DROPSET 3",
+      "description": "Rooted in Strength."
+    },
+    "newArrivals": {
+      "title": "NEW ARRIVALS",
+      "description": ""
+    },
+    "lifestyle": {
+      "title": "LIFESTYLE",
+      "description": ""
+    },
+    "shoes": {
+      "title": "SHOES",
+      "description": ""
+    },
+    "familyMatching": {
+      "title": "FAMILY MATCHING",
+      "description": ""
+    }
+  },
+  "kidsHero": {
+    "title": "WE ARE SO BACK",
+    "description": "Get their back to school looks down this year with tracksuits, sneakers, and more.",
+    "shopNow": "SHOP NOW"
+  },
+  "topPicks": "TOP PICKS FOR YOU",
+  "descriptions": {
+    "mens": {
+      "title": "MEN&apos;S SNEAKERS AND WORKOUT CLOTHES",
+      "paragraph1": "Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men&apos;s shoes and apparel that support your passion and define your style. Whether you&apos;re training for a marathon, playing pickup basketball or just hanging out with friends, adidas men&apos;s clothing and shoes are designed to keep you comfortable, so you feel confident and ready to take on whatever comes your way.",
+      "paragraph2": "adidas is here, whether you need team, with men&apos;s workout clothes and sneakers that are built to last and designed to perform. From our adidas Boost technology that returns energy with every step, to our activewear that fits and feels as great as it looks. Experience the adidas difference."
+    },
+    "womens": {
+      "title": "Women&apos;s Sneakers and Workout Clothes",
+      "paragraph1": "Look great. Feel great. Perform great. Keep your workout on track with women&apos;s sneakers that support focused training with a supportive fit and a cushioned midsole. Designed for performance and comfort, our women&apos;s workout clothes and shoes support athletes and training at every level. Experience adidas technologies that support cool, dry comfort through intense workouts. Put your fitness first with adidas women&apos;s workout shoes and running clothes that breathe, manage sweat and help you realize your fitness goals."
+    },
+    "kids": {
+      "title": "Kids&apos; Shoes and Activewear",
+      "paragraph1": "Aspiring sports stars and busy kids deserve the best. Explore kids&apos; sneakers and sportswear for active girls and boys. Fulfill their sports dreams with matching kids&apos; activewear and warm-ups that fit and feel great from the classroom to the playground, the gym, and home. Enjoy the best selection of comfy kids&apos; clothes and sneakers to keep your young athlete excited to exercise and play their best. Discover the latest trends and heritage adidas styles in kids&apos; athletic clothes, sneakers, cleats and accessories."
+    }
+  },
+  "recentlyViewed": "RECENTLY VIEWED ITEMS"
+}

@@ -1,8 +1,12 @@
 // components/store/StoreDetail.tsx
+"use client"
+
 import { Store } from "@/types/store";
 import { MapPin } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function StoreDetail({ store }: { store: Store }) {
+  const t = useTranslations("stores")
   const [lng, lat] = store.coordinates
 
   return (
@@ -38,12 +42,12 @@ export default function StoreDetail({ store }: { store: Store }) {
             />
           </svg> */}
           <MapPin className="h-5 w-5 mr-2 text-red-600" />
-          Directions
+          {t?.directions || "Directions"}
         </a>
       </div>
 
       {/* Address label */}
-      <p className="font-semibold text-sm mt-2">Address:</p>
+      <p className="font-semibold text-sm mt-2">{t?.address || "Address:"}</p>
       <p className="text-sm mb-2">
         {store.address} ({store.distance.toFixed(2)} mi)
       </p>

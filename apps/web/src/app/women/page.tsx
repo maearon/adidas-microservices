@@ -9,8 +9,10 @@ import PageFooter from "@/components/page-footer"
 import TileCard from "@/components/tile-card"
 import PromoCarousel, { Slide } from "@/components/promo-carousel"
 import { newArrivalProducts } from "@/data/fake-new-arrival-products"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function WomenPage() {
+  const t = useTranslations("categoryPages")
   const [newArrivalProductsTab, setNewArrivalProductsTab] = useState<NewArrivalProduct[]>([])
 
   useEffect(() => {
@@ -22,34 +24,34 @@ export default function WomenPage() {
   }, [])
 
   const categoryTiles = [
-    { title: "SNEAKERS", image: "/assets/women/samba-og-shoes.jpg?height=200&width=300", href: "/men-shoes" },
-    { title: "TOPS", image: "/assets/women/adicolor-classic-firebird-loose-track-top.jpg?height=200&width=300", href: "/men-tops" },
-    { title: "PANTS & TIGHTS", image: "/assets/women/tricot-3-stripes-track-pants.jpg?height=200&width=300", href: "/men-hoodies" },
-    { title: "MATCHING SETS", image: "/assets/women/adidas-by-stella-mccartney-truecasuals-terry-short.jpg?height=200&width=300", href: "/men-pants" },
+    { title: t?.categoryTiles?.sneakers || "SNEAKERS", image: "/assets/women/samba-og-shoes.jpg?height=200&width=300", href: "/men-shoes" },
+    { title: t?.categoryTiles?.tops || "TOPS", image: "/assets/women/adicolor-classic-firebird-loose-track-top.jpg?height=200&width=300", href: "/men-tops" },
+    { title: t?.categoryTiles?.pantsTights || "PANTS & TIGHTS", image: "/assets/women/tricot-3-stripes-track-pants.jpg?height=200&width=300", href: "/men-hoodies" },
+    { title: t?.categoryTiles?.matchingSets || "MATCHING SETS", image: "/assets/women/adidas-by-stella-mccartney-truecasuals-terry-short.jpg?height=200&width=300", href: "/men-pants" },
   ]
 
   const promoTiles: Slide[] = [
     {
-      title: "ADIZERO EVO SL",
-      description: "Feel fast. In all aspects of life.",
+      title: t?.promoTiles?.adizeroEvoSl?.title || "ADIZERO EVO SL",
+      description: t?.promoTiles?.adizeroEvoSl?.description || "Feel fast. In all aspects of life.",
       image: "/assets/women/running_fw25_adizero_w_card_launch_d_daa2410a01.jpeg",
       href: "/products/adizero-evo-sl",
     },
     {
-      title: "CAMPUS",
-      description: "Street classic to keep you moving in style.",
+      title: t?.promoTiles?.campus?.title || "CAMPUS",
+      description: t?.promoTiles?.campus?.description || "Street classic to keep you moving in style.",
       image: "/assets/women/originals_fw25_taekwondo_card_sustain_d_12978e639b.jpg",
       href: "/products/campus",
     },
     {
-      title: "REAL MADRID 25/26 HOME JERSEY",
-      description: "Bring the Bernabéu Stadium to them.",
+      title: t?.promoTiles?.realMadrid?.title || "REAL MADRID 25/26 HOME JERSEY",
+      description: t?.promoTiles?.realMadrid?.description || "Bring the Bernabéu Stadium to them.",
       image: "/assets/women/global_sparkfusion_football_fw25_launch_glp_catlp_navigation_card_teaser_1_d_5e18383848.jpg",
       href: "/products/real-madrid-25-26",
     },
     {
-      title: "DROPSET 3",
-      description: "Rooted in Strength.",
+      title: t?.promoTiles?.dropset3?.title || "DROPSET 3",
+      description: t?.promoTiles?.dropset3?.description || "Rooted in Strength.",
       image: "/assets/women/global_dropset_training_fw25_launch_fglp_navigation_card_teaser_2_d_587e6e1970.jpg",
       href: "/products/dropset-3",
     },
@@ -62,12 +64,12 @@ export default function WomenPage() {
       <HeroBanner
         backgroundClassName="bg-hero-women"
         content={{
-          title: "PAST, PRESENT, FUTURE",
-          description: "Explore the Superstar, now updated for the next generation.",
+          title: t?.hero?.title || "PAST, PRESENT, FUTURE",
+          description: t?.hero?.description || "Explore the Superstar, now updated for the next generation.",
           buttons: [
             { 
               href: "/women-superstar", 
-              buttonLabel: "SHOP NOW",
+              buttonLabel: t?.hero?.shopNow || "SHOP NOW",
               border: false,
               shadow: true,
             }
@@ -111,7 +113,7 @@ export default function WomenPage() {
       />
 
       <section className="container mx-auto px-2">
-        <h2 className="text-xl font-bold mb-4">TOP PICKS FOR YOU</h2>
+        <h2 className="text-xl font-bold mb-4">{t?.topPicks || "TOP PICKS FOR YOU"}</h2>
 
         <ProductCarousel
           products={newArrivalProductsTab.map(p => p.product) as Product[]}
@@ -123,10 +125,10 @@ export default function WomenPage() {
       <section className="container mx-auto px-2 py-8 text-center">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-          Women&apos;s Sneakers and Workout Clothes</h2>
+          {t?.descriptions?.womens?.title || "Women&apos;s Sneakers and Workout Clothes"}</h2>
         <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
           <p>
-            Look great. Feel great. Perform great. Keep your workout on track with women&apos;s sneakers that support focused training with a supportive fit and a cushioned midsole. Designed for performance and comfort, our women&apos;s workout clothes and shoes support athletes and training at every level. Experience adidas technologies that support cool, dry comfort through intense workouts. Put your fitness first with adidas women&apos;s workout shoes and running clothes that breathe, manage sweat and help you realize your fitness goals.
+            {t?.descriptions?.womens?.paragraph1 || "Look great. Feel great. Perform great. Keep your workout on track with women&apos;s sneakers that support focused training with a supportive fit and a cushioned midsole. Designed for performance and comfort, our women&apos;s workout clothes and shoes support athletes and training at every level. Experience adidas technologies that support cool, dry comfort through intense workouts. Put your fitness first with adidas women&apos;s workout shoes and running clothes that breathe, manage sweat and help you realize your fitness goals."}
           </p>
         </div>
         </div>
@@ -135,7 +137,7 @@ export default function WomenPage() {
       <HistoryView
         title={
           <>
-            RECENTLY VIEWED ITEMS
+            {t?.recentlyViewed || "RECENTLY VIEWED ITEMS"}
           </>
         }
         showIndicatorsInProductCarousel={true}

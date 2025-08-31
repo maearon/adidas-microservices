@@ -1,7 +1,9 @@
 // components/store/StoreList.tsx
+"use client"
 
 import { Store } from "@/types/store"
 import { MapPin } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 // import Image from "next/image"
 
 export default function StoreList({
@@ -13,6 +15,7 @@ export default function StoreList({
   onSelect: (s: Store) => void
   selectedId: string
 }) {
+  const t = useTranslations("stores")
   return (
     <div className="space-y-2">
       {stores.map((store) => {
@@ -49,13 +52,13 @@ export default function StoreList({
               className="inline-flex items-center border px-4 py-2 rounded hover:bg-gray-100 transition text-sm"
             >
               <MapPin className="h-5 w-5 mr-2 text-red-600" />
-              Directions
+              {t?.directions || "Directions"}
             </a>
           </div>
 
           {/* Address label */}
           <p className="text-sm text-muted-foreground">{store.address}</p>
-          <p className="text-xs text-red-500">Open Closes {store.hours['Sunday'].split('-')[1]}</p>
+          <p className="text-xs text-red-500">{t?.openCloses || "Open Closes"} {store.hours['Sunday'].split('-')[1]}</p>
           <p className="text-sm text-blue-600 underline">{store.phone}</p>
         </div>
          )

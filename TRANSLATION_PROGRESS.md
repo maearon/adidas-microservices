@@ -11,6 +11,9 @@
 - ✅ `mega-menu.json` (tiếng Anh và tiếng Việt)
 - ✅ `product-list.json` (tiếng Anh và tiếng Việt)
 - ✅ `filter.json` (tiếng Anh và tiếng Việt)
+- ✅ `product-detail.json` (tiếng Anh và tiếng Việt)
+- ✅ `category-pages.json` (tiếng Anh và tiếng Việt)
+- ✅ `stores.json` (tiếng Anh và tiếng Việt)
 - ✅ `footer.json` đã được cập nhật với các key mới
 
 ### 3. Components Đã được Dịch thuật
@@ -22,7 +25,15 @@
 - ✅ `CategoryPageClient.tsx` - Sử dụng `productList` namespace
 - ✅ `ProductDetailPageClient.tsx` - Sử dụng `productDetail` namespace
 
-### 4. Data Mega Menu
+### 4. Trang Category (Men, Women, Kids, Stores)
+- ✅ `men/page.tsx` - Sử dụng `categoryPages` namespace
+- ✅ `women/page.tsx` - Sử dụng `categoryPages` namespace  
+- ✅ `kids/page.tsx` - Sử dụng `categoryPages` namespace
+- ✅ `stores/page.tsx` - Sử dụng `stores` namespace
+- ✅ `StoreDetail.tsx` - Sử dụng `stores` namespace
+- ✅ `StoreList.tsx` - Sử dụng `stores` namespace
+
+### 5. Data Mega Menu
 - ✅ `men-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
 - ✅ `women-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
 - ✅ `kids.mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
@@ -79,6 +90,8 @@ export const locales = {
     productList: productListEn,  // ✅ Mới
     filter: filterEn,            // ✅ Mới
     productDetail: productDetailEn, // ✅ Mới
+    categoryPages: categoryPagesEn, // ✅ Mới
+    stores: storesEn,            // ✅ Mới
   },
   "vi_VN": {
     // ... tương tự với tiếng Việt

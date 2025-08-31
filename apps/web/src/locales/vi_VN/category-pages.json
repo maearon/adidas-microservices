@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "QUÁ KHỨ, HIỆN TẠI, TƯƠNG LAI",
+    "description": "Khám phá Superstar, giờ đây được cập nhật cho thế hệ tiếp theo.",
+    "shopNow": "MUA NGAY"
+  },
+  "categoryTiles": {
+    "sneakers": "GIÀY THỂ THAO",
+    "tops": "ÁO",
+    "hoodiesSweatshirts": "ÁO HOODIE & ÁO THUN",
+    "pants": "QUẦN",
+    "pantsTights": "QUẦN & QUẦN BÓ",
+    "matchingSets": "BỘ ĐỒ PHỐI",
+    "youthTeens": "THANH THIẾU NIÊN",
+    "children": "TRẺ EM",
+    "infantsToddlers": "TRẺ SƠ SINH & TRẺ MỚI BIẾT ĐI",
+    "allKids": "TẤT CẢ TRẺ EM"
+  },
+  "promoTiles": {
+    "adizeroEvoSl": {
+      "title": "ADIZERO EVO SL",
+      "description": "Cảm nhận sự nhanh nhẹn. Trong mọi khía cạnh của cuộc sống."
+    },
+    "campus": {
+      "title": "CAMPUS",
+      "description": "Phong cách đường phố cổ điển để giữ bạn di chuyển một cách thanh lịch."
+    },
+    "realMadrid": {
+      "title": "ÁO ĐẤU REAL MADRID 25/26 SÂN NHÀ",
+      "description": "Mang sân vận động Bernabéu đến với họ."
+    },
+    "dropset3": {
+      "title": "DROPSET 3",
+      "description": "Bắt nguồn từ sức mạnh."
+    },
+    "newArrivals": {
+      "title": "HÀNG MỚI VỀ",
+      "description": ""
+    },
+    "lifestyle": {
+      "title": "PHONG CÁCH SỐNG",
+      "description": ""
+    },
+    "shoes": {
+      "title": "GIÀY",
+      "description": ""
+    },
+    "familyMatching": {
+      "title": "ĐỒ PHỐI GIA ĐÌNH",
+      "description": ""
+    }
+  },
+  "kidsHero": {
+    "title": "CHÚNG TA ĐÃ TRỞ LẠI",
+    "description": "Chuẩn bị trang phục tựu trường năm nay với bộ đồ thể thao, giày thể thao và nhiều hơn nữa.",
+    "shopNow": "MUA NGAY"
+  },
+  "topPicks": "LỰA CHỌN HÀNG ĐẦU DÀNH CHO BẠN",
+  "descriptions": {
+    "mens": {
+      "title": "GIÀY THỂ THAO VÀ TRANG PHỤC TẬP LUYỆN NAM",
+      "paragraph1": "Tham vọng, dễ dàng và sáng tạo. Phong cách casual, tự hào đường phố và thể hiện tốt nhất trong giày và trang phục nam hỗ trợ đam mê và định nghĩa phong cách của bạn. Dù bạn đang tập luyện cho marathon, chơi bóng rổ pickup hay chỉ đi chơi với bạn bè, quần áo và giày nam adidas được thiết kế để giữ bạn thoải mái, để bạn cảm thấy tự tin và sẵn sàng đối mặt với mọi thứ đến.",
+      "paragraph2": "adidas ở đây, dù bạn cần đội nhóm, với trang phục tập luyện và giày thể thao nam được xây dựng để bền lâu và thiết kế để thực hiện. Từ công nghệ adidas Boost trả lại năng lượng với mỗi bước chân, đến trang phục thể thao vừa vặn và cảm giác tuyệt vời như vẻ ngoài. Trải nghiệm sự khác biệt của adidas."
+    },
+    "womens": {
+      "title": "Giày Thể Thao và Trang Phục Tập Luyện Nữ",
+      "paragraph1": "Trông đẹp. Cảm giác tuyệt vời. Thực hiện xuất sắc. Giữ buổi tập luyện của bạn theo đúng hướng với giày thể thao nữ hỗ trợ tập luyện tập trung với độ vừa vặn hỗ trợ và đế giữa có đệm. Được thiết kế cho hiệu suất và sự thoải mái, trang phục và giày tập luyện nữ của chúng tôi hỗ trợ vận động viên và tập luyện ở mọi cấp độ. Trải nghiệm công nghệ adidas hỗ trợ sự thoải mái mát mẻ, khô ráo qua các buổi tập luyện căng thẳng. Đặt thể dục lên hàng đầu với giày tập luyện và quần áo chạy nữ adidas thở được, quản lý mồ hôi và giúp bạn nhận ra mục tiêu thể dục."
+    },
+    "kids": {
+      "title": "Giày và Trang Phục Thể Thao Trẻ Em",
+      "paragraph1": "Những ngôi sao thể thao đầy khát vọng và trẻ em bận rộn xứng đáng có những gì tốt nhất. Khám phá giày thể thao và trang phục thể thao trẻ em cho các cô gái và chàng trai năng động. Thực hiện ước mơ thể thao của họ với trang phục thể thao và đồ khởi động phù hợp vừa vặn và cảm giác tuyệt vời từ lớp học đến sân chơi, phòng gym và nhà. Tận hưởng lựa chọn tốt nhất của quần áo và giày thể thao trẻ em thoải mái để giữ vận động viên trẻ của bạn hào hứng tập thể dục và chơi tốt nhất. Khám phá xu hướng mới nhất và phong cách di sản adidas trong quần áo thể thao, giày thể thao, giày đinh và phụ kiện trẻ em."
+    }
+  },
+  "recentlyViewed": "CÁC MỤC ĐÃ XEM GẦN ĐÂY"
+}

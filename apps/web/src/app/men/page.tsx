@@ -9,8 +9,10 @@ import PageFooter from "@/components/page-footer"
 import TileCard from "@/components/tile-card"
 import PromoCarousel, { Slide } from "@/components/promo-carousel"
 import { newArrivalProducts } from "@/data/fake-new-arrival-products"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function MenPage() {
+  const t = useTranslations("categoryPages")
   const [newArrivalProductsTab, setNewArrivalProductsTab] = useState<NewArrivalProduct[]>([])
   
   useEffect(() => {
@@ -22,34 +24,34 @@ export default function MenPage() {
   }, [])
 
   const categoryTiles = [
-    { title: "SNEAKERS", image: "/assets/men/handball-spezial.jpg?height=200&width=300", href: "/men-shoes" },
-    { title: "TOPS", image: "/assets/men/real-madrid-25-26-home-authentic-jersey.jpg?height=200&width=300", href: "/men-tops" },
-    { title: "HOODIES & SWEATSHIRTS", image: "/assets/men/adicolor-classics-trefoil-hoodie.jpg?height=200&width=300", href: "/men-hoodies" },
-    { title: "PANTS", image: "/assets/men/zip-off-cargo-pants.jpg?height=200&width=300", href: "/men-pants" },
+    { title: t?.categoryTiles?.sneakers || "SNEAKERS", image: "/assets/men/handball-spezial.jpg?height=200&width=300", href: "/men-shoes" },
+    { title: t?.categoryTiles?.tops || "TOPS", image: "/assets/men/real-madrid-25-26-home-authentic-jersey.jpg?height=200&width=300", href: "/men-tops" },
+    { title: t?.categoryTiles?.hoodiesSweatshirts || "HOODIES & SWEATSHIRTS", image: "/assets/men/adicolor-classics-trefoil-hoodie.jpg?height=200&width=300", href: "/men-hoodies" },
+    { title: t?.categoryTiles?.pants || "PANTS", image: "/assets/men/zip-off-cargo-pants.jpg?height=200&width=300", href: "/men-pants" },
   ]
 
   const promoTiles: Slide[] = [
     {
-      title: "ADIZERO EVO SL",
-      description: "Feel fast. In all aspects of life.",
+      title: t?.promoTiles?.adizeroEvoSl?.title || "ADIZERO EVO SL",
+      description: t?.promoTiles?.adizeroEvoSl?.description || "Feel fast. In all aspects of life.",
       image: "/assets/men/running_fw25_adizero_m_crd_launch_d_66c8b9a7e7.jpeg",
       href: "/products/adizero-evo-sl",
     },
     {
-      title: "CAMPUS",
-      description: "Street classic to keep you moving in style.",
+      title: t?.promoTiles?.campus?.title || "CAMPUS",
+      description: t?.promoTiles?.campus?.description || "Street classic to keep you moving in style.",
       image: "/assets/men/global_franchise_toolkit_campus_q3_originals_fw25_launch_navigation_card_teaser_1_hp_glp_d_878717000e.jpg",
       href: "/products/campus",
     },
     {
-      title: "REAL MADRID 25/26 HOME JERSEY",
-      description: "Bring the Bernabéu Stadium to them.",
+      title: t?.promoTiles?.realMadrid?.title || "REAL MADRID 25/26 HOME JERSEY",
+      description: t?.promoTiles?.realMadrid?.description || "Bring the Bernabéu Stadium to them.",
       image: "/assets/men/global_aclubs_away_realmadrid_football_fw25_launch_teaser_d_94d0063c86.jpg",
       href: "/products/real-madrid-25-26",
     },
     {
-      title: "DROPSET 3",
-      description: "Rooted in Strength.",
+      title: t?.promoTiles?.dropset3?.title || "DROPSET 3",
+      description: t?.promoTiles?.dropset3?.description || "Rooted in Strength.",
       image: "/assets/men/global_dropset_training_fw25_launch_mglp_navigation_card_teaser_2_d_13e1e2292e.jpg",
       href: "/products/dropset-3",
     },
@@ -62,12 +64,12 @@ export default function MenPage() {
       <HeroBanner
         backgroundClassName="bg-hero-men"
         content={{
-          title: "PAST, PRESENT, FUTURE",
-          description: "Explore the Superstar, now updated for the next generation.",
+          title: t?.hero?.title || "PAST, PRESENT, FUTURE",
+          description: t?.hero?.description || "Explore the Superstar, now updated for the next generation.",
           buttons: [
             { 
               href: "/men-superstar", 
-              buttonLabel: "SHOP NOW",
+              buttonLabel: t?.hero?.shopNow || "SHOP NOW",
               border: false,
               shadow: true,
             }
@@ -111,7 +113,7 @@ export default function MenPage() {
       />
 
       <section className="container mx-auto px-2">
-        <h2 className="text-xl font-bold mb-4">TOP PICKS FOR YOU</h2>
+        <h2 className="text-xl font-bold mb-4">{t?.topPicks || "TOP PICKS FOR YOU"}</h2>
 
         <ProductCarousel
           products={newArrivalProductsTab.map(p => p.product) as Product[]}
@@ -122,19 +124,14 @@ export default function MenPage() {
       <section className="container mx-auto px-2 py-8 text-center">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-          MEN&apos;S SNEAKERS AND WORKOUT CLOTHES
+          {t?.descriptions?.mens?.title || "MEN&apos;S SNEAKERS AND WORKOUT CLOTHES"}
         </h2>
         <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
             <p>
-            Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men&apos;s shoes and
-            apparel that support your passion and define your style. Whether you&apos;re training for a marathon, playing
-            pickup basketball or just hanging out with friends, adidas men&apos;s clothing and shoes are designed to keep you
-            comfortable, so you feel confident and ready to take on whatever comes your way.
+            {t?.descriptions?.mens?.paragraph1 || "Ambitious, effortless and creative. Casual fits, street-proud and perform your best in men&apos;s shoes and apparel that support your passion and define your style. Whether you&apos;re training for a marathon, playing pickup basketball or just hanging out with friends, adidas men&apos;s clothing and shoes are designed to keep you comfortable, so you feel confident and ready to take on whatever comes your way."}
           </p>
           <p>
-            adidas is here, whether you need team, with men&apos;s workout clothes and sneakers that are built to last and
-            designed to perform. From our adidas Boost technology that returns energy with every step, to our activewear
-            that fits and feels as great as it looks. Experience the adidas difference.
+            {t?.descriptions?.mens?.paragraph2 || "adidas is here, whether you need team, with men&apos;s workout clothes and sneakers that are built to last and designed to perform. From our adidas Boost technology that returns energy with every step, to our activewear that fits and feels as great as it looks. Experience the adidas difference."}
           </p>
         </div>
         </div>
@@ -143,7 +140,7 @@ export default function MenPage() {
       <HistoryView
         title={
           <>
-            RECENTLY VIEWED ITEMS
+            {t?.recentlyViewed || "RECENTLY VIEWED ITEMS"}
           </>
         }
         showIndicatorsInProductCarousel={true}
