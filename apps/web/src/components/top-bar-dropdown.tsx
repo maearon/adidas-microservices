@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react"
 import { useEffect } from "react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface TopBarDropdownProps {
   isOpen: boolean
@@ -9,6 +10,8 @@ interface TopBarDropdownProps {
 }
 
 export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps) {
+  const t = useTranslations("topbar")
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
@@ -60,23 +63,27 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-6xl mx-auto">
               {/* adiClub Section */}
               <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">FREE STANDARD SHIPPING WITH ADICLUB</h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
+                  {t?.freeStandardShippingTitle || "FREE STANDARD SHIPPING WITH ADICLUB"}
+                </h2>
                 <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
-                  Sign up for adiClub to enjoy free standard shipping and earn points on every order.
+                  {t?.freeStandardShippingDescription || "Sign up for adiClub to enjoy free standard shipping and earn points on every order."}
                 </p>
                 <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
-                  JOIN ADICLUB FOR FREE
+                  {t?.joinAdiClubFree || "JOIN ADICLUB FOR FREE"}
                 </button>
               </div>
 
               {/* Prime Section */}
               <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">FAST, FREE DELIVERY WITH PRIME</h2>
+                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
+                  {t?.fastFreeDeliveryTitle || "FAST, FREE DELIVERY WITH PRIME"}
+                </h2>
                 <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
-                  Get fast, free delivery on eligible items with Prime.
+                  {t?.fastFreeDeliveryDescription || "Get fast, free delivery on eligible items with Prime."}
                 </p>
                 <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
-                  FAST, FREE PRIME DELIVERY
+                  {t?.fastFreePrimeDelivery || "FAST, FREE PRIME DELIVERY"}
                 </button>
               </div>
             </div>

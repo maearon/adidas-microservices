@@ -6,6 +6,7 @@ import { SearchIcon, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import SearchAutocomplete from "./SearchAutocomplete"
 import useDebounce from "@/hooks/useDebounce"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function SearchField() {
   const pathname = usePathname()
@@ -13,6 +14,7 @@ export default function SearchField() {
   const router = useRouter()
   const [searchText, setSearchText] = useState("")
   const debouncedSearchText = useDebounce(searchText, 300);
+  const t = useTranslations("common")
 
   // ✅ Clear input nếu đang ở /search
   // Sync input với param q khi lịch sử thay đổi hoặc mount mới
@@ -47,7 +49,7 @@ export default function SearchField() {
           name="q"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          placeholder="Search"
+          placeholder={t?.searchPlaceholder || "Search"}
           className="
             border-none
             pe-10 

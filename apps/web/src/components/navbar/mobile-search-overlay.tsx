@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface MobileSearchOverlayProps {
   isOpen: boolean
@@ -31,6 +32,7 @@ export default function MobileSearchOverlay({
   onSearch,
 }: MobileSearchOverlayProps) {
   const [filteredSuggestions, setFilteredSuggestions] = useState(searchSuggestions)
+  const t = useTranslations("common")
 
   useEffect(() => {
     const q = searchQuery.trim()
@@ -77,13 +79,13 @@ export default function MobileSearchOverlay({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search"
+              placeholder={t?.searchPlaceholder || "Search"}
               className="flex-1 text-lg outline-hidden"
               autoFocus
             />
             {searchQuery && (
               <button type="button" onClick={handleClear} className="ml-2 text-gray-500 text-base">
-                clear
+                {t?.clear || "clear"}
               </button>
             )}
           </form>
@@ -104,7 +106,7 @@ export default function MobileSearchOverlay({
 
           {searchQuery && filteredSuggestions.length > 0 && (
             <button onClick={() => handleSuggestionClick(searchQuery)} className="mt-4 text-blue-600 text-base">
-              See all &ldquo;{searchQuery}&rdquo;
+              {t?.seeAll || "See all"} &ldquo;{searchQuery}&rdquo;
             </button>
           )}
         </div>

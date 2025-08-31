@@ -2,6 +2,7 @@
 
 import { formatPrice } from "@/lib/utils"; 
 import { useAppSelector } from "@/store/hooks";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface ProductPriceProps {
   price?: number | string | null;          // giá đang bán (luôn là raw USD)
@@ -16,6 +17,7 @@ export default function ProductPrice({
   const compareNum = compareAtPrice ? Number(compareAtPrice) : null;
   const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
   const userLocale = navigator.language;
+  const t = useTranslations("common");
   console.log("User locale:", userLocale); 
   // ví dụ: "en-US", "vi-VN"
 
@@ -45,7 +47,7 @@ export default function ProductPrice({
           <span className="line-through mr-1">
             {formatPrice(compareNum, locale)}
           </span>
-          <span className="font-normal">Original price</span>
+          <span className="font-normal">{t?.originalPrice || "Original price"}</span>
           <span className="text-[#E32B2B] font-thin ml-1">
             -{discountPercent}%
           </span>

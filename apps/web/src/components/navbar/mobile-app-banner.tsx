@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react"
 import Image from "next/image"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface MobileAppBannerProps {
   isOpen: boolean
@@ -9,6 +10,8 @@ interface MobileAppBannerProps {
 }
 
 export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProps) {
+  const t = useTranslations("mobile")
+
   if (!isOpen) return null
 
   return (
@@ -32,7 +35,7 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
 
           {/* App Info */}
           <div className="flex-1">
-            <div className="font-semibold text-base">ADIDAS - SPORTS & STYLE</div>
+            <div className="font-semibold text-base">{t?.adidasSportsStyle || "ADIDAS - SPORTS & STYLE"}</div>
             <div className="flex items-center space-x-1 text-xs text-gray-600 dark:text-white">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -47,7 +50,9 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
         </div>
 
         {/* Download Button */}
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-base font-semibold">DOWNLOAD</button>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-base font-semibold">
+          {t?.download || "DOWNLOAD"}
+        </button>
       </div>
     </div>
   )

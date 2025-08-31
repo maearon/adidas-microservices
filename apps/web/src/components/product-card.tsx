@@ -15,6 +15,7 @@ import { slugify } from "@/utils/slugify";
 import type { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import ProductPrice from "./ProductCardPrice";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface ProductCardProps {
   slug?: string;
@@ -31,6 +32,7 @@ export default function ProductCard({
   const [isMobile, setIsMobile] = useState(false);
   const [variantHeight, setVariantHeight] = useState(0);
   const variantRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("common");
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -222,7 +224,7 @@ export default function ProductCard({
             )}
             {hasVariants && (
               <p className="text-gray-600 dark:text-white text-sm">
-                {product.variants.length} colors
+                {product.variants.length} {t?.colors || "colors"}
               </p>
             )}
             {(product?.tags?.length || 0) > 0 && (
@@ -235,7 +237,7 @@ export default function ProductCard({
                 className="w-full bg-black text-white hover:bg-gray-800 mt-3"
                 onClick={handleAddToBag}
               >
-                ADD TO BAG
+                {t?.addToBag || "ADD TO BAG"}
               </Button>
             )}
             </div>

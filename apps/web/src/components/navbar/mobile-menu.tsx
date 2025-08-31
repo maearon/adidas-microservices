@@ -23,6 +23,7 @@ import {
 } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
 import { colorMappingClass, colorMappingSymbol, mainMenuData } from "@/utils/menu-utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 // ======================
 // Utils type guards
@@ -40,17 +41,45 @@ function isMenuLeaf(item: MenuItem): item is MenuLeaf {
 // ======================
 // Helpers
 // ======================
-function buildMainCategories(): MenuCategory[] {
-  return Object.keys(mainMenuData).map((key) => ({
-    title: key,
-    titleHref:
-      key === "BACK TO SCHOOL🔥"
-        ? "/back_to_school"
-        : key === "NEW & TRENDING"
-        ? "/trending"
-        : `/${key.toLowerCase()}`,
-    items: [],
-  }))
+function buildMainCategories(t: any): MenuCategory[] {
+  return [
+    {
+      title: t?.men || "MEN",
+      titleHref: "/men",
+      items: [],
+      originalKey: "MEN"
+    },
+    {
+      title: t?.women || "WOMEN", 
+      titleHref: "/women",
+      items: [],
+      originalKey: "WOMEN"
+    },
+    {
+      title: t?.kids || "KIDS",
+      titleHref: "/kids", 
+      items: [],
+      originalKey: "KIDS"
+    },
+    {
+      title: t?.backToSchool || "BACK TO SCHOOL🔥",
+      titleHref: "/back_to_school",
+      items: [],
+      originalKey: "BACK TO SCHOOL🔥"
+    },
+    {
+      title: t?.sale || "SALE",
+      titleHref: "/sale",
+      items: [],
+      originalKey: "SALE"  
+    },
+    {
+      title: t?.newTrending || "NEW & TRENDING",
+      titleHref: "/trending",
+      items: [],
+      originalKey: "NEW & TRENDING"
+    }
+  ]
 }
 
 const USE_EMOJI_SWATCH = true // config
@@ -90,15 +119,17 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const dispatch = useAppDispatch()
   const locale = useAppSelector((s) => s.locale.locale) || "en_US"
   const languageLabel = localeDisplayMap[locale]
+  const t = useTranslations("navigation")
+  const commonT = useTranslations("common")
 
   const additionalMenuItems = [
-    { name: "My Account", href: "/my-account" },
-    { name: "Exchanges & Returns", href: "/returns" },
-    { name: "Order Tracker", href: "/orders" },
-    { name: "adiClub", href: "/adiclub" },
-    { name: "Gift Cards", href: "/gift-cards" },
-    { name: "Store Locator", href: "/stores" },
-    { name: "Mobile Apps", href: "/mobile-apps" },
+    { name: t?.myAccount || "My Account", href: "/my-account" },
+    { name: t?.exchangesReturns || "Exchanges & Returns", href: "/returns" },
+    { name: t?.orderTracker || "Order Tracker", href: "/orders" },
+    { name: t?.adiClub || "adiClub", href: "/adiclub" },
+    { name: t?.giftCards || "Gift Cards", href: "/gift-cards" },
+    { name: t?.storeLocator || "Store Locator", href: "/stores" },
+    { name: t?.mobileApps || "Mobile Apps", href: "/mobile-apps" },
     {
       name: languageLabel,
       hasSubmenu: true,
@@ -125,13 +156,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   // Init menu
   useEffect(() => {
     if (isOpen) {
-      setCurrentLevel({ title: "MENU", items: buildMainCategories() })
+      setCurrentLevel({ title: t?.menu || "MENU", items: buildMainCategories(t) })
       setNavigationHistory([])
     }
-  }, [isOpen])
+  }, [isOpen, t])
 
   const handleCategoryClick = (category: MenuCategory) => {
-    const menuData = mainMenuData[category.title]
+    const originalKey = (category as any).originalKey || category.title
+    const menuData = mainMenuData[originalKey]
     if (menuData?.length > 0) {
       pushToHistory(currentLevel)
       setCurrentLevel({
@@ -178,12 +210,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   }
 
   const handleClose = () => {
-    setCurrentLevel({ title: "MENU", items: [] })
+    setCurrentLevel({ title: t?.menu || "MENU", items: [] })
     setNavigationHistory([])
     onClose()
   }
 
-  const isMainMenu = currentLevel.title === "MENU"
+  const isMainMenu = currentLevel.title === (t?.menu || "MENU")
   if (!isOpen) return null
 
   return (
@@ -215,7 +247,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             {isMainMenu ? (
               <Link
                 href="/"
-                aria-label="Home"
+                aria-label={commonT?.home || "Home"}
                 className="pointer-events-auto"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -244,7 +276,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           {isMainMenu ? (
             <div>
               {/* Main Categories */}
-              {buildMainCategories().map((cat) => (
+              {buildMainCategories(t).map((cat) => (
                 <button
                   key={cat.title}
                   onClick={() => handleCategoryClick(cat)}
@@ -253,7 +285,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <span
                     className={cn(
                       "text-lg uppercase",
-                      ["MEN", "WOMEN", "KIDS"].includes(cat.title)
+                      ["MEN", "WOMEN", "KIDS"].includes((cat as any).originalKey)
                         ? "font-bold"
                         : "font-medium"
                     )}

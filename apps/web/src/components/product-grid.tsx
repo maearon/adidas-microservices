@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BaseButton } from "@/components/ui/base-button"
 import ProductCard from "@/components/product-card"
 import type { Product } from "@/types/product" // ✅ dùng chung type đã khai báo
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ProductGridProps {
   products: Product[]
@@ -27,6 +28,9 @@ export default function ProductGrid({
   slug,
   // columns = 4,
 }: ProductGridProps) {
+  const t = useTranslations("product")
+  const commonT = useTranslations("common")
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -44,8 +48,8 @@ export default function ProductGrid({
   if (products.length === 0) {
     return (
       <div className="text-center py-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-        <p className="text-gray-500">Try adjusting your filters or search terms</p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">{t?.noProductsFound || "No products found"}</h3>
+        <p className="text-gray-500">{t?.tryAdjustingFilters || "Try adjusting your filters or search terms"}</p>
       </div>
     )
   }
@@ -78,12 +82,12 @@ export default function ProductGrid({
             className="flex items-center gap-2"
           >
             <ChevronLeft className="w-4 h-4" />
-            Previous
+            {commonT?.previous || "Previous"}
           </BaseButton>
 
           <div className="flex items-center gap-2 text-base text-gray-600 dark:text-white">
-            Page <strong>{pagination.current_page}</strong> of {pagination.total_pages}
-            <span className="text-gray-400">({pagination.total_count} items)</span>
+            {t?.page || "Page"} <strong>{pagination.current_page}</strong> {t?.of || "of"} {pagination.total_pages}
+            <span className="text-gray-400">({pagination.total_count} {t?.items || "items"})</span>
           </div>
 
           <BaseButton
@@ -92,7 +96,7 @@ export default function ProductGrid({
             disabled={pagination.current_page >= pagination.total_pages}
             className="flex items-center gap-2"
           >
-            Next
+            {commonT?.next || "Next"}
             <ChevronRight className="w-4 h-4" />
           </BaseButton>
         </div>

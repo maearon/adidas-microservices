@@ -7,18 +7,13 @@ import { useProducts } from "@/api/hooks/useProducts"
 import Loading from "@/components/loading"
 import { mapProductDataToSimpleProduct } from "@/lib/mappers/product-data-to-simple-product"
 import { parseSlugToFilters } from "@/utils/slug-parser"
+import { useTranslations } from "@/hooks/useTranslations"
 
 type ProductTabsProps = {
   initialProductsByTab?: {
     [key: string]: Product[]
   }
 }
-
-const tabs = [
-  { id: "new-arrivals", label: "New Arrivals", endpoint: "new-arrivals" },
-  { id: "best-sellers", label: "Best Sellers", endpoint: "best-sellers" },
-  { id: "new-to-sale", label: "New to Sale", endpoint: "sale" },
-]
 
 // Build filters for each tab
 function buildFiltersFromTab(tabId: string) {
@@ -61,6 +56,13 @@ function buildFiltersFromTab(tabId: string) {
 
 export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("new-arrivals")
+  const t = useTranslations("common")
+
+  const tabs = [
+    { id: "new-arrivals", label: t?.newArrivals || "New Arrivals", endpoint: "new-arrivals" },
+    { id: "best-sellers", label: t?.bestSellers || "Best Sellers", endpoint: "best-sellers" },
+    { id: "new-to-sale", label: t?.newToSale || "New to Sale", endpoint: "sale" },
+  ]
 
   // filters cho tab hiện tại
   const filters = useMemo(() => buildFiltersFromTab(activeTab), [activeTab])
@@ -107,7 +109,7 @@ export default function ProductTabs({ initialProductsByTab }: ProductTabsProps) 
             if (viewMoreHref) window.location.href = `/${viewMoreHref}`
           }}
         >
-          VIEW ALL
+          {t?.viewAll || "VIEW ALL"}
         </button>
       </div>
 

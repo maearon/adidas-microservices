@@ -8,6 +8,7 @@ import { countryDisplayMap, localeOptions, SupportedLocale } from "@/lib/constan
 import { setLocale } from "@/store/localeSlice"
 import Image from "next/image"
 import { X } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -18,6 +19,7 @@ interface LocationModalProps {
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
   const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("en_US");
+  const t = useTranslations("location")
 
   // const locations = [
   //   {
@@ -73,8 +75,12 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
         <div className="relative p-8">
           {/* Header */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-2">PLEASE CHOOSE YOUR</h2>
-            <h2 className="text-2xl font-bold text-black dark:text-white">DELIVERY LOCATION</h2>
+            <h2 className="text-2xl font-bold text-black dark:text-white mb-2">
+              {t?.pleaseChooseYour || "PLEASE CHOOSE YOUR"}
+            </h2>
+            <h2 className="text-2xl font-bold text-black dark:text-white">
+              {t?.deliveryLocation || "DELIVERY LOCATION"}
+            </h2>
           </div>
 
           {/* Location options */}
@@ -114,7 +120,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
             onClick={handleViewAllLocations}
             className="text-base font-medium text-black underline hover:no-underline mb-8 block"
           >
-            VIEW ALL AVAILABLE LOCATIONS
+            {t?.viewAllAvailableLocations || "VIEW ALL AVAILABLE LOCATIONS"}
           </button>
 
           {/* GO button */}
@@ -127,7 +133,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
             theme="black"
             shadow
           >
-            GO
+            {t?.go || "GO"}
           </Button>
         </div>
       </DialogContent>

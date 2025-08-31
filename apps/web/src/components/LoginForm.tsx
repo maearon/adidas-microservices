@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
 import Alert from "@/components/Alert";
+import { useTranslations } from "@/hooks/useTranslations";
 
 type LoginFormProps = {
   email: string;
@@ -32,6 +33,8 @@ export default function LoginForm() {
     },
   });
 
+  const t = useTranslations("auth");
+
   return (
     <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
       <Alert />
@@ -44,15 +47,15 @@ export default function LoginForm() {
             htmlFor="email"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            Email address
+            {t?.emailAddress || "Email address"}
           </label>
           <div className="mt-2">
             <input
               {...register("email", {
-                required: "Email is required",
+                required: t?.emailRequired || "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
+                  message: t?.invalidEmail || "Invalid email address",
                 },
               })}
               id="email"
@@ -71,12 +74,12 @@ export default function LoginForm() {
               htmlFor="password"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Password
+              {t?.password || "Password"}
             </label>
           </div>
           <div className="mt-2">
             <input
-              {...register("password", { required: "Password is required" })}
+              {...register("password", { required: t?.passwordRequired || "Password is required" })}
               id="password"
               name="password"
               type="password"
@@ -93,7 +96,7 @@ export default function LoginForm() {
             type="submit"
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Sign in
+            {t?.signIn || "Sign in"}
           </button>
         </div>
       </form>

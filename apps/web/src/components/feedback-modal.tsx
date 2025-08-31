@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/hooks/useTranslations"
 // import { X } from "lucide-react"
 
 interface FeedbackModalProps {
@@ -13,6 +14,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   const [rating, setRating] = useState<number | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const t = useTranslations("feedback")
 
   const handleSubmit = async () => {
     if (rating === null) return
@@ -47,8 +49,8 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-black mb-2">Thank You!</h2>
-            <p className="text-gray-600 dark:text-white">Your feedback has been submitted successfully.</p>
+            <h2 className="text-xl font-bold text-black mb-2">{t?.thankYou || "Thank You!"}</h2>
+            <p className="text-gray-600 dark:text-white">{t?.feedbackSubmitted || "Your feedback has been submitted successfully."}</p>
           </div>
         </DialogContent>
       </Dialog>
@@ -77,29 +79,29 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
             {/* Header */}
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-black mb-4">YOUR EXPERIENCE</h2>
+              <h2 className="text-2xl font-bold text-black mb-4">{t?.yourExperience || "YOUR EXPERIENCE"}</h2>
 
               <div className="mb-6">
-                <button className="text-black underline hover:no-underline transition-all">GET HELP</button>
+                <button className="text-black underline hover:no-underline transition-all">{t?.getHelp || "GET HELP"}</button>
               </div>
 
               <p className="text-gray-800 mb-2">
-                Don&apos;t hold back. Good or bad - <strong>tell it like it is.</strong>
+                {t?.tellItLikeItIs || "Don't hold back. Good or bad - tell it like it is."}
               </p>
             </div>
 
             {/* Rating Question */}
             <div className="mb-8">
               <p className="text-gray-800 mb-4">
-                How likely are you to recommend <strong>adidas.com</strong> to a friend?{" "}
+                {t?.howLikelyRecommend || "How likely are you to recommend adidas.com to a friend?"}{" "}
                 <span className="text-red-500">*</span>
               </p>
 
               {/* Rating Scale */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-base text-gray-600 dark:text-white">Very unlikely</span>
-                  <span className="text-base text-gray-600 dark:text-white">Very likely</span>
+                  <span className="text-base text-gray-600 dark:text-white">{t?.veryUnlikely || "Very unlikely"}</span>
+                  <span className="text-base text-gray-600 dark:text-white">{t?.veryLikely || "Very likely"}</span>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -125,20 +127,20 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                 disabled={rating === null || isSubmitting}
                 className="bg-black text-white hover:bg-gray-800 px-8 py-3 font-medium disabled:opacity-50"
               >
-                {isSubmitting ? "SUBMITTING..." : "NEXT →"}
+                {isSubmitting ? (t?.submitting || "SUBMITTING...") : (t?.next || "NEXT →")}
               </Button>
             </div>
 
             {/* Footer */}
             <div className="mt-8 text-center">
               <p className="text-xs text-gray-500">
-                Protected by reCAPTCHA:{" "}
+                {t?.protectedByRecaptcha || "Protected by reCAPTCHA:"}{" "}
                 <a href="#" className="underline">
-                  Privacy
+                  {t?.privacy || "Privacy"}
                 </a>{" "}
                 &{" "}
                 <a href="#" className="underline">
-                  Terms
+                  {t?.terms || "Terms"}
                 </a>
               </p>
             </div>

@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ImageLightboxProps {
   images: string[]
@@ -27,6 +28,7 @@ export default function ImageLightbox({
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const t = useTranslations("product")
 
   // Reset zoom and position when image changes
   useEffect(() => {
@@ -134,6 +136,14 @@ export default function ImageLightbox({
 
   if (!isOpen) return null
 
+  const getInstructionText = () => {
+    const clickAction = zoom === 1 ? (t?.clickToZoomIn || "Click to zoom in") : (t?.clickToZoomOut || "Click to zoom out")
+    const dragAction = zoom > 1 ? ` • ${t?.dragToPan || "Drag to pan"} • ` : " • "
+    const escAction = t?.escToClose || "ESC to close"
+    
+    return `${clickAction}${dragAction}${escAction}`
+  }
+
   return (
     <div className="fixed inset-0 bg-[#ECEFF1] z-1000 flex items-center justify-center">
       {/* Close Button */}
@@ -197,7 +207,7 @@ export default function ImageLightbox({
       {/* <div className="absolute bottom-4 right-4 flex gap-2"> */}
       {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gray-100 px-4 py-2 rounded-none text-base text-background"> */}
       <div className="absolute bottom-4 left-4 bg-white text-black px-3 py-2 rounded-none text-base">
-        Click to {zoom === 1 ? "zoom in" : "zoom out"} • {zoom > 1 && "Drag to pan • "}ESC to close
+        {getInstructionText()}
       </div>
 
       {/* Image Counter */}

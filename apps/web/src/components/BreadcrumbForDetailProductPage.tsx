@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { BreadcrumbItem } from "@/types/bread-crumb"
+import { useTranslations } from "@/hooks/useTranslations"
 
 type BreadcrumbForDetailProductPageProps = {
   items: BreadcrumbItem[]
@@ -17,6 +18,7 @@ export default function BreadcrumbForDetailProductPage({
   showBackButton = true,
 }: BreadcrumbForDetailProductPageProps) {
   const router = useRouter()
+  const t = useTranslations("common")
 
   function handleBack() {
     if (window.history.length > 1) {
@@ -37,7 +39,7 @@ export default function BreadcrumbForDetailProductPage({
             className="flex items-center bg-transparent text-gray-700 px-2 py-1 hover:bg-black hover:text-white transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            <span className="underline-offset-2">Back</span>
+            <span className="underline-offset-2">{t?.back || "Back"}</span>
           </button>
         </>
       )}
@@ -47,7 +49,7 @@ export default function BreadcrumbForDetailProductPage({
         href="/"
         className="hover:bg-black hover:text-white hover:underline transition-colors px-2 py-1 rounded-none text-gray-700"
       >
-        Home
+        {t?.home || "Home"}
       </Link>
 
       {items.map((crumb, index) => (
