@@ -10,6 +10,7 @@
 ### 2. File Dịch thuật Mới
 - ✅ `mega-menu.json` (tiếng Anh và tiếng Việt)
 - ✅ `product-list.json` (tiếng Anh và tiếng Việt)
+- ✅ `filter.json` (tiếng Anh và tiếng Việt)
 - ✅ `footer.json` đã được cập nhật với các key mới
 
 ### 3. Components Đã được Dịch thuật
@@ -22,16 +23,21 @@
 
 ### 4. Data Mega Menu
 - ✅ `men-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
+- ✅ `women-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
+- ✅ `kids.mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
+- ✅ `sale-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
+- ✅ `back-to-school-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
+- ✅ `trending-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
 - ✅ Type `MenuCategory` đã được cập nhật để hỗ trợ `translationKey`
 
 ## Cần làm tiếp theo 🔄
 
 ### 1. Cập nhật Data Mega Menu còn lại
-- [ ] `women-mega-menu-data.ts` - Thêm `translationKey`
-- [ ] `kids.mega-menu-data.ts` - Thêm `translationKey`
-- [ ] `sale-mega-menu-data.ts` - Thêm `translationKey`
-- [ ] `back-to-school-mega-menu-data.ts` - Thêm `translationKey`
-- [ ] `trending-mega-menu-data.ts` - Thêm `translationKey`
+- ✅ `women-mega-menu-data.ts` - Đã thêm `translationKey`
+- ✅ `kids.mega-menu-data.ts` - Đã thêm `translationKey`
+- ✅ `sale-mega-menu-data.ts` - Đã thêm `translationKey`
+- ✅ `back-to-school-mega-menu-data.ts` - Đã thêm `translationKey`
+- ✅ `trending-mega-menu-data.ts` - Đã thêm `translationKey`
 
 ### 2. Components còn lại cần dịch thuật
 - [ ] `FilterBar.tsx` - Cần thêm namespace `filter`
@@ -67,6 +73,7 @@ export const locales = {
     footer: footerEn,
     megaMenu: megaMenuEn,        // ✅ Mới
     productList: productListEn,  // ✅ Mới
+    filter: filterEn,            // ✅ Mới
   },
   "vi_VN": {
     // ... tương tự với tiếng Việt
