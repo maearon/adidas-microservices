@@ -25,6 +25,7 @@ import { cn, formatPrice } from "@/lib/utils"
 import ProductPrice from "@/components/ProductCardPrice"
 import { addLastVisited } from "@/lib/recentlyViewed"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -36,6 +37,7 @@ interface ProductDetailPageClientProps {
 export default function ProductDetailPageClient({ params }: ProductDetailPageClientProps) {
   // const parsedParams = typeof params === 'string' ? JSON.parse(params) : params;
   const { slug, model } = params;
+  const t = useTranslations("productDetail")
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -182,13 +184,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   if (error) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
-        <h2 className="text-2xl font-semibold text-red-600 mb-2">Product not available</h2>
+        <h2 className="text-2xl font-semibold text-red-600 mb-2">{t?.productNotAvailable || "Product not available"}</h2>
         <p className="text-gray-600 dark:text-white mb-4">
-          We couldn’t load this product. Please check your connection or try again later.
+          {t?.couldNotLoadProduct || "We couldn't load this product. Please check your connection or try again later."}
         </p>
-        <BaseButton onClick={() => refetch()}>Retry</BaseButton>
+        <BaseButton onClick={() => refetch()}>{t?.retry || "Retry"}</BaseButton>
         <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-base text-gray-500">
-          ← Go Back
+          {t?.goBack || "← Go Back"}
         </BaseButton>
       </div>
     )
@@ -225,7 +227,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   onClick={() => toggleSection("reviews")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
                 >
-                  <span>Reviews ({productDetails.reviewCount})</span>
+                  <span>{t?.reviews || "Reviews"} ({productDetails.reviewCount})</span>
                   <div className="flex items-center gap-2">
                     <span className="text-sm sm:text-base font-bold">{productDetails.rating.toFixed(1)}</span>
                     <div className="flex">
@@ -270,9 +272,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       shadow={false}
                       className="bg-transparent hover:bg-gray-100"
                     >
-                      WRITE A REVIEW
+                      {t?.writeAReview || "WRITE A REVIEW"}
                     </Button>
-                    <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
+                    <p className="text-gray-600 dark:text-white">{t?.customerReviewsPlaceholder || "Customer reviews and ratings would appear here."}</p>
                   </div>
                 )}
               </div>
@@ -283,7 +285,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   onClick={() => toggleSection("description")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
                 >
-                  <span>Description</span>
+                  <span>{t?.description || "Description"}</span>
                   {expandedSections.description ? <ChevronUp /> : <ChevronDown />}
                 </button>
                 {expandedSections.description && (
@@ -299,7 +301,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   onClick={() => toggleSection("details")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
                 >
-                  <span>Details</span>
+                  <span>{t?.details || "Details"}</span>
                   {expandedSections.details ? <ChevronUp /> : <ChevronDown />}
                 </button>
                 {expandedSections.details && (
@@ -321,7 +323,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   onClick={() => toggleSection("highlights")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
                 >
-                  <span>Highlights</span>
+                  <span>{t?.highlights || "Highlights"}</span>
                   {expandedSections.highlights ? <ChevronUp /> : <ChevronDown />}
                 </button>
                 {expandedSections.highlights && (
@@ -365,10 +367,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               sizes="100vw"
             />
             <div className="z-10 p-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">F50 MESSI PRESTIGIO</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{t?.f50MessiPrestigio || "F50 MESSI PRESTIGIO"}</h2>
               <p className="text-base sm:text-lgmx-0">
-                A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant
-                icon.
+                {t?.f50MessiDescription || "A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant icon."}
               </p>
             </div>
           </div>
@@ -379,14 +380,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
           {/* Product Carousel */}
           <div className="hidden lg:block sm:mb-[80px]">
-          <ProductCarousel products={product.related_products} title="COMPLETE THE LOOK" carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
+          <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
           <div className="mb-[80px]"></div>
-          <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile minimalMobileForProductCard showIndicators />
+          <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile minimalMobileForProductCard showIndicators />
           <div className="mb-[80px]"></div>
           <HistoryView
             title={
               <>
-                RECENTLY VIEWED ITEMS
+                {t?.recentlyViewedItems || "RECENTLY VIEWED ITEMS"}
               </>
             }
             showIndicatorsInProductCarousel={false}
@@ -441,11 +442,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 />
               </div>
 
-              <p className="text-base text-black dark:text-white mb-6">Promo codes will not apply to this product.</p>
+              <p className="text-base text-black dark:text-white mb-6">{t?.promoCodesNotApply || "Promo codes will not apply to this product."}</p>
             </div>
 
             <div className="flex lg:hidden mt-[40px]">
-                <p className="text-base text-black dark:text-white">Promo codes will not apply to this product.</p>
+                <p className="text-base text-black dark:text-white">{t?.promoCodesNotApply || "Promo codes will not apply to this product."}</p>
             </div>
 
 
@@ -454,7 +455,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               {product.variants.length > 1 && (
               <>
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-base">Colors</h3>
+                <h3 className="font-bold text-base">{t?.colors || "Colors"}</h3>
               </div>
               <div
                 className="flex gap-2 mt-[10px]"
@@ -495,10 +496,10 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             {/* Sizes */}
             <div>
               <div className="flex justify-between items-center mt-[40px]">
-                <h3 className="font-bold text-base">Sizes</h3>
+                <h3 className="font-bold text-base">{t?.sizes || "Sizes"}</h3>
                 <button className="text-sm underline flex items-center text-black dark:text-white hover:opacity-80">
                   <span className="mr-1">📏</span>
-                  Size guide
+                  {t?.sizeGuide || "Size guide"}
                 </button>
               </div>
 
@@ -546,7 +547,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     <Info className="text-background w-4 h-4 mr-2" />
                   </span>
                   <span>
-                    <strong>True to size.</strong> We recommend ordering your usual size.
+                    <strong>{t?.trueToSize || "True to size."}</strong> {t?.trueToSizeText || "We recommend ordering your usual size."}
                   </span>
                 </div>
               </div>
@@ -561,7 +562,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 onClick={handleAddToBag}
                 fullWidth
               >
-                ADD TO BAG
+                {t?.addToBag || "ADD TO BAG"}
               </Button>
 
               <ButtonWish
@@ -582,7 +583,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <span className="font-medium">
                 <span className="font-bold">Klarna</span>{" "}
                 <Link href="#" className="underline">
-                  Learn more
+                  {t?.learnMore || "Learn more"}
                 </Link>
               </span>
             </div>
@@ -593,7 +594,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             <div className="flex items-center gap-3 text-gray-700 dark:text-white underline ">
               <RefreshCw className="h-5 w-5" />
               <div className="cursor-pointer hover:underline hover:bg-foreground hover:text-background">
-                <p className="font-medium">Get delivery dates</p>
+                <p className="font-medium">{t?.getDeliveryDates || "Get delivery dates"}</p>
               </div>
             </div>
 
@@ -605,7 +606,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <Truck className="h-5 w-5" />
               <div>
                 <Link href="#" className="underline">
-                <p className="text-base">Free standard shipping with adiClub</p>
+                <p className="text-base">{t?.freeStandardShipping || "Free standard shipping with adiClub"}</p>
                 </Link>
               </div>
             </div>
@@ -613,7 +614,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               <CreditCard className="h-5 w-5" />
               <div>
                 <Link href="#" className="underline">
-                <p className="text-base">Free 30 day returns</p>
+                <p className="text-base">{t?.free30DayReturns || "Free 30 day returns"}</p>
                 </Link>
               </div>
             </div>
@@ -676,9 +677,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     shadow={false}
                     className="bg-transparent border border-black dark:border-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
                   >
-                    WRITE A REVIEW
+                    {t?.writeAReview || "WRITE A REVIEW"}
                   </Button>
-                  <p className="text-gray-600 dark:text-white">Customer reviews and ratings would appear here.</p>
+                  <p className="text-gray-600 dark:text-white">{t?.customerReviewsPlaceholder || "Customer reviews and ratings would appear here."}</p>
                 </div>
               )}
             </div>
@@ -689,7 +690,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 onClick={() => toggleSection("description")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
               >
-                <span>Description</span>
+                <span>{t?.description || "Description"}</span>
                 {expandedSections.description ? <ChevronUp /> : <ChevronDown />}
               </button>
               {expandedSections.description && (
@@ -705,7 +706,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 onClick={() => toggleSection("details")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
               >
-                <span>Details</span>
+                <span>{t?.details || "Details"}</span>
                 {expandedSections.details ? <ChevronUp /> : <ChevronDown />}
               </button>
               {expandedSections.details && (
@@ -727,7 +728,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 onClick={() => toggleSection("highlights")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
               >
-                <span>Highlights</span>
+                <span>{t?.highlights || "Highlights"}</span>
                 {expandedSections.highlights ? <ChevronUp /> : <ChevronDown />}
               </button>
               {expandedSections.highlights && (
@@ -771,10 +772,9 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             sizes="100vw"
           />
           <div className="z-10 p-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">F50 MESSI PRESTIGIO</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{t?.f50MessiPrestigio || "F50 MESSI PRESTIGIO"}</h2>
             <p className="text-base sm:text-lgmx-0">
-              A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant
-              icon.
+              {t?.f50MessiDescription || "A lightweight boot with a soft touch built to match Leo's fit. Embodying the prestige in the game's dominant icon."}
             </p>
           </div>
         </div>
@@ -785,14 +785,14 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
         {/* Product Carousel */}
         <div className="block lg:hidden lg:block mb-[60px]">
-        <ProductCarousel products={product.related_products} title="COMPLETE THE LOOK" carouselModeInMobile showIndicators={false} />
+        <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile showIndicators={false} />
         <div className="mb-[60px]"></div>
-        <ProductCarousel products={product.related_products} title="YOU MAY ALSO LIKE" carouselModeInMobile showIndicators />
+        <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile showIndicators />
         <div className="mb-[60px]"></div>
         <HistoryView
           title={
             <>
-              RECENTLY VIEWED ITEMS
+              {t?.recentlyViewedItems || "RECENTLY VIEWED ITEMS"}
             </>
           }
           showIndicatorsInProductCarousel={false}

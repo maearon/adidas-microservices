@@ -35,6 +35,8 @@ import productListEn from "@/locales/en_US/product-list.json"
 import productListVi from "@/locales/vi_VN/product-list.json"
 import filterEn from "@/locales/en_US/filter.json"
 import filterVi from "@/locales/vi_VN/filter.json"
+import productDetailEn from "@/locales/en_US/product-detail.json"
+import productDetailVi from "@/locales/vi_VN/product-detail.json"
 
 export const locales = {
   "en_US": {
@@ -56,6 +58,7 @@ export const locales = {
     megaMenu: megaMenuEn,
     productList: productListEn,
     filter: filterEn,
+    productDetail: productDetailEn,
   },
   "vi_VN": {
     navbar: navbarVi,
@@ -76,6 +79,7 @@ export const locales = {
     megaMenu: megaMenuVi,
     productList: productListVi,
     filter: filterVi,
+    productDetail: productDetailVi,
   },
 } as const
 

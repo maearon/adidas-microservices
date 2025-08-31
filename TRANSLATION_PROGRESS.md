@@ -20,6 +20,7 @@
 - ✅ `ProductListHeader.tsx` - Sử dụng `productList` namespace
 - ✅ `ProductListToolbar.tsx` - Sử dụng `productList` namespace
 - ✅ `CategoryPageClient.tsx` - Sử dụng `productList` namespace
+- ✅ `ProductDetailPageClient.tsx` - Sử dụng `productDetail` namespace
 
 ### 4. Data Mega Menu
 - ✅ `men-mega-menu-data.ts` - Đã thêm `translationKey` cho tất cả items
@@ -44,6 +45,9 @@
 - [ ] `FilterChips.tsx` - Cần thêm namespace `filter`
 - [ ] `ProductListContainer.tsx` - Kiểm tra text cần dịch
 - [ ] Các component khác trong navbar và footer
+
+### 3. File Dịch thuật Mới
+- ✅ `product-detail.json` (tiếng Anh và tiếng Việt) - Đã hoàn thành
 
 ### 3. Kiểm tra và Test
 - [ ] Test chuyển đổi ngôn ngữ
@@ -74,6 +78,7 @@ export const locales = {
     megaMenu: megaMenuEn,        // ✅ Mới
     productList: productListEn,  // ✅ Mới
     filter: filterEn,            // ✅ Mới
+    productDetail: productDetailEn, // ✅ Mới
   },
   "vi_VN": {
     // ... tương tự với tiếng Việt
