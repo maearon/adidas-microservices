@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { parseSlugToFilters } from "@/utils/slug-parser"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface FilterChipsProps {
   filters: Record<string, any>
@@ -20,6 +21,8 @@ export default function FilterChips({
   className,
   slug
 }: FilterChipsProps) {
+  const t = useTranslations("filter")
+  
   // Get slug-based filters to determine which ones can be removed
   const slugFilters = parseSlugToFilters(slug)
   
@@ -63,16 +66,16 @@ export default function FilterChips({
 
   const getFilterLabel = (key: string): string => {
     const labels: Record<string, string> = {
-      gender: 'Gender',
-      category: 'Category',
-      sport: 'Sport',
-      size: 'Size',
-      color: 'Color',
-      min_price: 'Min Price',
-      max_price: 'Max Price',
-      brand: 'Brand',
-      material: 'Material',
-      collection: 'Collection',
+      gender: t?.gender || 'Gender',
+      category: t?.category || 'Category',
+      sport: t?.sport || 'Sport',
+      size: t?.size || 'Size',
+      color: t?.color || 'Color',
+      min_price: t?.price || 'Min Price',
+      max_price: t?.price || 'Max Price',
+      brand: t?.brand || 'Brand',
+      material: t?.material || 'Material',
+      collection: t?.collection || 'Collection',
       product_type: 'Product Type',
       activity: 'Activity',
       franchise: 'Franchise'
@@ -137,7 +140,7 @@ export default function FilterChips({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600 dark:text-gray-400">
-              Active filters:
+              {t?.activeFilters || "Active filters:"}
             </span>
             {activeFilters.map((filter) => (
               <Badge
@@ -167,7 +170,7 @@ export default function FilterChips({
             onClick={onClearAll}
             className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white underline"
           >
-            Clear all filters
+            {t?.clearAllFilters || "Clear all filters"}
           </button>
         </div>
       </div>

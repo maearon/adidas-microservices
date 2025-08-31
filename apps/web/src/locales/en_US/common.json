@@ -25,5 +25,11 @@
   "newToSale": "New to Sale",
   "popularRightNow": "Popular right now",
   "recentlyViewedItems": "RECENTLY VIEWED ITEMS",
-  "topPicksForYou": "TOP PICKS FOR YOU"
+  "topPicksForYou": "TOP PICKS FOR YOU",
+  "countryFlag": "Country Flag",
+  "flag": "flag",
+  "suggestions": "SUGGESTIONS",
+  "noSuggestionsFound": "No suggestions found",
+  "products": "PRODUCTS",
+  "noProductsFound": "No products found"
 }

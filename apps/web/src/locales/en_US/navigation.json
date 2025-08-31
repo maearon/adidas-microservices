@@ -20,5 +20,7 @@
   "help": "help",
   "ordersAndReturns": "orders and returns",
   "joinAdiClub": "join adiClub",
-  "signup": "sign up"
+  "signup": "sign up",
+  "countryUS": "US",
+  "countryVN": "VN"
 }

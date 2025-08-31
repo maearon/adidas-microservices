@@ -31,6 +31,8 @@ A real-time chat service built with Node.js, Express, Socket.IO, and PostgreSQL 
 ### 1. Installation
 
 ```
+ALTER TABLE messages 
+ADD COLUMN is_ai BOOLEAN DEFAULT FALSE;
 npx prisma introspect
 PS C:\Users\manhn\code\shop-php\apps\chat-service\prisma> npx prisma generate
 Environment variables loaded from ..\.env

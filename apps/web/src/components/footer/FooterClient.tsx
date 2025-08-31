@@ -31,9 +31,9 @@ export default function FooterClient({ session }: FooterClientProps) {
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
   )
   const footerSections = {
-    PRODUCTS: [
+    [t?.products || "PRODUCTS"]: [
       "Shoes",
-      "Clothing",
+      "Clothing", 
       "Accessories",
       "Gift Cards",
       "",
@@ -42,7 +42,7 @@ export default function FooterClient({ session }: FooterClientProps) {
       "Release Dates",
       "Sale",
     ],
-    Sports: [
+    [t?.sports || "Sports"]: [
       "Soccer",
       "Running",
       "Basketball",
@@ -54,7 +54,7 @@ export default function FooterClient({ session }: FooterClientProps) {
       "Skateboarding",
       "Training",
     ],
-    Collections: [
+    [t?.collections || "Collections"]: [
       "adicolor",
       "Ultraboost",
       "Forum",
@@ -66,7 +66,7 @@ export default function FooterClient({ session }: FooterClientProps) {
       "Tiro",
       "Cloudfoam Pure",
     ],
-    SUPPORT: [
+    [t?.support || "SUPPORT"]: [
       "Help",
       "Returns & Exchanges",
       "Shipping",
@@ -80,7 +80,7 @@ export default function FooterClient({ session }: FooterClientProps) {
       "Promotions",
       "Sitemap",
     ],
-    "COMPANY INFO": [
+    [t?.companyInfo || "COMPANY INFO"]: [
       "About Us",
       "Student Discount",
       "Military & Healthcare Discount",
@@ -100,8 +100,21 @@ export default function FooterClient({ session }: FooterClientProps) {
   }
 
   const mobileFooterSections = {
-    "My account": ["Help", "Returns & Exchanges", "Order Tracker", "Shipping", "Promotions", "Sitemap"],
-    "Your bag (2)": ["adiClub", "Store Finder", "Gift Cards", "adidas Apps", "Size Charts"],
+    [t?.myAccount || "My account"]: [
+      "Help",
+      "Returns & Exchanges",
+      "Order Tracker",
+      "Shipping",
+      "Promotions",
+      "Sitemap",
+    ],
+    [`${t?.yourBag || "Your bag"} (${cartItemsCount})`]: [
+      "adiClub",
+      "Store Finder",
+      "Gift Cards",
+      "adidas Apps",
+      "Size Charts",
+    ],
   }
 
   const socialIcons = [
@@ -260,7 +273,7 @@ export default function FooterClient({ session }: FooterClientProps) {
             {/* Hàng 3: 2 cột nội dung có padding ngang */}
             <div className="grid grid-cols-2 gap-4 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
               <ul className="space-y-2">
-                {mobileFooterSections["My account"].map((item, index) => (
+                {Object.values(mobileFooterSections)[0].map((item, index) => (
                   <li key={index}>
                     <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
                       {item}
@@ -269,7 +282,7 @@ export default function FooterClient({ session }: FooterClientProps) {
                 ))}
               </ul>
               <ul className="space-y-2">
-                {mobileFooterSections["Your bag (2)"].map((item, index) => (
+                {Object.values(mobileFooterSections)[1].map((item, index) => (
                   <li key={index}>
                     <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
                       {item}

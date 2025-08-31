@@ -47,37 +47,31 @@ function buildMainCategories(t: any): MenuCategory[] {
       title: t?.men || "MEN",
       titleHref: "/men",
       items: [],
-      originalKey: "MEN"
     },
     {
       title: t?.women || "WOMEN", 
       titleHref: "/women",
       items: [],
-      originalKey: "WOMEN"
     },
     {
       title: t?.kids || "KIDS",
       titleHref: "/kids", 
       items: [],
-      originalKey: "KIDS"
     },
     {
       title: t?.backToSchool || "BACK TO SCHOOL🔥",
       titleHref: "/back_to_school",
       items: [],
-      originalKey: "BACK TO SCHOOL🔥"
     },
     {
       title: t?.sale || "SALE",
       titleHref: "/sale",
       items: [],
-      originalKey: "SALE"  
     },
     {
       title: t?.newTrending || "NEW & TRENDING",
       titleHref: "/trending",
       items: [],
-      originalKey: "NEW & TRENDING"
     }
   ]
 }
@@ -107,7 +101,7 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const [country, setCountry] = useState<"US" | "VN">("US")
+  const [country, setCountry] = useState<string>("US")
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
@@ -121,6 +115,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const languageLabel = localeDisplayMap[locale]
   const t = useTranslations("navigation")
   const commonT = useTranslations("common")
+  const megaMenuT = useTranslations("megaMenu")
 
   const additionalMenuItems = [
     { name: t?.myAccount || "My Account", href: "/my-account" },
@@ -134,6 +129,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       name: languageLabel,
       hasSubmenu: true,
       items: localeOptions,
+      value: locale, // Add value property to match LocaleOption interface
     },
   ]
 
@@ -162,8 +158,16 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   }, [isOpen, t])
 
   const handleCategoryClick = (category: MenuCategory) => {
-    const originalKey = (category as any).originalKey || category.title
-    const menuData = mainMenuData[originalKey]
+    // Map category title to menu data key
+    let menuKey = category.title
+    if (category.title === (t?.men || "MEN")) menuKey = "MEN"
+    else if (category.title === (t?.women || "WOMEN")) menuKey = "WOMEN"
+    else if (category.title === (t?.kids || "KIDS")) menuKey = "KIDS"
+    else if (category.title === (t?.backToSchool || "BACK TO SCHOOL🔥")) menuKey = "BACK TO SCHOOL🔥"
+    else if (category.title === (t?.sale || "SALE")) menuKey = "SALE"
+    else if (category.title === (t?.newTrending || "NEW & TRENDING")) menuKey = "NEW & TRENDING"
+    
+    const menuData = mainMenuData[menuKey]
     if (menuData?.length > 0) {
       pushToHistory(currentLevel)
       setCurrentLevel({
@@ -285,7 +289,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <span
                     className={cn(
                       "text-lg uppercase",
-                      ["MEN", "WOMEN", "KIDS"].includes((cat as any).originalKey)
+                      [t?.men || "MEN", t?.women || "WOMEN", t?.kids || "KIDS"].includes(cat.title)
                         ? "font-bold"
                         : "font-medium"
                     )}
@@ -323,12 +327,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           localeOptions.find((o) => o.value === locale)?.flag ||
                           "/flag/us-show.svg"
                         }
-                        alt="flag"
+                        alt={commonT?.flag || "flag"}
                         width={24}
                         height={16}
                       />
                       <span className="text-base">
-                        {capitalizeWordsCountry(item.name)}
+                        {item.value && item.value === "en_US" ? (t?.countryUS || "US") : (t?.countryVN || "VN")}
                       </span>
                     </div>
                     <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -349,10 +353,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <div>
               {currentLevel.items.map((item, i) => {
                 if (isLocaleMenuItem(item)) {
-                  const isSelected = item.value === locale
+                  const isSelected = item.value && item.value === locale
                   return (
                     <label
-                      key={item.value}
+                      key={item.value || i}
                       className={cn(
                         "w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer",
                         isSelected
@@ -366,19 +370,21 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           name="country"
                           checked={isSelected}
                           onChange={() => {
-                            dispatch(setLocale(item.value as SupportedLocale))
-                            document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
-                            localStorage.setItem("NEXT_LOCALE", item.value)
-                            setCountry(
-                              item.value === "en_US" ? "US" : "VN"
+                            if (item.value) {
+                              dispatch(setLocale(item.value as SupportedLocale))
+                              document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
+                              localStorage.setItem("NEXT_LOCALE", item.value)
+                                                          setCountry(
+                              item.value && item.value === "en_US" ? "US" : "VN"
                             )
+                            }
                             handleClose()
                           }}
                           className="hidden"
                         />
                         <Image
                           src={item?.flag || "/flag/us-show.svg"}
-                          alt={item?.title || "Country Flag"}
+                          alt={item?.title || commonT?.countryFlag || "Country Flag"}
                           width={24}
                           height={16}
                         />
@@ -405,7 +411,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       className="w-full flex items-center justify-between p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
                     >
                       <div className="flex items-center">
-                        <span className="text-base mr-3">{item.title}</span>
+                        <span className="text-base mr-3">
+                          {megaMenuT?.[item.title.toLowerCase().replace(/\s+/g, '').replace(/&/g, '').replace(/🔥/g, '') as keyof typeof megaMenuT] || item.title}
+                        </span>
                         {getColorSwatch(item.title, currentLevel.title)}
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -426,7 +434,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   >
                     <div className="flex items-center">           
                       <span className="text-base mr-3">
-                        {isMenuLeaf(item) ? item.name : item.title}
+                        {isMenuLeaf(item) 
+                          ? (item.translationKey ? (megaMenuT?.[item.translationKey as keyof typeof megaMenuT] || item.name) : item.name)
+                          : (megaMenuT?.[item.title.toLowerCase().replace(/\s+/g, '').replace(/&/g, '').replace(/🔥/g, '') as keyof typeof megaMenuT] || item.title)
+                        }
                       </span>
                       {getColorSwatch(
                         isMenuLeaf(item) ? item.name : item.title,

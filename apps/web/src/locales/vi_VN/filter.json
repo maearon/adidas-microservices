@@ -72,5 +72,7 @@
   "showMore": "Hiển thị thêm",
   "showLess": "Ẩn bớt",
   "applyFilters": "Áp dụng bộ lọc",
-  "resetFilters": "Đặt lại bộ lọc"
+  "resetFilters": "Đặt lại bộ lọc",
+  "activeFilters": "Bộ lọc đang hoạt động:",
+  "clearAllFilters": "Xóa tất cả bộ lọc"
 }

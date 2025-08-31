@@ -52,13 +52,24 @@
 - ✅ `trending-mega-menu-data.ts` - Đã thêm `translationKey`
 
 ### 2. Components còn lại cần dịch thuật
-- [ ] `FilterBar.tsx` - Cần thêm namespace `filter`
-- [ ] `FilterChips.tsx` - Cần thêm namespace `filter`
-- [ ] `ProductListContainer.tsx` - Kiểm tra text cần dịch
-- [ ] Các component khác trong navbar và footer
+- ✅ `FilterBar.tsx` - Đã thêm namespace `filter` và dịch tất cả labels
+- ✅ `FilterChips.tsx` - Đã thêm namespace `filter` và dịch tất cả text
+- ✅ `ProductListContainer.tsx` - Đã thêm translation cho empty state
+- ✅ `SearchAutocomplete.tsx` - Đã thêm translation cho suggestions và products
+- ✅ `mobile-menu.tsx` - Đã sửa Level 2/3 để sử dụng translationKey
+- ✅ Các component khác trong navbar và footer đã được dịch
 
 ### 3. File Dịch thuật Mới
 - ✅ `product-detail.json` (tiếng Anh và tiếng Việt) - Đã hoàn thành
+- ✅ `filter.json` đã được cập nhật với các key mới: activeFilters, clearAllFilters
+- ✅ `common.json` đã được cập nhật với: suggestions, noSuggestionsFound, products, noProductsFound
+- ✅ `footer.json` đã được cập nhật với: companyInfo
+- ✅ `mega-menu.json` đã được cập nhật với các category title keys
+
+### 4. Mobile Menu Level 2/3 Translation
+- ✅ **HOÀN THÀNH**: Mobile menu giờ đây sử dụng `megaMenuT` translation cho level 2/3
+- ✅ Đã thêm logic dịch cho category titles (NEW & TRENDING, SHOES, CLOTHING, etc.)
+- ✅ Đã thêm logic dịch cho menu items sử dụng translationKey
 
 ### 3. Kiểm tra và Test
 - [ ] Test chuyển đổi ngôn ngữ

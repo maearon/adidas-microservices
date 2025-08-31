@@ -25,5 +25,11 @@
   "newToSale": "Mới giảm giá",
   "popularRightNow": "Phổ biến hiện tại",
   "recentlyViewedItems": "SẢN PHẨM ĐÃ XEM GẦN ĐÂY",
-  "topPicksForYou": "GỢI Ý DÀNH CHO BẠN"
+  "topPicksForYou": "GỢI Ý DÀNH CHO BẠN",
+  "countryFlag": "Cờ Quốc Gia",
+  "flag": "cờ",
+  "suggestions": "GỢI Ý",
+  "noSuggestionsFound": "Không tìm thấy gợi ý",
+  "products": "SẢN PHẨM",
+  "noProductsFound": "Không tìm thấy sản phẩm"
 }

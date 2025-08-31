@@ -72,5 +72,7 @@
   "showMore": "Show More",
   "showLess": "Show Less",
   "applyFilters": "Apply Filters",
-  "resetFilters": "Reset Filters"
+  "resetFilters": "Reset Filters",
+  "activeFilters": "Active filters:",
+  "clearAllFilters": "Clear all filters"
 }

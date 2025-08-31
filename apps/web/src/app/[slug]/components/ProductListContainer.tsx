@@ -5,6 +5,7 @@ import ProductCard from "@/components/product-card";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types/product";
 import { ReactNode } from "react";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface ProductListContainerProps {
   products: Product[];
@@ -25,13 +26,15 @@ export default function ProductListContainer({
   emptyComponent,
   className,
 }: ProductListContainerProps) {
+  const t = useTranslations("productList")
+  
   // Empty state
   if (products.length === 0 && !isFetchingNextPage) {
     return (
       (emptyComponent as ReactNode) || (
         <div className="text-center py-12">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No products found</h3>
-          <p className="text-gray-500 dark:text-gray-400">Try adjusting your filters or search terms</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{t?.noProductsFound || "No products found"}</h3>
+          <p className="text-gray-500 dark:text-gray-400">{t?.tryAdjustingFilters || "Try adjusting your filters or search terms"}</p>
         </div>
       )
     );

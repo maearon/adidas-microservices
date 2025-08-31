@@ -4,12 +4,14 @@ import { searchSuggestions } from "@/data/searchSuggestions"
 import { formatPrice } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
+import { useTranslations } from "@/hooks/useTranslations"
 
 type Props = {
   keyword: string
 }
 
 export default function SearchAutocomplete({ keyword }: Props) {
+  const t = useTranslations("common")
   const matchedSuggestions = searchSuggestions
   // const matchedSuggestions = searchSuggestions.filter(item =>
   //   item.keyword.toLowerCase().includes(keyword.toLowerCase())
@@ -21,7 +23,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
     <div className="absolute right-0 mt-3 z-50 w-[600px] bg-white dark:bg-black text-foreground border border-gray-200 shadow-md flex">
       {/* LEFT COLUMN */}{/* SUGGESTIONS */}
       <div className="w-1/2 p-4">
-        <h4 className="font-bold mb-2">SUGGESTIONS</h4>
+        <h4 className="font-bold mb-2">{t?.suggestions || "SUGGESTIONS"}</h4>
         <ul className="space-y-5">
           {matchedSuggestions.length > 0 ? (
             matchedSuggestions.map((item) => (
@@ -31,20 +33,20 @@ export default function SearchAutocomplete({ keyword }: Props) {
               </li>
             ))
           ) : (
-            <li className="text-base text-gray-400 italic">No suggestions found</li>
+            <li className="text-base text-gray-400 italic">{t?.noSuggestionsFound || "No suggestions found"}</li>
           )}
         </ul>
         <Link
           href={`/search?q=${encodeURIComponent(keyword)}`}
           className="block mt-6 text-base font-semibold text-foreground underline hover:opacity-80"
         >
-          SEE ALL &ldquo;{keyword.toUpperCase()}&rdquo;
+          {t?.seeAll || "SEE ALL"} &ldquo;{keyword.toUpperCase()}&rdquo;
         </Link>
       </div>
 
       {/* RIGHT COLUMN */}{/* PRODUCTS */}
       <div className="w-1/2 p-4 border-l border-gray-200">
-        <h4 className="font-bold mb-2">PRODUCTS</h4>
+        <h4 className="font-bold mb-2">{t?.products || "PRODUCTS"}</h4>
         {matchedSuggestions[0]?.products.length ? (
           <ul className="space-y-6">
             {matchedSuggestions[0].products.map((product) => (
@@ -65,7 +67,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
             ))}
           </ul>
         ) : (
-          <div className="text-gray-400 text-base italic">No products found</div>
+          <div className="text-gray-400 text-base italic">{t?.noProductsFound || "No products found"}</div>
         )}
       </div>
     </div>

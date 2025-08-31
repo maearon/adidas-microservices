@@ -6,6 +6,7 @@ import { BaseButton } from "@/components/ui/base-button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { parseSlugToFilters } from "@/utils/slug-parser"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface FilterBarProps {
   filters: Record<string, any>
@@ -28,6 +29,7 @@ export default function FilterBar({
   slug,
   totalCount
 }: FilterBarProps) {
+  const t = useTranslations("filter")
   const [expandedFilters, setExpandedFilters] = useState<Record<string, boolean>>({
     gender: false,
     category: false,
@@ -98,16 +100,16 @@ export default function FilterBar({
     switch (filterType) {
       case 'gender':
         return [
-          { value: 'men', label: 'Men', count: slugFilters.gender?.includes('men') ? totalCount : Math.floor(totalCount * 0.4) },
-          { value: 'women', label: 'Women', count: slugFilters.gender?.includes('women') ? totalCount : Math.floor(totalCount * 0.4) },
-          { value: 'kids', label: 'Kids', count: slugFilters.gender?.includes('kids') ? totalCount : Math.floor(totalCount * 0.2) },
-          { value: 'unisex', label: 'Unisex', count: Math.floor(totalCount * 0.1) }
+          { value: 'men', label: t?.men || 'Men', count: slugFilters.gender?.includes('men') ? totalCount : Math.floor(totalCount * 0.4) },
+          { value: 'women', label: t?.women || 'Women', count: slugFilters.gender?.includes('women') ? totalCount : Math.floor(totalCount * 0.4) },
+          { value: 'kids', label: t?.kids || 'Kids', count: slugFilters.gender?.includes('kids') ? totalCount : Math.floor(totalCount * 0.2) },
+          { value: 'unisex', label: t?.unisex || 'Unisex', count: Math.floor(totalCount * 0.1) }
         ]
       case 'category':
         return [
-          { value: 'shoes', label: 'Shoes', count: slugFilters.category?.includes('shoes') ? totalCount : Math.floor(totalCount * 0.6) },
-          { value: 'clothing', label: 'Clothing', count: slugFilters.category?.includes('clothing') ? totalCount : Math.floor(totalCount * 0.3) },
-          { value: 'accessories', label: 'Accessories', count: slugFilters.category?.includes('accessories') ? totalCount : Math.floor(totalCount * 0.1) }
+          { value: 'shoes', label: t?.shoes || 'Shoes', count: slugFilters.category?.includes('shoes') ? totalCount : Math.floor(totalCount * 0.6) },
+          { value: 'clothing', label: t?.clothing || 'Clothing', count: slugFilters.category?.includes('clothing') ? totalCount : Math.floor(totalCount * 0.3) },
+          { value: 'accessories', label: t?.accessories || 'Accessories', count: slugFilters.category?.includes('accessories') ? totalCount : Math.floor(totalCount * 0.1) }
         ]
       case 'sport':
         const sports = [
@@ -118,32 +120,32 @@ export default function FilterBar({
         ]
         return sports.map(sport => ({
           value: sport,
-          label: sport.charAt(0).toUpperCase() + sport.slice(1),
+          label: t?.[sport as keyof typeof t] || sport.charAt(0).toUpperCase() + sport.slice(1),
           count: slugFilters.sport?.includes(sport) ? totalCount : Math.floor(totalCount * 0.1)
         }))
       case 'brand':
         return [
-          { value: 'adidas', label: 'adidas', count: Math.floor(totalCount * 0.8) },
-          { value: 'adidas-originals', label: 'adidas Originals', count: Math.floor(totalCount * 0.15) },
-          { value: 'adidas-performance', label: 'adidas Performance', count: Math.floor(totalCount * 0.05) }
+          { value: 'adidas', label: t?.adidas || 'adidas', count: Math.floor(totalCount * 0.8) },
+          { value: 'adidas-originals', label: t?.adidasOriginals || 'adidas Originals', count: Math.floor(totalCount * 0.15) },
+          { value: 'adidas-performance', label: t?.adidasPerformance || 'adidas Performance', count: Math.floor(totalCount * 0.05) }
         ]
       case 'material':
         return [
-          { value: 'mesh', label: 'Mesh', count: Math.floor(totalCount * 0.3) },
-          { value: 'leather', label: 'Leather', count: Math.floor(totalCount * 0.25) },
-          { value: 'synthetic', label: 'Synthetic', count: Math.floor(totalCount * 0.2) },
-          { value: 'knit', label: 'Knit', count: Math.floor(totalCount * 0.15) },
-          { value: 'canvas', label: 'Canvas', count: Math.floor(totalCount * 0.1) }
+          { value: 'mesh', label: t?.mesh || 'Mesh', count: Math.floor(totalCount * 0.3) },
+          { value: 'leather', label: t?.leather || 'Leather', count: Math.floor(totalCount * 0.25) },
+          { value: 'synthetic', label: t?.synthetic || 'Synthetic', count: Math.floor(totalCount * 0.2) },
+          { value: 'knit', label: t?.knit || 'Knit', count: Math.floor(totalCount * 0.15) },
+          { value: 'canvas', label: t?.canvas || 'Canvas', count: Math.floor(totalCount * 0.1) }
         ]
       case 'collection':
         return [
-          { value: 'adicolor', label: 'adicolor', count: Math.floor(totalCount * 0.2) },
-          { value: 'ultraboost', label: 'Ultraboost', count: Math.floor(totalCount * 0.15) },
-          { value: 'samba', label: 'Samba', count: Math.floor(totalCount * 0.15) },
-          { value: 'superstar', label: 'Superstar', count: Math.floor(totalCount * 0.15) },
-          { value: 'gazelle', label: 'Gazelle', count: Math.floor(totalCount * 0.15) },
-          { value: 'terrex', label: 'TERREX', count: Math.floor(totalCount * 0.1) },
-          { value: 'y-3', label: 'Y-3', count: Math.floor(totalCount * 0.1) }
+          { value: 'adicolor', label: t?.adicolor || 'adicolor', count: Math.floor(totalCount * 0.2) },
+          { value: 'ultraboost', label: t?.ultraboost || 'Ultraboost', count: Math.floor(totalCount * 0.15) },
+          { value: 'samba', label: t?.samba || 'Samba', count: Math.floor(totalCount * 0.15) },
+          { value: 'superstar', label: t?.superstar || 'Superstar', count: Math.floor(totalCount * 0.15) },
+          { value: 'gazelle', label: t?.gazelle || 'Gazelle', count: Math.floor(totalCount * 0.15) },
+          { value: 'terrex', label: t?.terrex || 'TERREX', count: Math.floor(totalCount * 0.1) },
+          { value: 'y-3', label: t?.y3 || 'Y-3', count: Math.floor(totalCount * 0.1) }
         ]
       case 'size':
         return [
@@ -152,16 +154,16 @@ export default function FilterBar({
         ].map(size => ({ value: size, label: size }))
       case 'color':
         return [
-          { value: 'black', label: 'Black' },
-          { value: 'white', label: 'White' },
-          { value: 'red', label: 'Red' },
-          { value: 'blue', label: 'Blue' },
-          { value: 'green', label: 'Green' },
-          { value: 'gray', label: 'Gray' },
-          { value: 'yellow', label: 'Yellow' },
-          { value: 'orange', label: 'Orange' },
-          { value: 'purple', label: 'Purple' },
-          { value: 'pink', label: 'Pink' }
+          { value: 'black', label: t?.black || 'Black' },
+          { value: 'white', label: t?.white || 'White' },
+          { value: 'red', label: t?.red || 'Red' },
+          { value: 'blue', label: t?.blue || 'Blue' },
+          { value: 'green', label: t?.green || 'Green' },
+          { value: 'gray', label: t?.gray || 'Gray' },
+          { value: 'yellow', label: t?.yellow || 'Yellow' },
+          { value: 'orange', label: t?.orange || 'Orange' },
+          { value: 'purple', label: t?.purple || 'Purple' },
+          { value: 'pink', label: t?.pink || 'Pink' }
         ]
       default:
         return []
@@ -169,12 +171,12 @@ export default function FilterBar({
   }
 
   const priceRanges = [
-    { min: 0, max: 50, label: 'Under $50' },
-    { min: 50, max: 100, label: '$50 - $100' },
-    { min: 100, max: 150, label: '$100 - $150' },
-    { min: 150, max: 200, label: '$150 - $200' },
-    { min: 200, max: 300, label: '$200 - $300' },
-    { min: 300, max: 500, label: 'Over $300' }
+    { min: 0, max: 50, label: t?.under50 || 'Under $50' },
+    { min: 50, max: 100, label: t?.['50to100'] || '$50 - $100' },
+    { min: 100, max: 150, label: t?.['100to150'] || '$100 - $150' },
+    { min: 150, max: 200, label: t?.['150to200'] || '$150 - $200' },
+    { min: 200, max: 300, label: t?.['200to300'] || '$200 - $300' },
+    { min: 300, max: 500, label: t?.over300 || 'Over $300' }
   ]
 
   return (
@@ -184,11 +186,11 @@ export default function FilterBar({
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center gap-4">
             <h3 className="text-lg font-semibold text-black dark:text-white">
-              Filters
+              {t?.filters || "Filters"}
             </h3>
             {getActiveFiltersCount() > 0 && (
               <Badge variant="secondary" className="bg-black text-white dark:bg-white dark:text-black">
-                {getActiveFiltersCount()} active
+                {getActiveFiltersCount()} {t?.active || "active"}
               </Badge>
             )}
           </div>
@@ -199,7 +201,7 @@ export default function FilterBar({
               onClick={onClearFilters}
               className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
             >
-              Clear all
+              {t?.clearAll || "Clear all"}
             </BaseButton>
           )}
         </div>
@@ -209,7 +211,7 @@ export default function FilterBar({
           {/* Gender Filter - Only show if not already filtered by slug */}
           {!slugFilters.gender && (
             <FilterDropdown
-              title="Gender"
+              title={t?.gender || "Gender"}
               expanded={expandedFilters.gender}
               onToggle={() => toggleFilter('gender')}
               options={getFilterOptions('gender')}
@@ -222,7 +224,7 @@ export default function FilterBar({
           {/* Category Filter - Only show if not already filtered by slug */}
           {!slugFilters.category && (
             <FilterDropdown
-              title="Category"
+              title={t?.category || "Category"}
               expanded={expandedFilters.category}
               onToggle={() => toggleFilter('category')}
               options={getFilterOptions('category')}
@@ -235,7 +237,7 @@ export default function FilterBar({
           {/* Sport Filter - Only show if not already filtered by slug */}
           {!slugFilters.sport && (
             <FilterDropdown
-              title="Sport"
+              title={t?.sport || "Sport"}
               expanded={expandedFilters.sport}
               onToggle={() => toggleFilter('sport')}
               options={getFilterOptions('sport')}
@@ -247,7 +249,7 @@ export default function FilterBar({
 
           {/* Brand Filter */}
           <FilterDropdown
-            title="Brand"
+            title={t?.brand || "Brand"}
             expanded={expandedFilters.brand}
             onToggle={() => toggleFilter('brand')}
             options={getFilterOptions('brand')}
@@ -258,7 +260,7 @@ export default function FilterBar({
 
           {/* Material Filter */}
           <FilterDropdown
-            title="Material"
+            title={t?.material || "Material"}
             expanded={expandedFilters.material}
             onToggle={() => toggleFilter('material')}
             options={getFilterOptions('material')}
@@ -270,7 +272,7 @@ export default function FilterBar({
           {/* Collection Filter - Only show if not already filtered by slug */}
           {!slugFilters.collection && (
             <FilterDropdown
-              title="Collection"
+              title={t?.collection || "Collection"}
               expanded={expandedFilters.collection}
               onToggle={() => toggleFilter('collection')}
               options={getFilterOptions('collection')}
@@ -283,7 +285,7 @@ export default function FilterBar({
           {/* Price Range Filter - Only show if not already filtered by slug */}
           {!slugFilters.max_price && (
             <FilterDropdown
-              title="Price"
+              title={t?.price || "Price"}
               expanded={expandedFilters?.price}
               onToggle={() => toggleFilter('price')}
               customContent={
@@ -325,7 +327,7 @@ export default function FilterBar({
 
           {/* Size Filter */}
           <FilterDropdown
-            title="Size"
+            title={t?.size || "Size"}
             expanded={expandedFilters.size}
             onToggle={() => toggleFilter('size')}
             options={getFilterOptions('size')}
@@ -337,7 +339,7 @@ export default function FilterBar({
 
           {/* Color Filter */}
           <FilterDropdown
-            title="Color"
+            title={t?.color || "Color"}
             expanded={expandedFilters.color}
             onToggle={() => toggleFilter('color')}
             options={getFilterOptions('color')}
@@ -377,6 +379,7 @@ function FilterDropdown({
   gridLayout,
   colorLayout
 }: FilterDropdownProps) {
+  const t = useTranslations("filter")
   const hasSelectedValues = selectedValues.length > 0
 
   return (
@@ -413,7 +416,7 @@ function FilterDropdown({
                   onClick={onClear}
                   className="text-xs text-gray-500 hover:text-black dark:hover:text-white"
                 >
-                  Clear
+                  {t?.clearAll || "Clear"}
                 </button>
               )}
             </div>

@@ -27,6 +27,7 @@ interface JoinRoomData {
 interface MessageData {
   roomId: string;
   content: string;
+  is_ai?: boolean;
   type?: 'text' | 'image' | 'file';
 }
 
@@ -108,7 +109,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
       }
     });
 
-    socket.on('message', async ({ roomId, content, type = 'text' }: MessageData) => {
+    socket.on('message', async ({ roomId, content, is_ai, type = 'text' }: MessageData) => {
       try {
         if (!content?.trim()) {
           return socket.emit('error', { message: 'Message content is required' });
@@ -123,6 +124,7 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
             type: MessageType[prismaType],
             room_id: roomId,
             user_id: socket.userId!,
+            is_ai: !!is_ai, // 👇 thêm dòng này
           },
           include: {
             users: {
@@ -151,7 +153,8 @@ export function initializeSocket(io: Server, prisma: PrismaClient) {
             avatar: avatarUrl,
           },
           createdAt: message.created_at,
-          isBot: false,
+          is_ai: message.is_ai,   // 👈 thêm dòng này
+          isBot: message.is_ai,   // (tuỳ, giữ để backward-compat)
         });
 
         console.log(`💬 Message sent in ${roomId} by ${socket.userEmail}`);

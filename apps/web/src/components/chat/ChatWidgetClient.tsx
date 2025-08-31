@@ -14,7 +14,7 @@ import { useAppSelector } from "@/store/hooks"
 
 interface ChatMessage {
   content: string
-  isBot: boolean
+  is_ai: boolean
   created_at: Date
   id: string
   room_id: string
@@ -102,7 +102,7 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
 
           return {
             content: msg.content,
-            isBot: !!isBot,
+            is_ai: !!msg.is_ai,
             created_at: msg.created_at ? new Date(msg.created_at) : new Date(),
             id: msg.id,
             room_id: msg.room_id,
@@ -119,14 +119,14 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
       // Khi nhận tin nhắn mới
       socket.on('new_message', async (msg: ChatMessage) => {
         console.log("message.user", msg.users)
-        const isBot =
-          // repliedMessages.current.has(msg.content.slice(0, 150)) ||
+        const isAi =
+          msg.is_ai ||
           msg.users?.email?.includes('admin') ||
           msg.users?.email?.includes('support');
 
         const formattedMessage: ChatMessage = {
           content: msg.content,
-          isBot: !!isBot,
+          is_ai: !!msg.is_ai,
           created_at: msg.created_at ? new Date(msg.created_at) : new Date(),
           id: msg.id,
           room_id: msg.room_id,
@@ -147,28 +147,24 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
         }
 
         // 🚀 Auto-reply logic nếu không phải admin và chưa trả lời Gọi AI reply
-        // if (!isBot) {
-          // try {
-            // const botReply = await fetch("/api/ai-reply", {
-              // method: "POST",
-              // headers: { "Content-Type": "application/json" },
-              // body: JSON.stringify({ message: msg.content })
-// }).then(res => res.json());
-
-            // ✅ Đánh dấu là gemini đã trả lời trước khi emit
-            // repliedMessages.current.add(botReply.text.slice(0, 150));
-
-            // socket.emit('message', {
-              // roomId: 'general',
-              // content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
-              // type: 'text'
-            // });
-          // } catch (err) {
-            // console.error("Bot reply error:", err);
-          //}
-        // }
+        if (!isAi) {
+          try {
+            const botReply = await fetch("/api/ai-reply", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message: msg.content, history: messages.slice(-10) })
+            }).then(res => res.json());
+            socket.emit('message', {
+              roomId: 'general',
+              content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
+              is_ai: true,
+              type: 'text'
+            });
+          } catch (err) {
+            console.error("Bot reply error:", err);
+          }
+        }
       })
-
 
       socket.on('user_typing', (data: { userEmail: string; isTyping: boolean }) => {
         if (data.userEmail !== sessionStateRedux?.value?.email) {
@@ -217,6 +213,7 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
     socketRef.current.emit('message', {
       roomId: 'general',
       content: inputMessage.trim(),
+      is_ai: false,
       type: 'text'
     })
 
@@ -306,7 +303,20 @@ function replaceEmojis(text: string): string {
               <div className="truncate">
                 <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
                 <p className="text-xs text-gray-500 truncate">
-                  adiclub {userLevel} • {isConnected ? 'Online' : 'Connecting...'}
+                  adiclub {userLevel} 
+                  {isConnected ? (
+                    <>
+                      {' '}
+                      <span className="inline-block h-2 w-2 rounded-full bg-green-500"></span>
+                      {' '+'Online'}
+                    </>
+                  ) : (
+                    <>
+                      {' '}
+                      <span className="inline-block h-2 w-2 rounded-full bg-gray-400 animate-pulse"></span>
+                      {' '+'Connecting...'}
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -326,27 +336,30 @@ function replaceEmojis(text: string): string {
               {/* Messages */}
               <div className="flex-1 p-4 overflow-y-auto space-y-4">
                 {messages.map((message) => (
-                  <div key={message.id} className={`${message.isBot ? "text-left" : "text-right"}`}>
-                    {message.isBot ? (
+                  <div key={message.id} className={`${(message.is_ai || message.users?.email.includes("admin")) ? "text-left" : "text-right"}`}>
+                    {(message.is_ai || message.users?.email.includes("admin")) ? (
                       <div className="flex items-start space-x-2">
                         <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
                           <span className="text-white dark:text-black text-xs font-bold">A</span>
                         </div>
-                        {!message.users ? (
+                        {message.is_ai ? (
                           <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
                             <p className="text-base text-gray-500 italic">[System message]</p>
-                            <p className="text-base text-[#0066FF]">User Email: [System message] Admin</p>
+                            <p className="text-base text-[#0066FF]">User Email: [System message] Gemini</p>
                             <p className="text-base text-[#E32B2B]">User Name: [System message]</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
-                              {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
+                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs">
+                          <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
+                            <p className="text-base text-gray-500 italic">[Admin message]</p>
+                            <p className="text-base text-[#0066FF]">User Email: [Admin message] Admin</p>
+                            <p className="text-base text-[#E32B2B]">User Name: [Admin message]</p>
                             <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                             <p className="text-xs text-gray-500 mt-1">
-                              {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
+                              {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                             </p>
                           </div>
                         )}
@@ -359,21 +372,24 @@ function replaceEmojis(text: string): string {
                       //   </p>
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
-                        <div className="bg-[#4C4C4C] rounded-lg p-3 max-w-xs ml-auto">
+                        <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs ml-auto">
+                          <p className="text-base text-gray-500 italic">[User message]</p>
+                            <p className="text-base text-[#0066FF]">User Email: [User message] {(message.users?.email)}</p>
+                            <p className="text-base text-[#E32B2B]">User Name: [User message] {(message.users?.name)}</p>
                           <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
+                            {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           </p>
                         </div>
                         {/* <img
                           src={getUiAvatarUrl(message.users?.name)}
-                          title={message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
+                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           className="w-8 h-8 rounded-full"
                         /> */}
                         <Image
                           src={getUiAvatarUrl(message.users?.name)}
-                          title={message.created_at.toLocaleTimeString("en_US", { hour: "2-digit", minute: "2-digit" })}
+                          title={message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                           alt={message.users?.name || "User"}
                           width={32} // must set width
                           height={32} // must set height
