@@ -29,6 +29,10 @@ import mobileEn from "@/locales/en_US/mobile.json"
 import mobileVi from "@/locales/vi_VN/mobile.json"
 import footerEn from "@/locales/en_US/footer.json"
 import footerVi from "@/locales/vi_VN/footer.json"
+import megaMenuEn from "@/locales/en_US/mega-menu.json"
+import megaMenuVi from "@/locales/vi_VN/mega-menu.json"
+import productListEn from "@/locales/en_US/product-list.json"
+import productListVi from "@/locales/vi_VN/product-list.json"
 
 export const locales = {
   "en_US": {
@@ -47,6 +51,8 @@ export const locales = {
     product: productEn,
     mobile: mobileEn,
     footer: footerEn,
+    megaMenu: megaMenuEn,
+    productList: productListEn,
   },
   "vi_VN": {
     navbar: navbarVi,
@@ -64,6 +70,8 @@ export const locales = {
     product: productVi,
     mobile: mobileVi,
     footer: footerVi,
+    megaMenu: megaMenuVi,
+    productList: productListVi,
   },
 } as const
 

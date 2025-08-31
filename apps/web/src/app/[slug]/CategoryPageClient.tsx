@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { SlidersHorizontal } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 import { BaseButton } from "@/components/ui/base-button"
 import FiltersSidebar from "@/components/filter/filters-sidebar"
@@ -23,6 +24,8 @@ interface CategoryPageClientProps {
 }
 
 export default function CategoryPageClient({ params, searchParams, query }: CategoryPageClientProps) {
+  const t = useTranslations("productList")
+  
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -188,15 +191,15 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
       {/* Error State */}
       {isError && (
         <div className="min-h-screen flex flex-col justify-center items-center bg-background px-4 text-center">
-          <h2 className="text-2xl font-semibold text-red-600 mb-2">Unable to load products</h2>
+          <h2 className="text-2xl font-semibold text-red-600 mb-2">{t?.unableToLoadProducts || "Unable to load products"}</h2>
           <p className="text-gray-600 dark:text-white mb-4">
-            There was a problem fetching products. Please check your internet connection or try again later.
+            {t?.problemFetchingProducts || "There was a problem fetching products. Please check your internet connection or try again later."}
           </p>
           <BaseButton onClick={() => refetch()} variant="default">
-            Retry
+            {t?.retry || "Retry"}
           </BaseButton>
           <BaseButton variant="link" onClick={() => router.back()} className="mt-2 text-base text-gray-500">
-            ← Go Back
+            {t?.goBack || "← Go Back"}
           </BaseButton>
         </div>
       )}
@@ -204,17 +207,16 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
       {/* Empty State */}
       {isEmpty && !isError && (
         <div className="text-center py-4">
-          <h3 className="text-lg font-semibold mb-2">No results found</h3>
+          <h3 className="text-lg font-semibold mb-2">{t?.noResultsFound || "No results found"}</h3>
           <p className="text-gray-600 dark:text-white mb-4">
-            We couldn't find any products matching the current filters. Try adjusting
-            your filters or browse other categories.
+            {t?.noProductsMatching || "We couldn't find any products matching the current filters. Try adjusting your filters or browse other categories."}
           </p>
           <div className="space-y-2">
-            <p className="text-base text-gray-500">Suggestions:</p>
+            <p className="text-base text-gray-500">{t?.suggestions || "Suggestions:"}</p>
             <ul className="text-base text-gray-500 space-y-1">
-              <li>• Try different filters</li>
-              <li>• Browse other categories</li>
-              <li>• Check for similar products</li>
+              <li>• {t?.tryDifferentFilters || "Try different filters"}</li>
+              <li>• {t?.browseOtherCategories || "Browse other categories"}</li>
+              <li>• {t?.checkSimilarProducts || "Check for similar products"}</li>
             </ul>
           </div>
         </div>

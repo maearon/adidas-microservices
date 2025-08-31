@@ -5,7 +5,7 @@ export interface MenuCategory {
   title: string
   titleHref?: string      // link chính cho category
   description?: string    // optional description
-  items: { name: string; href: string }[]
+  items: { name: string; href: string; translationKey?: string }[]
 }
 
 // MenuLeaf: item đơn lẻ, không có submenu

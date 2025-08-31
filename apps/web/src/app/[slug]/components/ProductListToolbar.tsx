@@ -5,6 +5,7 @@ import { Filter, Grid3X3, List, ChevronDown, SlidersHorizontal } from "lucide-re
 import { BaseButton } from "@/components/ui/base-button"
 import { cn } from "@/lib/utils"
 import { Product } from "@/types/product"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ProductListToolbarProps {
   products: Product[]
@@ -17,14 +18,6 @@ interface ProductListToolbarProps {
   className?: string
 }
 
-const sortOptions = [
-  { value: 'newest', label: 'Newest' },
-  { value: 'price_low_high', label: 'Price: Low to High' },
-  { value: 'price_high_low', label: 'Price: High to Low' },
-  { value: 'top_sellers', label: 'Top Sellers' },
-  { value: 'relevance', label: 'Relevance' }
-]
-
 export default function ProductListToolbar({
   products,
   totalCount,
@@ -36,8 +29,17 @@ export default function ProductListToolbar({
   className
 }: ProductListToolbarProps) {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
+  const t = useTranslations("productList")
 
-  const currentSortLabel = sortOptions.find(option => option.value === currentSort)?.label || 'Sort by'
+  const sortOptions = [
+    { value: 'newest', label: t?.newest || 'Newest' },
+    { value: 'price_low_high', label: t?.priceLowToHigh || 'Price: Low to High' },
+    { value: 'price_high_low', label: t?.priceHighToLow || 'Price: High to Low' },
+    { value: 'top_sellers', label: t?.topSellers || 'Top Sellers' },
+    { value: 'relevance', label: t?.relevance || 'Relevance' }
+  ]
+
+  const currentSortLabel = sortOptions.find(option => option.value === currentSort)?.label || (t?.sortBy || 'Sort by')
 
   return (
     <div className={cn("bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800", className)}>
@@ -50,7 +52,7 @@ export default function ProductListToolbar({
             </span> */}
             {products.length > 0 && (
               <p className="text-gray-600 dark:text-white break-words text-sm">
-                Showing {products.length} of {totalCount} results
+                {t?.showingResults?.replace('{count}', products.length.toString()).replace('{total}', totalCount.toString()) || `Showing ${products.length} of ${totalCount} results`}
               </p>
             )}
           </div>
@@ -136,7 +138,7 @@ export default function ProductListToolbar({
                 onClick={onFilterToggle}
                 className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
               >
-                FILTER & SORT
+                {t?.filterSort || "FILTER & SORT"}
                 <SlidersHorizontal className="w-4 h-4" />
               </BaseButton>
 

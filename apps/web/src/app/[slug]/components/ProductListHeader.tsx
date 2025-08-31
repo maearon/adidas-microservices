@@ -5,6 +5,7 @@ import { Search, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { BaseButton } from "@/components/ui/base-button"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ProductListHeaderProps {
   title: string
@@ -24,6 +25,7 @@ export default function ProductListHeader({
   className
 }: ProductListHeaderProps) {
   const [searchText, setSearchText] = useState(searchQuery)
+  const t = useTranslations("productList")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,7 +50,7 @@ export default function ProductListHeader({
               {title}
             </h1>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              {totalCount} products available
+              {totalCount} {t?.productsAvailable || "products available"}
             </p>
           </div>
 
@@ -60,7 +62,7 @@ export default function ProductListHeader({
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     type="text"
-                    placeholder="Search products..."
+                    placeholder={t?.searchProducts || "Search products..."}
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     className="pl-10 pr-10 py-2 w-64 border border-gray-300 dark:border-gray-600 rounded-none focus:border-black dark:focus:border-white focus:ring-0"
@@ -75,13 +77,13 @@ export default function ProductListHeader({
                     </button>
                   )}
                 </div>
-                <BaseButton
-                  type="submit"
-                  variant="outline"
-                  className="ml-2 px-4 py-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  Search
-                </BaseButton>
+                                  <BaseButton
+                    type="submit"
+                    variant="outline"
+                    className="ml-2 px-4 py-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    {t?.search || "Search"}
+                  </BaseButton>
               </form>
             </div>
           )}

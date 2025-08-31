@@ -11,6 +11,7 @@ import { localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
 import { footerLinks } from "@/data/footer-links"
 import type { Session } from "@/lib/auth"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface FooterClientProps {
   session: Session | null;
@@ -18,6 +19,7 @@ interface FooterClientProps {
 
 export default function FooterClient({ session }: FooterClientProps) {
   const [mounted, setMounted] = useState(false)
+  const t = useTranslations("footer")
   
   useEffect(() => {
     setMounted(true)
@@ -128,21 +130,21 @@ export default function FooterClient({ session }: FooterClientProps) {
       {/* Opinion Section with Back to Top */}
       <section className="sm:hidden bg-gray-100 text-base text-gray-600 py-4">
         <div className="container mx-auto px-4">
-          <h3 className="font-bold mb-1">YOUR OPINION COUNTS</h3>
-          <p>We strive to serve you better and appreciate your feedback</p>
+          <h3 className="font-bold mb-1">{t?.yourOpinionCounts || "YOUR OPINION COUNTS"}</h3>
+          <p>{t?.striveToServe || "We strive to serve you better and appreciate your feedback"}</p>
         </div>
       </section>
 
       {/* Back to Top button (mobile) */}
       <section className="sm:hidden bg-white border-none py-4">
         <div className="px-4 flex justify-center">
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-1 text-xs font-medium text-black"
-          >
-            <ChevronUp className="h-4 w-4" />
-            Back to top
-          </button>
+                      <button
+              onClick={scrollToTop}
+              className="flex items-center gap-1 text-xs font-medium text-black"
+            >
+              <ChevronUp className="h-4 w-4" />
+              {t?.backToTop || "Back to top"}
+            </button>
         </div>
       </section>
 
@@ -151,7 +153,7 @@ export default function FooterClient({ session }: FooterClientProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
             <h3 className="text-2xl font-extrabold tracking-wide">
-              JOIN OUR ADICLUB & GET 15% OFF
+              {t?.joinAdiClubGet15Off || "JOIN OUR ADICLUB & GET 15% OFF"}
             </h3>
             <Button
               border={false}
@@ -159,7 +161,7 @@ export default function FooterClient({ session }: FooterClientProps) {
               pressEffect={true}
               className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
             >
-              SIGN UP FOR FREE
+              {t?.signUpForFree || "SIGN UP FOR FREE"}
             </Button>
           </div>
         </div>
@@ -192,7 +194,7 @@ export default function FooterClient({ session }: FooterClientProps) {
 
             {/* Follow Us Column */}
             <div>
-              <h3 className="font-bold mb-4 text-base">FOLLOW US</h3>
+              <h3 className="font-bold mb-4 text-base">{t?.followUs || "FOLLOW US"}</h3>
               <div className="space-y-3">
                 {socialIcons.map((social, index) => {
                   const IconComponent = social.icon
@@ -222,7 +224,7 @@ export default function FooterClient({ session }: FooterClientProps) {
                   href={session?.user?.email ? "/my-account" : "/account-login"}
                   className="font-bold text-base"
                 >
-                  {session?.user?.email ? "My Account" : "Login"}
+                  {session?.user?.email ? (t?.myAccount || "My Account") : (t?.login || "Login")}
                 </Link>
               </div>
               <div className="flex justify-center">
@@ -230,7 +232,7 @@ export default function FooterClient({ session }: FooterClientProps) {
                   href="/cart"
                   className="font-bold text-base"
                 >
-                  Your bag ({cartItemsCount})
+                  {t?.yourBag || "Your bag"} ({cartItemsCount})
                 </Link>
               </div>
             </div>
@@ -240,17 +242,17 @@ export default function FooterClient({ session }: FooterClientProps) {
             <div className="bg-[#007cc3] text-white py-6 block sm:hidden">
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
-                  <h3 className="text-2xl font-extrabold tracking-wide">
-                    JOIN OUR ADICLUB & GET 15% OFF
-                  </h3>
-                  <Button
-                    border={false}
-                    href="/signup"
-                    pressEffect={true}
-                    className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
-                  >
-                    SIGN UP FOR FREE
-                  </Button>
+                              <h3 className="text-2xl font-extrabold tracking-wide">
+              {t?.joinAdiClubGet15Off || "JOIN OUR ADICLUB & GET 15% OFF"}
+            </h3>
+            <Button
+              border={false}
+              href="/signup"
+              pressEffect={true}
+              className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+            >
+              {t?.signUpForFree || "SIGN UP FOR FREE"}
+            </Button>
                 </div>
               </div>
             </div>
@@ -287,7 +289,7 @@ export default function FooterClient({ session }: FooterClientProps) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-base">
             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
               <div className="flex items-center gap-2">
-                <span>Your Privacy Choices</span>
+                <span>{t?.yourPrivacyChoices || "Your Privacy Choices"}</span>
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-5">
                     <CcpaIcon className="w-full h-full" />
@@ -296,11 +298,11 @@ export default function FooterClient({ session }: FooterClientProps) {
               </div>
               <span className="hidden md:inline text-gray-400">|</span>
               <a href={footerLinks["Privacy Policy"] || "#"} className="hover:underline text-gray-300">
-                Privacy Policy
+                {t?.privacyPolicy || "Privacy Policy"}
               </a>
               <span className="hidden md:inline text-gray-400">|</span>
               <a href={footerLinks["Terms and Conditions"] || "#"} className="hover:underline text-gray-300">
-                Terms and Conditions
+                {t?.termsAndConditions || "Terms and Conditions"}
               </a>
             </div>
 
@@ -320,7 +322,7 @@ export default function FooterClient({ session }: FooterClientProps) {
           </div>
 
           <div className="mt-4 text-center md:text-left">
-            <div className="text-gray-400 text-base">© 2025 adidas America, Inc.</div>
+            <div className="text-gray-400 text-base">{t?.copyright || "© 2025 adidas America, Inc."}</div>
           </div>
         </div>
       </div>

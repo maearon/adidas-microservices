@@ -3,36 +3,44 @@
 import { backToSchoolMenuData, kidsMenuData, menMenuData, saleMenuData, trendingMenuData, womenMenuData } from "@/data/mega-menu"
 import { MenuCategory, Nullable } from "@/types/common"
 import Link from "next/link"
-import Image from "next/image";
+import Image from "next/image"
+import { useTranslations } from "@/hooks/useTranslations"
 
 type MegaMenuProps = {
   activeMenu: Nullable<string>
   onClose: () => void
 }
 
-const colorItems = [
-  { name: "Black", color: "bg-black" },
-  { name: "Grey", color: "bg-gray-500" },
-  { name: "White", color: "bg-white border border-gray-300" },
-  { name: "Brown", color: "bg-amber-800" },
-  { name: "Red", color: "bg-red-500" },
-  { name: "Pink", color: "bg-pink-300" },
-  { name: "Orange", color: "bg-orange-500" },
-  { name: "Yellow", color: "bg-yellow-400" },
-  { name: "Green", color: "bg-green-500" },
-  { name: "Blue", color: "bg-blue-500" },
-  { name: "Purple", color: "bg-purple-500" },
-]
-
-const getShopByColorItems = (gender: string) => [
-  ...colorItems.map((color) => ({
-    name: color.name,
-    href: `/${gender}-${color.name.toLowerCase()}`,
-  })),
-  { name: `All ${gender[0].toUpperCase() + gender.slice(1)}'s`, href: `/${gender}` },
-]
-
 export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
+  const t = useTranslations("megaMenu")
+  
+  const colorItems = [
+    { name: t?.black || "Black", color: "bg-black" },
+    { name: t?.grey || "Grey", color: "bg-gray-500" },
+    { name: t?.white || "White", color: "bg-white border border-gray-300" },
+    { name: t?.brown || "Brown", color: "bg-amber-800" },
+    { name: t?.red || "Red", color: "bg-red-500" },
+    { name: t?.pink || "Pink", color: "bg-pink-300" },
+    { name: t?.orange || "Orange", color: "bg-orange-500" },
+    { name: t?.yellow || "Yellow", color: "bg-yellow-400" },
+    { name: t?.green || "Green", color: "bg-green-500" },
+    { name: t?.blue || "Blue", color: "bg-blue-500" },
+    { name: t?.purple || "Purple", color: "bg-purple-500" },
+  ]
+
+  const getShopByColorItems = (gender: string) => [
+    ...colorItems.map((color) => ({
+      name: color.name,
+      href: `/${gender}-${color.name.toLowerCase()}`,
+    })),
+    { 
+      name: gender === 'men' ? (t?.allMensText || "All Men's") : 
+            gender === 'women' ? (t?.allWomensText || "All Women's") : 
+            (t?.allKidsText || "All Kids'"), 
+      href: `/${gender}` 
+    },
+  ]
+
   if (!activeMenu) return null
 
   // Tất cả dữ liệu MEN, WOMEN, KIDS, SALE, TRENDING... bạn đã cung cấp sẽ nằm ở đây
@@ -50,53 +58,53 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
     case "MEN":
       menuData = menMenuData
       footerLinks = [
-        { name: "Sale", href: "/men-sale" },
-        { name: "All Men's Shoes", href: "/men-shoes" },
-        { name: "All Men's Clothing", href: "/men-clothing" },
-        { name: "All Men's Accessories", href: "/men-accessories" },
-        { name: "All Men's Sport", href: "/men-sport" },
-        { name: "All Men's", href: "/men" },
+        { name: t?.sale || "Sale", href: "/men-sale" },
+        { name: t?.allMensShoes || "All Men's Shoes", href: "/men-shoes" },
+        { name: t?.allMensClothing || "All Men's Clothing", href: "/men-clothing" },
+        { name: t?.allMensAccessories || "All Men's Accessories", href: "/men-accessories" },
+        { name: t?.allMensSport || "All Men's Sport", href: "/men-sport" },
+        { name: t?.allMens || "All Men's", href: "/men" },
       ]
       break
     case "WOMEN":
       menuData = womenMenuData
       footerLinks = [
-        { name: "Sale", href: "/women-sale" },
-        { name: "All Women's Shoes", href: "/women-shoes" },
-        { name: "All Women's Clothing", href: "/women-clothing" },
-        { name: "All Women's Accessories", href: "/women-accessories" },
-        { name: "All Women's Sport", href: "/women-sport" },
-        { name: "All Women's", href: "/women" },
+        { name: t?.sale || "Sale", href: "/women-sale" },
+        { name: t?.allWomensShoes || "All Women's Shoes", href: "/women-shoes" },
+        { name: t?.allWomensClothing || "All Women's Clothing", href: "/women-clothing" },
+        { name: t?.allWomensAccessories || "All Women's Accessories", href: "/women-accessories" },
+        { name: t?.allWomensSport || "All Women's Sport", href: "/women-sport" },
+        { name: t?.allWomens || "All Women's", href: "/women" },
       ]
       break
     case "BACK TO SCHOOL🔥":
       menuData = backToSchoolMenuData
       footerLinks = [
-        { name: "All Back to School", href: "/back_to_school" },
-        { name: "All Kids", href: "/kids-back_to_school" },
-        { name: "All Men's", href: "/men-back_to_school" },
-        { name: "All Women's", href: "/women-back_to_school" },
-        { name: "All School Accessories", href: "/back_to_school-accessories" },
+        { name: t?.allBackToSchool || "All Back to School", href: "/back_to_school" },
+        { name: t?.allKids || "All Kids", href: "/kids-back_to_school" },
+        { name: t?.allMens || "All Men's", href: "/men-back_to_school" },
+        { name: t?.allWomens || "All Women's", href: "/women-back_to_school" },
+        { name: t?.allSchoolAccessories || "All School Accessories", href: "/back_to_school" },
       ]
       break
     case "KIDS":
       menuData = kidsMenuData
       footerLinks = [
-        { name: "Sale", href: "/kids-sale" },
-        { name: "All Kids Shoes", href: "/kids-shoes" },
-        { name: "All Kids Clothing", href: "/kids-clothing" },
-        { name: "All Kids Accessories", href: "/kids-accessories" },
-        { name: "All Kids Sports", href: "/kids-sports" },
-        { name: "All Kids", href: "/kids" },
+        { name: t?.sale || "Sale", href: "/kids-sale" },
+        { name: t?.allKidsShoes || "All Kids Shoes", href: "/kids-shoes" },
+        { name: t?.allKidsClothing || "All Kids Clothing", href: "/kids-clothing" },
+        { name: t?.allKidsAccessories || "All Kids Accessories", href: "/kids-accessories" },
+        { name: t?.allKidsSports || "All Kids Sports", href: "/kids-sports" },
+        { name: t?.allKids || "All Kids", href: "/kids" },
       ]
       break
     case "SALE":
       menuData = saleMenuData
       footerLinks = [
-        { name: "Sale", href: "/sale" },
-        { name: "All Men's Sale", href: "/sale/men" },
-        { name: "All Women's Sale", href: "/sale/women" },
-        { name: "All Kids Sale", href: "/sale/kids" },
+        { name: t?.sale || "Sale", href: "/sale" },
+        { name: t?.allMensSale || "All Men's Sale", href: "/sale/men" },
+        { name: t?.allWomensSale || "All Women's Sale", href: "/sale/women" },
+        { name: t?.allKidsSale || "All Kids Sale", href: "/sale/kids" },
       ]
       break
     case "NEW & TRENDING":
@@ -117,16 +125,16 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
           {/* Cột đầu tiên - NEW & TRENDING hoặc FEATURED */}
           {menuData[0] && (
             <div className="space-y-4 pr-6 border-r border-gray-200 col-span-1">
-              <h3 className="font-bold text-base">{menuData[0].title}</h3>
-              <ul className="space-y-2">
-                {menuData[0].items.map((item, itemIndex) => (
-                  <li key={itemIndex}>
-                    <Link href={item.href} className="text-base hover:underline">
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                              <h3 className="font-bold text-base">{t?.[menuData[0].title.toLowerCase().replace(/\s+/g, '') as keyof typeof t] || menuData[0].title}</h3>
+                              <ul className="space-y-2">
+                  {menuData[0].items.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <Link href={item.href} className="text-base hover:underline">
+                        {item.translationKey ? (t?.[item.translationKey as keyof typeof t] || item.name) : item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && menuData[0].title === "NEW & TRENDING" && (
                 <Link
                   href={`/${activeMenu.toLowerCase()}-superstar`}
@@ -162,17 +170,17 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                 <h3 className="font-bold text-base">
                   {category.titleHref ? (
                     <Link href={category.titleHref} className="hover:underline">
-                      {category.title}
+                      {t?.[category.title.toLowerCase().replace(/\s+/g, '') as keyof typeof t] || category.title}
                     </Link>
                   ) : (
-                    category.title
+                    t?.[category.title.toLowerCase().replace(/\s+/g, '') as keyof typeof t] || category.title
                   )}
                 </h3>
                 <ul className="space-y-2">
                   {category.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
                       <Link href={item.href} className="text-base hover:underline">
-                        {item.name}
+                        {item.translationKey ? (t?.[item.translationKey as keyof typeof t] || item.name) : item.name}
                       </Link>
                     </li>
                   ))}
@@ -187,7 +195,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                           href={getShopByColorItems(activeMenu.toLowerCase())[0].href}
                           className="hover:underline"
                         >
-                          SHOP BY COLOR 🎨
+                          {t?.shopByColor || "SHOP BY COLOR 🎨"}
                         </Link>
                       </h3>
                       {/* <h4 className="text-base font-semibold mb-2">Shop by Color 🎨</h4> */}
