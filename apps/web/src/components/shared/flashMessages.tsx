@@ -1,29 +1,17 @@
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify"
 
-// export interface FlashMessage {
-//   message_type: string;
-//   message: string;
-// }
+type FlashType = "success" | "danger" | "warning" | "info" | "error"
 
-const flashMessage = (message_type: string, message: string) => {
-  switch(message_type) {
-    case "success":
-      toast.success(message)
-      break
-    case "danger":
-      toast.error(message)
-      break
-    case "warning":
-      toast.warn(message)
-      break
-    case "info":
-      toast.info(message)
-      break
-    case "error":
-      toast.error(message)
-      break
-    default:
+const flashMessage = (message_type: FlashType, message: string) => {
+  const mapper: Record<FlashType, (msg: string) => void> = {
+    success: toast.success,
+    danger: toast.error,
+    warning: toast.warn,
+    info: toast.info,
+    error: toast.error,
   }
+
+  mapper[message_type](message)
 }
 
 export default flashMessage

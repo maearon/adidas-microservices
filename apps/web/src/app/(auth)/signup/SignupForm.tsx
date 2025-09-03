@@ -15,6 +15,7 @@ import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation
 import { NetworkErrorWithCode } from "@/components/shared/handleNetworkError"
 import { Input } from "@/components/ui/input"
 import { useTranslations } from "@/hooks/useTranslations"
+import { AuthTranslations } from "@/types/auth"
 
 interface SignupFormValues {
   name: string;
@@ -33,7 +34,7 @@ export interface ApiErrorResponse {
   errors?: ValidationErrorItem[];
 }
 
-const SignupSchema = (t: any) => Yup.object().shape({
+const SignupSchema = (t: AuthTranslations) => Yup.object().shape({
   name: Yup.string().required(t?.validation?.nameRequired || "Name is required"),
   email: Yup.string().email(t?.validation?.emailInvalid || "Invalid email").required(t?.validation?.emailRequired || "Email is required"),
   password: Yup.string().min(6, t?.validation?.passwordMinLength || "Password must be at least 6 characters").required(t?.validation?.passwordRequired || "Password is required"),

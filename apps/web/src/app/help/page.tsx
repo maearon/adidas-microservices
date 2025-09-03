@@ -59,7 +59,7 @@ const Help: NextPage = () => {
             href={link.href}
             
             rel="noopener noreferrer"
-            className="border-2 border-border bg-background text-background p-6 text-center font-semibold hover:bg-foreground hover:text-background transition rounded"
+            className="border-2 border-border bg-background text-black dark:text-white p-6 text-center font-semibold hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition rounded"
           >
             {link.text}
           </a>
@@ -75,14 +75,14 @@ const Help: NextPage = () => {
               typeof item === 'string' ? (
                 <div
                   key={idx}
-                  className="border border-gray-300 hover:border-border p-4 rounded-none transition"
+                  className="border border-gray-300 hover:border-black dark:hover:border-gray-500 hover:cursor-pointer p-4 rounded-none transition"
                 >
                   <span className="font-medium">{item}</span>
                 </div>
               ) : (
                 <div
                   key={idx}
-                  className="border border-gray-300 hover:border-border p-4 rounded-none transition"
+                  className="border border-gray-300 hover:border-black dark:hover:border-gray-500 hover:cursor-pointer p-4 rounded-none transition"
                 >
                   <div className="font-medium">{item.title}</div>
                   <div className="text-gray-500 text-base">{item.subtitle}</div>

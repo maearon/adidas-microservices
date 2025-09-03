@@ -98,3 +98,89 @@ export interface User {
   level?: string
   token?: string
 }
+
+// types/translations.ts
+export interface AuthTranslations {
+  logInOrSignUp: string;
+  logIn: string;
+  signUp: string;
+  enjoyMembersOnly: string;
+  emailAddress: string;
+  password: string;
+  name: string;
+  confirmPassword: string;
+  keepMeLoggedIn: string;
+  moreInfo: string;
+  continue: string;
+  signIn: string;
+  createPassword: string;
+  createMyAccount: string;
+  loading: string;
+  show: string;
+  hide: string;
+  activateYourAccount: string;
+  activateAccountMessage: string;
+  alreadyLoggedIn: string;
+  goToMyAccount: string;
+  dontHaveAccount: string;
+  alreadyHaveAccount: string;
+  forgotPassword: string;
+  resetItHere: string;
+  didntGetActivation: string;
+  resendActivation: string;
+  signMeUpToAdiclub: string;
+  termsText: string;
+  termsOfUse: string;
+  and: string;
+  adiclubTerms: string;
+  acknowledgeRead: string;
+  adidasPrivacyPolicy: string;
+  californiaResident: string;
+  californiaPrivacyNotice: string;
+  forDetails: string;
+  joinAdiclubToUnlock: string;
+  joinAdiclubForFree: string;
+  welcomeBonusVoucher: string;
+  freeShippingReturns: string;
+  membersOnlyProducts: string;
+  earlyAccessSales: string;
+  accessLimitedEditions: string;
+  startEarningPoints: string;
+  joinAdiclubGetDiscount: string;
+  asAdiclubMember: string;
+  freeShipping: string;
+  fifteenPercentVoucher: string;
+  membersOnlySales: string;
+  accessAdidasApps: string;
+  specialPromotions: string;
+
+  validation: {
+    emailRequired: string;
+    emailInvalid: string;
+    passwordRequired: string;
+    nameRequired: string;
+    passwordMinLength: string;
+    passwordConfirmationRequired: string;
+    passwordsMustMatch: string;
+    required: string;
+    min8Characters: string;
+    oneUppercase: string;
+    oneLowercase: string;
+    oneNumber: string;
+    oneSpecialCharacter: string;
+  };
+
+  messages: {
+    loginSuccessful: string;
+    loginFailed: string;
+    invalidPassword: string;
+    accountCreated: string;
+    failedToCreateAccount: string;
+    somethingWentWrong: string;
+    signupSuccessful: string;
+    somethingWentWrongSignup: string;
+    cannotConnectServer: string;
+    invalidInput: string;
+  };
+}
+

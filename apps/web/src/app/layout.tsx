@@ -11,6 +11,7 @@ import ScrollToTop from "@/components/scroll-to-top";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import { ToastProvider } from "@/components/ToastProvider";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -51,6 +52,7 @@ export default function RootLayout({
               <ChatWidget />
               <FeedbackWidget />
               <ScrollToTop />
+              <ToastProvider />
             </ThemeProvider>
           </TRPCProvider>
         </ReduxProvider>

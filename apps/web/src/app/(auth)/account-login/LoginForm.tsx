@@ -17,8 +17,9 @@ import { AxiosError } from "axios"
 import SocialLoginButtons from "./SocialLoginButtons"
 import { Input } from "@/components/ui/input"
 import { useTranslations } from "@/hooks/useTranslations"
+import { AuthTranslations } from "@/types/auth"
 
-const LoginSchema = (t: any) => Yup.object().shape({
+const LoginSchema = (t: AuthTranslations) => Yup.object().shape({
   email: Yup.string().email(t?.validation?.emailInvalid || "Invalid email").required(t?.validation?.emailRequired || "Email is required"),
   password: Yup.string().required(t?.validation?.passwordRequired || "Password is required"),
 })

@@ -18,15 +18,26 @@ import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation
 import AdidasLogo from "./adidas-logo"
 import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 import { useTranslations } from "@/hooks/useTranslations"
+import { AuthTranslations } from "@/types/auth"
 
 interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const validationSchema = (t: any) => Yup.object({
-  email: Yup.string().email(t?.validation?.emailInvalid || "Please enter a valid e-mail address").required(t?.validation?.emailRequired || "Email is required"),
+const validationSchema = (t: AuthTranslations) => Yup.object({
+  email: Yup.string().email(t?.validation?.emailInvalid || "Please enter a valid e-mail address")
+  .required(t?.validation?.emailRequired || "Email is required"),
 })
+
+const passwordSchema = (t: AuthTranslations) =>
+  Yup.string()
+    .required(t?.validation?.required || "Required")
+    .min(8, t?.validation?.min8Characters || "Min 8 characters")
+    .matches(/[A-Z]/, t?.validation?.oneUppercase || "1 uppercase")
+    .matches(/[a-z]/, t?.validation?.oneLowercase || "1 lowercase")
+    .matches(/[0-9]/, t?.validation?.oneNumber || "1 number")
+    .matches(/[@$!%*?&#]/, t?.validation?.oneSpecialCharacter || "1 special character")
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const t = useTranslations("auth");
@@ -267,7 +278,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     type="submit"
                     className="w-full py-3 font-semibold transition-colors"
                   >
-{t?.continue || "CONTINUE"}
+                    {t?.continue || "CONTINUE"}
                   </Button>
                 </Form>
               )}
@@ -278,6 +289,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {step === "login" && (
             <Formik
               initialValues={{ password: "" }}
+              validationSchema={Yup.object({ password: passwordSchema(t) })}
               onSubmit={async (values) => {
                 await handleLogin(values.password)
               }}
@@ -304,11 +316,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
                   </div>
                   <Button
-                    type="submit"
+                    border
+                    theme="black"
+                    showArrow
+                    pressEffect
+                    shadow
                     loading={isLoggingIn || isSubmitting}
-                    className="w-full bg-black text-white py-3"
+                    type="submit"
+                    className="w-full py-3 font-semibold transition-colors"
                   >
-{isLoggingIn ? (t?.loading || "LOADING...") : (t?.signIn || "SIGN IN")}
+                    {isLoggingIn ? (t?.loading || "LOADING...") : (t?.signIn || "SIGN IN")}
                   </Button>
                 </Form>
               )}
@@ -317,16 +334,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
           {step === "register" && (
             <Formik
-              initialValues={{ password: "" }}
-              validationSchema={Yup.object({
-                password: Yup.string()
-                  .required(t?.validation?.required || "Required")
-                  .min(8, t?.validation?.min8Characters || "Min 8 characters")
-                  .matches(/[A-Z]/, t?.validation?.oneUppercase || "1 uppercase")
-                  .matches(/[a-z]/, t?.validation?.oneLowercase || "1 lowercase")
-                  .matches(/[0-9]/, t?.validation?.oneNumber || "1 number")
-                  .matches(/[@$!%*?&#]/, t?.validation?.oneSpecialCharacter || "1 special character"),
-              })}
+              initialValues={{ password: "" }}       
+              validationSchema={Yup.object({ password: passwordSchema(t) })}
               onSubmit={async (values) => {
                 await handleRegister(values.password)
               }}
@@ -353,11 +362,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
                   </div>
                   <Button
-                    type="submit"
-                    className="w-full bg-black text-white hover:bg-gray-800 py-3"
+                    border
+                    theme="black"
+                    showArrow
+                    pressEffect
+                    shadow
                     loading={isRegistering || isSubmitting}
+                    type="submit"
+                    className="w-full py-3 font-semibold transition-colors"
                   >
-{isRegistering ? (t?.loading || "LOADING...") : (t?.createPassword || "CREATE PASSWORD")}
+                    {isRegistering ? (t?.loading || "LOADING...") : (t?.createPassword || "CREATE PASSWORD")}
                   </Button>
                 </Form>
               )}
