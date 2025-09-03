@@ -3,6 +3,7 @@
 import { upperWords } from "@/utils/upper-words";
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface Props {
   currentPage: "home" | "men" | "women" | "kids";
@@ -12,6 +13,7 @@ interface Props {
 
 export default function PageFooter({currentPage = "home", typeMobileResponsive = "accordion1x4" }: Props) {
   const [openCategory, setOpenCategory] = useState<string | null>(null)
+  const t = useTranslations("pageFooter")
 
   const toggleCategory = (category: string) => {
     setOpenCategory(openCategory === category ? null : category)
@@ -24,102 +26,104 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
   }
   
 
-
   const [expandedSections, setExpandedSections] = useState<string[]>([])
 
+  // Get page-specific translations
+  const pageTranslations = t?.[currentPage] || {}
+
   const footerCategories = {
-    "SUMMER FAVORITES": ["Summer Shoes", "Tees", "Tank Tops", "Shorts", "Swimwear", "Outdoor Gear & Accessories"],
-    "SUMMER SPORT FITS": [
-      "Men's Summer Outfits",
-      "Men's Tank Tops",
-      "Men's Shorts",
-      "Women's Summer Outfits",
-      "Women's Shorts & Skirts",
-      "Women's Tank Tops",
+    "summerFavorites": ["summerShoes", "tees", "tankTops", "shorts", "swimwear", "outdoorGearAccessories"],
+    "summerSportFits": [
+      "mensSummerOutfits",
+      "mensTankTops", 
+      "mensShorts",
+      "womensSummerOutfits",
+      "womensShortsSkirts",
+      "womensTankTops",
     ],
-    "OUR FAVORITE ACCESSORIES": ["Hats", "Bags", "Socks", "Sunglasses", "Water Bottles", "Gift Cards"],
-    "SCHOOL UNIFORMS": [
-      "Uniform Shoes",
-      "Uniform Polos",
-      "Uniform Pants",
-      "Uniform Shorts",
-      "Uniform Accessories",
-      "School Backpacks",
+    "ourFavoriteAccessories": ["hats", "bags", "socks", "sunglasses", "waterBottles", "giftCards"],
+    "schoolUniforms": [
+      "uniformShoes",
+      "uniformPolos",
+      "uniformPants",
+      "uniformShorts",
+      "uniformAccessories",
+      "schoolBackpacks",
     ],
   }
 
   const menFooterCategories = {
-    "Men's Clothing": ["T-shirts", "Hoodies", "Jackets", "Shorts", "Pants & Joggers"],
-    "Men's Shoes": ["Shoes", "High Top Sneakers", "Classic Sneakers", "Slip On Sneakers", "All White Sneakers"],
-    "Men's Accessories": ["Men's Accessories", "Men's Duffle Bags", "Men's Socks", "Men's Hats", "Men's Headphones"],
-    "MEN'S COLLECTIONS": [
-      "Men's Running",
-      "Men's Soccer",
-      "Men's Loungewear",
-      "Men's Training & Gym",
-      "Men's Originals",
+    "mensClothing": ["tshirts", "hoodies", "jackets", "shorts", "pantsJoggers"],
+    "mensShoes": ["shoes", "highTopSneakers", "classicSneakers", "slipOnSneakers", "allWhiteSneakers"],
+    "mensAccessories": ["mensAccessories", "mensDuffleBags", "mensSocks", "mensHats", "mensHeadphones"],
+    "mensCollections": [
+      "mensRunning",
+      "mensSoccer",
+      "mensLoungewear",
+      "mensTrainingGym",
+      "mensOriginals",
     ],
   }
 
   const womenFooterSections = {
-    "WOMEN'S CLOTHING": [
-      "Sports Bras",
-      "Tops",
-      "Hoodies",
-      "Shorts",
-      "Tights & Leggings",
+    "womensClothing": [
+      "sportsBras",
+      "tops",
+      "hoodies",
+      "shorts",
+      "tightsLeggings",
     ],
-    "WOMEN'S SHOES": [
-      "Casual Sneakers",
-      "All White Sneakers",
-      "Slip On Sneakers",
-      "Classic Sneakers",
-      "High Top Sneakers",
+    "womensShoes": [
+      "casualSneakers",
+      "allWhiteSneakers",
+      "slipOnSneakers",
+      "classicSneakers",
+      "highTopSneakers",
     ],
-    "WOMEN'S ACCESSORIES": [
-      "Women's Accessories",
-      "Women's Backpacks",
-      "Women's Hats",
-      "Women's Headphones",
-      "Women's Socks",
+    "womensAccessories": [
+      "womensAccessories",
+      "womensBackpacks",
+      "womensHats",
+      "womensHeadphones",
+      "womensSocks",
     ],
-    "WOMEN'S COLLECTIONS": [
-      "Loungewear",
-      "Training & Gym",
-      "Running",
-      "Yoga & Barre",
-      "Plus Size",
+    "womensCollections": [
+      "loungewear",
+      "trainingGym",
+      "running",
+      "yogaBarre",
+      "plusSize",
     ],
   }
 
   const kidsFooterSections = {
-    "KIDS COLLECTIONS": [
-      "Infant & Toddler",
-      "Boys",
-      "Girls",
-      "Disney",
-      "Sportswear",
+    "kidsCollections": [
+      "infantToddler",
+      "boys",
+      "girls",
+      "disney",
+      "sportswear",
     ],
-    "KIDS' SHOES": [
-      "Casual Sneakers",
-      "High Top Sneakers",
-      "Slides & Sandals",
-      "Cleats",
-      "Boots",
+    "kidsShoes": [
+      "casualSneakers",
+      "highTopSneakers",
+      "slidesSandals",
+      "cleats",
+      "boots",
     ],
-    "KIDS' ACCESSORIES": [
-      "Socks",
-      "Hats",
-      "Gloves",
-      "Backpacks & Bags",
-      "Sunglasses",
+    "kidsAccessories": [
+      "socks",
+      "hats",
+      "gloves",
+      "backpacksBags",
+      "sunglasses",
     ],
-    "KIDS' CLOTHING": [
-      "T-shirts",
-      "Hoodies & Sweatshirts",
-      "Jackets & Coats",
-      "Pants & Sweats",
-      "Track Suits",
+    "kidsClothing": [
+      "tshirts",
+      "hoodiesSweatshirts",
+      "jacketsCoats",
+      "pantsSweats",
+      "trackSuits",
     ],
   };
 
@@ -154,14 +158,14 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
                 onClick={() => toggleCategory(category)}
                 className="w-full flex justify-between items-center py-4 font-bold text-md"
               >
-                {upperWords(category)}
+                {pageTranslations[category] || upperWords(category)}
                 {openCategory === category ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
               <ul className={`pl-4 pb-4 space-y-2 ${openCategory === category ? "block" : "hidden"}`}>
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
                     <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
-                      {item}
+                      {pageTranslations[item] || item}
                     </a>
                   </li>
                 ))}
@@ -175,13 +179,13 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
           {Object.entries(selectedCategories).map(([category, items]) => (
             <div key={category}>
               <h4 className="font-bold mb-4 text-md">
-                {upperWords(category)}
+                {pageTranslations[category] || upperWords(category)}
               </h4>
               <ul className="space-y-2">
                 {items.map((item, index) => (
                   <li key={`${item}-${index}`}>
                     <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
-                      {item}
+                      {pageTranslations[item] || item}
                     </a>
                   </li>
                 ))}
@@ -196,12 +200,12 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
       <section className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 bg-background container mx-auto px-4 py-4">
         {sectionEntries.map(([section, items]) => (
           <div key={section}>
-            <h3 className="font-bold mb-4 text-md capitalize">{section}</h3>
+            <h3 className="font-bold mb-4 text-md capitalize">{pageTranslations[section] || section}</h3>
             <ul className="space-y-2">
               {items.map((item, index) => (
                 <li key={index}>
                   <a href="#" className="text-base text-gray-600 dark:text-white hover:underline">
-                    {item}
+                    {pageTranslations[item] || item}
                   </a>
                 </li>
               ))}
@@ -222,7 +226,7 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
                     expandedSections.includes(section) ? "bg-gray-100" : ""
                   }`}
                 >
-                  <span className="font-semibold text-base capitalize">{section}</span>
+                  <span className="font-semibold text-base capitalize">{pageTranslations[section] || section}</span>
                   {expandedSections.includes(section) ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
@@ -241,7 +245,7 @@ export default function PageFooter({currentPage = "home", typeMobileResponsive =
                           href="#"
                           className="block text-base text-gray-600 dark:text-white hover:text-background transition-colors"
                         >
-                          {item}
+                          {pageTranslations[item] || item}
                         </a>
                       </li>
                     ))}

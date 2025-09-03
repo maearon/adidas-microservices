@@ -36,7 +36,8 @@ import HeroBannerVideo from "@/components/home/HeroBannerVideo"
 import { useTranslations } from "@/hooks/useTranslations";
 
 export const LandingPageContents = () => {
-  const t = useTranslations("hero")
+  const heroT = useTranslations("hero")
+  const homeT = useTranslations("home")
   const [newArrivalProductsTab, setNewArrivalProductsTab] = useState<NewArrivalProduct[]>([])
 
   useEffect(() => {
@@ -55,12 +56,12 @@ export const LandingPageContents = () => {
       <HeroBanner
         backgroundClassName="bg-hero"
         content={{
-          title: t?.heroTitle ?? "A TRUE MIAMI ORIGINAL",
-          description: t?.heroDesc ?? "Dream big and live blue in the iconic Inter Miami CF 2025 Third Jersey.",
+          title: heroT?.heroTitle ?? "A TRUE MIAMI ORIGINAL",
+          description: heroT?.heroDesc ?? "Dream big and live blue in the iconic Inter Miami CF 2025 Third Jersey.",
           buttons: [
             {
               href: "/mls",
-              buttonLabel: t?.shopNow ?? "SHOP NOW",
+              buttonLabel: heroT?.shopNow ?? homeT?.shopNow ?? "SHOP NOW",
               border: false,
               shadow: true,
             },
@@ -86,7 +87,7 @@ export const LandingPageContents = () => {
       <HistoryView
         title={
           <>
-            STILL <br className="xl:hidden" /> INTERESTED?
+            {(homeT?.historyStillInterested || "STILL\nINTERESTED?").split("\n")[0]} <br className="xl:hidden" /> {(homeT?.historyStillInterested || "STILL\nINTERESTED?").split("\n")[1]}
           </>
         }
       />
@@ -110,10 +111,10 @@ export const LandingPageContents = () => {
           />
 
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide">
-            Fast, Free Delivery
+            {homeT?.primeFastFreeDelivery || "Fast, Free Delivery"}
           </h2>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide pb-6">
-            with Prime at adidas
+            {homeT?.primeWithPrime || "with Prime at adidas"}
           </h3>
           <Button 
             href="/prime" 
@@ -121,14 +122,14 @@ export const LandingPageContents = () => {
             shadow
             className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
           >
-            SHOP NOW
+            {homeT?.shopNow || "SHOP NOW"}
           </Button>
         </div>
       </section>
 
       {/* Popular Categories */}
       <section className="container mx-auto px-2 py-0">
-        <h2 className="text-[32px] font-bold mb-4 text-foreground">Popular right now</h2>
+        <h2 className="text-[32px] font-bold mb-4 text-foreground">{homeT?.popularRightNow || "Popular right now"}</h2>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-6">
           {popularCategories.slice(0, 6).map((category, index) => (
@@ -153,7 +154,7 @@ export const LandingPageContents = () => {
 
       {/* Related Resources Carousel */}
       <section className="container mx-auto px-2 py-0">
-        <h4 className="text-[24px] font-bold mb-2">RELATED RESOURCES</h4>
+        <h4 className="text-[24px] font-bold mb-2">{homeT?.relatedResources || "RELATED RESOURCES"}</h4>
         {/* <PromoCarousel slides={relatedResources}/> */}
         <PromoCarousel
           items={relatedResources as Slide[]}
@@ -170,32 +171,13 @@ export const LandingPageContents = () => {
       <section className="block bg-black text-white pt-14 pb-16">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-2xl text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-            SNEAKERS, ACTIVEWEAR AND SPORTING GOODS
+            {homeT?.blackSectionTitle || "SNEAKERS, ACTIVEWEAR AND SPORTING GOODS"}
           </h2>
 
           <div className="max-w-2xl mx-auto text-base sm:text-md leading-relaxed space-y-4 text-left">
-            <p>
-              Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for
-              men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes
-              keep you feeling your best. Find sport-specific sneakers to support your passion, and shop versatile
-              activewear and accessories that support everyday comfort. adidas has you covered with world-class
-              performance, quality and unmatched comfort to fit your style. Explore the full range of adidas gear today.
-            </p>
-            <p>
-              Founded on performance, adidas sporting goods equipment supports athletes at all levels. Men,
-              women and kids will find their best form in sneakers and activewear made to perform under pressure.
-              adidas sportswear breathes, manages sweat and helps support working muscles. Explore sport-specific
-              clothes and gear for basketball, soccer, or the yoga studio. Runners will find a range of sneakers
-              for training, racing and trail runs. Gym users will find tops, tees and tanks that support focused
-              efforts with adidas CLIMACOOL to feel cool and dry.
-            </p>
-            <p>
-              Explore warm-ups featuring four-way stretch to support mobility. Find a new outdoor jacket that
-              helps protect against wind and rain. Lace up new athletic shoes that energize every step with
-              adidas Boost cushioning. With sizes and styles for all ages, we have sporting goods for the whole
-              family. Dedicated training demands dedicated workout clothes. Experience the latest performance
-              fabrics and sneaker technologies to get the most out of your next training session.
-            </p>
+            <p>{homeT?.blackSectionP1 || "Calling all athletes. Gear up for your favorite sport with adidas sneakers and activewear for men and women. From running to soccer and the gym to the trail, performance workout clothes and shoes keep you feeling your best. Find sport-specific sneakers to support your passion, and shop versatile activewear and accessories that support everyday comfort. adidas has you covered with world-class performance, quality and unmatched comfort to fit your style. Explore the full range of adidas gear today."}</p>
+            <p>{homeT?.blackSectionP2 || "Founded on performance, adidas sporting goods equipment supports athletes at all levels. Men, women and kids will find their best form in sneakers and activewear made to perform under pressure. adidas sportswear breathes, manages sweat and helps support working muscles. Explore sport-specific clothes and gear for basketball, soccer, or the yoga studio. Runners will find a range of sneakers for training, racing and trail runs. Gym users will find tops, tees and tanks that support focused efforts with adidas CLIMACOOL to feel cool and dry."}</p>
+            <p>{homeT?.blackSectionP3 || "Explore warm-ups featuring four-way stretch to support mobility. Find a new outdoor jacket that helps protect against wind and rain. Lace up new athletic shoes that energize every step with adidas Boost cushioning. With sizes and styles for all ages, we have sporting goods for the whole family. Dedicated training demands dedicated workout clothes. Experience the latest performance fabrics and sneaker technologies to get the most out of your next training session."}</p>
           </div>
 
           <div className="mt-12">
