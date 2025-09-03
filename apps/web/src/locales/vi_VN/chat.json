@@ -1,0 +1,15 @@
+{
+  "chat": "CHAT",
+  "online": "Trực tuyến",
+  "connecting": "Đang kết nối...",
+  "typeMessage": "Nhập tin nhắn...",
+  "connectingPlaceholder": "Đang kết nối...",
+  "typing": "Đang gõ...",
+  "systemMessage": "[Tin nhắn hệ thống]",
+  "adminMessage": "[Tin nhắn quản trị]",
+  "userMessage": "[Tin nhắn người dùng]",
+  "userEmail": "Email người dùng:",
+  "userName": "Tên người dùng:",
+  "gemini": "Gemini",
+  "admin": "Quản trị"
+}

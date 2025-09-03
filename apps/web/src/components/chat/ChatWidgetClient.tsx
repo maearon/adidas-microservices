@@ -11,6 +11,7 @@ import { playSound } from "@/utils/play-sound"
 import Image from "next/image"
 import { Session } from "@/lib/auth"
 import { useAppSelector } from "@/store/hooks"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ChatMessage {
   content: string
@@ -35,6 +36,7 @@ interface ChatWidgetClientProps {
 
 export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const { data: userData, status } = useCurrentUser();
+  const t = useTranslations("chat");
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -301,20 +303,20 @@ function replaceEmojis(text: string): string {
                 <span className="text-white dark:text-black text-xs font-bold">A</span>
               </div>
               <div className="truncate">
-                <h3 className="font-bold text-base leading-none truncate">CHAT</h3>
+                <h3 className="font-bold text-base leading-none truncate">{t?.chat || "CHAT"}</h3>
                 <p className="text-xs text-gray-500 truncate">
                   adiclub {userLevel} 
                   {isConnected ? (
                     <>
                       {' '}
                       <span className="inline-block h-2 w-2 rounded-full bg-green-500"></span>
-                      {' '+'Online'}
+                      {' ' + (t?.online || "Online")}
                     </>
                   ) : (
                     <>
                       {' '}
                       <span className="inline-block h-2 w-2 rounded-full bg-gray-400 animate-pulse"></span>
-                      {' '+'Connecting...'}
+                      {' ' + (t?.connecting || "Connecting...")}
                     </>
                   )}
                 </p>
@@ -344,9 +346,9 @@ function replaceEmojis(text: string): string {
                         </div>
                         {message.is_ai ? (
                           <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-gray-500 italic">[System message]</p>
-                            <p className="text-base text-[#0066FF]">User Email: [System message] Gemini</p>
-                            <p className="text-base text-[#E32B2B]">User Name: [System message]</p>
+                            <p className="text-base text-gray-500 italic">{t?.systemMessage || "[System message]"}</p>
+                            <p className="text-base text-[#0066FF]">{t?.userEmail || "User Email:"} {t?.systemMessage || "[System message]"} {t?.gemini || "Gemini"}</p>
+                            <p className="text-base text-[#E32B2B]">{t?.userName || "User Name:"} {t?.systemMessage || "[System message]"}</p>
                             <p className="text-base mt-1">{message.content}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
@@ -354,9 +356,9 @@ function replaceEmojis(text: string): string {
                           </div>
                         ) : (
                           <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-3 max-w-xs">
-                            <p className="text-base text-gray-500 italic">[Admin message]</p>
-                            <p className="text-base text-[#0066FF]">User Email: [Admin message] Admin</p>
-                            <p className="text-base text-[#E32B2B]">User Name: [Admin message]</p>
+                            <p className="text-base text-gray-500 italic">{t?.adminMessage || "[Admin message]"}</p>
+                            <p className="text-base text-[#0066FF]">{t?.userEmail || "User Email:"} {t?.adminMessage || "[Admin message]"} {t?.admin || "Admin"}</p>
+                            <p className="text-base text-[#E32B2B]">{t?.userName || "User Name:"} {t?.adminMessage || "[Admin message]"}</p>
                             <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
@@ -373,9 +375,9 @@ function replaceEmojis(text: string): string {
                       // </div>
                       <div className="flex items-end justify-end space-x-2">
                         <div className="bg-[#5B34FB] rounded-lg p-3 max-w-xs ml-auto">
-                          <p className="text-base text-gray-500 italic">[User message]</p>
-                            <p className="text-base text-[#0066FF]">User Email: [User message] {(message.users?.email)}</p>
-                            <p className="text-base text-[#E32B2B]">User Name: [User message] {(message.users?.name)}</p>
+                          <p className="text-base text-gray-500 italic">{t?.userMessage || "[User message]"}</p>
+                            <p className="text-base text-[#0066FF]">{t?.userEmail || "User Email:"} {t?.userMessage || "[User message]"} {(message.users?.email)}</p>
+                            <p className="text-base text-[#E32B2B]">{t?.userName || "User Name:"} {t?.userMessage || "[User message]"} {(message.users?.name)}</p>
                           <p className="text-base text-white">{replaceEmojis(message.content)}</p>
                           <p className="text-xs text-gray-500 mt-1">
                             {message.created_at.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
@@ -407,7 +409,7 @@ function replaceEmojis(text: string): string {
                       <span className="text-white dark:text-black text-xs font-bold">A</span>
                     </div>
                     <div className="bg-black dark:bg-white rounded-lg p-3">
-                      <p className="text-base text-white dark:text-black">Typing....</p>
+                      <p className="text-base text-white dark:text-black">{t?.typing || "Typing...."}</p>
                     </div>
                   </div>
                 )}
@@ -421,7 +423,7 @@ function replaceEmojis(text: string): string {
                   <Input
                     value={inputMessage}
                     onChange={handleInputChange}
-                    placeholder={isConnected ? "Type a message..." : "Connecting..."}
+                    placeholder={isConnected ? (t?.typeMessage || "Type a message...") : (t?.connectingPlaceholder || "Connecting...")}
                     disabled={!isConnected}
                     className="flex-1"
                   />

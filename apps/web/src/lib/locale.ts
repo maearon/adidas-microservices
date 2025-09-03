@@ -45,6 +45,8 @@ import homeEn from "@/locales/en_US/home.json"
 import homeVi from "@/locales/vi_VN/home.json"
 import pageFooterEn from "@/locales/en_US/page-footer.json"
 import pageFooterVi from "@/locales/vi_VN/page-footer.json"
+import chatEn from "@/locales/en_US/chat.json"
+import chatVi from "@/locales/vi_VN/chat.json"
 
 export const locales = {
   "en_US": {
@@ -71,6 +73,7 @@ export const locales = {
     stores: storesEn,
     home: homeEn,
     pageFooter: pageFooterEn,
+    chat: chatEn,
   },
   "vi_VN": {
     navbar: navbarVi,
@@ -96,6 +99,7 @@ export const locales = {
     stores: storesVi,
     home: homeVi,
     pageFooter: pageFooterVi,
+    chat: chatVi,
   },
 } as const
 

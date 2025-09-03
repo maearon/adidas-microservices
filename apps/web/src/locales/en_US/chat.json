@@ -1,0 +1,15 @@
+{
+  "chat": "CHAT",
+  "online": "Online",
+  "connecting": "Connecting...",
+  "typeMessage": "Type a message...",
+  "connectingPlaceholder": "Connecting...",
+  "typing": "Typing....",
+  "systemMessage": "[System message]",
+  "adminMessage": "[Admin message]",
+  "userMessage": "[User message]",
+  "userEmail": "User Email:",
+  "userName": "User Name:",
+  "gemini": "Gemini",
+  "admin": "Admin"
+}
