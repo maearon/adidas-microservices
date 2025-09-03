@@ -9,7 +9,7 @@ import CcpaIcon from "../icons/CcpaIcon"
 import { Button } from "../ui/button";
 import { localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
-import { footerLinks } from "@/data/footer-links"
+import { footerSectionsData, mobileFooterSectionsData } from "@/data/footer-sections"
 import type { Session } from "@/lib/auth"
 import { useTranslations } from "@/hooks/useTranslations"
 
@@ -30,92 +30,18 @@ export default function FooterClient({ session }: FooterClientProps) {
   const cartItemsCount = useAppSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
   )
-  const footerSections = {
-    [t?.products || "PRODUCTS"]: [
-      "Shoes",
-      "Clothing", 
-      "Accessories",
-      "Gift Cards",
-      "",
-      "New Arrivals",
-      "Best Sellers",
-      "Release Dates",
-      "Sale",
-    ],
-    [t?.sports || "Sports"]: [
-      "Soccer",
-      "Running",
-      "Basketball",
-      "Football",
-      "Outdoor",
-      "Golf",
-      "Baseball",
-      "Tennis",
-      "Skateboarding",
-      "Training",
-    ],
-    [t?.collections || "Collections"]: [
-      "adicolor",
-      "Ultraboost",
-      "Forum",
-      "Superstar",
-      "Running Shoes",
-      "adilette",
-      "Stan Smith",
-      "adizero",
-      "Tiro",
-      "Cloudfoam Pure",
-    ],
-    [t?.support || "SUPPORT"]: [
-      "Help",
-      "Returns & Exchanges",
-      "Shipping",
-      "Order Tracker",
-      "Store Locator",
-      "Size Charts",
-      "Gift Card Balance",
-      "How to Clean Shoes",
-      "Bra Fit Guide",
-      "Breathing for Running",
-      "Promotions",
-      "Sitemap",
-    ],
-    [t?.companyInfo || "COMPANY INFO"]: [
-      "About Us",
-      "Student Discount",
-      "Military & Healthcare Discount",
-      "adidas Stories",
-      "adidas Apps",
-      "Impact",
-      "People",
-      "Planet",
-      "adiClub",
-      "Affiliates",
-      "Press",
-      "Careers",
-      "California Transparency in Supply Chains Act",
-      "Responsible Disclosure",
-      "Transparency in Coverage",
-    ],
-  }
 
-  const mobileFooterSections = {
-    [t?.myAccount || "My account"]: [
-      "Help",
-      "Returns & Exchanges",
-      "Order Tracker",
-      "Shipping",
-      "Promotions",
-      "Sitemap",
-    ],
-    [`${t?.yourBag || "Your bag"} (${cartItemsCount})`]: [
-      "adiClub",
-      "Store Finder",
-      "Gift Cards",
-      "adidas Apps",
-      "Size Charts",
-    ],
-  }
+  const footerSections = footerSectionsData.map(section => ({
+    title: (t?.[section.sectionKey as keyof typeof t] as string) || section.sectionKey,
+    items: section.items,
+  }))
+
+  const mobileFooterSections = mobileFooterSectionsData.map(section => ({
+    title: section.sectionKey === "yourBag"
+      ? `${t?.yourBag || "Your bag"} (${cartItemsCount})`
+      : (t?.[section.sectionKey as keyof typeof t] as string) || section.sectionKey,
+    items: section.items,
+  }))
 
   const socialIcons = [
     { name: "Facebook", icon: Facebook, href: "https://facebook.com/adidas" },
@@ -186,18 +112,18 @@ export default function FooterClient({ session }: FooterClientProps) {
           
           {/* Desktop Footer */}
           <div className="hidden md:grid grid-cols-6 gap-8 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
-            {Object.entries(footerSections).map(([section, items]) => (
-              <div key={section}>
-                <h3 className="font-bold mb-4 text-base">{section}</h3>
+            {footerSections.map((section) => (
+              <div key={section.title}>
+                <h3 className="font-bold mb-4 text-base">{section.title}</h3>
                 <ul className="space-y-2">
-                  {items.map((item, index) => (
+                  {section.items.map((item, index) => (
                     <li key={index}>
-                      {item ? (
-                        <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white hover:underline">
-                          {item}
-                        </a>
-                      ) : (
+                      {item.key === "_divider" ? (
                         <div className="h-2"></div>
+                      ) : (
+                        <a href={item.href || "#"} className="text-base text-gray-300 hover:text-white hover:underline">
+                          {(t?.[item.key as keyof typeof t] as string) || item.fallback || item.key}
+                        </a>
                       )}
                     </li>
                   ))}
@@ -273,19 +199,19 @@ export default function FooterClient({ session }: FooterClientProps) {
             {/* Hàng 3: 2 cột nội dung có padding ngang */}
             <div className="grid grid-cols-2 gap-4 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
               <ul className="space-y-2">
-                {Object.values(mobileFooterSections)[0].map((item, index) => (
+                {mobileFooterSections[0].items.map((item, index) => (
                   <li key={index}>
-                    <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
-                      {item}
+                    <a href={item.href || "#"} className="text-base text-gray-300 hover:text-white">
+                      {(t?.[item.key as keyof typeof t] as string) || item.fallback || item.key}
                     </a>
                   </li>
                 ))}
               </ul>
               <ul className="space-y-2">
-                {Object.values(mobileFooterSections)[1].map((item, index) => (
+                {mobileFooterSections[1].items.map((item, index) => (
                   <li key={index}>
-                    <a href={footerLinks[item] || "#"} className="text-base text-gray-300 hover:text-white">
-                      {item}
+                    <a href={item.href || "#"} className="text-base text-gray-300 hover:text-white">
+                      {(t?.[item.key as keyof typeof t] as string) || item.fallback || item.key}
                     </a>
                   </li>
                 ))}
@@ -310,11 +236,11 @@ export default function FooterClient({ session }: FooterClientProps) {
                 </div>
               </div>
               <span className="hidden md:inline text-gray-400">|</span>
-              <a href={footerLinks["Privacy Policy"] || "#"} className="hover:underline text-gray-300">
+              <a href={"/privacy-policy"} className="hover:underline text-gray-300">
                 {t?.privacyPolicy || "Privacy Policy"}
               </a>
               <span className="hidden md:inline text-gray-400">|</span>
-              <a href={footerLinks["Terms and Conditions"] || "#"} className="hover:underline text-gray-300">
+              <a href={"/terms"} className="hover:underline text-gray-300">
                 {t?.termsAndConditions || "Terms and Conditions"}
               </a>
             </div>
