@@ -16,13 +16,15 @@ import { handleApiError } from "@/components/shared/handleApiError"
 import { AxiosError } from "axios"
 import SocialLoginButtons from "./SocialLoginButtons"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "@/hooks/useTranslations"
 
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+const LoginSchema = (t: any) => Yup.object().shape({
+  email: Yup.string().email(t?.validation?.emailInvalid || "Invalid email").required(t?.validation?.emailRequired || "Email is required"),
+  password: Yup.string().required(t?.validation?.passwordRequired || "Password is required"),
 })
 
 const LoginForm = () => {
+  const t = useTranslations("auth");
   const router = useRouter()
   const [errors, setErrors] = useState<ErrorMessages>({})
   const [keepLoggedIn, setKeepLoggedIn] = useState(true)
@@ -43,7 +45,7 @@ const LoginForm = () => {
     },
     {
       onSuccess: () => {
-        flashMessage("success", "Login successful.")
+        flashMessage("success", t?.messages?.loginSuccessful || "Login successful.")
         router.push("/")
       },
       onError: (error: AxiosError<{ error?: string }>) => {
@@ -71,14 +73,14 @@ const LoginForm = () => {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN</h1>
-      <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
+      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">{t?.logIn || "LOG IN"}</h1>
+      <p className="mb-4">{t?.enjoyMembersOnly || "Enjoy members-only access to exclusive products, experiences, offers and more."}</p>
 
       <SocialLoginButtons />
 
       <Formik
         initialValues={{ email: "", password: "", keepLoggedIn: true }}
-        validationSchema={LoginSchema}
+        validationSchema={LoginSchema(t)}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, values, setFieldValue, errors, touched }) => (
@@ -92,7 +94,7 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="EMAIL ADDRESS *"
+                      placeholder={t?.emailAddress || "EMAIL ADDRESS *"}
                       className={`w-full ${
                         errors.email && touched.email
                           ? "border-red-500 focus:border-red-500"
@@ -126,7 +128,7 @@ const LoginForm = () => {
             <div className="relative">
               <Field name="password">
                 {({ field }: FieldProps) => (
-                  <Input {...field} type={showPassword ? "text" : "password"} placeholder="Password *" />
+                  <Input {...field} type={showPassword ? "text" : "password"} placeholder={t?.password || "Password *"} />
                 )}
               </Field>
               <button
@@ -135,9 +137,9 @@ const LoginForm = () => {
                 className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
               >
                 {showPassword ? (
-                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
                 ) : (
-                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
                 )}
               </button>
               <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
@@ -151,9 +153,9 @@ const LoginForm = () => {
                 onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
               />
               <label htmlFor="keepLoggedIn" className="text-base">
-                Keep me logged in. Applies to all options.{" "}
+                {t?.keepMeLoggedIn || "Keep me logged in. Applies to all options."}{" "}
                 <button type="button" className="underline">
-                  More info
+                  {t?.moreInfo || "More info"}
                 </button>
               </label>
             </div>
@@ -168,25 +170,22 @@ const LoginForm = () => {
               type="submit"
               className="w-full py-3 font-semibold transition-colors"
             >
-              CONTINUE
+{t?.continue || "CONTINUE"}
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
-              Don&apos;t have an account yet? <Link href="/signup" className="underline text-blue-600">Sign up</Link>
+              {t?.dontHaveAccount || "Don't have an account yet?"} <Link href="/signup" className="underline text-blue-600">{t?.signUp || "Sign up"}</Link>
             </div>
             <div className="mt-2 text-base text-center">
-              Forgot your password? <Link href="/password_resets/new" className="underline text-blue-600" >Reset it here</Link>
+              {t?.forgotPassword || "Forgot your password?"} <Link href="/password_resets/new" className="underline text-blue-600" >{t?.resetItHere || "Reset it here"}</Link>
             </div>
             {/* Terms */}
             <div className="mt-6 text-xs text-gray-500">
-              <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
+              <p className="mb-2">{t?.signMeUpToAdiclub || "Sign me up to adiClub, featuring exclusive adidas offers and news"}</p>
               <p>
-                By clicking the &quot;Continue&quot; button, you are joining adiClub, will receive emails with the latest news and
-                updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
-                <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
-                <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the
-                adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of
-                our <button className="underline">CALIFORNIA PRIVACY NOTICE</button> for details.
+                {t?.termsText || "By clicking the \"Continue\" button, you are joining adiClub, will receive emails with the latest news and updates, and agree to the"} <button className="underline">{t?.termsOfUse || "TERMS OF USE"}</button> {t?.and || "and"}{" "}
+                <button className="underline">{t?.adiclubTerms || "ADICLUB TERMS AND CONDITIONS"}</button> {t?.acknowledgeRead || "and acknowledge you have read the"}{" "}
+                <button className="underline">{t?.adidasPrivacyPolicy || "ADIDAS PRIVACY POLICY"}</button>{t?.californiaResident || ". If you are a California resident, the adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of our"} <button className="underline">{t?.californiaPrivacyNotice || "CALIFORNIA PRIVACY NOTICE"}</button> {t?.forDetails || "for details."}
               </p>
             </div>
           </Form>

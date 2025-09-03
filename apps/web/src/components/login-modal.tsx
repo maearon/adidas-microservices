@@ -17,17 +17,19 @@ import { useLoginMutation } from "@/api/hooks/useLoginMutation"
 import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import AdidasLogo from "./adidas-logo"
 import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const validationSchema = Yup.object({
-  email: Yup.string().email("Please enter a valid e-mail address").required("Email is required"),
+const validationSchema = (t: any) => Yup.object({
+  email: Yup.string().email(t?.validation?.emailInvalid || "Please enter a valid e-mail address").required(t?.validation?.emailRequired || "Email is required"),
 })
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+  const t = useTranslations("auth");
   const [step, setStep] = useState<"email" | "login" | "register"| "activate">("email")
   const [email, setEmail] = useState("") // lưu email sau bước 1
   const [keepLoggedIn, setKeepLoggedIn] = useState(true) // lưu keepLoggedIn sau bước 1
@@ -77,7 +79,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     } catch (error) {
       setIsLoading(false)
       console.log('error', error)
-      flashMessage("error", "Something went wrong. Please try again.")
+      flashMessage("error", t?.messages?.somethingWentWrong || "Something went wrong. Please try again.")
     }
   }
 
@@ -86,13 +88,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       const res = await loginMutation({ email, password, keepLoggedIn })
       if (res) {
         await dispatch(fetchUser())
-        flashMessage("success", "Login successful!")
+        flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
         onClose()
       } else {
-        flashMessage("error", "Invalid password")
+        flashMessage("error", t?.messages?.invalidPassword || "Invalid password")
       }
     } catch (err) {
-      flashMessage("error", "Login failed")
+      flashMessage("error", t?.messages?.loginFailed || "Login failed")
       throw err
     }
   }
@@ -113,10 +115,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         // await dispatch(fetchUser())
         // onClose()
       } else {
-        flashMessage("error", "Failed to create account")
+        flashMessage("error", t?.messages?.failedToCreateAccount || "Failed to create account")
       }
     } catch (err) {
-      flashMessage("error", "Something went wrong")
+      flashMessage("error", t?.messages?.somethingWentWrong || "Something went wrong")
       throw err
     }
   }
@@ -177,8 +179,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div> */}
 
           {/* Social Login Text */}
-          <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">LOG IN OR SIGN UP</h1>
-          <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
+          <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">{t?.logInOrSignUp || "LOG IN OR SIGN UP"}</h1>
+          <p className="mb-4">{t?.enjoyMembersOnly || "Enjoy members-only access to exclusive products, experiences, offers and more."}</p>
           {/* <p className="text-background text-base">
             Enjoy members-only access to exclusive products, experiences, offers and more.
           </p> */}
@@ -196,7 +198,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {step === "email" && (
             <Formik
               initialValues={{ email: "", keepLoggedIn }}
-              validationSchema={validationSchema}
+              validationSchema={validationSchema(t)}
               onSubmit={handleEmailSubmit}
             >
               {({ values, setFieldValue, errors, touched }) => (
@@ -208,7 +210,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                           <Input
                             {...field}
                             type="email"
-                            placeholder="EMAIL ADDRESS *"
+                            placeholder={t?.emailAddress || "EMAIL ADDRESS *"}
                             className={`w-full ${
                               errors.email && touched.email
                                 ? "border-red-500 focus:border-red-500"
@@ -247,9 +249,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
                     />
                     <label htmlFor="keepLoggedIn" className="text-base">
-                      Keep me logged in. Applies to all options.{" "}
+                      {t?.keepMeLoggedIn || "Keep me logged in. Applies to all options."}{" "}
                       <button type="button" className="underline">
-                        More info
+                        {t?.moreInfo || "More info"}
                       </button>
                     </label>
                   </div>
@@ -265,7 +267,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     type="submit"
                     className="w-full py-3 font-semibold transition-colors"
                   >
-                    CONTINUE
+{t?.continue || "CONTINUE"}
                   </Button>
                 </Form>
               )}
@@ -285,7 +287,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   <div className="relative">
                     <Field name="password">
                       {({ field }: FieldProps) => (
-                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder="Password *" />
+                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder={t?.password || "Password *"} />
                       )}
                     </Field>
                     <button
@@ -294,9 +296,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
                     >
                       {showPassword ? (
-                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
                       ) : (
-                        <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                        <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
                       )}
                     </button>
                     <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
@@ -306,7 +308,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     loading={isLoggingIn || isSubmitting}
                     className="w-full bg-black text-white py-3"
                   >
-                    {isLoggingIn ? "LOADING..." : "SIGN IN"}
+{isLoggingIn ? (t?.loading || "LOADING...") : (t?.signIn || "SIGN IN")}
                   </Button>
                 </Form>
               )}
@@ -318,12 +320,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               initialValues={{ password: "" }}
               validationSchema={Yup.object({
                 password: Yup.string()
-                  .required("Required")
-                  .min(8, "Min 8 characters")
-                  .matches(/[A-Z]/, "1 uppercase")
-                  .matches(/[a-z]/, "1 lowercase")
-                  .matches(/[0-9]/, "1 number")
-                  .matches(/[@$!%*?&#]/, "1 special character"),
+                  .required(t?.validation?.required || "Required")
+                  .min(8, t?.validation?.min8Characters || "Min 8 characters")
+                  .matches(/[A-Z]/, t?.validation?.oneUppercase || "1 uppercase")
+                  .matches(/[a-z]/, t?.validation?.oneLowercase || "1 lowercase")
+                  .matches(/[0-9]/, t?.validation?.oneNumber || "1 number")
+                  .matches(/[@$!%*?&#]/, t?.validation?.oneSpecialCharacter || "1 special character"),
               })}
               onSubmit={async (values) => {
                 await handleRegister(values.password)
@@ -334,7 +336,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   <div className="relative">
                     <Field name="password">
                       {({ field }: FieldProps) => (
-                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder="Password *" />
+                        <Input {...field}  type={showPassword ? "text" : "password"} placeholder={t?.password || "Password *"} />
                       )}
                     </Field>
                     <button
@@ -343,9 +345,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
                     >
                       {showPassword ? (
-                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                        <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
                       ) : (
-                        <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                        <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
                       )}
                     </button>
                     <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
@@ -355,7 +357,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     className="w-full bg-black text-white hover:bg-gray-800 py-3"
                     loading={isRegistering || isSubmitting}
                   >
-                    {isRegistering ? "LOADING..." : "CREATE PASSWORD"}
+{isRegistering ? (t?.loading || "LOADING...") : (t?.createPassword || "CREATE PASSWORD")}
                   </Button>
                 </Form>
               )}
@@ -364,14 +366,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
           {/* Terms */}
           <div className="mt-6 text-xs text-gray-500">
-            <p className="mb-2">Sign me up to adiClub, featuring exclusive adidas offers and news</p>
+            <p className="mb-2">{t?.signMeUpToAdiclub || "Sign me up to adiClub, featuring exclusive adidas offers and news"}</p>
             <p>
-              By clicking the &quot;Continue&quot; button, you are joining adiClub, will receive emails with the latest news and
-              updates, and agree to the <button className="underline">TERMS OF USE</button> and{" "}
-              <button className="underline">ADICLUB TERMS AND CONDITIONS</button> and acknowledge you have read the{" "}
-              <button className="underline">ADIDAS PRIVACY POLICY</button>. If you are a California resident, the
-              adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of
-              our <button className="underline">CALIFORNIA PRIVACY NOTICE</button> for details.
+              {t?.termsText || "By clicking the \"Continue\" button, you are joining adiClub, will receive emails with the latest news and updates, and agree to the"} <button className="underline">{t?.termsOfUse || "TERMS OF USE"}</button> {t?.and || "and"}{" "}
+              <button className="underline">{t?.adiclubTerms || "ADICLUB TERMS AND CONDITIONS"}</button> {t?.acknowledgeRead || "and acknowledge you have read the"}{" "}
+              <button className="underline">{t?.adidasPrivacyPolicy || "ADIDAS PRIVACY POLICY"}</button>{t?.californiaResident || ". If you are a California resident, the adiClub membership may be considered a financial incentive. Please see the Financial Incentives section of our"} <button className="underline">{t?.californiaPrivacyNotice || "CALIFORNIA PRIVACY NOTICE"}</button> {t?.forDetails || "for details."}
             </p>
           </div>
         </div>
@@ -403,9 +402,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
 
             {/* Title + Content */}
-            <h2 className="text-xl font-bold mb-2">ACTIVATE YOUR ACCOUNT</h2>
+            <h2 className="text-xl font-bold mb-2">{t?.activateYourAccount || "ACTIVATE YOUR ACCOUNT"}</h2>
             <p className="text-foreground text-base">
-              Looks like you already have an account. We’ve sent you an email to activate it and get full access to adiClub benefits.
+              {t?.activateAccountMessage || "Looks like you already have an account. We've sent you an email to activate it and get full access to adiClub benefits."}
             </p>
           </div>
         ) : (

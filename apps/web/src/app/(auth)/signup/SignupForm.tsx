@@ -14,6 +14,7 @@ import { AxiosError } from "axios"
 import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import { NetworkErrorWithCode } from "@/components/shared/handleNetworkError"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface SignupFormValues {
   name: string;
@@ -32,16 +33,17 @@ export interface ApiErrorResponse {
   errors?: ValidationErrorItem[];
 }
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+const SignupSchema = (t: any) => Yup.object().shape({
+  name: Yup.string().required(t?.validation?.nameRequired || "Name is required"),
+  email: Yup.string().email(t?.validation?.emailInvalid || "Invalid email").required(t?.validation?.emailRequired || "Email is required"),
+  password: Yup.string().min(6, t?.validation?.passwordMinLength || "Password must be at least 6 characters").required(t?.validation?.passwordRequired || "Password is required"),
   password_confirmation: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Password confirmation is required"),
+    .oneOf([Yup.ref("password")], t?.validation?.passwordsMustMatch || "Passwords must match")
+    .required(t?.validation?.passwordConfirmationRequired || "Password confirmation is required"),
 })
 
 const SignupForm = () => {
+  const t = useTranslations("auth");
   const router = useRouter()
   const [errors, setErrors] = useState<ErrorMessages>({})
   const [showPassword, setShowPassword] = useState({
@@ -72,7 +74,7 @@ const SignupForm = () => {
     signupMutation.mutate(payload, {
       onSuccess: (response) => {
         if (response?.success) {
-          flashMessage("success", response.message || "Signup successful.")
+          flashMessage("success", response.message || t?.messages?.signupSuccessful || "Signup successful.")
           router.push("/account-login")
           return
         }
@@ -85,7 +87,7 @@ const SignupForm = () => {
         // Trường hợp lỗi mạng
         const netErr = error as NetworkErrorWithCode
         if (netErr.code === "ERR_NETWORK") {
-          flashMessage("error", "Cannot connect to the server. Please try again later.")
+          flashMessage("error", t?.messages?.cannotConnectServer || "Cannot connect to the server. Please try again later.")
           return
         }
 
@@ -97,7 +99,7 @@ const SignupForm = () => {
           const fieldErrors: ErrorMessages = {}
           resData.errors.forEach((err) => {
             const field = err?.cause?.field || "general"
-            const message = err.defaultMessage || "Invalid input"
+            const message = err.defaultMessage || t?.messages?.invalidInput || "Invalid input"
             if (!fieldErrors[field]) fieldErrors[field] = []
             fieldErrors[field].push(message)
           })
@@ -105,7 +107,7 @@ const SignupForm = () => {
         } else if (resData?.message) {
           setErrors({ general: [resData.message] })
         } else {
-          flashMessage("error", "Something went wrong during signup.")
+          flashMessage("error", t?.messages?.somethingWentWrongSignup || "Something went wrong during signup.")
         }
       },
     })
@@ -129,8 +131,8 @@ const SignupForm = () => {
       </div>
       
       {/* Social Login Text */}
-      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">SIGN UP</h1>
-      <p className="mb-4">Enjoy members-only access to exclusive products, experiences, offers and more.</p>
+      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">{t?.signUp || "SIGN UP"}</h1>
+      <p className="mb-4">{t?.enjoyMembersOnly || "Enjoy members-only access to exclusive products, experiences, offers and more."}</p>
 
       <Formik
         initialValues={{
@@ -139,7 +141,7 @@ const SignupForm = () => {
           password: "",
           password_confirmation: "",
         }}
-        validationSchema={SignupSchema}
+        validationSchema={SignupSchema(t)}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, values, setFieldValue, errors, touched }) => (
@@ -153,7 +155,7 @@ const SignupForm = () => {
                     <Input
                       {...field}
                       type="name"
-                      placeholder="NAME *"
+                      placeholder={t?.name || "NAME *"}
                       className={`w-full ${
                         errors.name && touched.name
                           ? "border-red-500 focus:border-red-500"
@@ -191,7 +193,7 @@ const SignupForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="EMAIL ADDRESS *"
+                      placeholder={t?.emailAddress || "EMAIL ADDRESS *"}
                       className={`w-full ${
                         errors.email && touched.email
                           ? "border-red-500 focus:border-red-500"
@@ -235,7 +237,7 @@ const SignupForm = () => {
             <div className="relative">
               <Field name="password">
                 {({ field }: FieldProps) => (
-                  <Input {...field} type={showPassword.password ? "text" : "password"} placeholder="PASSWORD *" />
+                  <Input {...field} type={showPassword.password ? "text" : "password"} placeholder={t?.password || "PASSWORD *"} />
                 )}
               </Field>
               <button
@@ -244,9 +246,9 @@ const SignupForm = () => {
                 className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
               >
                 {showPassword.password ? (
-                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
                 ) : (
-                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
                 )}
               </button>
               <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
@@ -264,7 +266,7 @@ const SignupForm = () => {
             <div className="relative">
               <Field name="password_confirmation">
                 {({ field }: FieldProps) => (
-                  <Input {...field} type={showPassword.password_confirmation ? "text" : "password"} placeholder="CONFIRM PASSWORD *" />
+                  <Input {...field} type={showPassword.password_confirmation ? "text" : "password"} placeholder={t?.confirmPassword || "CONFIRM PASSWORD *"} />
                 )}
               </Field>
               <button
@@ -273,9 +275,9 @@ const SignupForm = () => {
                 className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
               >
                 {showPassword.password_confirmation ? (
-                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> HIDE</>
+                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
                 ) : (
-                  <><Eye className="inline-block w-4 h-4 mr-1" /> SHOW</>
+                  <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
                 )}
               </button>
               <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
@@ -291,24 +293,24 @@ const SignupForm = () => {
               type="submit"
               className="w-full py-3 font-semibold transition-colors"
             >
-              CREATE MY ACCOUNT
+{t?.createMyAccount || "CREATE MY ACCOUNT"}
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
-              Already have an account?{" "}
+              {t?.alreadyHaveAccount || "Already have an account?"}{" "}
               <Link href="/account-login" className="underline text-blue-600">
-                Log in
+                {t?.logIn || "Log in"}
               </Link>
             </div>
 
             <div className="mt-2 text-base text-center">
-              Didn&apos;t get your activation email?{" "}
+              {t?.didntGetActivation || "Didn't get your activation email?"}{" "}
               <Link
                 href="/account_activations/new"
                 className="underline text-blue-600"
                 
               >
-                Resend activation
+                {t?.resendActivation || "Resend activation"}
               </Link>
             </div>
           </Form>

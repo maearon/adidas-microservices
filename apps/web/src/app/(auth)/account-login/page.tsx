@@ -1,23 +1,14 @@
 import { redirect } from "next/navigation";
 import LoginForm from "./LoginForm";
 import PromoSection from "./PromoSection";
-import Link from "next/link";
+import LoginPageClient from "./LoginPageClient";
 import { getSession } from "@/lib/auth";
 
 const LoginPage = async () => {
   const session = await getSession()
 
   if (session?.user?.email) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">You&apos;re already logged in</h1>
-          <Link href="/my-account" className="underline text-blue-600">
-            Go to My Account
-          </Link>
-        </div>
-      </div>
-    )
+    return <LoginPageClient isLoggedIn={true} />
   }
 
   if(session) redirect('/');
