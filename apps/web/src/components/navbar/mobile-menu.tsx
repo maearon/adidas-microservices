@@ -376,7 +376,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           )}
         </div>
 
-        {/* Footer sticky (all level) */}
+        {/* Footer sticky (only level 1) */}
+        {isMainMenu && (
         <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-white">
           <button
             onClick={() => setIsLocaleModalOpen(true)}
@@ -398,6 +399,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             onClose={() => setIsLocaleModalOpen(false)}
           />
         </div>
+        )}
       </div>
     </>
   )
