@@ -13,6 +13,7 @@ import type {
   MenuLeaf,
   MenuLevel,
   NavigationHistory,
+  NavigationTranslations,
 } from "@/types/common"
 import { capitalizeWordsCountry } from "@/utils/upper-words"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -41,7 +42,7 @@ function isMenuLeaf(item: MenuItem): item is MenuLeaf {
 // ======================
 // Helpers
 // ======================
-function buildMainCategories(t: any): MenuCategory[] {
+function buildMainCategories(t: NavigationTranslations): MenuCategory[] {
   return [
     {
       title: t?.men || "MEN",
@@ -232,7 +233,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
       {/* Panel */}
       <div className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:hidden">
-        {/* Header */}
+        {/* Header sticky trên cùng */}
         <div
           className="h-10 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white min-h-[60px]"
           onClick={() => {
@@ -275,7 +276,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           </button>
         </div>
 
-        {/* Content */}
+        {/* Content scrollable */}
         <div className="flex-1 overflow-y-auto mobile-menu-content">
           {isMainMenu ? (
             <div>
@@ -368,7 +369,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <input
                           type="radio"
                           name="country"
-                          checked={isSelected}
+                          checked={!!isSelected}
                           onChange={() => {
                             if (item.value) {
                               dispatch(setLocale(item.value as SupportedLocale))
@@ -450,6 +451,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </div>
           )}
         </div>
+
+        {/* Footer sticky dưới cùng */}
       </div>
     </>
   )

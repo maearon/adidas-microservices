@@ -6,12 +6,14 @@ export interface MenuCategory {
   titleHref?: string      // link chính cho category
   description?: string    // optional description
   items: { name: string; href: string; translationKey?: string }[]
+  translationKey?: string
 }
 
 // MenuLeaf: item đơn lẻ, không có submenu
 export interface MenuLeaf {
   name: string
   href: string
+  translationKey?: string
 }
 
 // LocaleMenuItem: menu chọn ngôn ngữ / quốc gia
@@ -36,4 +38,14 @@ export interface MenuLevel {
 export interface NavigationHistory {
   level: MenuLevel
   scrollPosition: number
+}
+
+export interface NavigationTranslations {
+  menu: string;
+  men: string;
+  women: string;
+  kids: string;
+  backToSchool: string;
+  sale: string;
+  newTrending: string;
 }
