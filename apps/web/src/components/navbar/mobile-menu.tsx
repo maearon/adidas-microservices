@@ -26,6 +26,8 @@ import { setLocale } from "@/store/localeSlice"
 import { colorMappingClass, colorMappingSymbol, mainMenuData } from "@/utils/menu-utils"
 import { useTranslations } from "@/hooks/useTranslations"
 import LocaleModal from "@/components/footer/LocaleModal"
+import LocationModal from "@/components//location-modal"
+import { useLocationModal } from "@/hooks/useLocationModal"
 
 // ======================
 // Utils type guards
@@ -105,6 +107,7 @@ interface MobileMenuProps {
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [country, setCountry] = useState<string>("US")
   const [isLocaleModalOpen, setIsLocaleModalOpen] = useState(false)
+  const { selectLocation } = useLocationModal()
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
@@ -394,9 +397,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </div>
           </button>
 
-          <LocaleModal
+          <LocationModal
             isOpen={isLocaleModalOpen}
             onClose={() => setIsLocaleModalOpen(false)}
+            onLocationSelect={selectLocation}
           />
         </div>
         )}

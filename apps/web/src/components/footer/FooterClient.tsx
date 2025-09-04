@@ -13,6 +13,8 @@ import { footerSectionsData, mobileFooterSectionsData } from "@/data/footer-sect
 import type { Session } from "@/lib/auth"
 import { useTranslations } from "@/hooks/useTranslations"
 import LocaleModal from "@/components/footer/LocaleModal"
+import LocationModal from "@/components//location-modal"
+import { useLocationModal } from "@/hooks/useLocationModal"
 
 interface FooterClientProps {
   session: Session | null;
@@ -21,6 +23,7 @@ interface FooterClientProps {
 export default function FooterClient({ session }: FooterClientProps) {
   const [mounted, setMounted] = useState(false)
   const [isLocaleModalOpen, setIsLocaleModalOpen] = useState(false)
+  const { selectLocation } = useLocationModal()
   const t = useTranslations("footer")
   
   useEffect(() => {
@@ -277,9 +280,10 @@ export default function FooterClient({ session }: FooterClientProps) {
                   <span>{localeDisplayMap[locale]}</span>
                 </button>
 
-                <LocaleModal
+                <LocationModal
                   isOpen={isLocaleModalOpen}
                   onClose={() => setIsLocaleModalOpen(false)}
+                  onLocationSelect={selectLocation}
                 />
               </>
             )}
