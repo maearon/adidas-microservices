@@ -72,10 +72,17 @@ export default function FooterClient({ session }: FooterClientProps) {
       </section> */}
 
       {/* Opinion Section with Back to Top */}
-      <section className="sm:hidden bg-gray-100 text-base text-gray-600 py-4">
+      <section className="sm:hidden bg-gray-100 text-base text-black py-4">
         <div className="container mx-auto px-4">
-          <h3 className="font-bold mb-1">{t?.yourOpinionCounts || "YOUR OPINION COUNTS"}</h3>
-          <p>{t?.striveToServe || "We strive to serve you better and appreciate your feedback"}</p>
+          <h3 className="text-xl font-bold uppercase tracking-normal leading-snug mb-2">
+            {t?.yourOpinionCounts || "YOUR OPINION COUNTS"}
+          </h3>
+          <p className="text-sm mb-1">{t?.striveToServe || "We strive to serve you better and appreciate your feedback"}</p>
+          <div id="qualtrics-feedback-footer">
+            <a className="QSILink SI_9tTOmGSj82LsgBL_Link underline underline-offset-2" href="javascript:void(0);">
+              {t?.qualtricsFeedback || "Please fill out this short survey"}
+            </a>
+          </div>
         </div>
       </section>
 
@@ -84,10 +91,12 @@ export default function FooterClient({ session }: FooterClientProps) {
         <div className="px-4 flex justify-center">
                       <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 text-xs font-medium text-black"
+              className="flex items-center gap-1 text-base font-normal tracking-wide leading-tight break-words text-black"
             >
-              <ChevronUp className="h-4 w-4" />
-              {t?.backToTop || "Back to top"}
+              <ChevronUp className="h-6 w-6" />
+              <span className="ml-2">
+                {t?.backToTop || "Back to top"}
+              </span>
             </button>
         </div>
       </section>
