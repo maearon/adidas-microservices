@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { footerSectionsData, mobileFooterSectionsData } from "@/data/footer-sections"
 import type { Session } from "@/lib/auth"
 import { useTranslations } from "@/hooks/useTranslations"
+import LocaleModal from "@/components/footer/LocaleModal"
 
 interface FooterClientProps {
   session: Session | null;
@@ -19,6 +20,7 @@ interface FooterClientProps {
 
 export default function FooterClient({ session }: FooterClientProps) {
   const [mounted, setMounted] = useState(false)
+  const [isLocaleModalOpen, setIsLocaleModalOpen] = useState(false)
   const t = useTranslations("footer")
   
   useEffect(() => {
@@ -246,7 +248,7 @@ export default function FooterClient({ session }: FooterClientProps) {
             </div>
 
             {/* Country Selector */}
-            {mounted && (
+            {/* {mounted && (
               <div className="flex items-center gap-2 text-base">
                 <Image
                   src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
@@ -257,6 +259,29 @@ export default function FooterClient({ session }: FooterClientProps) {
                 />
                 <span>{localeDisplayMap[locale]}</span>
               </div>
+            )} */}
+            {/* Country Selector */}
+            {mounted && (
+              <>
+                <button
+                  onClick={() => setIsLocaleModalOpen(true)}
+                  className="flex items-center gap-2 text-base hover:underline"
+                >
+                  <Image
+                    src={localeOptions.find(country => country.value === locale)?.flag || "/flag/us.svg"}
+                    alt={`${localeDisplayMap[locale]} Flag`}
+                    width={24}
+                    height={16}
+                    className="inline-block"
+                  />
+                  <span>{localeDisplayMap[locale]}</span>
+                </button>
+
+                <LocaleModal
+                  isOpen={isLocaleModalOpen}
+                  onClose={() => setIsLocaleModalOpen(false)}
+                />
+              </>
             )}
           </div>
 
