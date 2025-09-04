@@ -235,7 +235,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
       {/* Panel */}
       <div className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:hidden">
-        {/* Header sticky trên cùng */}
+        {/* Header sticky top */}
         <div
           className="h-10 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white min-h-[60px]"
           onClick={() => {
@@ -308,38 +308,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {/* Additional */}
               {additionalMenuItems.map((item) =>
                 item.hasSubmenu ? (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      pushToHistory(currentLevel)
-                      setCurrentLevel({
-                        title: item.name,
-                        items: localeOptions.map((opt) => ({
-                          title: opt.label,
-                          value: opt.value,
-                          flag: opt.flag,
-                          items: [],
-                        })),
-                      })
-                    }}
-                    className="w-full text-left p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black flex items-center justify-between"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <Image
-                        src={
-                          localeOptions.find((o) => o.value === locale)?.flag ||
-                          "/flag/us-show.svg"
-                        }
-                        alt={commonT?.flag || "flag"}
-                        width={24}
-                        height={16}
-                      />
-                      <span className="text-base">
-                        {item.value && item.value === "en_US" ? (t?.countryUS || "US") : (t?.countryVN || "VN")}
-                      </span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
-                  </button>
+                  null // Locale handled in footer
                 ) : (
                   <Link
                     key={item.name}
@@ -405,13 +374,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               })}
             </div>
           )}
-
-          {/* Placeholder giữ chỗ cho sticky footer */}
-          <div className="h-14 shrink-0" />
         </div>
 
-        {/* Footer sticky dưới cùng (mọi level) */}
-        <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700">
+        {/* Footer sticky (all level) */}
+        <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-white">
           <button
             onClick={() => setIsLocaleModalOpen(true)}
             className="w-full h-14 flex items-center justify-between px-4 cursor-pointer"
