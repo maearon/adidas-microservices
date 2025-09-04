@@ -25,6 +25,7 @@ import {
 import { setLocale } from "@/store/localeSlice"
 import { colorMappingClass, colorMappingSymbol, mainMenuData } from "@/utils/menu-utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import LocaleModal from "@/components/footer/LocaleModal"
 
 // ======================
 // Utils type guards
@@ -103,6 +104,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [country, setCountry] = useState<string>("US")
+  const [isLocaleModalOpen, setIsLocaleModalOpen] = useState(false)
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
@@ -354,53 +356,60 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <div>
               {currentLevel.items.map((item, i) => {
                 if (isLocaleMenuItem(item)) {
-                  const isSelected = item.value && item.value === locale
+                  // const isSelected = item.value && item.value === locale
+                  // return (
+                  //   <label
+                  //     key={item.value || i}
+                  //     className={cn(
+                  //       "w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer",
+                  //       isSelected
+                  //         ? "bg-gray-100 dark:bg-gray-700 font-semibold"
+                  //         : "hover:bg-gray-50 dark:hover:bg-gray-500"
+                  //     )}
+                  //   >
+                  //     <div className="flex items-center gap-3">
+                  //       <input
+                  //         type="radio"
+                  //         name="country"
+                  //         checked={!!isSelected}
+                  //         onChange={() => {
+                  //           if (item.value) {
+                  //             dispatch(setLocale(item.value as SupportedLocale))
+                  //             document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
+                  //             localStorage.setItem("NEXT_LOCALE", item.value)
+                  //                                         setCountry(
+                  //             item.value && item.value === "en_US" ? "US" : "VN"
+                  //           )
+                  //           }
+                  //           handleClose()
+                  //         }}
+                  //         className="hidden"
+                  //       />
+                  //       <Image
+                  //         src={item?.flag || "/flag/us-show.svg"}
+                  //         alt={item?.title || commonT?.countryFlag || "Country Flag"}
+                  //         width={24}
+                  //         height={16}
+                  //       />
+                  //       <span
+                  //         className={isSelected ? "font-bold" : "font-normal"}
+                  //       >
+                  //         {item.title}
+                  //       </span>
+                  //     </div>
+                  //     <div className="w-4 h-4 border-2 rounded-full flex items-center justify-center">
+                  //       {isSelected && (
+                  //         <div className="w-2 h-2 bg-black dark:bg-white rounded-full" />
+                  //       )}
+                  //     </div>
+                  //   </label>
+                  // )
+                  // ✅ Chỉ render placeholder để giữ chỗ
                   return (
-                    <label
+                    <div
                       key={item.value || i}
-                      className={cn(
-                        "w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer",
-                        isSelected
-                          ? "bg-gray-100 dark:bg-gray-700 font-semibold"
-                          : "hover:bg-gray-50 dark:hover:bg-gray-500"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="radio"
-                          name="country"
-                          checked={!!isSelected}
-                          onChange={() => {
-                            if (item.value) {
-                              dispatch(setLocale(item.value as SupportedLocale))
-                              document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
-                              localStorage.setItem("NEXT_LOCALE", item.value)
-                                                          setCountry(
-                              item.value && item.value === "en_US" ? "US" : "VN"
-                            )
-                            }
-                            handleClose()
-                          }}
-                          className="hidden"
-                        />
-                        <Image
-                          src={item?.flag || "/flag/us-show.svg"}
-                          alt={item?.title || commonT?.countryFlag || "Country Flag"}
-                          width={24}
-                          height={16}
-                        />
-                        <span
-                          className={isSelected ? "font-bold" : "font-normal"}
-                        >
-                          {item.title}
-                        </span>
-                      </div>
-                      <div className="w-4 h-4 border-2 rounded-full flex items-center justify-center">
-                        {isSelected && (
-                          <div className="w-2 h-2 bg-black dark:bg-white rounded-full" />
-                        )}
-                      </div>
-                    </label>
+                      className="h-14 border-b border-gray-200 dark:border-gray-700"
+                    />
                   )
                 }
 
@@ -453,7 +462,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         </div>
 
         {/* Footer sticky dưới cùng */}
-        {!isMainMenu && (
+        {/* {!isMainMenu && (
           <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700">
             {currentLevel.items
               .filter((item) => isLocaleMenuItem(item))
@@ -503,6 +512,29 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   </label>
                 )
               })}
+          </div>
+        )} */}
+        {!isMainMenu && (
+          <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setIsLocaleModalOpen(true)}
+              className="w-full h-14 flex items-center justify-between px-4 cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <Image
+                  src={localeOptions.find(c => c.value === locale)?.flag || "/flag/us.svg"}
+                  alt={`${localeDisplayMap[locale]} Flag`}
+                  width={24}
+                  height={16}
+                />
+                <span className="font-medium">{localeDisplayMap[locale]}</span>
+              </div>
+            </button>
+
+            <LocaleModal
+              isOpen={isLocaleModalOpen}
+              onClose={() => setIsLocaleModalOpen(false)}
+            />
           </div>
         )}
       </div>
