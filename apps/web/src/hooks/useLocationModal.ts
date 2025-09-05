@@ -1,5 +1,6 @@
 "use client"
 
+import { normalizeLocale } from "@/lib/utils"
 import { Nullable } from "@/types/common"
 import { useState, useEffect } from "react"
 
@@ -13,11 +14,14 @@ export function useLocationModal() {
 
     // Nếu chưa chọn địa điểm thì sau 1 giây hiện modal
     if (!savedLocation) {
-      const timer = setTimeout(() => {
-        setIsOpen(true)
-      }, 1000)
+      // const timer = setTimeout(() => {
+      //   setIsOpen(true)
+      // }, 1000)
 
-      return () => clearTimeout(timer)
+      // return () => clearTimeout(timer)
+      // ✅ Nếu chưa có thì tự động detect từ browser
+      const detected = normalizeLocale(navigator.language)
+      localStorage.setItem("NEXT_LOCALE", detected)
     }
   }, [])
 
