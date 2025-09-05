@@ -27,6 +27,7 @@ import { setLocale } from "@/store/localeSlice"
 import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import SearchField from "../SearchField"
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { normalizeLocale } from "@/lib/utils"; 
 // import { getSession } from "@/lib/auth"
 // import SignOutButton from "./navbar/SignOutButton"
 // import SignInButton from "./navbar/SignInButton"
@@ -37,7 +38,7 @@ const Navbar = () => {
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const dispatch = useAppDispatch()
-  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English  
   const [showCountrySelect, setShowCountrySelect] = useState(false)
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)

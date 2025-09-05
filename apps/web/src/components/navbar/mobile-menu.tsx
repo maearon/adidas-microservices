@@ -28,6 +28,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import LocaleModal from "@/components/footer/LocaleModal"
 import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
+import { normalizeLocale } from "@/lib/utils"; 
 
 // ======================
 // Utils type guards
@@ -117,7 +118,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   >([])
 
   const dispatch = useAppDispatch()
-  const locale = useAppSelector((s) => s.locale.locale) || "en_US"
+  const locale = useAppSelector((s) => s.locale.locale) || normalizeLocale(navigator.language)
   const languageLabel = localeDisplayMap[locale]
   const t = useTranslations("navigation")
   const commonT = useTranslations("common")

@@ -1,6 +1,6 @@
 "use client";
 
-import { formatPrice } from "@/lib/utils"; 
+import { formatPrice, normalizeLocale } from "@/lib/utils"; 
 import { useAppSelector } from "@/store/hooks";
 import { useTranslations } from "@/hooks/useTranslations";
 
@@ -15,7 +15,7 @@ export default function ProductPrice({
 }: ProductPriceProps) {
   const priceNum = price ? Number(price) : null;
   const compareNum = compareAtPrice ? Number(compareAtPrice) : null;
-  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English  
   const userLocale = navigator.language;
   const t = useTranslations("common");
   console.log("User locale:", userLocale); 

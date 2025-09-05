@@ -15,6 +15,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import LocaleModal from "@/components/footer/LocaleModal"
 import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
+import { normalizeLocale } from "@/lib/utils";
 
 interface FooterClientProps {
   session: Session | null;
@@ -30,7 +31,7 @@ export default function FooterClient({ session }: FooterClientProps) {
     setMounted(true)
   }, [])
 
-  const locale = useAppSelector((state) => state.locale.locale) || "en_US" // Mặc định là US English
+  const locale = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English
   const { value: user } = useAppSelector(selectUser)
   const cartItemsCount = useAppSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
