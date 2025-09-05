@@ -11,6 +11,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { ToastProvider } from "@/components/ToastProvider";
+import ReactQueryProvider from "./ReactQueryProvider";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${barlow.variable}`}
       >
         <ReduxProvider>
+          <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -52,6 +54,7 @@ export default function RootLayout({
             <ScrollToTop />
             <ToastProvider />
           </ThemeProvider>
+          </ReactQueryProvider>
         </ReduxProvider>
       </body>
     </html>
