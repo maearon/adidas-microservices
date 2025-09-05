@@ -129,7 +129,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                               <ul className="space-y-2">
                   {menuData[0].items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <Link href={item.href} className="text-base hover:underline">
+                      <Link onClick={onClose} href={item.href} className="text-base hover:underline">
                         {item.translationKey ? (t?.[item.translationKey as keyof typeof t] || item.name) : item.name}
                       </Link>
                     </li>
@@ -137,6 +137,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                 </ul>
               {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && menuData[0].title === "NEW & TRENDING" && (
                 <Link
+                  onClick={onClose}
                   href={`/${activeMenu.toLowerCase()}-superstar`}
                   className="text-blue-600 underline font-semibold"
                 >
@@ -154,7 +155,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               {/* {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && ["CLOTHING", "SHOP BY AGE"].includes(menuData[0].title) && (
                 {shopbycolor[0].items.map((item, itemIndex) => (
                   <li key={itemIndex}>
-                    <Link href={item.href} className="text-base hover:underline">
+                    <Link onClick={onClose} href={item.href} className="text-base hover:underline">
                       {item.name}
                     </Link>
                   </li>
@@ -169,7 +170,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               <div key={index} className="space-y-4">
                 <h3 className="font-bold text-base">
                   {category.titleHref ? (
-                    <Link href={category.titleHref} className="hover:underline">
+                    <Link onClick={onClose} href={category.titleHref} className="hover:underline">
                       {t?.[category.title.toLowerCase().replace(/\s+/g, '') as keyof typeof t] || category.title}
                     </Link>
                   ) : (
@@ -179,7 +180,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                 <ul className="space-y-2">
                   {category.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      <Link href={item.href} className="text-base hover:underline">
+                      <Link onClick={onClose} href={item.href} className="text-base hover:underline">
                         {item.translationKey ? (t?.[item.translationKey as keyof typeof t] || item.name) : item.name}
                       </Link>
                     </li>
@@ -192,6 +193,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                     <div className="pt-4">
                       <h3 className="font-bold text-base mb-2">
                         <Link
+                          onClick={onClose}
                           href={getShopByColorItems(activeMenu.toLowerCase())[0].href}
                           className="hover:underline"
                         >
@@ -202,7 +204,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                       {/* <ul className="space-y-1">
                         {getShopByColorItems(activeMenu.toLowerCase()).map((colorItem, colorIndex) => (
                           <li key={colorIndex}>
-                            <Link href={colorItem.href} className="text-base hover:underline">
+                            <Link onClick={onClose} href={colorItem.href} className="text-base hover:underline">
                               {colorItem.name}
                             </Link>
                           </li>
@@ -220,6 +222,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
         <div className="flex justify-start space-x-8 mt-12 border-t pt-4">
           {footerLinks.map((link, index) => (
             <Link
+              onClick={onClose}
               key={index}
               href={link.href}
               className="text-base font-medium hover:underline"
