@@ -1,14 +1,12 @@
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getQueryClient } from "@/trpc/server";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { LandingPageContents } from "./_ui/landing-page-contents";
 
 const LandingPage = async () => {
-  const queryClient = getQueryClient();
-
+  const queryClient = new QueryClient();
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ErrorBoundary fallback={<div>There was an error</div>}>

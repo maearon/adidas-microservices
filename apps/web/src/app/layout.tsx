@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/providers/redux-provider";
-import { TRPCProvider } from "@/providers/trpc-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocationModalProvider } from "@/components/modal-providers";
 import ChatWidget from "@/components/chat/ChatWidget";
@@ -38,23 +37,21 @@ export default function RootLayout({
         className={`${barlow.variable}`}
       >
         <ReduxProvider>
-          <TRPCProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Navbar />
-                {children}
-              <Footer />
-              <LocationModalProvider />
-              <ChatWidget />
-              <FeedbackWidget />
-              <ScrollToTop />
-              <ToastProvider />
-            </ThemeProvider>
-          </TRPCProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+              {children}
+            <Footer />
+            <LocationModalProvider />
+            <ChatWidget />
+            <FeedbackWidget />
+            <ScrollToTop />
+            <ToastProvider />
+          </ThemeProvider>
         </ReduxProvider>
       </body>
     </html>
