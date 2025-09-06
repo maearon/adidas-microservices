@@ -8,7 +8,7 @@ export function mapProductDataToSimpleProduct(productData: any): Product {
     sport: productData.sport || '',
     model_number: productData.model_number,
     price: Number(formatPrice(productData?.variants[0]?.price).replace("$", ""))
-        ||  Number(formatPrice(productData.price).replace("$", "")) || 0,
+    ||  Number(formatPrice(productData.price).replace("$", "")) || 0,
     compare_at_price: Number(formatPrice(productData?.variants[0]?.compare_at_price).replace("$", "")) 
     || Number(formatPrice(productData?.compare_at_price).replace("$", "")) || 0,
     variants: [productData.variants[0]]?.map((v: any) => ({
