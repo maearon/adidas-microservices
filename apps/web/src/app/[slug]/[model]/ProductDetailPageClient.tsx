@@ -288,10 +288,29 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   <span>{t?.description || "Description"}</span>
                   {expandedSections.description ? <ChevronUp /> : <ChevronDown />}
                 </button>
+
                 {expandedSections.description && (
-                  <div className="pb-6">
-                    <h4 className="text-lg font-extrabold tracking-wide uppercase">{t?.descTitle}</h4>
-                    <p className="text-gray-600 dark:text-white leading-relaxed">{t?.descText ||productDetails.description}</p>
+                  <div className="pb-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    {/* Cột trái: Text */}
+                    <div>
+                      <h4 className="text-lg font-extrabold tracking-wide uppercase">
+                        {t?.descTitle}
+                      </h4>
+                      <p className="text-gray-600 dark:text-white leading-relaxed">
+                        {t?.descText || productDetails.description}
+                      </p>
+                    </div>
+
+                    {/* Cột phải: Hình ảnh */}
+                    <div className="flex justify-center">
+                      <Image
+                        src="/assets/product/F50_Messi_Elite_Firm_Ground_Cleats_White_JP5593_DM1.jpg"
+                        alt="F50 Messi Elite Firm Ground Cleats"
+                        width={600}
+                        height={600}
+                        className="rounded-none object-cover"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
@@ -710,10 +729,29 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 <span>{t?.description || "Description"}</span>
                 {expandedSections.description ? <ChevronUp /> : <ChevronDown />}
               </button>
+
               {expandedSections.description && (
-                <div className="pb-6">
-                  <h4 className="text-lg font-extrabold tracking-wide uppercase">{t?.descTitle}</h4>
-                  <p className="text-gray-600 dark:text-white leading-relaxed">{t?.descText ||productDetails.description}</p>
+                <div className="pb-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                  {/* Cột trái: Text */}
+                  <div>
+                    <h4 className="text-lg font-extrabold tracking-wide uppercase">
+                      {t?.descTitle}
+                    </h4>
+                    <p className="text-gray-600 dark:text-white leading-relaxed">
+                      {t?.descText || productDetails.description}
+                    </p>
+                  </div>
+
+                  {/* Cột phải: Hình ảnh */}
+                  <div className="flex justify-center">
+                    <Image
+                      src="/assets/product/F50_Messi_Elite_Firm_Ground_Cleats_White_JP5593_DM1.jpg"
+                      alt="F50 Messi Elite Firm Ground Cleats"
+                      width={600}
+                      height={600}
+                      className="rounded-none object-cover"
+                    />
+                  </div>
                 </div>
               )}
             </div>
