@@ -16,7 +16,7 @@ import HistoryView from "@/components/HistoryView"
 import { useProductDetail } from "@/api/hooks/useProducts"
 import { slugify } from "@/utils/slugify"
 import { upperWords } from "@/utils/upper-words"
-import { Variant } from "@/types/product"
+import { ProductDetails, Variant } from "@/types/product"
 import Loading from "@/components/loading"
 import { BaseButton } from "@/components/ui/base-button"
 import Image from "next/image"
@@ -119,7 +119,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   }
 
   // Mock product details
-  const productDetails = {
+  const productDetails: ProductDetails = {
     soldOutSizes: ["36", "36.5", "37", "42.5"],
     rating: 4.8,
     reviewCount: 1247,
@@ -307,9 +307,20 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 {expandedSections.details && (
                   <div className="pb-6">
                     <ul className="space-y-2">
-                      {productDetails.details.map((detail, index) => (
-                        <li key={index} className="text-gray-600 dark:text-white">
-                          • {detail}
+                      {(
+                        [
+                          "regularFit",
+                          "laceClosure",
+                          "hybridTouchUpper",
+                          "adidasPrimeknitCollar",
+                          "sprintframe360FirmGroundOutsole",
+                          "imported",
+                          "productColor",
+                          "productCode",
+                        ] as const
+                      ).map((key, i) => (
+                        <li key={i} className="text-gray-600 dark:text-white">
+                          • {t?.[key] || key}
                         </li>
                       ))}
                     </ul>
@@ -717,9 +728,20 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               {expandedSections.details && (
                 <div className="pb-6">
                   <ul className="space-y-2">
-                    {productDetails.details.map((detail, index) => (
-                      <li key={index} className="text-gray-600 dark:text-white">
-                        • {detail}
+                    {(
+                      [
+                        "regularFit",
+                        "laceClosure",
+                        "hybridTouchUpper",
+                        "adidasPrimeknitCollar",
+                        "sprintframe360FirmGroundOutsole",
+                        "imported",
+                        "productColor",
+                        "productCode",
+                      ] as const
+                    ).map((key, i) => (
+                      <li key={i} className="text-gray-600 dark:text-white">
+                        • {t?.[key] || key}
                       </li>
                     ))}
                   </ul>
