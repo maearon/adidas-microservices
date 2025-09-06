@@ -290,7 +290,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </button>
                 {expandedSections.description && (
                   <div className="pb-6">
-                    <p className="text-gray-600 dark:text-white leading-relaxed">{productDetails.description}</p>
+                    <p className="text-gray-600 dark:text-white leading-relaxed">{t?.f50MessiDescription ||productDetails.description}</p>
                   </div>
                 )}
               </div>
@@ -711,7 +711,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </button>
               {expandedSections.description && (
                 <div className="pb-6">
-                  <p className="text-gray-600 dark:text-white leading-relaxed">{productDetails.description}</p>
+                  <p className="text-gray-600 dark:text-white leading-relaxed">{t?.f50MessiDescription ||productDetails.description}</p>
                 </div>
               )}
             </div>
