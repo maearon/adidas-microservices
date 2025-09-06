@@ -329,7 +329,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 {expandedSections.highlights && (
                   <div className="pb-6">
                     <ul className="space-y-6">
-                      {productDetails.highlights.map((h, i) => (
+                      {[
+                        { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
+                        { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
+                        { title: t?.dribbleFast, text: t?.dribbleFastText },
+                        { title: t?.experienceLevel, text: t?.experienceLevelText }
+                      ].map((h, i) => (
                         <li key={i}>
                           <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
                           <p className="text-gray-600 dark:text-white">{h.text}</p>
@@ -734,7 +739,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               {expandedSections.highlights && (
                 <div className="pb-6">
                   <ul className="space-y-6">
-                    {productDetails.highlights.map((h, i) => (
+                    {[
+                      { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
+                      { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
+                      { title: t?.dribbleFast, text: t?.dribbleFastText },
+                      { title: t?.experienceLevel, text: t?.experienceLevelText }
+                    ].map((h, i) => (
                       <li key={i}>
                         <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
                         <p className="text-gray-600 dark:text-white">{h.text}</p>
