@@ -32,7 +32,7 @@ import { z } from "zod";
 const signUpSchema = z
   .object({
     name: z.string().min(1, { message: "Name is required" }),
-    email: z.email({ message: "Please enter a valid email" }),
+    email: z.string().email({ message: "Please enter a valid email" }),
     password: passwordSchema,
     passwordConfirmation: z
       .string()
