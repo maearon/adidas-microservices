@@ -74,7 +74,10 @@ https://www.better-auth.com/docs/concepts/database#core-schema
 ⇨ Save to cookie or localStorage
 ```
 ```
-PS C:\Users\manhn\adidas-microservices\apps\web> npx drizzle-kit generate
+PS C:\Users\manhn\adidas-microservices\apps\web> 
+npx drizzle-kit generate 
+npx drizzle-kit push
+
 No config path provided, using default 'drizzle.config.ts'
 Reading config file 'C:\Users\manhn\adidas-microservices\apps\web\drizzle.config.ts'
 4 tables

@@ -1,5 +1,5 @@
 {
-  "id": "3a439085-4561-431c-bf6b-55cb64f8fe66",
+  "id": "5c1a92ea-e46a-4637-8505-4b09d144e69d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,12 +14,6 @@
           "primaryKey": true,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "account_id": {
           "name": "account_id",
           "type": "text",
@@ -32,6 +26,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "access_token": {
           "name": "access_token",
           "type": "text",
@@ -40,6 +40,12 @@
         },
         "refresh_token": {
           "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -58,12 +64,6 @@
         },
         "scope": {
           "name": "scope",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "id_token": {
-          "name": "id_token",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -137,8 +137,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "ip_addresses": {
-          "name": "ip_addresses",
+        "ip_address": {
+          "name": "ip_address",
           "type": "text",
           "primaryKey": false,
           "notNull": false
