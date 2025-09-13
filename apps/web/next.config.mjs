@@ -56,6 +56,7 @@ const nextConfig = {
     NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
     DRIZZLE_DATABASE_URL: process.env.DRIZZLE_DATABASE_URL,
     DATABASE_URL: process.env.DATABASE_URL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
   },
   webpack(config) {
     // 👇 Cấu hình @svgr/webpack
