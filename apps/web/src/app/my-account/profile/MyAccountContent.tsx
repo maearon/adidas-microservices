@@ -1,10 +1,13 @@
 "use client"
 
+import ProfilePage from "@/app/(main)/profile/page"
 import Link from "next/link"
 
 export default function MyAccountProfile() {
   return (
     <div className="space-y-6">
+      <ProfilePage />
+      
       <div className="bg-white dark:bg-black rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4">ACCOUNT OVERVIEW</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
