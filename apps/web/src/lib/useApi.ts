@@ -18,7 +18,7 @@ const useApi = () => {
         const refreshToken = getRefreshToken()
         if (!refreshToken) {
           clearTokens()
-          router.push("/account-login")
+          router.push("/sign-in")
           return Promise.reject(error)
         }
 
@@ -36,7 +36,7 @@ const useApi = () => {
           return api(originalRequest)
         } catch (err) {
           clearTokens()
-          router.push("/account-login")
+          router.push("/sign-in")
           return Promise.reject(err)
         }
       }

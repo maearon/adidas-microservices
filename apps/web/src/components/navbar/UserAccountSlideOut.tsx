@@ -45,7 +45,7 @@ export default function UserAccountSlideOut({
   //     await logoutHandler()
   //     flashMessage("success", "Logged out successfully")
   //     onClose()
-  //     router.push("/account-login")   // ✅ To login
+  //     router.push("/sign-in")   // ✅ To login
   //   } catch (error) {
   //     flashMessage("error", "Logout failed")
   //   }

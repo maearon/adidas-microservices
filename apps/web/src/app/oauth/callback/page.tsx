@@ -30,7 +30,7 @@ export default function OAuthCallbackPage() {
         })
         .catch((err) => {
           console.error("OAuth callback error", err)
-          router.push("/account-login")
+          router.push("/sign-in")
         })
     }
   }, [searchParams])

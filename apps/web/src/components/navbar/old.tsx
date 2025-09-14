@@ -113,7 +113,7 @@ const Navbar = () => {
     else
     {
       setShowLoginModal(true)
-      // router.push("/account-login")
+      // router.push("/sign-in")
     }
   }
 
@@ -323,7 +323,7 @@ const Navbar = () => {
                 // <SignOutButton />
               ) : (
                 <></>
-                // <Link href="/account-login">
+                // <Link href="/sign-in">
                 //   <LogIn className="h-5 w-5" />
                 // </Link>
                 // <SignInButton />
@@ -384,7 +384,7 @@ const Navbar = () => {
               // <SignOutButton />
             ) : (
               <></>
-              // <Link href="/account-login">
+              // <Link href="/sign-in">
               //   <LogIn className="h-5 w-5" />
               // </Link>
               // <SignInButton />

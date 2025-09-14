@@ -76,7 +76,7 @@ const SignupForm = () => {
       onSuccess: (response) => {
         if (response?.success) {
           flashMessage("success", response.message || t?.messages?.signupSuccessful || "Signup successful.")
-          router.push("/account-login")
+          router.push("/sign-in")
           return
         }
         if (response?.errors) {
@@ -299,7 +299,7 @@ const SignupForm = () => {
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
               {t?.alreadyHaveAccount || "Already have an account?"}{" "}
-              <Link href="/account-login" className="underline text-blue-600">
+              <Link href="/sign-in" className="underline text-blue-600">
                 {t?.logIn || "Log in"}
               </Link>
             </div>

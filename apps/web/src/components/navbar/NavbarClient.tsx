@@ -90,7 +90,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     else
     {
       setShowLoginModal(true)
-      // router.push("/account-login")
+      // router.push("/sign-in")
     }
   }
 

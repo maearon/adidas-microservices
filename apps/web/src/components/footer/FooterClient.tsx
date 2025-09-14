@@ -175,7 +175,7 @@ export default function FooterClient({ session }: FooterClientProps) {
             <div className="grid grid-cols-2">
               <div className="flex justify-center">
                 <Link
-                  href={session?.user?.email ? "/my-account" : "/account-login"}
+                  href={session?.user?.email ? "/my-account" : "/sign-in"}
                   className="font-bold text-base"
                 >
                   {session?.user?.email ? (t?.myAccount || "My Account") : (t?.login || "Login")}

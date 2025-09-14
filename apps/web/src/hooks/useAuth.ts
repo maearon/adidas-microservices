@@ -26,7 +26,7 @@ export const useAuth = () => {
 
   const logout = () => {
     clearTokens()
-    router.push("/account-login")
+    router.push("/sign-in")
   }
 
   return { loginWithGoogle, logout }

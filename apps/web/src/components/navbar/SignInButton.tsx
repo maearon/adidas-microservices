@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const SignInButton = () => {
   return (
-    <Link href="/account-login">
+    <Link href="/sign-in">
       <LogIn className="h-5 w-5" />
     </Link>
   );
