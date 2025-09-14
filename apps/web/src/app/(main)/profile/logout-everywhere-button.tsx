@@ -31,7 +31,7 @@ export function LogoutEverywhereButton() {
       loading={loading}
       className="w-full"
     >
-      Log out everywhere
+      LOG ME OUT
     </LoadingButton>
   );
 }

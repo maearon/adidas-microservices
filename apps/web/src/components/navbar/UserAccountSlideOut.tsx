@@ -14,6 +14,7 @@ import Link from "next/link"
 // import { clearTokens } from "@/lib/token"
 import { LogMeOutButton } from "@/components/auth/LogMeOutButton";
 import { useTranslations } from "@/hooks/useTranslations"
+import { LogoutEverywhereButton } from "@/app/(main)/profile/logout-everywhere-button";
 
 interface UserAccountSlideOutProps {
   isOpen: boolean
@@ -197,6 +198,7 @@ export default function UserAccountSlideOut({
 
           <div className="p-6 border-t">
             <LogMeOutButton/>
+            <LogoutEverywhereButton />
           </div>
         </div>
       </div>

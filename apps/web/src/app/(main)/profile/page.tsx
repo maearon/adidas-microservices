@@ -6,6 +6,7 @@ import { LogoutEverywhereButton } from "./logout-everywhere-button";
 import { PasswordForm } from "./password-form";
 import { ProfileDetailsForm } from "./profile-details-form";
 import type { Session } from "@/lib/auth";
+import { LogMeOutButton } from "@/components/auth/LogMeOutButton";
 
 interface ProfilePageProps {
   session: Session | null;
@@ -33,6 +34,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           <div className="flex-1 space-y-6">
             <EmailForm currentEmail={user.email} />
             <PasswordForm />
+            <LogMeOutButton/>
             <LogoutEverywhereButton />
           </div>
         </div>

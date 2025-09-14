@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import type { ReactNode } from "react"
 import { LogMeOutButton } from "@/components/auth/LogMeOutButton"
+import { LogoutEverywhereButton } from "@/app/(main)/profile/logout-everywhere-button"
 
 interface AccountMenuItem {
   href: string
@@ -45,6 +46,7 @@ export default function MyAccountSideBar() {
 
       <div className="pt-4 border-t">
         <LogMeOutButton/>
+        <LogoutEverywhereButton />
       </div>
     </nav>
   )
