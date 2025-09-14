@@ -197,7 +197,7 @@ export default function UserAccountSlideOut({
           </div>
 
           <div className="p-6 border-t">
-            <LogMeOutButton/>
+            {/* <LogMeOutButton/> */}
             <LogoutEverywhereButton />
           </div>
         </div>

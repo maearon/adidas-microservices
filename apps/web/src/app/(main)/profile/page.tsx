@@ -34,7 +34,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           <div className="flex-1 space-y-6">
             <EmailForm currentEmail={user.email} />
             <PasswordForm />
-            <LogMeOutButton/>
+            {/* <LogMeOutButton/> */}
             <LogoutEverywhereButton />
           </div>
         </div>

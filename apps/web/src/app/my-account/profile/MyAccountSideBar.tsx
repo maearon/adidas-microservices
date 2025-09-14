@@ -45,7 +45,7 @@ export default function MyAccountSideBar() {
       ))}
 
       <div className="pt-4 border-t">
-        <LogMeOutButton/>
+        {/* <LogMeOutButton/> */}
         <LogoutEverywhereButton />
       </div>
     </nav>
