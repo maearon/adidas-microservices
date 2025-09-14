@@ -13,7 +13,7 @@ export default async function VerifyEmailPage() {
 
   if (!user) unauthorized();
 
-  if (user.emailVerified) redirect("/dashboard");
+  if (user.emailVerified) redirect("/my-account");
 
   return (
     <main className="flex flex-1 items-center justify-center px-4 text-center">

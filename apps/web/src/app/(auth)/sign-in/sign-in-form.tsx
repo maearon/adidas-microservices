@@ -74,7 +74,7 @@ export function SignInForm() {
       setError(error.message || "Something went wrong");
     } else {
       toast.success("Signed in successfully");
-      router.push(redirect ?? "/dashboard");
+      router.push(redirect ?? "/my-account");
     }
   }
 
@@ -84,7 +84,7 @@ export function SignInForm() {
 
     const { error } = await authClient.signIn.social({
       provider,
-      callbackURL: redirect ?? "/dashboard",
+      callbackURL: redirect ?? "/my-account",
     });
 
     setLoading(false);

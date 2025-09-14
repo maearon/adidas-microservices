@@ -17,7 +17,7 @@ export default function EmailVerifiedPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard">Go to dashboard</Link>
+          <Link href="/my-account">Go to dashboard</Link>
         </Button>
       </div>
     </main>
