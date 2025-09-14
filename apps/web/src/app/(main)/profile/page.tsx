@@ -19,7 +19,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
   if (!user) unauthorized();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-12">
+    <main className="mx-auto w-full max-w-6xl px-4">
       <div className="space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">ACCOUNT OVERVIEW</h1>
