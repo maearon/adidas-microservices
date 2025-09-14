@@ -47,9 +47,9 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto w-full max-w-6xl px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         {activeTab === "FEED" && (
-          <div className="space-y-8">
+          <div className=" w-full max-w-6xl space-y-8">
             {/* Personal Info */}
             <DashboardPage session={session} />
 
