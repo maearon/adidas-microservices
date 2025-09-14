@@ -21,7 +21,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
     <main className="mx-auto w-full max-w-6xl px-4 py-12">
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Profile</h1>
+          <h1 className="text-2xl font-semibold">ACCOUNT OVERVIEW</h1>
           <p className="text-muted-foreground">
             Update your account details, email, and password.
           </p>

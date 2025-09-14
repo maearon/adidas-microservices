@@ -80,7 +80,7 @@ export function ProfileDetailsForm({ user }: ProfileDetailsFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Profile Details</CardTitle>
+        <CardTitle>PERSONAL INFORMATION</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
