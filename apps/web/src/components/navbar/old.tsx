@@ -164,7 +164,7 @@ const Navbar = () => {
           
           {/* header navbar */}
           <div className="flex justify-end items-center text-xs text-gray-700 dark:text-white px-12 py-2 w-full">
-            <Link href="/signup" className="hover:underline mr-3">sign up</Link>
+            <Link href="/sign-up" className="hover:underline mr-3">sign up</Link>
             <Link href="/help" className="hover:underline mr-3">help</Link>
             <Link href="/orders" className="hover:underline mr-3">orders and returns</Link>
             <Link href="/gift-cards" className="hover:underline mr-3">gift cards</Link>

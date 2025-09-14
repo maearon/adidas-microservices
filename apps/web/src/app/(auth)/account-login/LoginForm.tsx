@@ -175,7 +175,7 @@ const LoginForm = () => {
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
-              {t?.dontHaveAccount || "Don't have an account yet?"} <Link href="/signup" className="underline text-blue-600">{t?.signUp || "Sign up"}</Link>
+              {t?.dontHaveAccount || "Don't have an account yet?"} <Link href="/sign-up" className="underline text-blue-600">{t?.signUp || "Sign up"}</Link>
             </div>
             <div className="mt-2 text-base text-center">
               {t?.forgotPassword || "Forgot your password?"} <Link href="/password_resets/new" className="underline text-blue-600" >{t?.resetItHere || "Reset it here"}</Link>

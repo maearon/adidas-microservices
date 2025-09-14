@@ -13,7 +13,7 @@ const importantLinks = [
     text: '✅ Resend Activation Email',
   },
   {
-    href: '/signup',
+    href: "/sign-up",
     text: '📝 Create a New Account',
   },
 ]

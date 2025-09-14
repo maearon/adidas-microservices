@@ -111,7 +111,7 @@ export default function FooterClient({ session }: FooterClientProps) {
             </h3>
             <Button
               border={false}
-              href="/signup"
+              href="/sign-up"
               pressEffect={true}
               className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
             >
@@ -201,7 +201,7 @@ export default function FooterClient({ session }: FooterClientProps) {
             </h3>
             <Button
               border={false}
-              href="/signup"
+              href="/sign-up"
               pressEffect={true}
               className="bg-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
             >
