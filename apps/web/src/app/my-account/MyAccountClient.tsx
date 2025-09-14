@@ -7,6 +7,7 @@ import AccountHeader from "./AccountHeader"
 import OrderHistory from "./order-history/page"
 import Profile from "./profile/page"
 import type { Session } from "@/lib/auth"
+import DashboardPage from "../(main)/dashboard/page"
 
 interface MyAccountClientProps {
   session: Session | null;
@@ -49,6 +50,8 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
       <div className="container mx-auto px-4 py-8">
         {activeTab === "FEED" && (
           <div className="space-y-8">
+            <DashboardPage session={session} />
+
             {/* Your Vouchers */}
             <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">YOUR VOUCHERS</h2>

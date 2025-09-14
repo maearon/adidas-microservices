@@ -9,19 +9,20 @@ import {
 } from "@/components/ui/card";
 import { UserAvatar } from "@/components/user-avatar";
 import { User } from "@/lib/auth";
-import { getServerSession } from "@/lib/get-session";
+// import { getServerSession } from "@/lib/get-session";
 import { format } from "date-fns";
 import { CalendarDaysIcon, MailIcon, ShieldIcon, UserIcon } from "lucide-react";
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import Link from "next/link";
 import { unauthorized } from "next/navigation";
+import type { Session } from "@/lib/auth";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-};
+interface DashboardPageProps {
+  session: Session | null;
+}
 
-export default async function DashboardPage() {
-  const session = await getServerSession();
+export default function DashboardPage({ session }: DashboardPageProps) {
+  // const session = await getServerSession();
   const user = session?.user;
 
   if (!user) unauthorized();
