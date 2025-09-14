@@ -1,17 +1,18 @@
-import { getServerSession } from "@/lib/get-session";
+// import { getServerSession } from "@/lib/get-session";
 // import type { Metadata } from "next";
 import { unauthorized } from "next/navigation";
 import { EmailForm } from "./email-form";
 import { LogoutEverywhereButton } from "./logout-everywhere-button";
 import { PasswordForm } from "./password-form";
 import { ProfileDetailsForm } from "./profile-details-form";
+import type { Session } from "@/lib/auth";
 
-// export const metadata: Metadata = {
-//   title: "Profile",
-// };
+interface ProfilePageProps {
+  session: Session | null;
+}
 
-export default async function ProfilePage() {
-  const session = await getServerSession();
+export default function ProfilePage({ session }: ProfilePageProps) {
+  // const session = await getServerSession();
   const user = session?.user;
 
   if (!user) unauthorized();

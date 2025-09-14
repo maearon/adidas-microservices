@@ -28,7 +28,7 @@ export default function Profile({ session }: ProfileProps) {
 
         {/* Main Content */}
         <div className="lg:col-span-3">
-          <MyAccountProfile />
+          <MyAccountProfile session={session} />
         </div>
       </div>
     </div>

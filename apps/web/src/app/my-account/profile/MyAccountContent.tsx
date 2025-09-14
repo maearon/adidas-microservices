@@ -1,12 +1,17 @@
 "use client"
 
 import ProfilePage from "@/app/(main)/profile/page"
+import type { Session } from "@/lib/auth";
 import Link from "next/link"
 
-export default function MyAccountProfile() {
+interface MyAccountProfileProps {
+  session: Session | null;
+}
+
+export default function Profile({ session }: MyAccountProfileProps) {
   return (
     <div className="space-y-6">
-      <ProfilePage />
+      <ProfilePage session={session} />
       
       <div className="bg-white dark:bg-black rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4">ACCOUNT OVERVIEW</h2>
