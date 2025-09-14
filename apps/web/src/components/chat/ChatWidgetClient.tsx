@@ -9,7 +9,7 @@ import { getUiAvatarUrl } from "@/utils/ui-avatar"
 import { useCurrentUser } from "@/api/hooks/useCurrentUser";
 import { playSound } from "@/utils/play-sound"
 import Image from "next/image"
-import { Session } from "@/lib/auth"
+import { type Session } from "@/lib/auth"
 import { useAppSelector } from "@/store/hooks"
 import { useTranslations } from "@/hooks/useTranslations"
 
