@@ -28,10 +28,10 @@ export default function DashboardPage({ session }: DashboardPageProps) {
   if (!user) unauthorized();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-12">
+    <main className="mx-auto w-full max-w-6xl px-4">
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <h1 className="text-2xl font-semibold">FEED PAGE</h1>
           <p className="text-muted-foreground">
             Welcome back! Here&apos;s your account overview.
           </p>
