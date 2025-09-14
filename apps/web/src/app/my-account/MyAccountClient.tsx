@@ -6,7 +6,7 @@ import { Heart } from "lucide-react"
 import AccountHeader from "./AccountHeader"
 import OrderHistory from "./order-history/page"
 import Profile from "./profile/page"
-import { type Session } from "@/lib/auth"
+import type { Session } from "@/lib/auth"
 
 interface MyAccountClientProps {
   session: Session | null;
