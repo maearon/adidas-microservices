@@ -12,7 +12,7 @@ export default function MyAccountProfile() {
             <h3 className="font-bold mb-4">PERSONAL INFORMATION</h3>
             <Link
               href="/my-account/profile"
-              className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
+              className="text-black dark:text-white hover:no-underline flex items-center justify-between p-3 border rounded"
             >
               <span>Edit your personal details</span>
               <span>→</span>
@@ -22,7 +22,7 @@ export default function MyAccountProfile() {
             <h3 className="font-bold mb-4">ADDRESS BOOK</h3>
             <Link
               href="/my-account/addresses"
-              className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
+              className="text-black dark:text-white hover:no-underline flex items-center justify-between p-3 border rounded"
             >
               <span>Manage your addresses</span>
               <span>→</span>

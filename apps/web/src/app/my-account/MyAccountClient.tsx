@@ -26,7 +26,7 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
       {/* Header Section */}
       <div className="bg-white dark:bg-black border-b">
         <div className="container mx-auto px-4 py-8">
-          <AccountHeader />
+          <AccountHeader session={session} />
 
           {/* Tabs Navigation */}
           <div className="flex space-x-8 mt-8">

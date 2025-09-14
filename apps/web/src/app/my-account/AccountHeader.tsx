@@ -1,15 +1,19 @@
 "use client"
 
-import { useAppSelector } from "@/store/hooks"
-import { selectUser } from "@/store/sessionSlice"
+// import { useAppSelector } from "@/store/hooks"
+// import { selectUser } from "@/store/sessionSlice"
+import { type Session } from "@/lib/auth"
 
-export default function AccountHeader() {
-  const userData = useAppSelector(selectUser)
+interface AccountHeaderProps {
+  session: Session | null;
+}
+
+export default function AccountHeader({ session }: AccountHeaderProps) {
 
   return (
     <div className="flex items-center justify-between">
       <div>
-        <h1 className="text-3xl font-bold">HI {userData.value?.name?.toUpperCase() || "MANH"}</h1>
+        <h1 className="text-3xl font-bold">HI {session?.user?.name?.toUpperCase() || "USER"}</h1>
         <div className="flex items-center mt-2">
           <span className="text-base text-gray-600 dark:text-white mr-2">👑</span>
           <span className="text-base text-gray-600 dark:text-white">0 points to spend</span>
