@@ -28,13 +28,14 @@ import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
 import SearchField from "../SearchField"
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { normalizeLocale } from "@/lib/utils"; 
-// import { getSession } from "@/lib/auth"
+// import { type Session } from "@/lib/auth"
+// import { getServerSession } from "@/lib/get-session";
 // import SignOutButton from "./navbar/SignOutButton"
 // import SignInButton from "./navbar/SignInButton"
 
 const Navbar = () => {
   const { value: user, status } = useSelector(selectUser)
-  // const session = await getSession()
+  // const session: Session | null = await getServerSession() // Session type-safe
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
   const dispatch = useAppDispatch()

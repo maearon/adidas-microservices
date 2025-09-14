@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 import LoginForm from "./LoginForm";
 import PromoSection from "./PromoSection";
 import LoginPageClient from "./LoginPageClient";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "@/lib/get-session";
 
 const LoginPage = async () => {
-  const session = await getSession()
+  const session = await getServerSession()
 
   if (session?.user?.email) {
     return <LoginPageClient isLoggedIn={true} />

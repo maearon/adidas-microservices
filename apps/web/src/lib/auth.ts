@@ -1,9 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { headers } from "next/headers";
 import { sendEmail } from "./email";
 import { db } from "@/db";
-import { cache } from "react";
 
 export type Session = typeof auth.$Infer.Session // 👈 Lấy type Session
 export type User = typeof auth.$Infer.Session.user; // 👈 Lấy type User
@@ -71,7 +69,3 @@ export const auth = betterAuth({
     },
   },
 });
-
-export const getSession = cache(async () => auth.api.getSession({
-  headers: await headers(),
-}));

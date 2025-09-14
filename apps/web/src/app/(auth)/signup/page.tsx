@@ -1,12 +1,12 @@
 import React from "react"
 import PromoSection from "./PromoSection"
-import { getSession } from "@/lib/auth"
+import { getServerSession } from "@/lib/get-session";
 import { redirect } from "next/navigation"
 import SignupForm from "./SignupForm"
 import SignupPageClient from "./SignupPageClient"
 
 const SignupPage = async () => {
-  const session = await getSession()
+  const session = await getServerSession()
 
   if (session?.user?.email) {
     return <SignupPageClient isLoggedIn={true} />

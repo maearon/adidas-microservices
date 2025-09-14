@@ -1,10 +1,11 @@
 import type React from "react"
 import { redirect } from "next/navigation"
-import { getSession, type Session } from "@/lib/auth"
+import { type Session } from "@/lib/auth"
+import { getServerSession } from "@/lib/get-session";
 // import MyAccountSideBar from "./profile/MyAccountSideBar";
 
 export default async function MyAccountLayout({ children }: { children: React.ReactNode }) {
-  const session: Session | null = await getSession() // Session type-safe
+  const session: Session | null = await getServerSession() // Session type-safe
 
   if(!session) redirect("/account-login");
 

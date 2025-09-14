@@ -1,10 +1,11 @@
 import type React from "react"
 import MyAccountSideBar from "./MyAccountSideBar"
 import MyAccountProfile from "./MyAccountContent"
-import { getSession, type Session } from "@/lib/auth"
+import { type Session } from "@/lib/auth"
+import { getServerSession } from "@/lib/get-session";
 
 export default async function Profile() {
-  const session: Session | null = await getSession() // Session type-safe
+  const session: Session | null = await getServerSession() // Session type-safe
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

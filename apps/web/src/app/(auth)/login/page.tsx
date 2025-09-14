@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getSession } from "@/lib/auth";
+import { getServerSession } from "@/lib/get-session";
 import { LoginButtons } from "@/components/auth/login-buttons";
 
 const LoginPage = async () => {
-  const session = await getSession();
+  const session = await getServerSession();
 
   if(session) redirect("/");
 

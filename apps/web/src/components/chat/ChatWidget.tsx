@@ -1,8 +1,9 @@
-import { getSession, Session } from "@/lib/auth"
+import { type Session } from "@/lib/auth"
+import { getServerSession } from "@/lib/get-session";
 import ChatWidgetClient from "./ChatWidgetClient"
 
 const ChatWidget = async () => {
-  const session: Session | null = await getSession() // Session type-safe
+  const session: Session | null = await getServerSession() // Session type-safe
 
   if (!session?.user?.email) return null
 
