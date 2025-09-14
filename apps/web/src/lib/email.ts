@@ -17,7 +17,7 @@ export async function sendEmail({ to, subject, text }: SendEmailValues) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   
   await resend.emails.send({
-    from: "verification@codinginflow-sample.com",
+    from: "manhng132@prmail.vn", // verification@codinginflow-sample.com
     to,
     subject,
     text,
