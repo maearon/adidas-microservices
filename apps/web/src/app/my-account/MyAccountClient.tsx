@@ -47,11 +47,9 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto w-full max-w-6xl px-4 py-8">
         {activeTab === "FEED" && (
           <div className="space-y-8">
-            <DashboardPage session={session} />
-
             {/* Your Vouchers */}
             <div className="bg-white dark:bg-black rounded-lg p-6">
               <h2 className="text-xl font-bold mb-4">YOUR VOUCHERS</h2>
@@ -92,6 +90,8 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
                 ))}
               </div>
             </div>
+
+            <DashboardPage session={session} />
           </div>
         )}
 
