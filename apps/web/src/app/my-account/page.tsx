@@ -1,14 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { useAppSelector } from "@/store/hooks"
-import { selectUser } from "@/store/sessionSlice"
 import Link from "next/link"
 import { Heart } from "lucide-react"
+import AccountHeader from "./AccountHeader"
+import OrderHistory from "./order-history/page"
+import Profile from "./profile/page"
 
 export default function MyAccountPage() {
   const [activeTab, setActiveTab] = useState("FEED")
-  const userData = useAppSelector(selectUser)
 
   const tabs = [
     { id: "FEED", label: "FEED" },
@@ -21,19 +21,7 @@ export default function MyAccountPage() {
       {/* Header Section */}
       <div className="bg-white dark:bg-black border-b">
         <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">HI {userData.value?.name?.toUpperCase() || "MANH"}</h1>
-              <div className="flex items-center mt-2">
-                <span className="text-base text-gray-600 dark:text-white mr-2">👑</span>
-                <span className="text-base text-gray-600 dark:text-white">0 points to spend</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold">adiclub</div>
-              <div className="text-base">LEVEL 1</div>
-            </div>
-          </div>
+          <AccountHeader />
 
           {/* Tabs Navigation */}
           <div className="flex space-x-8 mt-8">
@@ -100,66 +88,11 @@ export default function MyAccountPage() {
         )}
 
         {activeTab === "ORDERS" && (
-          <div className="bg-white dark:bg-black rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-bold mb-4">NO ORDERS YET</h2>
-            <p className="text-gray-600 dark:text-white mb-6">Once you place an order, it will appear here.</p>
-            <Link
-              href="/"
-              className="inline-block bg-black text-white px-8 py-3 font-medium hover:bg-gray-800 transition"
-            >
-              START SHOPPING
-            </Link>
-          </div>
+          <OrderHistory />
         )}
 
         {activeTab === "ACCOUNT" && (
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-black rounded-lg p-6">
-              <h2 className="text-xl font-bold mb-4">ACCOUNT OVERVIEW</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="font-bold mb-4">PERSONAL INFORMATION</h3>
-                  <Link
-                    href="/my-account/profile"
-                    className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
-                  >
-                    <span>Edit your personal details</span>
-                    <span>→</span>
-                  </Link>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-4">ADDRESS BOOK</h3>
-                  <Link
-                    href="/my-account/addresses"
-                    className="text-black dark:text-white hover:underline flex items-center justify-between p-3 border rounded"
-                  >
-                    <span>Manage your addresses</span>
-                    <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-black rounded-lg p-6">
-              <h2 className="text-xl font-bold mb-4">PREFERENCES</h2>
-              <div className="space-y-3">
-                <Link
-                  href="/my-account/preferences"
-                  className="flex items-center justify-between p-3 border rounded hover:bg-white dark:hover:bg-black"
-                >
-                  <span>Communication preferences</span>
-                  <span>→</span>
-                </Link>
-                <Link
-                  href="/my-account/size-profile"
-                  className="flex items-center justify-between p-3 border rounded hover:bg-white dark:hover:bg-black"
-                >
-                  <span>Size profile</span>
-                  <span>→</span>
-                </Link>
-              </div>
-            </div>
-          </div>
+          <Profile />
         )}
       </div>
     </div>
