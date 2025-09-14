@@ -26,7 +26,7 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Header Section */}
       <div className="bg-white dark:bg-black border-b">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto w-full max-w-6xl px-4 py-8">
           <AccountHeader session={session} />
 
           {/* Tabs Navigation */}
@@ -47,9 +47,9 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto w-full max-w-6xl px-4 py-8">
         {activeTab === "FEED" && (
-          <div className=" w-full max-w-6xl space-y-8">
+          <div className="space-y-8">
             {/* Personal Info */}
             <DashboardPage session={session} />
 
