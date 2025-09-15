@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { BaseButton } from "@/components/ui/base-button";
 import {
   Card,
   CardContent,
@@ -107,9 +107,9 @@ function EmailVerificationAlert() {
             Please verify your email address to access all features.
           </span>
         </div>
-        <Button size="sm" asChild>
+        <BaseButton size="sm" asChild>
           <Link href="/verify-email">Verify Email</Link>
-        </Button>
+        </BaseButton>
       </div>
     </div>
   );
