@@ -146,9 +146,6 @@ export function ProfileDetailsForm({ user }: ProfileDetailsFormProps) {
                 {status}
               </div>
             )}
-
-            <div className="mb-4"></div>
-            
             <LoadingButton type="submit" loading={loading}>
               Save changes
             </LoadingButton>
