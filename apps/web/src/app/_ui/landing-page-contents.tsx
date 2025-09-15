@@ -82,6 +82,8 @@ export const LandingPageContents = () => {
           <TileCard tile={slide} index={i} />
         )}
       />
+
+      <div className="mb-4"></div>
       
       {/* History Products Section */}
       <HistoryView
@@ -92,12 +94,16 @@ export const LandingPageContents = () => {
         }
       />
 
+      <div className="mb-4"></div>
+
       {/* Product Tabs Section */}
       <ProductTabs initialProductsByTab={{
         "new-arrivals": newArrivalProductsTab.map(p => p.product),
         "best-sellers": newArrivalProductsTab.map(p => p.product),
         "new-to-sale": newArrivalProductsTab.map(p => p.product),
       }} />
+
+      <div className="mb-4"></div>
 
       {/* Prime Section */}
       <section className="bg-black text-white py-8 mb-0">
@@ -127,6 +133,8 @@ export const LandingPageContents = () => {
         </div>
       </section>
 
+      <div className="mb-4"></div>
+
       {/* Popular Categories */}
       <section className="container mx-auto px-2 py-0">
         <h2 className="text-[32px] font-bold mb-4 text-foreground">{homeT?.popularRightNow || "Popular right now"}</h2>
@@ -150,6 +158,7 @@ export const LandingPageContents = () => {
           ))}
         </div>
       </section>
+
       <div className="mb-4"></div>
 
       {/* Related Resources Carousel */}
@@ -163,6 +172,8 @@ export const LandingPageContents = () => {
           )}
         />
       </section>
+
+      <div className="mb-4"></div>
 
       {/* Footer Categories */}
       <PageFooter currentPage="home" />
