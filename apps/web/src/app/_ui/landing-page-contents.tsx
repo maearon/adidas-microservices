@@ -178,6 +178,8 @@ export const LandingPageContents = () => {
       {/* Footer Categories */}
       <PageFooter currentPage="home" />
 
+      <div className="mb-4"></div>
+
       {/* Desktop-only black section with white text and centered content */}
       <section className="block bg-black text-white pt-14 pb-16">
         <div className="container mx-auto px-8 text-center">
