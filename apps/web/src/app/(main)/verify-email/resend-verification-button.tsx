@@ -48,9 +48,10 @@ export function ResendVerificationButton({
       )}
 
       <LoadingButton
+        variant="destructive"
         onClick={resendVerificationEmail}
-        className="w-full"
         loading={isLoading}
+        className="w-full"
       >
         Resend verification email
       </LoadingButton>
