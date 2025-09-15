@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingButton } from "@/components/loading-button";
-import { Button } from "@/components/ui/button";
+import { BaseButton } from "@/components/ui/base-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -124,7 +124,7 @@ export function ProfileDetailsForm({ user }: ProfileDetailsFormProps) {
                   image={imagePreview}
                   className="size-16"
                 />
-                <Button
+                <BaseButton
                   type="button"
                   variant="ghost"
                   className="absolute -top-2 -right-2 size-6 rounded-full"
@@ -132,7 +132,7 @@ export function ProfileDetailsForm({ user }: ProfileDetailsFormProps) {
                   aria-label="Remove image"
                 >
                   <XIcon className="size-4" />
-                </Button>
+                </BaseButton>
               </div>
             )}
 
