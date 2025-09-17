@@ -2,7 +2,7 @@
 // import type { Metadata } from "next";
 import { unauthorized } from "next/navigation";
 import { EmailForm } from "./email-form";
-import { LogoutEverywhereButton } from "./logout-everywhere-button";
+// import { LogoutEverywhereButton } from "./logout-everywhere-button";
 import { PasswordForm } from "./password-form";
 import { ProfileDetailsForm } from "./profile-details-form";
 import type { Session } from "@/lib/auth";
@@ -34,8 +34,8 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           <div className="flex-1 space-y-6">
             <EmailForm currentEmail={user.email} />
             <PasswordForm />
-            {/* <LogMeOutButton/> */}
-            <LogoutEverywhereButton />
+            <LogMeOutButton/>
+            {/* <LogoutEverywhereButton /> */}
           </div>
         </div>
       </div>

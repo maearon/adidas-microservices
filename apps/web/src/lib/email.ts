@@ -1,23 +1,35 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 interface SendEmailValues {
   to: string;
   subject: string;
   text: string;
 }
 
-export async function sendEmail({ to, subject, text }: SendEmailValues) {
-  const resendKey = process.env.RESEND_API_KEY;
-  
-  if (!resendKey) {
-    console.error("❌ resend api key not found! Please set RESEND_API_KEY or RESEND_API_KEY environment variable.");
-    console.error("Expected format: re_dB8");
-    throw new Error("Resend Api Key not configured");
-  }
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: "manhng132@gmail.com",
+      pass: "rqisoolrehrwayum",
+    },
+    from: "manhng132@gmail.com",
+  });
+}
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+export async function sendEmail({ to, subject, text }: SendEmailValues) {
+  // const smtpPassword = process.env.SMTP_PASSWORD;
   
-  await resend.emails.send({
-    from: "manhng132@prmail.vn", // verification@codinginflow-sample.com
+  // if (!smtpPassword) {
+  //   console.error("❌ smtp password not found! Please set SMTP_PASSWORD environment variable.");
+  //   console.error("Expected format: rqi_yum");
+  //   throw new Error("Smtp Password Key not configured");
+  // }
+
+  const transporter = createTransporter();
+  
+  await transporter.sendMail({
+    from: process.env.SMTP_USERNAME,
     to,
     subject,
     text,

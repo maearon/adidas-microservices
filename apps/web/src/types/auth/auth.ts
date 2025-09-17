@@ -183,4 +183,3 @@ export interface AuthTranslations {
     invalidInput: string;
   };
 }
-

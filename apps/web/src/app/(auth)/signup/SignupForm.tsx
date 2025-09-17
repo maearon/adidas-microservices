@@ -294,7 +294,7 @@ const SignupForm = () => {
               type="submit"
               className="w-full py-3 font-semibold transition-colors"
             >
-{t?.createMyAccount || "CREATE MY ACCOUNT"}
+              {t?.createMyAccount || "CREATE MY ACCOUNT"}
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">

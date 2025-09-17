@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
 import { countryDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
@@ -9,6 +9,8 @@ import { setLocale } from "@/store/localeSlice"
 import Image from "next/image"
 import { X } from "lucide-react"
 import { useTranslations } from "@/hooks/useTranslations"
+import type { RootState } from "@/store/store"
+import { useSelector } from "react-redux"
 
 interface LocationModalProps {
   isOpen: boolean
@@ -18,7 +20,7 @@ interface LocationModalProps {
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
-  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>("en_US");
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>(useSelector((s: RootState) => s.locale.locale) || "en_US")
   const t = useTranslations("location")
 
   // const locations = [
@@ -62,6 +64,7 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="sm:max-w-md p-0 bg-white dark:bg-black">
+        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         {/* Close button - Square border style */}
         <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button

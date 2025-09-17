@@ -8,8 +8,10 @@ import {
   // ToastContainer, 
   toast 
 } from 'react-toastify'
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function FeedbackWidget() {
+  const t = useTranslations("feedback");
   const [isClosed, setIsClosed] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [rating, setRating] = React.useState<number | null>(null)
@@ -49,7 +51,7 @@ export default function FeedbackWidget() {
           textOrientation: "mixed",
         }}
       >
-        FEEDBACK
+        {t?.feedback || "FEEDBACK"}
       </button>
 
       {/* Sliding panel from right */}
@@ -78,29 +80,31 @@ export default function FeedbackWidget() {
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-6">
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold">YOUR EXPERIENCE</h2>
+              <h2 className="text-2xl font-bold">{t?.yourExperience || "YOUR EXPERIENCE"}</h2>
 
               <div className="space-y-2">
                 <a href="#" className="inline-block text-base font-medium underline hover:no-underline">
-                  GET HELP
+                  {t?.getHelp || "GET HELP"}
                 </a>
               </div>
 
               <p className="text-base leading-relaxed">
-                Don&apos;t hold back. Good or bad - <span className="font-semibold">tell it like it is</span>.
+                {/* Don&apos;t hold back. Good or bad - <span className="font-semibold">tell it like it is</span>. */}
+                {t?.tellItLikeItIs || "Don't hold back. Good or bad - tell it like it is."}
               </p>
 
               <div className="space-y-4">
                 <p className="text-base font-medium">
-                  How likely are you to recommend <span className="font-bold">adidas.com</span> to a friend?{" "}
+                  {/* How likely are you to recommend <span className="font-bold">adidas.com</span> to a friend?{" "} */}
+                  {t?.howLikelyRecommend || "How likely are you to recommend adidas.com to a friend?"}{" "}
                   <span className="text-red-500">*</span>
                 </p>
 
                 {/* Rating scale */}
                 <div className="space-y-3">
                   <div className="flex justify-between text-xs text-gray-600 dark:text-white">
-                    <span>Very unlikely</span>
-                    <span>Very likely</span>
+                    <span>{t?.veryUnlikely || "Very unlikely"}</span>
+                    <span>{t?.veryLikely || "Very likely"}</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -131,8 +135,8 @@ export default function FeedbackWidget() {
                   "flex items-center justify-center space-x-2",
                 )}
               >
-                <span>NEXT</span>
-                <span>→</span>
+                <span>{t?.next || "NEXT →"}</span>
+                {/* <span>→</span> */}
               </button>
             </div>
           </div>
@@ -140,13 +144,16 @@ export default function FeedbackWidget() {
           {/* Footer */}
           <div className="border-t p-6">
             <p className="text-center text-xs text-gray-500">
-              Protected by reCAPTCHA:{" "}
+              {/* Protected by reCAPTCHA:{" "} */}
+              {t?.protectedByRecaptcha || "Protected by reCAPTCHA:"}{" "}
               <a href="#" className="underline hover:no-underline">
-                Privacy
+                {/* Privacy */}
+                {t?.privacy || "Privacy"}
               </a>{" "}
               &{" "}
               <a href="#" className="underline hover:no-underline">
-                Terms
+                {/* Terms */}
+                {t?.terms || "Terms"}
               </a>
             </p>
           </div>

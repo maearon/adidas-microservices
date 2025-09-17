@@ -4,8 +4,11 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useTranslations } from "@/hooks/useTranslations";
+import { toast } from "sonner";
 
 export const LogMeOutButton = () => {
+  const t = useTranslations("auth");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -22,6 +25,11 @@ export const LogMeOutButton = () => {
 
   const signout = async () => {
     setLoading(true);
+    const { error } = await authClient.revokeSessions();
+    if (error) {
+      toast.error(error.message || "Failed to log out everywhere");
+      return;
+    }
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -33,7 +41,7 @@ export const LogMeOutButton = () => {
     const name = cookie.split("=")[0].trim();
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
   });
-window.location.reload();
+// window.location.reload();
         },
         onError: (err) => {
           console.error("Logout failed", err);
@@ -53,9 +61,9 @@ window.location.reload();
       shadow={false}
       loading={loading}
       type="submit"
-      className="w-full py-3 font-semibold transition-colors"
+      className="w-full py-3 transition-colors"
     >
-      LOG ME OUT
+      {t?.signOut || "LOG ME OUT"}
     </Button>
   );
 };

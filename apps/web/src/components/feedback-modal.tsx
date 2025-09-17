@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "@/hooks/useTranslations"
 // import { X } from "lucide-react"
@@ -39,6 +39,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-md p-0 bg-white border-0 shadow-2xl">
+          <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -60,6 +61,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md p-0 bg-white border-0 shadow-2xl">
+        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <div className="relative">
           {/* Close button */}
           {/* <button

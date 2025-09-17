@@ -28,7 +28,7 @@ export default function ProductPrice({
 }: ProductPriceProps) {
   const priceNum = price ? Number(price) : null;
   const compareNum = compareAtPrice ? Number(compareAtPrice) : null;
-  const locale = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale)
   const t = useTranslations("common");
 
   const hasDiscount =

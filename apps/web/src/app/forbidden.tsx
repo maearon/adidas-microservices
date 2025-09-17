@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
 
 export default function ForbiddenPage() {
+  const t = useTranslations("account")
   return (
     <main className="flex grow items-center justify-center px-4 text-center">
       <div className="space-y-6">
@@ -12,8 +13,13 @@ export default function ForbiddenPage() {
           </p>
         </div>
         <div>
-          <Button asChild>
-            <Link href="/my-account">Go to Dashboard</Link>
+          <Button 
+            border 
+            href="/my-account"
+            theme="black" 
+            shadow={true} 
+            pressEffect={true}>
+              {t?.visitYourAccount || "Go to Dashboard"}
           </Button>
         </div>
       </div>

@@ -118,7 +118,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   >([])
 
   const dispatch = useAppDispatch()
-  const locale = useAppSelector((s) => s.locale.locale) || normalizeLocale(navigator.language)
+  const locale = useAppSelector((s) => s.locale.locale)
   const languageLabel = localeDisplayMap[locale]
   const t = useTranslations("navigation")
   const commonT = useTranslations("common")

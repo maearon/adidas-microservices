@@ -3,9 +3,12 @@ import type { Metadata } from "next";
 import { forbidden, unauthorized } from "next/navigation";
 import { DeleteApplication } from "./delete-application";
 
-export const metadata: Metadata = {
-  title: "Admin",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "👕Admin' Sneakers and Activewear | adidas US👕",
+    description: "Shop the latest kids' shoes, clothing, and accessories at adidas US.",
+  };
+}
 
 export default async function AdminPage() {
   const session = await getServerSession();

@@ -10,7 +10,7 @@ import { normalizeLocale } from "@/lib/utils";
 const HeaderNavbar = () => {
   const t = useTranslations("headerNavbar")
   const dispatch = useAppDispatch()
-  const locale = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English  
+  const locale = useAppSelector((state) => state.locale.locale)
   const [showCountrySelect, setShowCountrySelect] = useState(false)
   const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)

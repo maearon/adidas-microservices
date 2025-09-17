@@ -12,6 +12,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { ToastProvider } from "@/components/ToastProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
+import { cookies } from "next/headers";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -27,13 +28,16 @@ export const metadata: Metadata = {
   description: "Shop the latest adidas shoes, clothing and accessories",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const locale = cookieStore.get("locale")?.value || "en";
+  const theme = cookieStore.get("theme")?.value || "light";
   return (
-    <html lang="en">
+    <html lang={locale} className={theme} style={{ colorScheme: theme }} suppressHydrationWarning>
       <body
         className={`${barlow.variable}`}
       >

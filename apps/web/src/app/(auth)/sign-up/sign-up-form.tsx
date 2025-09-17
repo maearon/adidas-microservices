@@ -1,7 +1,7 @@
 "use client";
 
-import { LoadingButton } from "@/components/loading-button";
 import { PasswordInput } from "@/components/password-input";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "@/hooks/useTranslations";
 import { authClient } from "@/lib/auth-client";
 import { passwordSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +47,7 @@ const signUpSchema = z
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
+  const t = useTranslations("auth");
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
@@ -165,9 +167,18 @@ export function SignUpForm() {
               </div>
             )}
 
-            <LoadingButton type="submit" className="w-full" loading={loading}>
-              Create an account
-            </LoadingButton>
+            <Button
+              border
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              loading={loading}
+              type="submit"
+              className="w-full py-3 font-semibold transition-colors"
+            >
+              {t?.createMyAccount || "CREATE MY ACCOUNT"}
+            </Button>
           </form>
         </Form>
       </CardContent>

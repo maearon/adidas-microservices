@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
 import { usePathname } from "next/navigation";
 
 export default function UnauthorizedPage() {
+  const t = useTranslations("auth");
   const pathname = usePathname();
 
   return (
@@ -15,8 +16,13 @@ export default function UnauthorizedPage() {
           <p className="text-muted-foreground">Please sign in to continue.</p>
         </div>
         <div>
-          <Button asChild>
-            <Link href={`/sign-in?redirect=${pathname}`}>Sign in</Link>
+          <Button 
+            border 
+            href={`/sign-in?redirect=${pathname}`} 
+            theme="black" 
+            shadow={true} 
+            pressEffect={true}>
+              {t?.signIn || "Sign in"}
           </Button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingButton } from "@/components/loading-button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -36,7 +36,7 @@ export function ForgotPasswordForm() {
     setSuccess(null);
     setError(null);
 
-    const { error } = await authClient.requestPasswordReset({
+    const { error } = await authClient.forgetPassword({
       email,
       redirectTo: "/reset-password",
     });
@@ -55,6 +55,11 @@ export function ForgotPasswordForm() {
 
   return (
     <Card className="mx-auto w-full max-w-md">
+      <CardHeader>
+        {/* <CardTitle className="text-lg md:text-xl"></CardTitle>
+        <CardDescription className="text-xs md:text-sm">
+        </CardDescription> */}
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

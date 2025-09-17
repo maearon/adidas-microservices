@@ -2,7 +2,6 @@
 
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { GoogleIcon } from "@/components/icons/GoogleIcon";
-import { LoadingButton } from "@/components/loading-button";
 import { PasswordInput } from "@/components/password-input";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "@/hooks/useTranslations";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -31,6 +31,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 
 const signInSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -41,6 +42,7 @@ const signInSchema = z.object({
 type SignInValues = z.infer<typeof signInSchema>;
 
 export function SignInForm() {
+  const t = useTranslations("auth");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -99,12 +101,15 @@ export function SignInForm() {
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
         <CardDescription className="text-xs md:text-sm">
-          Enter your email below to login to your account
+          Login preference OR Enter your email below to login to your account.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="flex w-full flex-col items-center justify-between gap-2">
+              <SocialLoginButtons />
+            </div>
             <FormField
               control={form.control}
               name="email"
@@ -171,33 +176,18 @@ export function SignInForm() {
               </div>
             )}
 
-            <LoadingButton type="submit" className="w-full" loading={loading}>
-              Login
-            </LoadingButton>
-
-            <div className="flex w-full flex-col items-center justify-between gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full gap-2"
-                disabled={loading}
-                onClick={() => handleSocialSignIn("google")}
-              >
-                <GoogleIcon width="0.98em" height="1em" />
-                Sign in with Google
-              </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full gap-2"
-                disabled={loading}
-                onClick={() => handleSocialSignIn("github")}
-              >
-                <GitHubIcon />
-                Sign in with Github
-              </Button>
-            </div>
+            <Button
+              border
+              theme="black"
+              showArrow
+              pressEffect
+              shadow
+              loading={loading}
+              type="submit"
+              className="w-full py-3 font-semibold transition-colors"
+            >
+              {t?.logIn || "LOG IN"}
+            </Button>
           </form>
         </Form>
       </CardContent>

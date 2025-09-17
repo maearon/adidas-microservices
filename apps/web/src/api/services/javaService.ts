@@ -21,12 +21,13 @@ import {
   WithStatus
 } from "@/types/auth"
 import { handleNetworkError } from "@/components/shared/handleNetworkError"
+import axiosInstance from "@/lib/axios"
 
 const javaService = {
   // 🔐 Auth
   async checkEmail(email: string): Promise<{ exists: boolean; user: { activated: boolean } } | undefined> {
     try {
-      const { data }  = await api.post<WithStatus<{ exists: boolean; user: { activated: boolean } }>>("/check-email", { email })
+      const { data }  = await axiosInstance.post<WithStatus<{ exists: boolean; user: { activated: boolean } }>>("/api/auth/check-email", { email })
       return data;
     } catch (error: unknown) {
       handleNetworkError(error)

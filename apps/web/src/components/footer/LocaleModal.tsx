@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { X } from "lucide-react"
 import Image from "next/image"
 import { useDispatch, useSelector } from "react-redux"
@@ -17,7 +17,7 @@ interface LocaleModalProps {
 
 export default function LocaleModal({ isOpen, onClose }: LocaleModalProps) {
   const dispatch = useDispatch<AppDispatch>()
-  const currentLocale = useSelector((s: RootState) => s.locale.value)
+  const currentLocale = useSelector((s: RootState) => s.locale.locale)
 
   const [step, setStep] = useState<"overview" | "select">("overview")
 
@@ -40,6 +40,7 @@ export default function LocaleModal({ isOpen, onClose }: LocaleModalProps) {
                    overflow-y-auto bg-white dark:bg-black p-0 rounded-xl 
                    border shadow-lg"
       >
+        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         {/* Close button */}
         <button
           onClick={onClose}
@@ -75,7 +76,7 @@ export default function LocaleModal({ isOpen, onClose }: LocaleModalProps) {
                     height={16}
                   />
                   <span>
-                    {localeOptions.find((opt) => opt.value === currentLocale)?.title}
+                    {localeOptions.find((opt) => opt.value === currentLocale)?.label}
                   </span>
                 </div>
                 <span className="text-gray-400">Change</span>
@@ -111,8 +112,8 @@ export default function LocaleModal({ isOpen, onClose }: LocaleModalProps) {
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Image src={opt.flag} alt={opt.title} width={24} height={16} />
-                        <span>{opt.title}</span>
+                        <Image src={opt.flag} alt={opt.label} width={24} height={16} />
+                        <span>{opt.label}</span>
                       </div>
                       {isSelected && (
                         <div className="w-2 h-2 bg-black rounded-full" />

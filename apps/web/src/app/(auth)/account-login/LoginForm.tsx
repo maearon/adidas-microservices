@@ -171,7 +171,7 @@ const LoginForm = () => {
               type="submit"
               className="w-full py-3 font-semibold transition-colors"
             >
-{t?.continue || "CONTINUE"}
+              {t?.continue || "CONTINUE"}
             </Button>
 
             <div className="mt-4 text-base text-gray-600 dark:text-white text-center">

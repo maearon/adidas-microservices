@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -10,15 +10,16 @@ import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik"
 import * as Yup from "yup"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "@/store/store"
-import { fetchUser } from "@/store/sessionSlice"
+// import { fetchUser } from "@/store/sessionSlice"
 import flashMessage from "./shared/flashMessages"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
-import { useLoginMutation } from "@/api/hooks/useLoginMutation"
-import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
+// import { useLoginMutation } from "@/api/hooks/useLoginMutation"
+// import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
 import AdidasLogo from "./adidas-logo"
 import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 import { useTranslations } from "@/hooks/useTranslations"
 import { AuthTranslations } from "@/types/auth"
+import { authClient } from "@/lib/auth-client"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -54,15 +55,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     mutateAsync: checkEmail, 
     isPending 
   } = useCheckEmail()
-  const {
-    mutateAsync: loginMutation,
-    isPending: isLoggingIn
-  } = useLoginMutation()
+  // const {
+  //   mutateAsync: loginMutation,
+  //   isPending: isLoggingIn
+  // } = useLoginMutation()
   // const { mutateAsync: register, isPending: isRegistering } = useRegister()
-  const {
-    mutateAsync: signupMutation,
-    isPending: isRegistering
-  } = useSignupMutation<SignupResponse>();
+  // const {
+  //   mutateAsync: signupMutation,
+  //   isPending: isRegistering
+  // } = useSignupMutation<SignupResponse>();
 
   useEffect(() => {
     if (isOpen) {
@@ -70,13 +71,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     }
   }, [isOpen])
 
-  const handleEmailSubmit = async (values: { email: string; keepLoggedIn: boolean }) => {
+  const handleEmailSubmit = async (values: { email: string }) => {
     setIsLoading(true)
     try {
       const response = await checkEmail(values.email)
 
       setEmail(values.email)
-      setKeepLoggedIn(values.keepLoggedIn)
+      setKeepLoggedIn(keepLoggedIn)
       if (response?.exists) {
         if (response.user?.activated === false) {
           setStep("activate")
@@ -96,13 +97,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   const handleLogin = async (password: string) => {
     try {
-      const res = await loginMutation({ email, password, keepLoggedIn })
-      if (res) {
-        await dispatch(fetchUser())
-        flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
-        onClose()
+      // const res = await loginMutation({ email, password, keepLoggedIn })
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe: keepLoggedIn,
+        callbackURL: "/",
+      });
+      // if (res) {
+      //   await dispatch(fetchUser())
+      //   flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
+      //   onClose()
+      // } else {
+      //   flashMessage("error", t?.messages?.invalidPassword || "Invalid password")
+      // }
+      if (error) {
+        flashMessage("error", t?.messages?.loginFailed || "Login failed")
       } else {
-        flashMessage("error", t?.messages?.invalidPassword || "Invalid password")
+        flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
       }
     } catch (err) {
       flashMessage("error", t?.messages?.loginFailed || "Login failed")
@@ -120,14 +132,28 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       }
     }
     try {
-      const res = await signupMutation(payload)
-      if (res?.success) {
-        // flashMessage("success", "Account created!")
-        // await dispatch(fetchUser())
-        // onClose()
-      } else {
+      // const res = await signupMutation(payload)
+      const { error } = await authClient.signUp.email({
+        email: payload.user.email,
+        password,
+        name: payload.user.name,
+        callbackURL: "/my-account",
+      });
+
+      if (error) {
         flashMessage("error", t?.messages?.failedToCreateAccount || "Failed to create account")
+      } else {
+        flashMessage("success", "Account created!")
+        // toast.success("Signed up successfully");
+        // router.push("/my-account");
       }
+      // if (res?.success) {
+      //   flashMessage("success", "Account created!")
+      //   await dispatch(fetchUser())
+      //   onClose()
+      // } else {
+      //   flashMessage("error", t?.messages?.failedToCreateAccount || "Failed to create account")
+      // }
     } catch (err) {
       flashMessage("error", t?.messages?.somethingWentWrong || "Something went wrong")
       throw err
@@ -154,6 +180,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
       >
+        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         {/* Close button - Square border style */}
         <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
@@ -208,11 +235,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           {/* Email Form */}
           {step === "email" && (
             <Formik
-              initialValues={{ email: "", keepLoggedIn }}
+              initialValues={{ email: "" }}
               validationSchema={validationSchema(t)}
               onSubmit={handleEmailSubmit}
             >
-              {({ values, setFieldValue, errors, touched }) => (
+              {({ values, errors, touched }) => (
                 <Form className="space-y-4">
                   <div>
                     <Field name="email">
@@ -256,8 +283,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="keepLoggedIn"
-                      checked={values.keepLoggedIn}
-                      onCheckedChange={(checked) => setFieldValue("keepLoggedIn", checked)}
+                      checked={keepLoggedIn}
+                      onCheckedChange={(checked) => setKeepLoggedIn(!!checked)}
                     />
                     <label htmlFor="keepLoggedIn" className="text-base">
                       {t?.keepMeLoggedIn || "Keep me logged in. Applies to all options."}{" "}
@@ -321,11 +348,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     showArrow
                     pressEffect
                     shadow
-                    loading={isLoggingIn || isSubmitting}
+                    loading={isSubmitting}
                     type="submit"
                     className="w-full py-3 font-semibold transition-colors"
                   >
-                    {isLoggingIn ? (t?.loading || "LOADING...") : (t?.signIn || "SIGN IN")}
+                    {isSubmitting ? (t?.loading || "LOADING...") : (t?.signIn || "SIGN IN")}
                   </Button>
                 </Form>
               )}
@@ -367,11 +394,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     showArrow
                     pressEffect
                     shadow
-                    loading={isRegistering || isSubmitting}
+                    loading={isSubmitting}
                     type="submit"
                     className="w-full py-3 font-semibold transition-colors"
                   >
-                    {isRegistering ? (t?.loading || "LOADING...") : (t?.createPassword || "CREATE PASSWORD")}
+                    {isSubmitting ? (t?.loading || "LOADING...") : (t?.createPassword || "CREATE PASSWORD")}
                   </Button>
                 </Form>
               )}
@@ -393,6 +420,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white dark:bg-black p-0 rounded-none">
+        <DialogHeader><DialogTitle>{""}</DialogTitle></DialogHeader>
         {/* Close button - Square border style */}
         <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
