@@ -13,7 +13,7 @@ export default function Profile({ session }: ProfileProps) {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-background border rounded-lg p-6">
+          <div className="bg-background border border-black dark:border-white rounded-none p-6">
             <div className="mb-6">
               <h2 className="text-xl font-bold mb-2">HI {session?.user?.name?.toUpperCase() || "USER"}</h2>
               <div className="flex items-center text-base text-gray-600 dark:text-white">

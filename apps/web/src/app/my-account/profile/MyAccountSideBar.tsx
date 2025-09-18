@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import type { ReactNode } from "react"
 import { LogMeOutButton } from "@/components/auth/LogMeOutButton"
+import { ChevronRight } from "lucide-react"
 // import { LogoutEverywhereButton } from "@/app/(main)/profile/logout-everywhere-button"
 
 interface AccountMenuItem {
@@ -34,13 +35,15 @@ export default function MyAccountSideBar() {
           key={item.href}
           href={item.href}
           className={cn(
-            "flex items-center px-3 py-2 text-base rounded hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors",
+            "flex items-center px-3 py-2 text-base rounded-none hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors",
             pathname === item.href ? "bg-gray-100 dark:bg-gray-700 font-medium" : "",
           )}
         >
           <span className="mr-3">{item.icon}</span>
           {item.name}
-          <span className="ml-auto">›</span>
+          <span className="ml-auto">
+            <ChevronRight className="w-4 h-4" />
+          </span>
         </Link>
       ))}
 
