@@ -11,7 +11,7 @@ interface AccountHeaderProps {
 export default function AccountHeader({ session }: AccountHeaderProps) {
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between border-b border-[#D3D7DA]">
       <div>
         <h1 className="text-3xl font-bold">HI {session?.user?.name?.toUpperCase() || "USER"}</h1>
         <div className="flex items-center mt-2">
