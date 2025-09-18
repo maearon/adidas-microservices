@@ -25,7 +25,7 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Header Section */}
-      <div className="bg-[#F5F4E7] dark:bg-white border-b border-[#D3D7DA]">
+      <div className="bg-[#F5F4E7] border-b border-[#D3D7DA]">
         <div className="container mx-auto w-full max-w-7xl px-4 py-8">
           <AccountHeader session={session} />
 
@@ -36,7 +36,7 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`pb-2 font-medium ${
-                  activeTab === tab.id ? "border-b-2 border-black text-black dark:text-white" : "text-gray-600"
+                  activeTab === tab.id ? "border-b-2 border-black text-black" : "text-gray-600"
                 }`}
               >
                 {tab.label}

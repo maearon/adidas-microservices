@@ -15,8 +15,8 @@ export default function AccountHeader({ session }: AccountHeaderProps) {
       <div>
         <h1 className="text-3xl font-bold">HI {session?.user?.name?.toUpperCase() || "USER"}</h1>
         <div className="flex items-center mt-2">
-          <span className="text-base text-gray-600 dark:text-white mr-2">👑</span>
-          <span className="text-base text-gray-600 dark:text-white">0 points to spend</span>
+          <span className="text-base text-gray-600 mr-2">👑</span>
+          <span className="text-base text-gray-600">0 points to spend</span>
         </div>
       </div>
       <div className="text-right">
