@@ -25,7 +25,7 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Header Section */}
-      <div className="bg[#F5F4E7] dark:bg-white border-b border-[#D3D7DA]">
+      <div className="bg-[#F5F4E7] dark:bg-white border-b border-[#D3D7DA]">
         <div className="container mx-auto w-full max-w-6xl px-4 py-8">
           <AccountHeader session={session} />
 
