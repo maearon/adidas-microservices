@@ -16,7 +16,7 @@ export default function WishlistPage() {
       addToCart({
         id: item.id,
         name: item.name,
-        price: formatPrice(item?.price),
+        price: Number(item?.price.replace(/[^0-9.-]+/g, "")) || 0,
         image: item.image,
         color: "Default",
         size: "M",

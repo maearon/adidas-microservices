@@ -199,7 +199,7 @@ export default function CheckoutPage() {
                     onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, ageVerified: !!checked }))}
                   />
                   <label htmlFor="ageVerified" className="text-base font-medium">
-                    I'm 13+ years old. *
+                    I&apos;m 13+ years old. *
                   </label>
                 </div>
               </div>

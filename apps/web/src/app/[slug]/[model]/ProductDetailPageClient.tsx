@@ -88,7 +88,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
       addToCart({
         id: Number(product.id),
         name: product.name,
-        price: `$${formatPrice(variant?.price).replace("$", "")}`,
+        price: Number(variant?.price ?? 0),
         image: variant?.image_urls?.[0] || "/placeholder.png",
         color: variant?.color,
         size: selectedSize,
