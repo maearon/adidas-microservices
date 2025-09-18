@@ -56,7 +56,7 @@ export function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
+      rememberMe: true,
     },
   });
 
@@ -97,7 +97,7 @@ export function SignInForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-lg">
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
         <CardDescription className="text-xs md:text-sm">
@@ -154,18 +154,25 @@ export function SignInForm() {
               )}
             />
 
+            {/* Keep me logged in */}
             <FormField
               control={form.control}
               name="rememberMe"
               render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
+                <FormItem className="flex items-center space-x-2">
                   <FormControl>
                     <Checkbox
+                      id="keepLoggedIn"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel>Remember me</FormLabel>
+                  <FormLabel htmlFor="keepLoggedIn" className="text-base">
+                    {t?.keepMeLoggedIn || "Keep me logged in. Applies to all options."}{" "}
+                    <button type="button" className="underline ml-1">
+                      {t?.moreInfo || "More info"}
+                    </button>
+                  </FormLabel>
                 </FormItem>
               )}
             />
