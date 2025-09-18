@@ -42,7 +42,7 @@ export const LogMeOutButton = () => {
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
           });
           setTimeout(() => {
-            window.location.reload()
+            window.location.href = "/";
           }, 50);
         },
         onError: (err) => {
