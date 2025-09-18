@@ -30,13 +30,13 @@ export default function MyAccountClient({ session }: MyAccountClientProps) {
           <AccountHeader session={session} />
 
           {/* Tabs Navigation */}
-          <div className="flex space-x-8 mt-8">
+          <div className="flex w-full justify-center space-x-8 mt-8">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`pb-2 font-medium ${
-                  activeTab === tab.id ? "border-b-2 border-border text-black dark:text-white" : "text-gray-600"
+                  activeTab === tab.id ? "border-b-2 border-black text-black dark:text-white" : "text-gray-600"
                 }`}
               >
                 {tab.label}
