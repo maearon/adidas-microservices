@@ -1,5 +1,5 @@
 # Use stable Ruby image
-FROM ruby:3.4.2
+FROM ruby:3.4.6
 
 # Install Node.js and Yarn using corepack
 RUN apt-get update && apt-get install -y curl \
@@ -33,6 +33,9 @@ COPY . .
 
 # Change ownership to appuser after copying files
 RUN chown -R appuser:appuser /app
+
+# Ensure Rails binstubs are executable
+RUN chmod +x apps/ruby-rails-boilerplate/bin/*
 
 # Copy entrypoint
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
