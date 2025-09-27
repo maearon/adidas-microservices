@@ -70,7 +70,7 @@ puts "👟 Generating sample products..."
 
 brands       = %w[Adidas Originals Athletics Essentials]
 sports       = %w[Running Soccer Basketball Tennis Gym Training Golf Hiking Yoga Football Baseball]
-producttypes = %w[Sneakers Cleats Sandals Hoodie Pants Shorts Jacket Jersey TShirt TankTop Dress Leggings Tracksuit Bra Coat]
+producttypes = %w[Shoes Sneakers Cleats Sandals Hoodie Pants Shorts Jacket Jersey TShirt TankTop Dress Leggings Tracksuit Bra Coat]
 genders      = %w[Men Women Unisex Kids]
 categories = Category.where(name: ["Shoes", "Apparel", "Accessories"]).to_a
 PRODUCTS_IMAGE_DIR = Rails.root.join("app/assets/images/products")
