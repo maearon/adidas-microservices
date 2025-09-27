@@ -34,7 +34,7 @@ COPY ./apps/ruby-rails-boilerplate ./
 # RUN apt-get install -y dos2unix nano
 
 # Ensure Rails binstubs are executable
-RUN chmod +x apps/ruby-rails-boilerplate/bin/* || true
+RUN chmod +x bin/* || true
 
 # Copy entrypoint
 COPY ./apps/ruby-rails-boilerplate/entrypoint.sh /usr/bin/entrypoint.sh
