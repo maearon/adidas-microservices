@@ -55,10 +55,10 @@ RUN if [ "$RAILS_ENV" = "production" ]; then \
 USER appuser
 
 # Expose port
-EXPOSE 3000
+EXPOSE ${PORT}
 
 # Default command
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "${PORT}"]
 
 # Healthcheck for production
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
