@@ -35,7 +35,7 @@ COPY . .
 RUN chown -R appuser:appuser /app
 
 # Ensure Rails binstubs are executable
-RUN chmod +x apps/ruby-rails-boilerplate/bin/*
+RUN chmod +x bin/* || true
 
 # Copy entrypoint
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
