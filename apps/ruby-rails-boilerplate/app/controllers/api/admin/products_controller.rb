@@ -33,50 +33,50 @@ class Api::Admin::ProductsController < Api::ApiController
   end
 
   # PATCH/PUT /api/admin/products/:id
-  # app/controllers/api/admin/products_controller.rb
   def update
     if @product.update(product_params)
       # xử lý attachments cho product
-      if params[:product].present?
-        if @product.id.present?
-          if params[:product][:image].present?
-            @product.image.purge
-            @product.image.attach(params[:product][:image])
-          end
-          if params[:product][:hover_image].present?
-            @product.hover_image.purge
-            @product.hover_image.attach(params[:product][:hover_image])
-          end
+      if params[:product].present? && @product.id.present?
+        if params[:product][:image].present?
+          @product.image.purge
+          @product.image.attach(params[:product][:image])
+        end
+
+        if params[:product][:hover_image].present?
+          @product.hover_image.purge
+          @product.hover_image.attach(params[:product][:hover_image])
         end
       end
 
       # xử lý attachments cho variants
       if params[:product][:variants_attributes].present?
         params[:product][:variants_attributes].each do |_, variant_params|
-          if variant_params[:id].present?
-            variant = @product.variants.find(variant_params[:id])
+          next unless variant_params[:id].present?
 
-            # attach avatar nếu có
-            if variant_params[:avatar].present?
-              variant.avatar.purge
-              variant.avatar.attach(variant_params[:avatar])
-            end
+          variant = @product.variants.find(variant_params[:id])
 
-            # attach hover nếu có
-            if variant_params[:hover].present?
-              variant.hover.purge
-              variant.hover.attach(variant_params[:hover])
-            end
+          # attach avatar nếu có
+          if variant_params[:avatar].present?
+            variant.avatar.purge
+            variant.avatar.attach(variant_params[:avatar])
+          end
 
-            # attach nhiều images (chống duplicate bằng checksum)
-            if variant_params[:images].present?
-              variant_params[:images].each do |new_file|
-                new_checksum = Digest::MD5.base64digest(new_file.read)
-                new_file.rewind
+          # attach hover nếu có
+          if variant_params[:hover].present?
+            variant.hover.purge
+            variant.hover.attach(variant_params[:hover])
+          end
 
-                exists = variant.images.any? { |img| img.blob.checksum == new_checksum }
-                variant.images.attach(new_file) unless exists
-              end
+          # attach nhiều images (chống duplicate bằng checksum)
+          if variant_params[:images].present?
+            Array(variant_params[:images]).flatten.compact.each do |new_file|
+              next unless new_file.respond_to?(:read)
+
+              new_checksum = Digest::MD5.base64digest(new_file.read)
+              new_file.rewind
+
+              exists = variant.images.any? { |img| img.blob.checksum == new_checksum }
+              variant.images.attach(new_file) unless exists
             end
           end
         end
