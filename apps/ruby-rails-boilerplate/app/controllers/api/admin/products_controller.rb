@@ -4,7 +4,6 @@ class Api::Admin::ProductsController < ActionController::API
   # POST /api/admin/products
   def create
     @product = Product.new(product_params.except(:image, :hover_image))
-
     attach_product_images(@product, params[:product])
 
     if @product.save
@@ -17,7 +16,6 @@ class Api::Admin::ProductsController < ActionController::API
 
   # PATCH/PUT /api/admin/products/:id
   def update
-    # update product fields
     @product.assign_attributes(product_params.except(:image, :hover_image))
     attach_product_images(@product, params[:product])
 
@@ -74,27 +72,24 @@ class Api::Admin::ProductsController < ActionController::API
     )
   end
 
-  # 📷 Helper attach ảnh chính của product
+  # 📷 Gắn ảnh chính product
   def attach_product_images(product, payload)
     return unless payload
 
-    if payload[:image].present?
-      product.image.attach(payload[:image])
-    end
-
-    if payload[:hover_image].present?
-      product.hover_image.attach(payload[:hover_image])
-    end
+    product.image.attach(payload[:image]) if payload[:image].present?
+    product.hover_image.attach(payload[:hover_image]) if payload[:hover_image].present?
   end
 
-  # 📦 Helper gắn ảnh cho các variant con
+  # 📦 Gắn ảnh cho từng variant con (fix lỗi symbol vs integer)
   def attach_variant_nested_images(product, variants_attrs)
-    return unless variants_attrs
+    return unless variants_attrs.present?
 
-    variants_attrs.each do |variant_attrs|
-      next unless variant_attrs[:id]
+    # ⚠ FE gửi dạng hash {"0" => {...}, "1" => {...}}
+    variants_attrs.values.each do |variant_attrs|
+      variant_id = variant_attrs["id"] || variant_attrs[:id]
+      next unless variant_id.present?
 
-      variant = product.variants.find_by(id: variant_attrs[:id])
+      variant = product.variants.find_by(id: variant_id)
       next unless variant
 
       attach_single_variant_images(variant, variant_attrs)
@@ -103,19 +98,24 @@ class Api::Admin::ProductsController < ActionController::API
 
   # 🧠 Gắn avatar, hover, và images[] cho từng variant
   def attach_single_variant_images(variant, attrs)
-    if attrs[:avatar].present?
+    avatar = attrs["avatar"] || attrs[:avatar]
+    hover  = attrs["hover"] || attrs[:hover]
+    images = attrs["images"] || attrs[:images]
+
+    if avatar.present?
       variant.avatar.purge if variant.avatar.attached?
-      variant.avatar.attach(attrs[:avatar])
+      variant.avatar.attach(avatar)
     end
 
-    if attrs[:hover].present?
+    if hover.present?
       variant.hover.purge if variant.hover.attached?
-      variant.hover.attach(attrs[:hover])
+      variant.hover.attach(hover)
     end
 
-    if attrs[:images].present?
+    if images.present?
+      # images là hash {"0" => file1, "1" => file2, ...}
       variant.images.purge if variant.images.attached?
-      attrs[:images].each do |img|
+      images.values.each do |img|
         variant.images.attach(img)
       end
     end
