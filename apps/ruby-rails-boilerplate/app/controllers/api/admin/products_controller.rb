@@ -66,7 +66,7 @@ class Api::Admin::ProductsController < Api::ApiController
       :care, 
       :specifications,
       :brand, 
-      :category, 
+      # :category, 
       :sport, 
       :gender, 
       :product_type, 
