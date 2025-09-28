@@ -9,7 +9,6 @@ json.tags @product.tags.pluck(:name)
 json.variant_code @variant.variant_code
 json.title @product.name
 json.slug @product.slug
-json.currencyId currency_code(locale.to_s)
 json.currencyFormat I18n.t("number.currency.format.unit", locale: locale.to_s)
 json.isFreeShipping true
 

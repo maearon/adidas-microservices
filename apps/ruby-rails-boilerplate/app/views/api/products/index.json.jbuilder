@@ -18,7 +18,6 @@ json.products @products do |product|
   json.category product.category&.name
   json.sport product.sport
 
-  json.currencyId currency_code(locale.to_s)
   json.currencyFormat I18n.t("number.currency.format.unit", locale: locale.to_s)
   json.isFreeShipping true
 
