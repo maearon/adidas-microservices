@@ -34,7 +34,7 @@ class Api::Admin::ProductsController < ActionController::API
   # 🧩 Tìm product theo variant_code (FE gửi ID là variant_code)
   def set_product
     @variant = Variant.find_by!(variant_code: params[:id])
-    @product = variant.product
+    @product = @variant.product
   rescue ActiveRecord::RecordNotFound
     render json: { success: false, message: 'Product not found' }, status: :not_found
   end
