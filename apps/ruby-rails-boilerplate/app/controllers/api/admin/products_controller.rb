@@ -76,8 +76,17 @@ class Api::Admin::ProductsController < ActionController::API
   def attach_product_images(product, payload)
     return unless payload
 
-    product.image.attach(payload[:image]) if payload[:image].present?
-    product.hover_image.attach(payload[:hover_image]) if payload[:hover_image].present?
+    image = payload["image"] || payload[:image]
+    hover_image  = payload["hover_image"] || payload[:hover_image]
+    if image.present?
+      product.image.purge
+      product.image.attach(image)
+    end
+
+    if hover_image.present?
+      product.hover_image.purge
+      product.hover_image.attach(hover_image)
+    end
   end
 
   # 📦 Gắn ảnh cho từng variant con (fix lỗi symbol vs integer)
@@ -103,18 +112,18 @@ class Api::Admin::ProductsController < ActionController::API
     images = attrs["images"] || attrs[:images]
 
     if avatar.present?
-      variant.avatar.purge if variant.avatar.attached?
+      variant.avatar.purge
       variant.avatar.attach(avatar)
     end
 
     if hover.present?
-      variant.hover.purge if variant.hover.attached?
+      variant.hover.purge
       variant.hover.attach(hover)
     end
 
     if images.present?
       # images là hash {"0" => file1, "1" => file2, ...}
-      variant.images.purge if variant.images.attached?
+      variant.images.purge
       images.values.each do |img|
         variant.images.attach(img)
       end
