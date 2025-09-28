@@ -4,15 +4,21 @@ class Api::Admin::ProductsController < ApplicationController
 
   # GET /api/admin/products/:id
   def show
-    render json: @product.as_json(include: {
-      variants: {
-        include: :sizes,
-        methods: [:avatar_url, :hover_url, :images_urls]
+    product_json = @product.as_json(
+      include: {
+        variants: {
+          include: :sizes,
+          methods: [:avatar_url, :hover_url, :images_urls]
+        }
       }
-    }).merge(
-      image_url: url_for(@product.image) if @product.image.attached?,
-      hover_image_url: url_for(@product.hover_image) if @product.hover_image.attached?
     )
+
+    extra_data = {
+      image_url: (@product.image.attached? ? url_for(@product.image) : nil),
+      hover_image_url: (@product.hover_image.attached? ? url_for(@product.hover_image) : nil)
+    }.compact
+
+    render json: product_json.merge(extra_data)
   end
 
   # POST /api/admin/products
@@ -46,7 +52,7 @@ class Api::Admin::ProductsController < ApplicationController
   private
 
   def set_product
-    @product = Product.find(variant_code: params[:id])
+    @product = Product.find_by!(variant_code: params[:id])
   end
 
   # ⚡ Strong params: nhận product + variants nested
