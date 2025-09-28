@@ -1,216 +1,132 @@
 class Api::Admin::ProductsController < ActionController::API
-  before_action :set_product, only: [:show, :update, :destroy, :toggle_status, :duplicate]
-  
-  def index
-    @products = Product.includes(:variants, :category, :model, :collaboration).all
-    
-    # Search
-    if params[:q].present?
-      search_term = "%#{params[:q]}%"
-      @products = @products.where(
-        "name ILIKE ? OR brand ILIKE ? OR category ILIKE ? OR model_number ILIKE ?",
-        search_term, search_term, search_term, search_term
-      )
-    end
-    
-    # Filters
-    @products = @products.where(status: params[:status]) if params[:status].present?
-    @products = @products.where(category: params[:category]) if params[:category].present?
-    @products = @products.where(brand: params[:brand]) if params[:brand].present?
-    @products = @products.where(gender: params[:gender]) if params[:gender].present?
-    @products = @products.where(sport: params[:sport]) if params[:sport].present?
-    
-    # Sorting
-    case params[:sort]
-    when 'name_asc'
-      @products = @products.order(:name)
-    when 'name_desc'
-      @products = @products.order(name: :desc)
-    when 'created_desc'
-      @products = @products.order(created_at: :desc)
-    else
-      @products = @products.order(created_at: :desc)
-    end
-    
-    # Pagination
-    page = params[:page]&.to_i || 1
-    per_page = params[:per_page]&.to_i || 20
-    
-    @products = @products.page(page).per(per_page)
-    
-    render 'api/admin/products/index'
-  end
-  
-  def show
-    render 'api/admin/products/show'
-  end
-  
+  before_action :set_product, only: [:update]
+
+  # POST /api/admin/products
   def create
-    @product = Product.new(product_params)
-    
+    @product = Product.new(product_params.except(:image, :hover_image))
+
+    attach_product_images(@product, params[:product])
+
     if @product.save
+      attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show', status: :created
     else
-      render json: {
-        success: false,
-        errors: @product.errors.full_messages,
-        message: 'Failed to create product'
-      }, status: :unprocessable_entity
+      render_error(@product, 'Failed to create product')
     end
   end
-  
+
+  # PATCH/PUT /api/admin/products/:id
   def update
-    if @product.update(product_params)
+    # update product fields
+    @product.assign_attributes(product_params.except(:image, :hover_image))
+    attach_product_images(@product, params[:product])
+
+    if @product.save
+      attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show'
     else
-      render json: {
-        success: false,
-        errors: @product.errors.full_messages,
-        message: 'Failed to update product'
-      }, status: :unprocessable_entity
+      render_error(@product, 'Failed to update product')
     end
   end
-  
-  def destroy
-    if @product.destroy
-      render json: {
-        success: true,
-        message: 'Product deleted successfully'
-      }
-    else
-      render json: {
-        success: false,
-        errors: @product.errors.full_messages,
-        message: 'Failed to delete product'
-      }, status: :unprocessable_entity
-    end
-  end
-  
-  def bulk_destroy
-    product_ids = params[:ids]
-    
-    if product_ids.present?
-      deleted_count = Product.where(id: product_ids).destroy_all.count
-      render json: {
-        success: true,
-        message: "#{deleted_count} products deleted successfully"
-      }
-    else
-      render json: {
-        success: false,
-        message: 'No product IDs provided'
-      }, status: :bad_request
-    end
-  end
-  
-  def toggle_status
-    new_status = @product.status == 'active' ? 'inactive' : 'active'
-    
-    if @product.update(status: new_status)
-      render 'api/admin/products/show'
-    else
-      render json: {
-        success: false,
-        errors: @product.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-  end
-  
-  def duplicate
-    new_product = @product.dup
-    new_product.name = "#{@product.name} (Copy)"
-    new_product.model_number = "#{@product.model_number}-copy-#{Time.current.to_i}"
-    new_product.slug = "#{@product.slug}-copy-#{Time.current.to_i}"
-    new_product.status = 'inactive'
-    
-    if new_product.save
-      # Duplicate variants
-      @product.variants.each do |variant|
-        new_variant = variant.dup
-        new_variant.product = new_product
-        new_variant.variant_code = "#{variant.variant_code}-copy" if variant.variant_code.present?
-        new_variant.save
-        
-        # Copy images
-        if variant.avatar.attached?
-          new_variant.avatar.attach(variant.avatar.blob)
-        end
-        if variant.hover.attached?
-          new_variant.hover.attach(variant.hover.blob)
-        end
-        if variant.images.attached?
-          variant.images.each do |image|
-            new_variant.images.attach(image.blob)
-          end
-        end
-      end
-      
-      @product = new_product
-      render 'api/admin/products/show'
-    else
-      render json: {
-        success: false,
-        errors: new_product.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-  end
-  
+
   private
-  
+
+  # 🧩 Tìm product theo variant_code (FE gửi ID là variant_code)
   def set_product
-    variant = Variant.find_by!(variant_code: params[:id])
+    @variant = Variant.find_by!(variant_code: params[:id])
     @product = variant.product
   rescue ActiveRecord::RecordNotFound
     render json: { success: false, message: 'Product not found' }, status: :not_found
   end
 
-  def set_product
-    variant = Variant.find_by!(variant_code: params[:id])
-    @product = variant.product
-  end
-
-  # ⚡ Strong params: nhận product + variants nested
+  # 💡 Strong params khớp seed FE
   def product_params
     params.require(:product).permit(
-      :name, 
-      :description_h5, 
-      :description_p, 
-      :care, 
+      :name,
+      :description_h5,
+      :description_p,
+      :care,
       :specifications,
-      :brand, 
-      :sport, 
-      :gender, 
-      :product_type, 
-      :franchise, 
-      :status, 
-      :image, 
+      :brand,
+      :sport,
+      :gender,
+      :product_type,
+      :franchise,
+      :status,
+      :image,
       :hover_image,
       variants_attributes: [
-        :id, 
-        :variant_code, 
-        :color, 
-        :price, 
-        :compare_at_price, 
-        :stock, 
-        :avatar, 
-        :hover, 
+        :id,
+        :variant_code,
+        :color,
+        :price,
+        :compare_at_price,
+        :stock,
+        :avatar,
+        :hover,
         images: [],
+        variant_sizes_attributes: [
+          :id,
+          :size_id,
+          :stock
+        ]
       ]
     )
   end
-  
-  # def product_params
-  #   params.require(:product).permit(
-  #     :name, :model_number, :description_h5, :description_p, :brand, :category,
-  #     :sport, :gender, :franchise, :product_type, :status, :slug, :activity,
-  #     :material, :collection, :care, :specifications, :is_featured, :badge,
-  #     :image, :hover_image,
-  #     variants_attributes: [
-  #       :id, :variant_code, :color, :price, :compare_at_price, :stock, :sku,
-  #       :avatar, :hover, :_destroy, 
-  #       images: [],
-  #       sizes_attributes: [:id, :size_id, :stock, :_destroy]
-  #     ]
-  #   )
-  # end
+
+  # 📷 Helper attach ảnh chính của product
+  def attach_product_images(product, payload)
+    return unless payload
+
+    if payload[:image].present?
+      product.image.attach(payload[:image])
+    end
+
+    if payload[:hover_image].present?
+      product.hover_image.attach(payload[:hover_image])
+    end
+  end
+
+  # 📦 Helper gắn ảnh cho các variant con
+  def attach_variant_nested_images(product, variants_attrs)
+    return unless variants_attrs
+
+    variants_attrs.each do |variant_attrs|
+      next unless variant_attrs[:id]
+
+      variant = product.variants.find_by(id: variant_attrs[:id])
+      next unless variant
+
+      attach_single_variant_images(variant, variant_attrs)
+    end
+  end
+
+  # 🧠 Gắn avatar, hover, và images[] cho từng variant
+  def attach_single_variant_images(variant, attrs)
+    if attrs[:avatar].present?
+      variant.avatar.purge if variant.avatar.attached?
+      variant.avatar.attach(attrs[:avatar])
+    end
+
+    if attrs[:hover].present?
+      variant.hover.purge if variant.hover.attached?
+      variant.hover.attach(attrs[:hover])
+    end
+
+    if attrs[:images].present?
+      variant.images.purge if variant.images.attached?
+      attrs[:images].each do |img|
+        variant.images.attach(img)
+      end
+    end
+  end
+
+  # ⚠️ Render lỗi chuẩn REST
+  def render_error(resource, message)
+    render json: {
+      success: false,
+      message: message,
+      errors: resource.errors.full_messages
+    }, status: :unprocessable_entity
+  end
 end
