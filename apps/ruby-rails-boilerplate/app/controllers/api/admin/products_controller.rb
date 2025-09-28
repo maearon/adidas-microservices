@@ -1,5 +1,5 @@
 # app/controllers/api/admin/products_controller.rb
-class Api::Admin::ProductsController < ApplicationController
+class Api::Admin::ProductsController < Api::ApiController
   before_action :set_product, only: [:show, :update, :destroy]
 
   # GET /api/admin/products/:id
