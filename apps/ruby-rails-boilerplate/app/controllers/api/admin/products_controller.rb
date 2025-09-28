@@ -35,8 +35,6 @@ class Api::Admin::ProductsController < Api::ApiController
   # PATCH/PUT /api/admin/products/:id
   # app/controllers/api/admin/products_controller.rb
   def update
-    @product = Product.find(params[:id])
-
     if @product.update(product_params)
       # xử lý attachments cho product
       if params[:product].present?
