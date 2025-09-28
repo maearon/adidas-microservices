@@ -52,7 +52,8 @@ class Api::Admin::ProductsController < Api::ApiController
   private
 
   def set_product
-    @product = Product.find_by!(variant_code: params[:id])
+    variant = Variant.find_by!(variant_code: params[:id])
+    @product = variant.product
   end
 
   # ⚡ Strong params: nhận product + variants nested
