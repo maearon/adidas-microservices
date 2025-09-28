@@ -11,10 +11,8 @@ Rails.application.routes.draw do
     end
     get "products/:slug/:variant_code", to: "products#show"
 
-    namespace :api do
-      namespace :admin do
-        resources :products, only: [:create, :update]
-      end
+    namespace :admin do
+      resources :products, only: [:create, :update]
     end
 
     # Order and cart management
