@@ -150,28 +150,43 @@ class Api::Admin::ProductsController < ActionController::API
 
   # 🔄 Sắp xếp lại thứ tự ảnh của variant
   def reorder_variant_images(variant, image_order)
-    return unless image_order.is_a?(Array)
+    return unless image_order.is_a?(Array) && image_order.any?
     
     # Lấy tất cả ảnh hiện tại của variant
     current_images = variant.images.attached? ? variant.images.to_a : []
+    return if current_images.empty?
     
-    # Tạo mapping từ position mới đến image
-    reordered_images = image_order.map.with_index do |image_id, new_position|
-      # Tìm ảnh theo ID hoặc position cũ
-      image = current_images.find { |img| img.id.to_s == image_id.to_s } || 
-              current_images[image_id.to_i]
-      image if image
-    end.compact
+    # Tạo mapping từ image_order đến image thực tế
+    reordered_images = []
     
-    # Nếu có ảnh mới được sắp xếp, cập nhật lại
+    image_order.each do |image_id|
+      # Tìm ảnh theo ID hoặc position
+      image = current_images.find { |img| img.id.to_s == image_id.to_s }
+      if image
+        reordered_images << image
+      else
+        # Fallback: sử dụng index nếu không tìm thấy ID
+        index = image_id.to_i
+        reordered_images << current_images[index] if current_images[index]
+      end
+    end
+    
+    # Chỉ reorder nếu có ảnh và số lượng khớp
     if reordered_images.any? && reordered_images.length == current_images.length
+      # Lưu blob data trước khi purge
+      image_blobs = reordered_images.map(&:blob)
+      
       # Detach tất cả ảnh cũ
       variant.images.purge
       
       # Attach lại theo thứ tự mới
-      reordered_images.each do |image|
-        variant.images.attach(image.blob)
+      image_blobs.each do |blob|
+        variant.images.attach(blob)
       end
+      
+      Rails.logger.info "Reordered #{reordered_images.length} images for variant #{variant.id}"
+    else
+      Rails.logger.warn "Failed to reorder images: expected #{current_images.length}, got #{reordered_images.length}"
     end
   end
 
