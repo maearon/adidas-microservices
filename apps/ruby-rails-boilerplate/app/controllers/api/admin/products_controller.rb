@@ -1,5 +1,5 @@
 class Api::Admin::ProductsController < ActionController::API
-  before_action :set_product, only: [:update]
+  before_action :set_product, only: [:update, :reorder_images]
 
   # POST /api/admin/products
   def create
@@ -24,6 +24,24 @@ class Api::Admin::ProductsController < ActionController::API
       render 'api/admin/products/show'
     else
       render_error(@product, 'Failed to update product')
+    end
+  end
+
+  # PATCH /api/admin/products/:id/reorder_images
+  def reorder_images
+    variant_id = params[:variant_id]
+    image_order = params[:image_order] # Array of image IDs in new order
+    
+    if variant_id.present? && image_order.present?
+      variant = @product.variants.find_by(id: variant_id)
+      if variant
+        reorder_variant_images(variant, image_order)
+        render json: { success: true, message: 'Images reordered successfully' }
+      else
+        render json: { success: false, message: 'Variant not found' }, status: :not_found
+      end
+    else
+      render json: { success: false, message: 'Missing variant_id or image_order' }, status: :bad_request
     end
   end
 
@@ -126,6 +144,33 @@ class Api::Admin::ProductsController < ActionController::API
       variant.images.purge
       images.values.each do |img|
         variant.images.attach(img)
+      end
+    end
+  end
+
+  # 🔄 Sắp xếp lại thứ tự ảnh của variant
+  def reorder_variant_images(variant, image_order)
+    return unless image_order.is_a?(Array)
+    
+    # Lấy tất cả ảnh hiện tại của variant
+    current_images = variant.images.attached? ? variant.images.to_a : []
+    
+    # Tạo mapping từ position mới đến image
+    reordered_images = image_order.map.with_index do |image_id, new_position|
+      # Tìm ảnh theo ID hoặc position cũ
+      image = current_images.find { |img| img.id.to_s == image_id.to_s } || 
+              current_images[image_id.to_i]
+      image if image
+    end.compact
+    
+    # Nếu có ảnh mới được sắp xếp, cập nhật lại
+    if reordered_images.any? && reordered_images.length == current_images.length
+      # Detach tất cả ảnh cũ
+      variant.images.purge
+      
+      # Attach lại theo thứ tự mới
+      reordered_images.each do |image|
+        variant.images.attach(image.blob)
       end
     end
   end

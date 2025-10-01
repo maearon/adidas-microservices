@@ -12,7 +12,11 @@ Rails.application.routes.draw do
     get "products/:slug/:variant_code", to: "products#show"
 
     namespace :admin do
-      resources :products, only: [:create, :update]
+      resources :products, only: [:create, :update] do
+        member do
+          patch :reorder_images
+        end
+      end
     end
 
     # Order and cart management
