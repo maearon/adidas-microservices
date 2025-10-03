@@ -54,7 +54,7 @@ export function ThemeToggle({
   return (
     <div className={className} {...props}>
       <Link href="" onClick={toggleTheme}>
-        {isValidTheme(currentTheme) && themeOptions[currentTheme]}
+        {isValidTheme(getNextTheme()) && themeOptions[getNextTheme()]}
       </Link>
     </div>
   );
