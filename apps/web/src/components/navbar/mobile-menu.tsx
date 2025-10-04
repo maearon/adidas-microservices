@@ -313,6 +313,38 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {additionalMenuItems.map((item) =>
                 item.hasSubmenu ? (
                   null // Locale handled in footer
+                  // <button
+                  //   key={item.name}
+                  //   onClick={() => {
+                  //     pushToHistory(currentLevel)
+                  //     setCurrentLevel({
+                  //       title: item.name,
+                  //       items: localeOptions.map((opt) => ({
+                  //         title: opt.label,
+                  //         value: opt.value,
+                  //         flag: opt.flag,
+                  //         items: [],
+                  //       })),
+                  //     })
+                  //   }}
+                  //   className="w-full text-left p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black flex items-center justify-between"
+                  // >
+                  //   <div className="flex items-center space-x-2">
+                  //     <Image
+                  //       src={
+                  //         localeOptions.find((o) => o.value === locale)?.flag ||
+                  //         "/flag/us-show.svg"
+                  //       }
+                  //       alt="flag"
+                  //       width={24}
+                  //       height={16}
+                  //     />
+                  //     <span className="text-base">
+                  //       {capitalizeWordsCountry(item.name)}
+                  //     </span>
+                  //   </div>
+                  //   <ChevronRight className="w-5 h-5 text-gray-400" />
+                  // </button>
                 ) : (
                   <Link
                     key={item.name}
@@ -330,6 +362,52 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {currentLevel.items.map((item, i) => {
                 if (isLocaleMenuItem(item)) {
                   return null
+                  // const isSelected = item.value === locale
+                  // return (
+                  //   <label
+                  //     key={item.value}
+                  //     className={cn(
+                  //       "w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer",
+                  //       isSelected
+                  //         ? "bg-gray-100 dark:bg-gray-700 font-semibold"
+                  //         : "hover:bg-gray-50 dark:hover:bg-gray-500"
+                  //     )}
+                  //   >
+                  //     <div className="flex items-center gap-3">
+                  //       <input
+                  //         type="radio"
+                  //         name="country"
+                  //         checked={isSelected}
+                  //         onChange={() => {
+                  //           dispatch(setLocale(item.value as SupportedLocale))
+                  //           document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
+                  //           localStorage.setItem("NEXT_LOCALE", item.value)
+                  //           setCountry(
+                  //             item.value === "en_US" ? "US" : "VN"
+                  //           )
+                  //           handleClose()
+                  //         }}
+                  //         className="hidden"
+                  //       />
+                  //       <Image
+                  //         src={item?.flag || "/flag/us-show.svg"}
+                  //         alt={item?.title || "Country Flag"}
+                  //         width={24}
+                  //         height={16}
+                  //       />
+                  //       <span
+                  //         className={isSelected ? "font-bold" : "font-normal"}
+                  //       >
+                  //         {item.title}
+                  //       </span>
+                  //     </div>
+                  //     <div className="w-4 h-4 border-2 rounded-full flex items-center justify-center">
+                  //       {isSelected && (
+                  //         <div className="w-2 h-2 bg-black dark:bg-white rounded-full" />
+                  //       )}
+                  //     </div>
+                  //   </label>
+                  // )
                 }
 
                 if (isMenuCategory(item) && item.items?.length > 0) {

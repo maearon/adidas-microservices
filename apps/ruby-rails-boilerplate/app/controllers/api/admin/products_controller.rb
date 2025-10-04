@@ -97,12 +97,12 @@ class Api::Admin::ProductsController < ActionController::API
     image = payload["image"] || payload[:image]
     hover_image  = payload["hover_image"] || payload[:hover_image]
     if image.present?
-      product.image.purge
+      product.image.purge if product.image.attached?
       product.image.attach(image)
     end
 
     if hover_image.present?
-      product.hover_image.purge
+      product.hover_image.purge if product.hover_image.attached?
       product.hover_image.attach(hover_image)
     end
   end
@@ -130,18 +130,18 @@ class Api::Admin::ProductsController < ActionController::API
     images = attrs["images"] || attrs[:images]
 
     if avatar.present?
-      variant.avatar.purge
+      variant.avatar.purge if variant.avatar.attached?
       variant.avatar.attach(avatar)
     end
 
     if hover.present?
-      variant.hover.purge
+      variant.hover.purge if variant.hover.attached?
       variant.hover.attach(hover)
     end
 
     if images.present?
       # images là hash {"0" => file1, "1" => file2, ...}
-      variant.images.purge
+      variant.images.purge if variant.images.attached?
       images.values.each do |img|
         variant.images.attach(img)
       end
@@ -177,7 +177,7 @@ class Api::Admin::ProductsController < ActionController::API
       image_blobs = reordered_images.map(&:blob)
       
       # Detach tất cả ảnh cũ
-      variant.images.purge
+      variant.images.purge if variant.images.attached?
       
       # Attach lại theo thứ tự mới
       image_blobs.each do |blob|
