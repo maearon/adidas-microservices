@@ -60,6 +60,7 @@ const nextConfig = {
     DRIZZLE_DATABASE_URL: process.env.DRIZZLE_DATABASE_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    JWT_SECRET: process.env.JWT_SECRET,
   },
   webpack(config) {
     // 👇 Cấu hình @svgr/webpack

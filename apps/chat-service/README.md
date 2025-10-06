@@ -157,7 +157,8 @@ The service uses JWT tokens for authentication. Include the token in:
 Add these environment variables in Render:
 
 \`\`\`env
-DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/verceldb?pgbouncer=true&connect_timeout=15&sslmode=require
+PRISMA_DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/verceldb?pgbouncer=true&connect_timeout=15&sslmode=require
+DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/adidas_auth_prod?pgbouncer=true&connect_timeout=15&sslmode=require
 JWT_SECRET=your-super-secure-jwt-secret-here
 CORS_ORIGIN=https://your-frontend-domain.com
 PORT=3002
@@ -175,7 +176,7 @@ NODE_ENV=production
 After deployment, run migrations:
 
 \`\`\`bash
-# In Render console or locally with production DATABASE_URL
+# In Render console or locally with production PRISMA_DATABASE_URL and DATABASE_URL
 npx prisma migrate deploy
 \`\`\`
 
@@ -262,7 +263,7 @@ make clean         # Clean build artifacts
 ### Common Issues
 
 1. **Database connection failed**
-   - Check DATABASE_URL in .env
+   - Check PRISMA_DATABASE_URL and DATABASE_URL in .env
    - Ensure PostgreSQL is running
    - Run `make migrate` to setup tables
 

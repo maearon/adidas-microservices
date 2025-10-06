@@ -15,8 +15,10 @@ services:
         value: 3002
       - key: NODE_ENV
         value: production
-      - key: DATABASE_URL
+      - key: PRISMA_DATABASE_URL
         value: postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/verceldb?pgbouncer=true&connect_timeout=15&sslmode=require
+      - key: DATABASE_URL
+        value: postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/adidas_auth_prod?pgbouncer=true&connect_timeout=15&sslmode=require
       - key: JWT_SECRET
         value: f2dc6dd1e38c7a0368dcd4c6298cd86af6bd5735cb4e7cf2f0a8dfceeaf47a59eb36906aac1f7003dad1c019c731d0016b58ad5e7c6268b9b4b1fca43a07f7d7
       - key: CORS_ORIGIN

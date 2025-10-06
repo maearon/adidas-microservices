@@ -20,6 +20,7 @@ import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 import { useTranslations } from "@/hooks/useTranslations"
 import { AuthTranslations } from "@/types/auth"
 import { authClient } from "@/lib/auth-client"
+import { setTokens } from "@/lib/token"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -115,6 +116,17 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         flashMessage("error", t?.messages?.loginFailed || "Login failed")
       } else {
         flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
+      }
+      // Generate JWT
+      // 🔹 Sau khi login thành công → gọi server để lấy JWT
+      const jwtRes = await fetch("/api/auth/jwt", { method: "POST" });
+      const data = await jwtRes.json();
+      if (jwtRes.ok && data.token) {
+        setTokens(data.token, data.token, keepLoggedIn)
+        flashMessage("success", t?.messages?.loginSuccessful || "Generate JWT successful!");
+        onClose();
+      } else {
+        flashMessage("error", "Failed to generate token");
       }
     } catch (err) {
       flashMessage("error", t?.messages?.loginFailed || "Login failed")

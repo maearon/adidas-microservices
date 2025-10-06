@@ -15,7 +15,8 @@ COPY prisma ./prisma/
 RUN npm install
 
 # Generate Prisma client
-ENV DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
+ENV PRISMA_DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
+ENV DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech/adidas_auth_prod?pgbouncer=true&connect_timeout=15&sslmode=require
 RUN npx prisma generate
 
 # Copy source code

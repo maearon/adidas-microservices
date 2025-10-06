@@ -1,6 +1,9 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import { db } from '@/db';
+import { user as users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -33,15 +36,36 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
 
     const messages = await prisma.messages.findMany({
       where: { room_id: roomId },
-      include: {
-        users: {
-          select: { id: true, name: true, email: true, avatar: true },
-        },
-      },
+      // include: {
+      //   users: {
+      //     select: { id: true, name: true, email: true, avatar: true },
+      //   },
+      // },
       orderBy: { created_at: 'desc' },
       skip: offset,
       take: limit,
     });
+
+    // ✅ Attach user info from Drizzle (same as in socket)
+    const enrichedMessages = await Promise.all(
+      messages.map(async (msg) => {
+        const [user] = await db
+          .select({ id: users.id, name: users.name, email: users.email })
+          .from(users)
+          .where(eq(users.id, msg.user_id))
+          .limit(1);
+
+        return {
+          ...msg,
+          users: user
+            ? {
+                ...user,
+                avatar: true,
+              }
+            : null,
+        };
+      })
+    );
 
     const total = await prisma.messages.count({
       where: { room_id: roomId },

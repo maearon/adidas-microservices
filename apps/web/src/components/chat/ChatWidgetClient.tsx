@@ -12,6 +12,7 @@ import Image from "next/image"
 import { type Session } from "@/lib/auth"
 import { useAppSelector } from "@/store/hooks"
 import { useTranslations } from "@/hooks/useTranslations"
+import { getAccessToken } from "@/lib/token"
 
 interface ChatMessage {
   content: string
@@ -55,7 +56,8 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const userName = sessionState?.user?.name || "Guest"
   const userLevel = sessionStateRedux?.value?.level || "LEVEL 1"
   // Assuming you have JWT token in session
-  const userToken = sessionStateRedux?.value?.token || sessionState?.session?.token
+  // const userToken = sessionStateRedux?.value?.token || sessionState?.session?.token
+  const userToken = getAccessToken()
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
