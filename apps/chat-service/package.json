@@ -24,6 +24,7 @@
   "author": "Adidas Team",
   "license": "MIT",
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@prisma/client": "^6.11.1",
     "blueimp-md5": "^2.19.0",
     "cors": "^2.8.5",
@@ -45,9 +46,9 @@
     "eslint": "^8.56.0",
     "jest": "^29.7.0",
     "prisma": "^6.11.1",
+    "tsc-alias": "^1.8.8",
     "tsx": "^4.6.2",
-    "typescript": "^5.3.3",
-    "tsc-alias": "^1.8.8"
+    "typescript": "^5.3.3"
   },
   "engines": {
     "@types/node": "^20.10.5"
