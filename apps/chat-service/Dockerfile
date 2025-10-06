@@ -24,6 +24,7 @@ COPY . .
 
 # Build TypeScript
 RUN npm run build
+RUN npx tsc-alias
 
 # Optional: prune devDependencies for final image size
 RUN npm prune --production
