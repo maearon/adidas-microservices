@@ -83,11 +83,11 @@ export default function HeroBannerVideo() {
 
   // 🔹 Video sources tách riêng
   const DESKTOP_VIDEO =
-    "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_d_888c420cb5.mp4"
+    "/assets/videos/glbl_football_FW_25_WC_26_OMB_Launch_Combined_Onsite_Hero_Banner_d_f6b1e7fef9.mp4"
   const MEDIUM_VIDEO =
-    "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_m_d995f0eb96.mp4"
+    "/assets/videos/glbl_football_FW_25_WC_26_OMB_Launch_Combined_Onsite_Hero_Banner_t_c5c1c39297.mp4"
   const MOBILE_VIDEO =
-    "/assets/videos/global_superstar_originals_fw25_launch_hp_banner_hero_1_t_950d8ded70.mp4"
+    "/assets/videos/glbl_football_FW_25_WC_26_OMB_Launch_Combined_Onsite_Hero_Banner_m_2201fda423.mp4"
   // const DESKTOP_VIDEO =
   //   "/assets/videos/SƠN TÙNG M-TP _ THERE'S NO ONE AT ALL _ OFFICIAL MUSIC VIDEO.mp4"
   // const MEDIUM_VIDEO =
@@ -105,6 +105,7 @@ export default function HeroBannerVideo() {
         muted={isMuted}
         playsInline
         preload="auto"
+        aria-label="Visual composition featuring Leo Messi, Lamine Yamal and Jude Bellingham with Trionda, the FIFA World Cup 26™ official game ball"
       >
         <source
           src={DESKTOP_VIDEO}
@@ -172,16 +173,14 @@ export default function HeroBannerVideo() {
         <div className="w-full max-w-md text-left">
           <div className="flex flex-col gap-2 sm:gap-3">
             <h1 className="bg-white text-black text-lg sm:text-xl font-extrabold px-1.5 py-0.5 w-fit tracking-tight uppercase">
-              {t?.videoHeroTitle ?? "SUPERSTAR"}
+              {t?.videoHeroTitle ?? "Trionda"}
             </h1>
             <p className="bg-white text-black text-xs sm:text-base px-1.5 py-0.5 w-fit leading-snug">
-              {t?.videoHeroDesc ?? "Because icons wear the original icon."}
+              {t?.videoHeroDesc ?? "The FIFA World Cup 26™ official match ball has landed."}
             </p>
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
               {[
-                { label: t?.shopMen ?? "MEN", href: "/men-superstar" },
-                { label: t?.shopWomen ?? "WOMEN", href: "/women-superstar" },
-                { label: t?.shopKids ?? "KIDS", href: "/kids-superstar" },
+                { label: t?.shopNow ?? "SHOP NOW", href: "/fifa_world_cup-balls" },
               ].map(({ label, href }) => (
                 <Button
                   key={label}

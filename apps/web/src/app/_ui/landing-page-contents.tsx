@@ -53,7 +53,7 @@ export const LandingPageContents = () => {
   return (
     <div className="min-h-screen bg-background">
       <PromoBanner />
-      <HeroBanner
+      {/* <HeroBanner
         backgroundClassName="bg-hero"
         content={{
           title: heroT?.heroTitle ?? "A TRUE MIAMI ORIGINAL",
@@ -69,7 +69,7 @@ export const LandingPageContents = () => {
         }}
       />
       
-      <HeroBannerSecond />
+      <HeroBannerSecond /> */}
 
       <HeroBannerVideo />
 

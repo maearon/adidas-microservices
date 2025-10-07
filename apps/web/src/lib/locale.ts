@@ -5,6 +5,8 @@ import heroEn from "@/locales/en_US/hero.json"
 import heroVi from "@/locales/vi_VN/hero.json"
 import secondHeroEn from "@/locales/en_US/secondHero.json"
 import secondHeroVi from "@/locales/vi_VN/secondHero.json"
+import promoBannerEn from "@/locales/en_US/promoBanner.json"
+import promoBannerVi from "@/locales/vi_VN/promoBanner.json"
 import videoHeroEn from "@/locales/en_US/videoHero.json"
 import videoHeroVi from "@/locales/vi_VN/videoHero.json"
 import navbarEn from "@/locales/en_US/navbar.json"
@@ -54,6 +56,7 @@ export const locales = {
     headerNavbar: headerNavbarEn,
     hero: heroEn,
     secondHero: secondHeroEn,
+    promoBanner: promoBannerEn,
     videoHero: videoHeroEn,
     common: commonEn,
     auth: authEn,
@@ -80,6 +83,7 @@ export const locales = {
     headerNavbar: headerNavbarVi,
     hero: heroVi,
     secondHero: secondHeroVi,
+    promoBanner: promoBannerVi,
     videoHero: videoHeroVi,
     common: commonVi,
     auth: authVi,

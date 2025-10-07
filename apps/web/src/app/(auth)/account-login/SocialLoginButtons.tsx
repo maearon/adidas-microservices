@@ -128,9 +128,8 @@ const SocialLoginButtons = () => {
           key={provider.id}
           variant="outline" size="lg" 
           className={cn(
-            "social-button w-14 aspect-square border border-black dark:border-white",
-            "hover:bg-gray-700 rounded-none",
-            socialLoading === provider.id && "bg-gray-700",
+            "social-button w-14 aspect-square border border-black dark:border-white rounded-none",
+            socialLoading === provider.id && "hover:bg-gray-500",
           )}
           onClick={() => handleSocialLogin(provider, () => console.log(provider.id))}
           loading={socialLoading === provider.id}
