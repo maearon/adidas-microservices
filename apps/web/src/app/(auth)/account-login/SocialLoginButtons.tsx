@@ -7,6 +7,11 @@ import { AppleIcon } from "./apple/AppleSignInButton"
 import { authClient, ProviderId } from "@/lib/auth-client";
 import { FaGithub, FaYahoo } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { useLoginMutationBetterAuthSessionSameSite } from "@/api/hooks/useLoginMutation";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux"
+import type { AppDispatch } from "@/store/store"
+import { fetchUser } from "@/store/sessionSlice";
 
 // Mở rộng ProviderId thêm Yahoo
 type ExtendedProviderId = ProviderId | "yahoo"
@@ -71,6 +76,9 @@ const providers: SocialProvider[] = [
 
 const SocialLoginButtons = () => {
   const [socialLoading, setSocialLoading] = useState<ExtendedProviderId | null>(null)
+  const dispatch = useDispatch<AppDispatch>()
+  const loginMutation = useLoginMutationBetterAuthSessionSameSite()
+  const router = useRouter();
 
   const handleLogin = async (provider: SocialProvider) => {
     try {
@@ -83,6 +91,15 @@ const SocialLoginButtons = () => {
         provider: provider.id as ProviderId,
         callbackURL: "/",
       })
+      loginMutation.mutate(
+      { keepLoggedIn: true },
+      {
+        onSuccess: async () => {
+          await dispatch(fetchUser()) // ✅ bắt buộc fetch ngay
+          router.refresh() // nếu muốn sync lại layout server
+        },
+      }
+    )
     } catch (err) {
       console.error(`Login failed with ${provider.label}:`, err)
     }

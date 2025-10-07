@@ -20,7 +20,9 @@ import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 import { useTranslations } from "@/hooks/useTranslations"
 import { AuthTranslations } from "@/types/auth"
 import { authClient } from "@/lib/auth-client"
-import { setTokens } from "@/lib/token"
+import { useLoginMutationBetterAuthSessionSameSite } from "@/api/hooks/useLoginMutation"
+import { fetchUser } from "@/store/sessionSlice"
+import { useRouter } from "next/navigation"
 
 interface LoginModalProps {
   isOpen: boolean
@@ -65,6 +67,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   //   mutateAsync: signupMutation,
   //   isPending: isRegistering
   // } = useSignupMutation<SignupResponse>();
+  const loginMutation = useLoginMutationBetterAuthSessionSameSite()
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -117,17 +121,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       } else {
         flashMessage("success", t?.messages?.loginSuccessful || "Login successful!")
       }
-      // Generate JWT
-      // 🔹 Sau khi login thành công → gọi server để lấy JWT
-      const jwtRes = await fetch("/api/auth/jwt", { method: "POST" });
-      const data = await jwtRes.json();
-      if (jwtRes.ok && data.token) {
-        setTokens(data.token, data.token, keepLoggedIn)
-        flashMessage("success", t?.messages?.loginSuccessful || "Generate JWT successful!");
-        onClose();
-      } else {
-        flashMessage("error", "Failed to generate token");
-      }
+      loginMutation.mutate(
+        { keepLoggedIn },
+        {
+          onSuccess: async () => {
+            await dispatch(fetchUser()) // ✅ bắt buộc fetch ngay
+            router.refresh() // nếu muốn sync lại layout server
+          },
+        }
+      )
     } catch (err) {
       flashMessage("error", t?.messages?.loginFailed || "Login failed")
       throw err
