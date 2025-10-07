@@ -89,8 +89,8 @@ const SocialLoginButtons = () => {
 
       await authClient.signIn.social({
         provider: provider.id as ProviderId,
-        // callbackURL: "/",
-        disableRedirect: true,
+        callbackURL: "/",
+        // disableRedirect: true,
       })
       loginMutation.mutate(
       { keepLoggedIn: true },

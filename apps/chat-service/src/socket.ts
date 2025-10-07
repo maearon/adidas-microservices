@@ -212,7 +212,8 @@ export function initializeSocket(
             content: content.trim(),
             type: MessageType[prismaType],
             room_id: roomId,
-            user_id: socket.userId!,
+            // user_id: socket.userId!,
+            user_id: 'YnhAyaqjpK7Z7SCs0FWO1M2CuhSBhD1h',
             is_ai: !!is_ai, // 👇 thêm dòng này
           },
           // include: {
