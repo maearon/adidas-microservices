@@ -14,6 +14,7 @@ import { useAppSelector } from "@/store/hooks"
 import { useTranslations } from "@/hooks/useTranslations"
 import { getAccessToken } from "@/lib/token"
 import { generateJWT } from "@/lib/jwt";
+import { authClient } from "@/lib/auth-client"
 interface ChatMessage {
   content: string
   is_ai: boolean
@@ -57,13 +58,14 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const userLevel = sessionStateRedux?.value?.level || "LEVEL 1"
   // Assuming you have JWT token in session
   // const userToken = sessionStateRedux?.value?.token || sessionState?.session?.token
-  // const { 
-  //     data: session, 
-  //     isPending, //loading state
-  //     error, //error object
-  //     refetch //refetch the session
-  // } = authClient.useSession()
-  const userToken = generateJWT({ sub: sessionState?.user?.id || 'YnhAyaqjpK7Z7SCs0FWO1M2CuhSBhD1h' }, "1h"); 
+  const { 
+      data: sessionClient, 
+      isPending, //loading state
+      error, //error object
+      refetch //refetch the session
+  } = authClient.useSession()
+  // const { data: sessionClientGet, error } = await authClient.getSession()
+  const userToken = generateJWT({ sub: sessionClient?.user?.id || 'YnhAyaqjpK7Z7SCs0FWO1M2CuhSBhD1h' }, "1h"); 
   // const userToken = getAccessToken()
 
   // Scroll to bottom of messages
