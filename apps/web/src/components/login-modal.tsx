@@ -107,7 +107,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         email,
         password,
         rememberMe: keepLoggedIn,
-        callbackURL: "/",
+        // callbackURL: "/",
       });
       // if (res) {
       //   await dispatch(fetchUser())
@@ -125,8 +125,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         { keepLoggedIn },
         {
           onSuccess: async () => {
-            await dispatch(fetchUser()) // ✅ bắt buộc fetch ngay
-            router.refresh() // nếu muốn sync lại layout server
+            await dispatch(fetchUser())
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 5000);
           },
         }
       )
