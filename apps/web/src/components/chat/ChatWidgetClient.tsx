@@ -12,9 +12,10 @@ import Image from "next/image"
 import { type Session } from "@/lib/auth"
 import { useAppSelector } from "@/store/hooks"
 import { useTranslations } from "@/hooks/useTranslations"
-import { getAccessToken } from "@/lib/token"
-import { generateJWT } from "@/lib/jwt";
+// import { getAccessToken } from "@/lib/token"
 import { authClient } from "@/lib/auth-client"
+import { generateJWT } from "@/lib/jwtJoseForClient"
+
 interface ChatMessage {
   content: string
   is_ai: boolean
