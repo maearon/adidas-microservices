@@ -181,21 +181,35 @@ export default function HeroBannerVideo() {
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-start gap-2 pt-1">
               {[
                 { label: t?.shopNow ?? "SHOP NOW", href: "/fifa_world_cup-balls" },
-              ].map(({ label, href }) => (
+              ].map(({ label, href }, idx) => (
+                // <Button
+                //   key={label}
+                //   theme="white"
+                //   size="sm"
+                //   border
+                //   shadow={false}
+                //   fullWidth={false}
+                //   variant="outline"
+                //   href={href}
+                //   showArrow
+                //   sizeClass="h-8 px-3"
+                //   className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                // >
+                //   {label}
+                // </Button>
                 <Button
-                  key={label}
+                  key={`${label}-${idx}`}
                   theme="white"
                   size="sm"
-                  border
-                  shadow={false}
+                  border={false}
+                  shadow={true}
                   fullWidth={false}
                   variant="outline"
                   href={href}
                   showArrow
-                  sizeClass="h-8 px-3"
-                  className="bg-white text-black py-1 border border-black rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white text-black py-3 rounded-none font-semibold transition-colors"
                 >
-                  {label}
+                  {label || t.shopNow || "SHOP NOW"}
                 </Button>
               ))}
             </div>
