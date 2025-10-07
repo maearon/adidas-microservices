@@ -12,9 +12,10 @@ import Image from "next/image"
 import { type Session } from "@/lib/auth"
 import { useAppSelector } from "@/store/hooks"
 import { useTranslations } from "@/hooks/useTranslations"
-// import { getAccessToken } from "@/lib/token"
-import { authClient } from "@/lib/auth-client"
-import { generateJWT } from "@/lib/jwtJoseForClient"
+import { setTokens } from "@/lib/token"
+// import { authClient } from "@/lib/auth-client"
+// import { generateJWT } from "@/lib/jwtJoseForClient"
+import axiosInstance from "@/lib/axios"
 
 interface ChatMessage {
   content: string
@@ -59,15 +60,32 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
   const userLevel = sessionStateRedux?.value?.level || "LEVEL 1"
   // Assuming you have JWT token in session
   // const userToken = sessionStateRedux?.value?.token || sessionState?.session?.token
-  const { 
-      data: sessionClient, 
-      isPending, //loading state
-      error, //error object
-      refetch //refetch the session
-  } = authClient.useSession()
+  // const { 
+  //     data: sessionClient, 
+  //     isPending, //loading state
+  //     error, //error object
+  //     refetch //refetch the session
+  // } = authClient.useSession()
   // const { data: sessionClientGet, error } = await authClient.getSession()
-  const userToken = generateJWT({ sub: sessionClient?.user?.id || 'YnhAyaqjpK7Z7SCs0FWO1M2CuhSBhD1h' }, "1h"); 
-  // const userToken = getAccessToken()
+  // const userToken = generateJWT({ sub: sessionClient?.user?.id || 'YnhAyaqjpK7Z7SCs0FWO1M2CuhSBhD1h' }, "1h"); 
+  // const userToken = getAccessToken() || access.token;
+  const [userToken, setUserToken] = useState<string | null>(null)
+
+  // ✅ Lấy token khi FE mount, chỉ gọi 1 lần
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await axiosInstance.post("/api/auth/jwt")
+        const { access, refresh } = response.data.tokens
+        setTokens(access.token, refresh.token, true)
+        setUserToken(access.token)
+      } catch (err) {
+        console.error("❌ Cannot fetch JWT:", err)
+      }
+    }
+
+    if (isLoggedIn) fetchToken()
+  }, [isLoggedIn])
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
