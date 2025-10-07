@@ -66,7 +66,7 @@ const javaService = {
   // 👤 Session
   async getCurrentSession(): Promise<WithStatus<SessionIndexResponse> | undefined> {
     try {
-      const { data }  = await api.get<WithStatus<SessionIndexResponse>>("/sessions")
+      const { data }  = await axiosInstance.get<WithStatus<SessionIndexResponse>>("/api/auth/sessions")
       return data;
     } catch (error: unknown) {
       handleNetworkError(error)

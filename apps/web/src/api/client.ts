@@ -5,7 +5,9 @@ import { Nullable } from "@/types/common"
 // Base URL config
 const BASE_URL = process.env.NODE_ENV === "development"
   ? "http://localhost:9000/api"
-  : "https://adidas-microservices.onrender.com/api"
+  // : "https://adidas-microservices.onrender.com/api"
+  // : "https://spring-boilerplate.onrender.com/api"
+  : "https://ruby-rails-boilerplate-3s9t.onrender.com/api"
 
 // CSRF & credentials setup
 axios.defaults.xsrfCookieName = "CSRF-TOKEN"

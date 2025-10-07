@@ -8,7 +8,9 @@ import { eq } from 'drizzle-orm';
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Auth middleware
+/** ---------------------------
+ * ✅ AUTH MIDDLEWARE
+ * --------------------------- */
 const authenticateToken = (req: any, res: any, next: any) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -17,16 +19,28 @@ const authenticateToken = (req: any, res: any, next: any) => {
     return res.status(401).json({ error: 'Access token required' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET!, (err: any, user: any) => {
-    if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
+  try {
+    // 🟢 Decode token (tương thích HS512 từ Rails/Next.js)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!, {
+      algorithms: ['HS512'],
+    }) as jwt.JwtPayload;
+
+    // sub là user_id theo chuẩn Rails/Next.js
+    if (!decoded?.sub) {
+      return res.status(403).json({ error: 'Invalid token payload' });
     }
-    req.user = user;
-    return next();
-  });
+
+    req.user = { id: decoded.sub };
+    next();
+  } catch (err) {
+    console.error('JWT verification failed:', err);
+    return res.status(403).json({ error: 'Invalid or expired token' });
+  }
 };
 
-// Get chat history for a room
+/** ---------------------------
+ * 📜 GET CHAT HISTORY
+ * --------------------------- */
 router.get('/:roomId/messages', authenticateToken, async (req, res) => {
   try {
     const { roomId } = req.params;
@@ -46,7 +60,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
       take: limit,
     });
 
-    // ✅ Attach user info from Drizzle (same as in socket)
+    // ✅ Enrich user info từ drizzle
     const enrichedMessages = await Promise.all(
       messages.map(async (msg) => {
         const [user] = await db
@@ -72,7 +86,7 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
     });
 
     return res.json({
-      messages: messages.reverse(),
+      messages: enrichedMessages.reverse(),
       pagination: {
         page,
         limit,
@@ -86,7 +100,9 @@ router.get('/:roomId/messages', authenticateToken, async (req, res) => {
   }
 });
 
-// List active rooms
+/** ---------------------------
+ * 🏠 LIST ROOMS
+ * --------------------------- */
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const rooms = await prisma.rooms.findMany({
@@ -105,7 +121,9 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// Create new room
+/** ---------------------------
+ * ➕ CREATE ROOM
+ * --------------------------- */
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { id, name, type = 'public' } = req.body;

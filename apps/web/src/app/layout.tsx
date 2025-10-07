@@ -13,6 +13,7 @@ import Footer from "@/components/footer/Footer";
 import { ToastProvider } from "@/components/ToastProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import { cookies } from "next/headers";
+import { SessionInitializer } from "./SessionInitializer";
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -41,7 +42,7 @@ export default async function RootLayout({
       <body
         className={`${barlow.variable}`}
       >
-        <ReduxProvider>
+        <ReduxProvider>  
           <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
@@ -49,6 +50,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <SessionInitializer /> {/* ✅ client init session */}
             <Navbar />
               {children}
             <Footer />

@@ -1,46 +1,34 @@
-// lib/jwt.ts
-import { SignJWT, jwtVerify, JWTPayload, JWTVerifyResult, errors } from "jose";
+import jwt from "jsonwebtoken";
 
-// Đảm bảo có secret
-const secret = process.env.JWT_SECRET;
-if (!secret) throw new Error("Missing JWT_SECRET in environment variables");
+const SECRET = (process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET || "fallback_secret") as jwt.Secret; 
+// ép kiểu rõ ràng để TypeScript không báo lỗi
 
-const JWT_SECRET = new TextEncoder().encode(secret);
-
-/**
- * Sinh JWT (HS512) có thời hạn tùy chọn, mặc định 7 ngày.
- */
-export async function generateJWT<T extends JWTPayload>(
-  payload: T,
-  expiresIn: string = "7d"
-): Promise<string> {
-  return new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS512" })
-    .setIssuedAt()
-    .setExpirationTime(expiresIn)
-    .sign(JWT_SECRET);
+interface JWTPayload {
+  sub: string;
+  iss?: string;
+  aud?: string[];
+  iat?: number;
+  exp?: number;
 }
 
-/**
- * Xác thực JWT, trả về payload nếu hợp lệ, null nếu sai hoặc hết hạn.
- */
-export async function verifyJWT<T extends JWTPayload>(
-  token: string
-): Promise<T | null> {
-  try {
-    const { payload }: JWTVerifyResult = await jwtVerify(token, JWT_SECRET, {
-      algorithms: ["HS512"],
-    });
-    return payload as T;
-  } catch (err: unknown) {
-    if (err instanceof errors.JWTExpired) {
-      console.warn("JWT expired");
-    } else if (err instanceof errors.JWTInvalid) {
-      console.warn("JWT invalid");
-    } else {
-      console.error("JWT verification failed:", err);
-    }
-    return null;
-  }
+export function generateJWT(payload: JWTPayload, expiresIn: string | number = "1h") {
+  const fullPayload: JWTPayload = {
+    iss: "http://localhost",
+    aud: ["http://localhost"],
+    iat: Math.floor(Date.now() / 1000),
+    ...payload,
+  };
+
+  return jwt.sign(fullPayload, SECRET, {
+    algorithm: "HS512",
+    expiresIn,
+  });
 }
 
+export function verifyJWT(token: string) {
+  return jwt.verify(token, SECRET, {
+    algorithms: ["HS512"],
+    issuer: "http://localhost",
+    audience: ["http://localhost"],
+  });
+}

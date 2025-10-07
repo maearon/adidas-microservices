@@ -14,6 +14,8 @@ import { clearTokens } from "@/lib/token"
 // apps/web/api/hooks/useInitSession.ts
 import { useCurrentUser } from "./useCurrentUser"
 import type { AxiosError } from "axios"
+import axiosInstance from "@/lib/axios"
+import { SessionResponse } from "@/types/auth"
 
 export const useInitSession = () => {
   useCurrentUser()
@@ -41,6 +43,10 @@ interface LoginPayload {
   keepLoggedIn?: boolean
 }
 
+interface LoginBetterAuthPayload {
+  keepLoggedIn?: boolean
+}
+
 export const useLoginMutation = () => {
   const { toast } = useToast()
   const dispatch = useDispatch<AppDispatch>()
@@ -59,6 +65,57 @@ export const useLoginMutation = () => {
         }
 
         const { access, refresh } = response.tokens
+        setTokens(access.token, refresh.token, keepLoggedIn)
+
+        return response
+      } catch (error: unknown) {
+        handleNetworkError(error)
+        throw error
+      }
+    },
+    onSuccess: async () => {
+      try {
+        await dispatch(fetchUser())
+        toast({
+          title: "Success",
+          description: "Logged in successfully!",
+        })
+      } catch (err) {      
+        toast({
+          variant: "default",
+          title: "Logged in",
+          description: "But failed to fetch user profile.",
+        })
+        throw err
+      }
+    },
+    onError: (error: AxiosError<{ error?: string }>) => {
+      const message = error.response?.data?.error
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: message ? `Error: ${message}` : "Login failed. Please try again.",
+      })
+    }
+  })
+}
+
+export const useLoginMutationBetterAuthSessionSameSite = () => {
+  const { toast } = useToast()
+  const dispatch = useDispatch<AppDispatch>()
+
+  return useMutation({
+    mutationKey: ["login"],
+    mutationFn: async ({ keepLoggedIn = true }: LoginBetterAuthPayload) => {
+      try {
+        const response = await axiosInstance.post("/api/auth/jwt");
+
+        // ✅ Kiểm tra an toàn trước khi sử dụng
+        if (!response?.data?.tokens?.access?.token || !response?.data.tokens?.refresh?.token) {
+          throw new Error("Invalid login response: missing tokens.")
+        }
+
+        const { access, refresh } = response?.data?.tokens
         setTokens(access.token, refresh.token, keepLoggedIn)
 
         return response

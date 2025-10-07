@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "@/hooks/useTranslations";
 import type { Metadata } from "next";
+import { getServerSession } from "@/lib/get-session";
+import { forbidden, redirect, unauthorized } from "next/navigation";
+
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -9,8 +11,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function EmailVerifiedPage() {
-  const t = useTranslations("account")
+export default async function EmailVerifiedPage() {
+  const session = await getServerSession();
+  const user = session?.user;
+
+  if (!user) redirect("/sign-in");
+
+  if (user.emailVerified) redirect("/my-account");
+
+  // const t = useTranslations("account")
+
   return (
     <main className="flex flex-1 items-center justify-center px-4 text-center">
       <div className="space-y-6">
@@ -26,7 +36,8 @@ export default function EmailVerifiedPage() {
           theme="black" 
           shadow={true} 
           pressEffect={true}>
-            {t?.visitYourAccount || "Go to Dashboard"}
+            {/* {t?.visitYourAccount || "Go to Dashboard"} */}
+            Go to Dashboard
         </Button>
       </div>
     </main>

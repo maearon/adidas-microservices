@@ -1,7 +1,6 @@
-// app/api/jwt/route.ts
 import { NextResponse } from "next/server";
 import { generateJWT } from "@/lib/jwt";
-import { auth } from "@/lib/auth"; // better-auth server instance
+import { auth } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
@@ -10,15 +9,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const payload = {
-      sub: session.user.id,
-      // email: session.user.email,
-      // name: session.user.name,
-    }
+    const now = Date.now();
+    const accessExpiresInMs = 3600 * 1000; // 1h
+    const refreshExpiresInMs = 24 * 3600 * 1000; // 1d
 
-    const token = await generateJWT(payload, "7d");
+    const accessToken = generateJWT({ sub: session.user.id }, "1h");
+    const refreshToken = generateJWT({ sub: session.user.id }, "1d");
 
-    return NextResponse.json({ token });
+    return NextResponse.json({
+      user: {
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name,
+        token: accessToken, // 🟩 thêm token giống Rails
+      },
+      tokens: {
+        access: {
+          token: accessToken,
+          expires: new Date(now + accessExpiresInMs).toISOString(), // 🟩 ISO string
+        },
+        refresh: {
+          token: refreshToken,
+          expires: new Date(now + refreshExpiresInMs).toISOString(),
+        },
+      },
+    });
   } catch (err) {
     console.error("JWT generation failed", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
