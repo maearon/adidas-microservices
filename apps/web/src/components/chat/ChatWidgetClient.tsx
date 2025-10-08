@@ -184,11 +184,12 @@ export default function ChatWidgetClient({ session }: ChatWidgetClientProps) {
             const botReply = await fetch("/api/ai-reply", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ message: msg.content, history: messages.slice(-10) })
+              body: JSON.stringify({ message: msg.content, history: messages.slice(-20) })
             }).then(res => res.json());
             socket.emit('message', {
               roomId: 'general',
-              content: botReply.text.slice(0, 150), // Giới hạn hiện 50 ký tự
+              // content: botReply.text.slice(0, 150),  Giới hạn hiện 50 ký tự
+              content: botReply.text,
               is_ai: true,
               type: 'text'
             });
