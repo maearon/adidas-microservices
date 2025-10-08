@@ -1,8 +1,13 @@
 // C:\Users\manhn\source\adidas-microservices\apps\web\src\app\api\ai-reply\route.ts
+
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { auth } from "@/lib/auth";
+import { detect } from "tinyld";
 
+/* -------------------------------------------------------------------------- */
+/* 🧩 Types                                                                   */
+/* -------------------------------------------------------------------------- */
 interface HistoryMessage {
   content: string;
   is_ai?: boolean;
@@ -18,31 +23,86 @@ interface AiReplyResponse {
   lang: "vi" | "en";
 }
 
+/* -------------------------------------------------------------------------- */
+/* 🔑 API key check                                                           */
+/* -------------------------------------------------------------------------- */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-if (!GEMINI_API_KEY) {
-  throw new Error("❌ Missing GEMINI_API_KEY in environment variables");
-}
+// if (!GEMINI_API_KEY) {
+//   throw new Error("❌ Missing GEMINI_API_KEY in environment variables");
+// }
 
 const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
+/* -------------------------------------------------------------------------- */
+/* 🧠 Utility: Detect language with fallback                                  */
+/* -------------------------------------------------------------------------- */
+function detectLanguage(text: string): "vi" | "en" {
+  try {
+    const detected = detect(text) || "en";
+    if (detected.startsWith("vi")) return "vi";
+  } catch {
+    // fallback regex if detection fails
+    const hasVietnameseChars =
+      /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]|(la gi|toi|ban|khong|bạn|tôi|là gì)/i.test(
+        text
+      );
+    if (hasVietnameseChars) return "vi";
+  }
+  return "en";
+}
+
+/* -------------------------------------------------------------------------- */
+/* 🌍 Utility: Detect user language using IP API (no local .dat file)         */
+/* -------------------------------------------------------------------------- */
+async function detectUserLang(
+  ip: string | null,
+  userName?: string | null,
+  message?: string
+): Promise<"vi" | "en"> {
+  // 1️⃣ Try message and name first
+  if (message && detectLanguage(message) === "vi") return "vi";
+  if (userName && detectLanguage(userName) === "vi") return "vi";
+
+  // 2️⃣ Fallback to external IP API lookup
+  try {
+    if (ip && ip !== "0.0.0.0" && !ip.startsWith("::")) {
+      const res = await fetch(`https://ipapi.co/${ip}/json/`, { next: { revalidate: 3600 } });
+      const data = await res.json();
+      if (data?.country_code === "VN") return "vi";
+    }
+  } catch (err) {
+    console.warn("⚠️ IP API lookup failed:", err);
+  }
+
+  // 3️⃣ Default to English
+  return "en";
+}
+
+/* -------------------------------------------------------------------------- */
+/* 🚀 API Handler                                                            */
+/* -------------------------------------------------------------------------- */
 export async function POST(req: Request) {
   try {
     const { message, history }: { message: string; history?: HistoryMessage[] } =
       await req.json();
 
-    // 🧠 Detect language
-    const isVietnamese =
-      /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(
-        message
-      );
-    const lang: "vi" | "en" = isVietnamese ? "vi" : "en";
-
-    // 🧠 Get session from Better Auth
+    // 🧠 Get session
     const session = await auth.api.getSession({ headers: req.headers });
     const user = session?.user || null;
 
+    // 🌍 Detect IP
+    const ip =
+      session?.session?.ipAddress ||
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "0.0.0.0";
+
+    // 🌐 Detect language (async)
+    const lang = await detectUserLang(ip, user?.name, message);
+
+    console.log("🌎 IP:", ip, "| Lang:", lang, "| Message:", message);
+
     // 🧠 Build conversation context
-    const limitedHistory = (history || []).slice(-15); // only keep last 15 messages
+    const limitedHistory = (history || []).slice(-15);
     const historyText =
       limitedHistory
         .map((m) => {
@@ -73,12 +133,13 @@ User info:
 - ID: ${user?.id ?? "unknown"}
 - Name: ${user?.name ?? "Guest"}
 - Email: ${user?.email ?? "unknown"}
+- IP: ${ip}
 
 Your goals:
 - Answer ANY question the user asks — no restrictions.
 - Prioritize Adidas-related topics: products, orders, shipping, returns, payments.
 - Use your world knowledge when needed.
-- Always answer in ${lang === "vi" ? "Vietnamese" : "English"}.
+- Always answer in ${lang === "vi" ? "Tiếng Việt" : "English"}.
 - Be professional, friendly, accurate, and complete.
 - Do not ask for clarification if you already have enough info to answer.
 - Greet the user by their name if known.
@@ -90,9 +151,9 @@ ${historyText}
 
 User: ${message}
 Assistant:
-    `.trim();
+`.trim();
 
-    // 🧠 Call Gemini API
+    // 🤖 Call Gemini API
     const geminiResponse = await genAI.models.generateContent({
       model: "gemini-2.0-flash-001",
       contents: [
