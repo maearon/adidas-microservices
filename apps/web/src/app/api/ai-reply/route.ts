@@ -31,45 +31,59 @@ export async function POST(req: Request) {
       await req.json();
 
     // 🧠 Detect language
-    const isVietnamese = /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(
-      message
-    );
+    const isVietnamese =
+      /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(
+        message
+      );
     const lang: "vi" | "en" = isVietnamese ? "vi" : "en";
 
-    // 🧠 Get session
+    // 🧠 Get session from Better Auth
     const session = await auth.api.getSession({ headers: req.headers });
     const user = session?.user || null;
 
     // 🧠 Build conversation context
-    const limitedHistory = (history || []).slice(-20);
-    const historyText = limitedHistory
-      .map((m) => {
-        const role = m.is_ai
-          ? "Assistant"
-          : m.users?.email?.includes("admin")
-          ? "Admin"
-          : "User";
-        return `${role}: ${m.content}`;
-      })
-      .join("\n");
+    const limitedHistory = (history || []).slice(-15); // only keep last 15 messages
+    const historyText =
+      limitedHistory
+        .map((m) => {
+          const role = m.is_ai ? "Assistant" : "User";
+          const name = m.users?.name ?? "Guest";
+          return `${role} (${name}): ${m.content}`;
+        })
+        .join("\n") || "No previous conversation.";
 
-    // 🧠 Prompt
-    const prompt = `
+    // 🧠 Knowledge Base
+    const knowledgeBase = `
+Knowledge Base:
+- "Trionda" is the official match ball for the FIFA World Cup 2026™, manufactured by Adidas.
+- Adidas previously created other official balls: Al Rihla (2022), Telstar 18 (2018), Brazuca (2014).
+- Adidas offers a variety of products: shoes, apparel, accessories, and football gear.
+- Always respond with accurate and confident information if the question relates to Adidas products, orders, returns, or brand history.
+- Never ask back for clarification if the term exists in this knowledge base.
+- Always greet the user by name if available.
+- If user’s question is not related to Adidas, still answer helpfully using general world knowledge.
+`;
+
+    // 🧠 System Prompt
+    const systemPrompt = `
 You are an AI assistant for the official Adidas ecommerce website: https://adidas-mocha.vercel.app/.
-You are integrated into the backend system and can access user info through Better Auth.
+You are integrated into the backend and can access user info via Better Auth.
 
-Current user info:
+User info:
 - ID: ${user?.id ?? "unknown"}
 - Name: ${user?.name ?? "Guest"}
 - Email: ${user?.email ?? "unknown"}
 
-Your task:
-- Answer any question the user asks — no restrictions.
-- Focus primarily on Adidas ecommerce topics (products, orders, shipping, returns, payments).
-- If unrelated, still respond helpfully using your general knowledge.
-- Always respond in ${lang === "vi" ? "Vietnamese" : "English"}.
-- Be professional, friendly, and accurate.
-- You may use your knowledge of the world and the web to give the best possible answer.
+Your goals:
+- Answer ANY question the user asks — no restrictions.
+- Prioritize Adidas-related topics: products, orders, shipping, returns, payments.
+- Use your world knowledge when needed.
+- Always answer in ${lang === "vi" ? "Vietnamese" : "English"}.
+- Be professional, friendly, accurate, and complete.
+- Do not ask for clarification if you already have enough info to answer.
+- Greet the user by their name if known.
+
+${knowledgeBase}
 
 Conversation so far:
 ${historyText}
@@ -78,28 +92,27 @@ User: ${message}
 Assistant:
     `.trim();
 
-    // 🧠 Call Gemini SDK
+    // 🧠 Call Gemini API
     const geminiResponse = await genAI.models.generateContent({
       model: "gemini-2.0-flash-001",
       contents: [
         {
           role: "user",
-          parts: [{ text: prompt }],
+          parts: [{ text: systemPrompt }],
         },
       ],
       config: {
-        temperature: 0.7,
-        maxOutputTokens: 2048, // 🟩 allow long answers
+        temperature: 0.6,
+        maxOutputTokens: 2048,
       },
     });
 
     const aiText: string =
-       geminiResponse?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+      geminiResponse?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
       (lang === "vi"
-        ? "Xin lỗi, tôi chưa hiểu câu hỏi của bạn."
-        : "Sorry, I didn’t quite understand your question.");
+        ? "Xin lỗi, tôi chưa hiểu câu hỏi của bạn. Bạn có thể thử lại nhé."
+        : "Sorry, I didn’t quite understand your question. Could you please try again?");
 
-    // return NextResponse.json({ text: aiText, lang });
     const result: AiReplyResponse = { text: aiText, lang };
     return NextResponse.json(result);
   } catch (error) {
