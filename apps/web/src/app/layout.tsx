@@ -46,7 +46,7 @@ export default async function RootLayout({
           <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
