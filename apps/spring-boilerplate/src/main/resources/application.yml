@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:springboilerplate}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require}
+    username: ${SPRING_DATASOURCE_USERNAME:default}
+    password: ${SPRING_DATASOURCE_PASSWORD:z9GYTlrXa8Qx}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+
+  jpa:
+    # database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
+    # properties:
+    #   hibernate:
+    #     dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+    hibernate:
+      naming:
+        physical-strategy: ${SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY:org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
+    generate-ddl: ${SPRING_JPA_GENERATE_DDL:false}
+    properties:
+      hibernate:
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
+      jakarta:
+        persistence:
+          schema-generation:
+            scripts:
+              action: ${SPRING_JPA_PROPERTIES_JAVAX_PERSISTENCE_SCHEMA_GENERATION_SCRIPTS_ACTION:none}
+              create-target: ${SPRING_JPA_PROPERTIES_JAVAX_PERSISTENCE_SCHEMA_GENERATION_SCRIPTS_CREATE_TARGET:src/main/resources/schema.sql}
+
+  sql:
+    init:
+      mode: ${SPRING_SQL_INIT_MODE:never}
+      schema-locations: ${SPRING_SQL_INIT_SCHEMA_LOCATIONS:classpath:schema.sql}
+
+  h2:
+    console:
+      enabled: ${SPRING_H2_CONSOLE_ENABLED:false}
+
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:manhng132@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:rqisoolrehrwayum}
+    properties:
+      mail:
+        smtp:
+          auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:true}
+
+  devtools:
+    restart:
+      enabled: ${SPRING_DEVTOOLS_RESTART_ENABLED:true}
+    livereload:
+      enabled: ${SPRING_DEVTOOLS_LIVERELOAD_ENABLED:true}
+
+  servlet:
+    multipart:
+      enabled: ${SPRING_SERVLET_MULTIPART_ENABLED:true}
+      file-size-threshold: ${SPRING_SERVLET_MULTIPART_FILE_SIZE_THRESHOLD:2KB}
+      max-file-size: ${SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE:5MB}
+      max-request-size: ${SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE:50MB}
+
+  thymeleaf:
+    cache: ${SPRING_THYMELEAF_CACHE:false}
+
+logging:
+  level:
+    org.springframework.security: ${LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY:DEBUG}
+    com.example.springboilerplate: ${LOGGING_LEVEL_COM_EXAMPLE_SPRINGBOILERPLATE:INFO}
+
+server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  jwtSecret: ${APP_JWTSECRET:f2dc6dd1e38c7a0368dcd4c6298cd86af6bd5735cb4e7cf2f0a8dfceeaf47a59eb36906aac1f7003dad1c019c731d0016b58ad5e7c6268b9b4b1fca43a07f7d7}
+  jwtExpirationInMs: ${APP_JWTEXPIRATIONINMS:604800000}
+  jwtIssuer: http://localhost
+  jwtAudience: http://localhost
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID:''}
+  client-secret: ${GOOGLE_CLIENT_SECRET:''}
+  redirect-uri: ${GOOGLE_REDIRECT_URI:''}
+
+file:
+  upload-dir: ${FILE_UPLOAD_DIR:./uploads}

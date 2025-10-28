@@ -24,14 +24,33 @@ export function mapProductDataToSimpleProduct(productData: any): Product {
       0,
 
     // ✅ Map tất cả variants (nếu có)
-    variants: variants.map((v: any) => ({
-      variant_code: v?.variant_code || "JX5311",
-      avatar_url:
-        v?.avatar_url ||
-        v?.image_urls?.[0] ||
-        productData?.main_image_url ||
-        "/placeholder.png",
-    })),
+    variants: [
+      {
+        id: String(firstVariant?.id || ""),
+        variant_code: firstVariant?.variant_code || "JX5311",
+        avatar_url:
+          firstVariant?.avatar_url ||
+          firstVariant?.image_urls?.[0] ||
+          productData?.main_image_url ||
+          "/placeholder.png",
+        color: firstVariant?.color || "Unknown",
+        sizes: firstVariant?.sizes || [],
+        price:
+          Number(formatPrice(firstVariant?.price).replace("$", "")) ||
+          0,
+        compare_at_price:
+          Number(formatPrice(firstVariant?.compare_at_price).replace("$", "")) ||
+          0,
+      },
+    ],
+    // variants: variants.map((v: any) => ({
+    //   variant_code: v?.variant_code || "JX5311",
+    //   avatar_url:
+    //     v?.avatar_url ||
+    //     v?.image_urls?.[0] ||
+    //     productData?.main_image_url ||
+    //     "/placeholder.png",
+    // })),
 
     // ✅ Ảnh chính lấy từ variant đầu tiên hoặc product
     main_image_url:

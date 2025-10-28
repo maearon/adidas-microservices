@@ -15,6 +15,7 @@ export default function SearchField() {
   const [searchText, setSearchText] = useState("")
   const debouncedSearchText = useDebounce(searchText, 300);
   const t = useTranslations("common")
+  const [showAutocomplete, setShowAutocomplete] = useState(false)
 
   // ✅ Clear input nếu đang ở /search
   // Sync input với param q khi lịch sử thay đổi hoặc mount mới
@@ -46,6 +47,8 @@ export default function SearchField() {
     >
       <div className="relative">
         <Input
+          onFocus={() => setShowAutocomplete(true)}
+          onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)} // delay nhỏ để kịp click
           name="q"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
@@ -79,7 +82,7 @@ export default function SearchField() {
         )}
       </div>
 
-      {debouncedSearchText && (
+      {debouncedSearchText && showAutocomplete && (
         <SearchAutocomplete keyword={debouncedSearchText} />
       )}
     </form>

@@ -17,7 +17,7 @@
   "clear": "clear",
   "showMore": "SHOW MORE",
   "showLess": "SHOW LESS",
-  "seeAll": "SEE ALL",
+  "seeAll": "See all",
   "colors": "colors",
   "originalPrice": "Original price",
   "newArrivals": "New Arrivals",
@@ -28,8 +28,8 @@
   "topPicksForYou": "TOP PICKS FOR YOU",
   "countryFlag": "Country Flag",
   "flag": "flag",
-  "suggestions": "SUGGESTIONS",
+  "suggestions": "Suggestions",
   "noSuggestionsFound": "No suggestions found",
-  "products": "PRODUCTS",
+  "products": "Products",
   "noProductsFound": "No products found"
 }

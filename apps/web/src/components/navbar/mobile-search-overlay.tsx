@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
 import { ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -13,6 +11,11 @@ interface MobileSearchOverlayProps {
   searchQuery: string
   setSearchQuery: (query: string) => void
   onSearch: (e: React.FormEvent) => void
+}
+
+interface Suggestion {
+  term: string
+  count: number
 }
 
 const searchSuggestions = [
@@ -31,22 +34,36 @@ export default function MobileSearchOverlay({
   setSearchQuery,
   onSearch,
 }: MobileSearchOverlayProps) {
-  const [filteredSuggestions, setFilteredSuggestions] = useState(searchSuggestions)
+  const [filteredSuggestions, setFilteredSuggestions] = useState<Suggestion[]>([])
+  const [loading, setLoading] = useState(false)
   const t = useTranslations("common")
 
+  // 🔁 Debounce fetch
   useEffect(() => {
     const q = searchQuery.trim()
-    if (q) {
-      const filtered = searchSuggestions.filter(({ term }) => term.toLowerCase().includes(q.toLowerCase()))
-      setFilteredSuggestions(filtered)
-    } else {
-      setFilteredSuggestions(searchSuggestions)
+    if (!q) {
+      setFilteredSuggestions([])
+      return
     }
+
+    const timeout = setTimeout(async () => {
+      try {
+        setLoading(true)
+        const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(q)}`)
+        if (!res.ok) throw new Error("Failed to fetch suggestions")
+        const data = await res.json()
+        setFilteredSuggestions(data.suggestions || [])
+      } catch {
+        setFilteredSuggestions([])
+      } finally {
+        setLoading(false)
+      }
+    }, 300)
+
+    return () => clearTimeout(timeout)
   }, [searchQuery])
 
-  const handleClear = () => {
-    setSearchQuery("")
-  }
+  const handleClear = () => setSearchQuery("")
 
   const handleSuggestionClick = (term: string) => {
     setSearchQuery(term)
@@ -58,20 +75,20 @@ export default function MobileSearchOverlay({
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay mờ */}
       <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50 sm:hidden" onClick={onClose} />
 
-      {/* Search Panel */}
+      {/* Search panel */}
       <div
         className={cn(
-          "fixed top-0 right-0 h-full w-full bg-white dark:bg-black z-50 transform transition-transform duration-300 sm:hidden",
+          "fixed top-0 right-0 h-full w-full bg-white dark:bg-black z-50 transform transition-transform duration-300 sm:hidden flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        {/* Search Header */}
-        <div className="flex items-center border-b border-gray-200 p-4">
+        {/* Header */}
+        <div className="flex items-center bg-[#eceff1] dark:bg-black p-4 relative">
           <button onClick={onClose} className="mr-3">
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-5 w-5" />
           </button>
 
           <form onSubmit={onSearch} className="flex-1 flex items-center">
@@ -80,35 +97,57 @@ export default function MobileSearchOverlay({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t?.searchPlaceholder || "Search"}
-              className="flex-1 text-lg outline-hidden"
+              className="flex-1 text-[15px] outline-none font-medium placeholder:text-black"
               autoFocus
             />
             {searchQuery && (
-              <button type="button" onClick={handleClear} className="ml-2 text-gray-500 text-base">
+              <button
+                type="button"
+                onClick={handleClear}
+                className="ml-2 text-gray-500 text-sm font-medium"
+              >
                 {t?.clear || "clear"}
               </button>
             )}
           </form>
+
+          {/* Thanh cam mảnh ở dưới header */}
+          <div className="absolute bottom-0 left-0 right-0 h-[2px]" />
         </div>
 
-        {/* Search Suggestions */}
-        <div className="p-4">
-          {filteredSuggestions.map((suggestion, index) => (
-            <button
-              key={index}
-              onClick={() => handleSuggestionClick(suggestion.term)}
-              className="flex items-center justify-between w-full py-3 text-left hover:bg-gray-50"
-            >
-              <span className="font-medium">{suggestion.term}</span>
-              <span className="text-gray-500 text-base">{suggestion.count}</span>
-            </button>
-          ))}
-
-          {searchQuery && filteredSuggestions.length > 0 && (
-            <button onClick={() => handleSuggestionClick(searchQuery)} className="mt-4 text-blue-600 text-base">
-              {t?.seeAll || "See all"} &ldquo;{searchQuery}&rdquo;
-            </button>
-          )}
+        {/* Nội dung */}
+        <div className="flex-1 overflow-y-auto p-4 pb-20 text-[14px] leading-snug">
+          {loading ? (
+            null
+          ) : filteredSuggestions.length > 0 ? (
+            <ul>
+              {filteredSuggestions.map((suggestion, i) => (
+                <li key={i}>
+                  <button
+                    onClick={() => handleSuggestionClick(suggestion.term)}
+                    className="flex justify-between items-center w-full py-2 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="truncate max-w-[75%] font-medium text-[15px]">
+                      {suggestion.term}
+                    </span>
+                    <span className="text-gray-500 text-[14px]">{suggestion.count}</span>
+                  </button>
+                </li>
+              ))}
+              {(searchQuery && filteredSuggestions.length > 0) && (
+                <li key={filteredSuggestions.length}>
+                  <button
+                    onClick={() => handleSuggestionClick(searchQuery)}
+                    className="flex justify-between items-center w-full py-3 text-left underline underline-offset-2 hover:bg-gray-50 font-medium transition-colors"
+                  >
+                    {t?.seeAll || "See all"} &ldquo;{searchQuery}&rdquo;
+                  </button>
+                </li>
+              )}
+            </ul>
+          ) : searchQuery && !loading ? (
+            null
+          ) : null}
         </div>
       </div>
     </>
