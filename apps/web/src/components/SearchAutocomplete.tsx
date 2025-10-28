@@ -25,10 +25,20 @@ type SuggestionResponse = {
 export default function SearchAutocomplete({ keyword }: Props) {
   const [data, setData] = useState<SuggestionResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const t = useTranslations("common");
 
+  // Đảm bảo chỉ render khi đã mount (tránh flash server/client)
   useEffect(() => {
-    if (!keyword) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!keyword) {
+      setData(null);
+      return;
+    }
+
     const controller = new AbortController();
     setLoading(true);
 
@@ -43,12 +53,14 @@ export default function SearchAutocomplete({ keyword }: Props) {
     return () => controller.abort();
   }, [keyword]);
 
-  if (!keyword) return null;
-  if (loading) return null;
-  if (data?.suggestions?.length === 0 && data?.products?.length === 0) return null;
+  // 🔒 Không render gì khi chưa mount hoặc đang loading
+  if (!mounted || !keyword || loading) return null;
+
+  if (data?.suggestions?.length === 0 && data?.products?.length === 0)
+    return null;
 
   return (
-    <div className="absolute right-0 mt-3 z-50 w-[600px] bg-white dark:bg-black text-foreground border border-gray-200 shadow-md flex text-[13px] leading-snug">
+    <div className="absolute right-0 mt-3 z-50 w-[600px] bg-white dark:bg-black text-foreground border border-gray-200 shadow-md flex text-[13px] leading-snug transition-opacity duration-150">
       {/* LEFT COLUMN */}
       <div className="w-[40%] p-4 flex flex-col min-h-[380px]">
         <div>
@@ -61,10 +73,14 @@ export default function SearchAutocomplete({ keyword }: Props) {
               .map((s) => (
                 <li key={s.term}>
                   <Link
-                    href={`/search?q=${encodeURIComponent(s.term)}&sitePath=us`}
+                    href={`/search?q=${encodeURIComponent(
+                      s.term
+                    )}&sitePath=us`}
                     className="flex justify-between items-center w-full"
                   >
-                    <span className="truncate max-w-[130px] font-medium">{s.term}</span>
+                    <span className="truncate max-w-[130px] font-medium">
+                      {s.term}
+                    </span>
                     <span className="text-gray-500 ml-2">{s.count}</span>
                   </Link>
                 </li>
