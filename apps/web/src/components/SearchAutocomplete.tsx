@@ -52,7 +52,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
       {/* LEFT COLUMN */}
       <div className="w-[40%] p-4 flex flex-col min-h-[380px]">
         <div>
-          <h2 className="text-xl font-bold mb-3 tracking-wide">
+          <h2 className="text-lg font-bold mb-3 tracking-wide">
             {t?.suggestions || "Suggestions"}
           </h2>
           <ul className="space-y-3">
@@ -85,7 +85,7 @@ export default function SearchAutocomplete({ keyword }: Props) {
 
       {/* RIGHT COLUMN */}
       <div className="w-[60%] p-4">
-        <h2 className="text-xl font-bold mb-3 tracking-wide">
+        <h2 className="text-lg font-bold mb-3 tracking-wide">
           {t?.products || "Products"}
         </h2>
         {data?.products?.length ? (
