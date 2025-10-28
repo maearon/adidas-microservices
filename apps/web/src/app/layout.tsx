@@ -36,7 +36,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const locale = cookieStore.get("locale")?.value || "en";
-  const theme = cookieStore.get("theme")?.value || "light";
+  const theme = cookieStore.get("theme")?.value || "dark";
   return (
     <html lang={locale} className={theme} style={{ colorScheme: theme }} suppressHydrationWarning>
       <body
