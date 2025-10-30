@@ -15,14 +15,21 @@ import { User } from "@/types/user"
 // import javaService from "@/api/services/javaService"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { formatPrice } from "@/lib/utils"
-import type { Session } from "@/lib/auth"
+// import type { Session } from "@/lib/auth"
 import ProductPrice from "@/components/ProductCardPrice"
+import { authClient } from "@/lib/auth-client";
 
-type CheckoutPageProps = {
-  session: Session | null
-}
+// type CheckoutPageProps = {
+//   session: Session | null
+// }
 
-export default function CheckoutPage({ session }: CheckoutPageProps) {
+export default function CheckoutPage() {
+  const { 
+      data: session, 
+      isPending, //loading state
+      error, //error object
+      refetch //refetch the session
+  } = authClient.useSession()
   // const cartItems = useAppSelector((state) => state.cart.items)
   // const [cartItemsRails, setCartItemsRails] = useState([] as CartItem[])
   const cartItems = useAppSelector((state) => state.cart.items) // ✅ lấy cart từ redux
@@ -30,24 +37,11 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
   const [page, setPage] = useState(1)
   const [total_count, setTotalCount] = useState(1)
   // const { value: user, status } = useSelector(selectUser)
-  const userLoading = status === "loading"
+  const userLoading = isPending
   const [hasMounted, setHasMounted] = useState(false)
 
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-  
-  useEffect(() => {
-    // javaService.getCart(page)
-    //   .then(response => {
-    //     setCartItemsRails(response.data)
-    //     setTotalCount(response.data.length || 1)
-    //   })
-    //   .catch(console.error)
-  }, [page])
-
   const [formData, setFormData] = useState({
-    email: "manhng132@gmail.com",
+    email: "",
     firstName: "",
     lastName: "",
     address: "",
@@ -64,15 +58,40 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
   })
   const [showPromoCode, setShowPromoCode] = useState(false)
 
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      setFormData(prev => ({
+        ...prev,
+        email: session.user.email
+      }))
+    }
+  }, [session])
+  
+  useEffect(() => {
+    // javaService.getCart(page)
+    //   .then(response => {
+    //     setCartItemsRails(response.data)
+    //     setTotalCount(response.data.length || 1)
+    //   })
+    //   .catch(console.error)
+  }, [page])
+
   // Calculate totals
   const subtotal = cartItems.reduce(
-    (sum, item) =>
-      sum +
-      (formatPrice(item?.price) !== undefined && formatPrice(item?.price) !== null && item.price
-        ? Number(formatPrice(item?.price)) * item.quantity
-        : 0),
-    0,
+    (sum, item) => sum + (Number(item.price) || 0) * item.quantity,
+    0
   )
+
+  const originalTotal = cartItems.reduce(
+    (sum, item) => sum + (Number(item.compareAtPrice) || Number(item.price) || 0) * item.quantity,
+    0
+  )
+
+  const saleAmount = originalTotal - subtotal
   const salesTax = subtotal * 0.12
   const delivery = 0 // Free delivery
   const total = subtotal + salesTax + delivery
@@ -112,7 +131,7 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold mb-2">CHECKOUT</h1>
         <p className="text-gray-600 dark:text-white">
-          ({totalItems} items) ${total.toFixed(2)}
+          ({totalItems} items) <ProductPrice price={total} compareAtPrice={null} />
         </p>
       </div>
 
@@ -217,6 +236,7 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
                 pressEffect={true}
                 onClick={handleNext}
                 fullWidth={true}
+                border
               >
                 NEXT
                 {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
@@ -257,15 +277,15 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
             <div className="space-y-2 mb-6">
               <div className="flex justify-between text-base">
                 <span>{totalItems} items</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span><ProductPrice price={subtotal} compareAtPrice={null} /></span>
               </div>
               <div className="flex justify-between text-base">
                 <span>Original price</span>
-                <span>${(subtotal + 20).toFixed(2)}</span>
+                <span><ProductPrice price={originalTotal} compareAtPrice={null} /></span>
               </div>
               <div className="flex justify-between text-base">
                 <span>Sales Tax</span>
-                <span>${salesTax.toFixed(2)}</span>
+                <span><ProductPrice price={salesTax} compareAtPrice={null} /></span>
               </div>
               <div className="flex justify-between text-base">
                 <span>Delivery</span>
@@ -273,11 +293,11 @@ export default function CheckoutPage({ session }: CheckoutPageProps) {
               </div>
               <div className="flex justify-between text-base">
                 <span>Sale</span>
-                <span className="text-red-600">-$21.00</span>
+                <span className="text-red-600">-<ProductPrice price={saleAmount} compareAtPrice={null} /></span>
               </div>
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span><ProductPrice price={total} compareAtPrice={null} /></span>
               </div>
               <p className="text-xs text-gray-600 dark:text-white">
                 From $31.57/month or 4 payments at 0% interest with <strong>Klarna</strong>
