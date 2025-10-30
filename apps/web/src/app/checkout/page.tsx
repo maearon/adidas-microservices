@@ -1,5 +1,6 @@
 "use client"
 
+import { useAppSelector } from "@/store/hooks" // ✅ dùng hook đúng
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { BaseButton } from "@/components/ui/base-button"
@@ -7,21 +8,28 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, ArrowRight, Tag } from "lucide-react"
-import { useSelector } from "react-redux"
-import { selectUser } from "@/store/sessionSlice"
-import { CartItem } from "@/types/cart"
+// import { useSelector } from "react-redux"
+// import { selectUser } from "@/store/sessionSlice"
+// import { CartItem } from "@/types/cart"
 import { User } from "@/types/user"
-import javaService from "@/api/services/javaService"
+// import javaService from "@/api/services/javaService"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { formatPrice } from "@/lib/utils"
+import type { Session } from "@/lib/auth"
+import ProductPrice from "@/components/ProductCardPrice"
 
-export default function CheckoutPage() {
+type CheckoutPageProps = {
+  session: Session | null
+}
+
+export default function CheckoutPage({ session }: CheckoutPageProps) {
   // const cartItems = useAppSelector((state) => state.cart.items)
-  const [cartItemsRails, setCartItemsRails] = useState([] as CartItem[])
+  // const [cartItemsRails, setCartItemsRails] = useState([] as CartItem[])
+  const cartItems = useAppSelector((state) => state.cart.items) // ✅ lấy cart từ redux
   const [users, setUsers] = useState([] as User[])
   const [page, setPage] = useState(1)
   const [total_count, setTotalCount] = useState(1)
-  const { value: user, status } = useSelector(selectUser)
+  // const { value: user, status } = useSelector(selectUser)
   const userLoading = status === "loading"
   const [hasMounted, setHasMounted] = useState(false)
 
@@ -57,18 +65,18 @@ export default function CheckoutPage() {
   const [showPromoCode, setShowPromoCode] = useState(false)
 
   // Calculate totals
-  const subtotal = cartItemsRails.reduce(
+  const subtotal = cartItems.reduce(
     (sum, item) =>
       sum +
-      (formatPrice(item?.variant?.price) !== undefined && formatPrice(item?.variant?.price) !== null && item.variant?.price
-        ? Number(formatPrice(item?.variant?.price)) * item.quantity
+      (formatPrice(item?.price) !== undefined && formatPrice(item?.price) !== null && item.price
+        ? Number(formatPrice(item?.price)) * item.quantity
         : 0),
     0,
   )
   const salesTax = subtotal * 0.12
   const delivery = 0 // Free delivery
   const total = subtotal + salesTax + delivery
-  const totalItems = cartItemsRails.reduce((sum, item) => sum + item.quantity, 0)
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -114,7 +122,7 @@ export default function CheckoutPage() {
           {/* Contact Section */}
           <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
-            <p className="text-base text-gray-600 dark:text-white">{user?.email}</p>
+            <p className="text-base text-gray-600 dark:text-white">{session?.user?.email || "guest@gmail.com"}</p>
           </div>
 
           {/* Address Section */}
@@ -296,23 +304,23 @@ export default function CheckoutPage() {
 
             {/* Order Items */}
             <div className="space-y-4">
-              {cartItemsRails.map((item) => (
+              {cartItems.map((item) => (
                 <Card key={item.id} className="border rounded-none">
                   <CardContent className="flex p-4">
                     <div className="w-20 h-20 mr-4">
                       <img
-                        src={item?.variant?.images?.[0] || "/placeholder.png"}
-                        alt={item.product.name}
+                        src={item?.image || "/placeholder.png"}
+                        alt={item.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-base">{item.product.name}</h3>
-                      <p className="text-base font-bold">{formatPrice(item?.variant?.price)}</p>
+                      <h3 className="font-bold text-base">{item.name}</h3>
+                      <p className="text-base font-bold"><ProductPrice price={item?.price} compareAtPrice={item?.compareAtPrice} /></p>
                       <p className="text-xs text-gray-600 dark:text-white">
                         Size: {item.size} / Quantity: {item.quantity}
                       </p>
-                      <p className="text-xs text-gray-600 dark:text-white">Color: {item.variant.color}</p>
+                      <p className="text-xs text-gray-600 dark:text-white">Color: {item.color}</p>
                     </div>
                   </CardContent>
                 </Card>

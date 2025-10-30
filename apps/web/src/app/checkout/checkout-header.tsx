@@ -4,15 +4,15 @@ import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
 import { useAppSelector } from "@/store/hooks"
 import { cn } from "@/lib/utils"
+import type { Session } from "@/lib/auth"
 
-// type Props = {
-//   userName: string
-//   cartCount: number
-// }
+type CheckoutHeaderProps = {
+  session: Session | null
+}
 
-export default function CheckoutHeader() {
+export default function CheckoutHeader({ session }: CheckoutHeaderProps) {
   const cartCount = useAppSelector((state) => state.cart.items.length)
-  const userName = "mark nguyen"
+  const userName = session?.user?.name || "Guest"
   return (
     <header className="border-b border-gray-200 py-4">
       <div className="container mx-auto px-4">
