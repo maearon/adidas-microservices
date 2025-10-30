@@ -127,8 +127,18 @@ export default function ExpandableImageGallery({ variant, images, productName, p
 
         {/* Image Grid */}
         <div className="grid grid-cols-2 gap-1">
-          <div className="absolute top-51 sm:top-14 -left-4 sm:left-auto sm:right-0 -translate-x-3 sm:translate-x-5 z-20 text-[10px] sm:text-xs text-black font-normal px-3 py-2 -rotate-90 origin-center bg-white tracking-wider uppercase">
-            {[...tags].sort((a, b) => a.localeCompare(b))[0] || "BEST SELLER"}
+          <div className="
+            absolute top-51 sm:top-14 -left-4 sm:left-auto sm:right-0 
+            -translate-x-3 sm:translate-x-5 z-20 
+            max-w-[120px] 
+            px-3 py-2 
+            text-[10px] sm:text-xs text-black font-normal 
+            bg-white uppercase tracking-wider 
+            rotate-[-90deg] origin-center 
+          ">
+            <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              {[...tags].sort((a, b) => a.localeCompare(b))[0] || "BEST SELLER"}
+            </span>
           </div>
           {/* Display first 4 images or all if showAllImages is true */}
           {Array.isArray(displayImages) && displayImages.length > 0 &&
