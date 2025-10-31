@@ -8,8 +8,8 @@ import ChatWidget from "@/components/chat/ChatWidget";
 import FeedbackWidget from "@/components/feedback-widget";
 import ScrollToTop from "@/components/scroll-to-top";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
+// import Navbar from "@/components/navbar/Navbar";
+// import Footer from "@/components/footer/Footer";
 import { ToastProvider } from "@/components/ToastProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import { cookies } from "next/headers";
@@ -51,9 +51,9 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <SessionInitializer /> {/* ✅ client init session */}
-            <Navbar />
+            {/* <Navbar /> */}
               {children}
-            <Footer />
+            {/* <Footer /> */}
             <LocationModalProvider />
             <ChatWidget />
             <FeedbackWidget />

@@ -237,6 +237,7 @@ export default function CheckoutPage() {
                 onClick={handleNext}
                 fullWidth={true}
                 border
+                shadow
               >
                 NEXT
                 {/* <ArrowRight className="ml-2 h-5 w-5" /> */}

@@ -1,13 +1,13 @@
-import { Footer } from "react-day-picker";
-import { Navbar } from "./navbar";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
 
 export default async function MainLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      {children}
+        {children}
       <Footer />
     </div>
   );
