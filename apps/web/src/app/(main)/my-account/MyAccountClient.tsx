@@ -7,7 +7,7 @@ import AccountHeader from "./AccountHeader"
 import OrderHistory from "./order-history/page"
 import Profile from "./profile/page"
 import type { Session } from "@/lib/auth"
-import DashboardPage from "../(main)/dashboard/page"
+import DashboardPage from "@/app/(main)/dashboard/page"
 
 interface MyAccountClientProps {
   session: Session | null;
