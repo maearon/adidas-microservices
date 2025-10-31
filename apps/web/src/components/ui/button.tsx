@@ -18,6 +18,7 @@ interface ButtonProps extends BaseButtonProps {
   theme?: "white" | "black" | "transparent"
   border?: boolean
   sizeClass?: string
+  shadowColorModeInWhiteTheme?: "auto" | "black"
 }
 
 export function Button({
@@ -34,6 +35,7 @@ export function Button({
   border = false,
   size = "default",
   sizeClass = undefined,
+  shadowColorModeInWhiteTheme = "auto",
   ...props
 }: ButtonProps) {
   const isBlack = theme === "black"
@@ -58,7 +60,14 @@ export function Button({
   const shadowBorderClass = shadow
     ? isBlack
       ? "border-black dark:border-white"
-      : isTransparent ? "border-white dark:border-white group-hover:border-gray-400" : "border-white group-hover:border-gray-400"
+      // : isTransparent ? "border-white dark:border-white group-hover:border-gray-400" : "border-white group-hover:border-gray-400"
+      : isTransparent
+      ? "border-white dark:border-white group-hover:border-gray-400"
+      : border
+        ? shadowColorModeInWhiteTheme === "black"
+          ? "border-black dark:border-white group-hover:border-gray-400"
+          : "border-white group-hover:border-gray-400" // default auto case
+        : "border-white group-hover:border-gray-400"
     : "border-transparent"
   const borderClass = !isIconButton
     ? border
