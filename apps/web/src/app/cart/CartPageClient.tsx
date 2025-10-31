@@ -1,15 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Heart, X, ChevronDown, Tag } from "lucide-react"
+import { Card } from "@/components/ui/card"
+import { Heart, X, ChevronDown } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { removeFromCart, updateQuantity } from "@/store/cartSlice"
 import { addToWishlist } from "@/store/wishlistSlice"
 // import { useSelector } from "react-redux"
 // import { selectUser } from "@/store/sessionSlice"
 import { capitalizeTitle } from "@/utils/sanitizeMenuTitleOnly"
-import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
@@ -22,7 +21,7 @@ import { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import { newArrivalProducts as newArrivalProductsTab } from "@/data/fake-new-arrival-products"
 import { CartItem } from "@/types/cart"
-import { WishlistItem } from "@/types/wish"
+import ProductPrice from "@/components/ProductCardPrice"
 
 interface CartPageClientProps {
   session: Session | null;
@@ -125,7 +124,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
 
               <h1 className="text-2xl font-bold mb-2">YOUR BAG</h1>
               <p className="text-gray-600 dark:text-white mb-4">
-                TOTAL: ({totalItems} items) {formatPrice(subtotal)}
+                TOTAL: ({totalItems} items) {<ProductPrice price={subtotal} compareAtPrice={null} />}
               </p>
               <p className="text-base text-gray-500 mb-6">
                 Items in your bag are not reserved — check out now to make them yours.
@@ -164,7 +163,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                         </div>
                         <div className="text-right">
                           <p className="font-bold">
-                            ${formatPrice(item?.price * item.quantity)}
+                            {<ProductPrice price={item?.price * item.quantity} compareAtPrice={item?.compareAtPrice ? item?.compareAtPrice * item.quantity : null} />}
                           </p>
                           <button onClick={() => handleRemoveItem(item.id)} className="text-gray-500 hover:text-background">
                             <X size={18} />
@@ -256,11 +255,11 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
                     <span>{totalItems} Items</span>
-                    <span>{formatPrice(subtotal)}</span>
+                    <span>{<ProductPrice price={subtotal} compareAtPrice={null} />}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Sales Tax</span>
-                    <span>{formatPrice(salesTax)}</span>
+                    <span>{<ProductPrice price={salesTax} compareAtPrice={null} />}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Delivery</span>
@@ -269,13 +268,13 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 </div>
                 <div className="flex justify-between font-bold border-t border-b py-4 mb-4">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{<ProductPrice price={total} compareAtPrice={null} />}</span>
                 </div>
 
                 {/* Klarna Payment */}
                 <div className="flex flex-wrap items-center text-base text-gray-700 dark:text-white mt-6">
                   <p className="mr-1">
-                    From <span className="font-bold">$24.24/month</span>, or 4 payments at 0% interest with
+                    From <span className="font-bold">{<ProductPrice price={24.24} compareAtPrice={null} />}/month</span>, or 4 payments at 0% interest with
                   </p>
                   <span className="font-medium">
                     <span className="font-bold">Klarna</span>{" "}
