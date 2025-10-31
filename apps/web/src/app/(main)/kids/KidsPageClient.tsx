@@ -1,6 +1,6 @@
 "use client"
 
-import KidsPromoCarousel from "@/app/kids/KidsPromoCarousel"
+import KidsPromoCarousel from "@/app/(main)/kids/KidsPromoCarousel"
 import HeroBanner from "@/components/HeroBanner"
 import ProductCarousel from "@/components/product-carousel"
 import HistoryView from "@/components/HistoryView"
