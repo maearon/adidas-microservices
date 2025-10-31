@@ -140,10 +140,21 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                     </div>
                     <div className="w-3/4 flex flex-col justify-between">
                       <div className="flex justify-between">
-                        <div>
+                        <div className="py-[20px]">
                           <h3 className="font-bold">{item.name}</h3>
                           <p className="text-base text-gray-600 dark:text-white">{item.color}</p>
                           <p className="text-base text-gray-600 dark:text-white">SIZE: {item.size}</p>
+                          {/* Image /assets/payment/prime-delivery.svg 60,16 x 19 */}
+                          <div className="flex items-center gap-2 mt-[10px]">
+                            <Image
+                              src="/assets/payment/prime-delivery.svg"
+                              alt="Prime Delivery"
+                              width={60}
+                              height={16}
+                              className="object-contain"
+                            />
+                            {/* <p className="text-sm text-gray-600 dark:text-white">Fast, free delivery with Prime</p> */}
+                          </div>
                           {item.customization && (
                             <>
                               <p className="text-base text-gray-600 dark:text-white">NAME: {item.customization.name}</p>
@@ -281,7 +292,15 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                     onClick={() => setShowPromoCode(!showPromoCode)}
                     className="w-full justify-start"
                   >
-                    <Tag className="mr-2 h-4 w-4" />
+                    {/* <Tag className="mr-2 h-4 w-4" />
+                    Image /assets/payment/promo-code.svg 24 x 14 */}
+                    <Image
+                      src="/assets/payment/promo-code.svg"
+                      alt="Promo Code"
+                      width={24}
+                      height={14}
+                      className="object-contain mr-2 dark:invert"
+                    />
                     USE A PROMO CODE
                   </BaseButton>
                   {showPromoCode && (
@@ -296,6 +315,41 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 <Button border href="/checkout" theme="black" shadow={true} pressEffect={true}>
                   CHECKOUT
                 </Button>
+
+                {/* Accepted Payment Methods */}
+                <div className="mt-10">
+                  <h3 className="text-sm font-bold uppercase mb-2">Accepted payment methods</h3>
+
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                    {[
+                      { src: "/assets/payment/download.svg", alt: "AmEx" },
+                      { src: "/assets/payment/download (1).svg", alt: "Discover" },
+                      { src: "/assets/payment/download (2).svg", alt: "Mastercard" },
+                      { src: "/assets/payment/download (3).svg", alt: "Visa" },
+                      { src: "/assets/payment/download (7).svg", alt: "Klarna" },
+                      { src: "/assets/payment/download (8).svg", alt: "Google Pay" },
+                      // { break: true },
+                      { src: "/assets/payment/download (9).svg", alt: "ADIDAS" },
+                      { src: "/assets/payment/download (10).svg", alt: "Shop Pay" },
+                      { src: "/assets/payment/download (11).svg", alt: "PayPal" },
+                      { src: "/assets/payment/download (12).svg", alt: "Afterpay" },
+                    ].map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-center w-[46px] h-[28px] bg-white dark:bg-black border border-transparent"
+                      >
+                        <Image
+                          src={item.src ?? "/placeholder.png?height=30&width=42"}
+                          alt={item.alt ?? "Payment Method"}
+                          width={42}
+                          height={30}
+                          className="object-contain max-h-[18px] dark:invert transition duration-200"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
