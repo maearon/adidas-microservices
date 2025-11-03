@@ -251,6 +251,7 @@ model products {
   guest_cart_items        guest_cart_items[]
   guest_wish_items        guest_wish_items[]
   order_items             order_items[]
+  product_translations    product_translations[]
   categories              categories?               @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_products_category")
   collaborations          collaborations?           @relation(fields: [collaboration_id], references: [id], onUpdate: NoAction, map: "fk_products_collaborations")
   models                  models?                   @relation(fields: [model_id], references: [id], onUpdate: NoAction, map: "fk_products_models")
@@ -370,4 +371,16 @@ model wishes {
   wish_items wish_items[]
 
   @@index([user_id], map: "index_wishes_on_user_id")
+}
+
+model product_translations {
+  id         BigInt    @id @default(autoincrement())
+  product_id BigInt?
+  locale     String
+  data       Json
+  products   products? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([product_id, locale])
+  @@index([locale], map: "idx_product_translations_locale")
+  @@index([product_id], map: "idx_product_translations_product_id")
 }

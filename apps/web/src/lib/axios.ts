@@ -25,6 +25,14 @@ axiosInstance.interceptors.request.use(
     if (token && config.headers) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+    // ✅ Detect locale (Next.js client only)
+    let locale = "en";
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("NEXT_LOCALE") || "en";
+      locale = stored.split("_")[0]; // lấy phần trước dấu _
+    }
+    // ✅ Send to backend
+    config.headers["x-locale"] = locale;
     return config;
   },
   (error) => Promise.reject(error)

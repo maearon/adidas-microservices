@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
         variant_sizes: { include: { sizes: true } },
         products: {
           include: {
+            product_translations: true,
             variants: {
               include: {
                 variant_sizes: { include: { sizes: true } },
@@ -42,6 +43,18 @@ export async function GET(req: NextRequest) {
     }
 
     const product = variant.products
+
+    // ✅ Detect locale from header or query
+    const locale =
+      req.headers.get("Accept-Language")?.split(",")?.[0]  // chuẩn
+      || req.headers.get("x-locale")                      // fallback
+      || req.nextUrl.searchParams.get("lang")            // fallback query
+      || "en"
+
+    // ✅ Extract translation
+    const translation = product.product_translations?.find(
+      (t) => t.locale === locale
+    )?.data ?? {}
 
     // ✅ Lấy ảnh Product 1 lần
     const mainImage = await getImageUrlsByRecord("Product", product.id, "image") ?? []
@@ -166,6 +179,7 @@ export async function GET(req: NextRequest) {
         description_p: product.description_p,
         specifications: product.specifications,
         care: product.care,
+        data: translation,
         created_at: product.created_at,
         updated_at: product.updated_at,
         category: product.categories?.name ?? "",
