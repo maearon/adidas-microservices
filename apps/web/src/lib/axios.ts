@@ -32,6 +32,7 @@ axiosInstance.interceptors.request.use(
       locale = stored.split("_")[0]; // lấy phần trước dấu _
     }
     // ✅ Send to backend
+    config.headers["Accept-Language"] = locale;
     config.headers["x-locale"] = locale;
     return config;
   },

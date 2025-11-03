@@ -294,10 +294,10 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     {/* Cột trái: Text */}
                     <div>
                       <h4 className="text-lg font-extrabold tracking-wide uppercase">
-                        {t?.descTitle}
+                        {product?.data?.description?.descTitle || t?.descTitle}
                       </h4>
                       <p className="text-gray-600 dark:text-white leading-relaxed">
-                        {t?.descText || productDetails.description}
+                        {product?.data?.description?.descText || t?.descText}
                       </p>
                     </div>
 
@@ -325,22 +325,31 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   {expandedSections.details ? <ChevronUp /> : <ChevronDown />}
                 </button>
                 {expandedSections.details && (
+                  // <div className="pb-6">
+                  //   <ul className="space-y-2">
+                  //     {(
+                  //       (product.data.details || [
+                  //         "regularFit",
+                  //         "laceClosure",
+                  //         "hybridTouchUpper",
+                  //         "adidasPrimeknitCollar",
+                  //         "sprintframe360FirmGroundOutsole",
+                  //         "imported",
+                  //         "productColor",
+                  //         "productCode",
+                  //       ]) as const
+                  //     ).map((key, i) => (
+                  //       <li key={i} className="text-gray-600 dark:text-white">
+                  //         • {t?.[key] || key}
+                  //       </li>
+                  //     ))}
+                  //   </ul>
+                  // </div>
                   <div className="pb-6">
                     <ul className="space-y-2">
-                      {(
-                        [
-                          "regularFit",
-                          "laceClosure",
-                          "hybridTouchUpper",
-                          "adidasPrimeknitCollar",
-                          "sprintframe360FirmGroundOutsole",
-                          "imported",
-                          "productColor",
-                          "productCode",
-                        ] as const
-                      ).map((key, i) => (
+                      {(product?.data?.details ?? []).map((line, i) => (
                         <li key={i} className="text-gray-600 dark:text-white">
-                          • {t?.[key] || key}
+                          • {line}
                         </li>
                       ))}
                     </ul>
@@ -359,7 +368,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 </button>
                 {expandedSections.highlights && (
                   <div className="pb-6">
-                    <ul className="space-y-6">
+                    {/* <ul className="space-y-6">
                       {[
                         { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
                         { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
@@ -371,6 +380,27 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                           <p className="text-gray-600 dark:text-white">{h.text}</p>
                         </li>
                       ))}
+                    </ul> */}
+                    <ul className="space-y-6">
+                      {product?.data?.highlights.length > 0
+                        ? product.data.highlights.map((h, i) => (
+                            <li key={i}>
+                              <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                              <p className="text-gray-600 dark:text-white">{h.text}</p>
+                            </li>
+                          ))
+                        : [ // fallback đến file lang
+                            { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
+                            { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
+                            { title: t?.dribbleFast, text: t?.dribbleFastText },
+                            { title: t?.experienceLevel, text: t?.experienceLevelText }
+                          ].map((h, i) => (
+                            <li key={i}>
+                              <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                              <p className="text-gray-600 dark:text-white">{h.text}</p>
+                            </li>
+                          ))
+                      }
                     </ul>
                   </div>
                 )}
