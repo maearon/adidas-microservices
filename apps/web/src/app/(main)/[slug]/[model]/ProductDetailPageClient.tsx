@@ -382,8 +382,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                       ))}
                     </ul> */}
                     <ul className="space-y-6">
-                      {product?.data?.highlights.length > 0
-                        ? product.data.highlights.map((h, i) => (
+                      {product?.data?.highlights?.length > 0
+                        ? product?.data?.highlights.map((h, i) => (
                             <li key={i}>
                               <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
                               <p className="text-gray-600 dark:text-white">{h.text}</p>
