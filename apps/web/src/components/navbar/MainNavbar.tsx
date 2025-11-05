@@ -111,7 +111,7 @@ export default function MainNavbar({
           )}
           {/* Cart Empty Tooltip */}
               {cartItemsCount === 0 && (
-                <div className="absolute top-8 right-0 bg-white dark:bg-black text-black dark:text-white border shadow-lg p-4 rounded hidden group-hover:block z-10 whitespace-nowrap">
+                <div className="absolute top-8 right-0 bg-white dark:bg-black text-black dark:text-white border shadow-lg p-4 rounded-none hidden group-hover:block z-10 whitespace-nowrap">
                   <p className="font-bold">{accountT?.yourCartIsEmpty || "YOUR CART IS EMPTY"}</p>
                 </div>
               )}
