@@ -331,13 +331,31 @@ export default function CheckoutPage() {
                 onClick={() => setShowPromoCode(!showPromoCode)}
                 className="w-full justify-start"
               >
-                <Tag className="mr-2 h-4 w-4" />
+                {/*  <Tag className="mr-2 h-4 w-4" />  */}
+                <Image
+                  src="/assets/payment/promo-code.svg"
+                  alt="Promo Code"
+                  width={24}
+                  height={14}
+                  className="object-contain mr-2 dark:invert"
+                />
                 USE A PROMO CODE
               </BaseButton>
               {showPromoCode && (
                 <div className="mt-2 flex">
-                  <Input placeholder="Enter promo code" className="rounded-r-none" />
-                  <Button className="rounded-l-none bg-black text-white">APPLY</Button>
+                  <Input placeholder="Enter your promo code" className="rounded-r-none" />
+                  {/*  <Button className="rounded-l-none bg-black text-white">APPLY</Button>  */}
+                  <Button
+                    pressEffect={true}
+                    onClick={handleNext}
+                    fullWidth={true}
+                    border
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "white" : "black"}
+                  >
+                    APPLY
+                    {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
+                  </Button>
                 </div>
               )}
             </div>
