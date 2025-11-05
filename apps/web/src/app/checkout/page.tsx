@@ -20,6 +20,7 @@ import ProductPrice from "@/components/ProductCardPrice"
 import { authClient } from "@/lib/auth-client";
 // import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
 import Image from "next/image"
+import { useTheme } from "next-themes"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -59,6 +60,14 @@ export default function CheckoutPage() {
     phone: "",
   })
   const [showPromoCode, setShowPromoCode] = useState(false)
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  
+  // Avoid hydration mismatch
+  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     setHasMounted(true)
@@ -126,6 +135,10 @@ export default function CheckoutPage() {
   }
 
   if (!hasMounted || userLoading) return <FullScreenLoader />
+
+  if (!mounted) return null
+
+  const isDark = resolvedTheme === "dark"
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -237,9 +250,10 @@ export default function CheckoutPage() {
               <Button
                 pressEffect={true}
                 onClick={handleNext}
-                fullWidth={true}
+                fullWidth={false}
                 border
                 shadowColorModeInWhiteTheme="black"
+                theme={isDark ? "black" : "white"}
               >
                 NEXT
                 {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
