@@ -247,18 +247,19 @@ export default function CheckoutPage() {
               </div>
 
               {/* Next Button */}
-              <Button
-                pressEffect={true}
-                onClick={handleNext}
-                fullWidth={true}
-                className="max-w-[50%]"
-                border
-                shadowColorModeInWhiteTheme="black"
-                theme={isDark ? "white" : "black"}
-              >
-                NEXT
-                {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
-              </Button>
+              <div className="max-w-[50%]">
+                <Button
+                  pressEffect={true}
+                  onClick={handleNext}
+                  fullWidth={true}
+                  border
+                  shadowColorModeInWhiteTheme="black"
+                  theme={isDark ? "white" : "black"}
+                >
+                  NEXT
+                  {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
+                </Button>
+              </div>
             </div>
           </div>
 
