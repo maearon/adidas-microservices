@@ -18,6 +18,7 @@ import { formatPrice } from "@/lib/utils"
 // import type { Session } from "@/lib/auth"
 import ProductPrice from "@/components/ProductCardPrice"
 import { authClient } from "@/lib/auth-client";
+import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -251,7 +252,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Payment Section */}
-          <div>
+          {/* <div>
             <h2 className="text-lg font-bold mb-4 text-gray-400">PAYMENT</h2>
             <div className="flex space-x-2 opacity-50">
               <div className="w-8 h-5 bg-gray-300 rounded"></div>
@@ -261,7 +262,8 @@ export default function CheckoutPage() {
               <div className="w-8 h-5 bg-gray-300 rounded"></div>
               <div className="w-8 h-5 bg-gray-300 rounded"></div>
             </div>
-          </div>
+          </div> */}
+          <AcceptedPaymentMethods />
         </div>
 
         {/* Right Column - Order Summary */}
