@@ -253,7 +253,7 @@ export default function CheckoutPage() {
                 fullWidth={false}
                 border
                 shadowColorModeInWhiteTheme="black"
-                theme={isDark ? "black" : "white"}
+                theme={isDark ? "white" : "black"}
               >
                 NEXT
                 {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
