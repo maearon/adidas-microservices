@@ -19,6 +19,7 @@ import { formatPrice } from "@/lib/utils"
 import ProductPrice from "@/components/ProductCardPrice"
 import { authClient } from "@/lib/auth-client";
 // import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
+import Image from "next/image"
 
 // type CheckoutPageProps = {
 //   session: Session | null
