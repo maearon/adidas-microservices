@@ -250,7 +250,8 @@ export default function CheckoutPage() {
               <Button
                 pressEffect={true}
                 onClick={handleNext}
-                fullWidth={false}
+                fullWidth={true}
+                className="max-w-[50%]"
                 border
                 shadowColorModeInWhiteTheme="black"
                 theme={isDark ? "white" : "black"}
