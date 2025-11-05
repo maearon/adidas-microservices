@@ -348,7 +348,7 @@ export default function CheckoutPage() {
                   <Button
                     pressEffect={true}
                     onClick={handleNext}
-                    fullWidth={true}
+                    fullWidth={false}
                     border
                     shadowColorModeInWhiteTheme="black"
                     theme={isDark ? "white" : "black"}
