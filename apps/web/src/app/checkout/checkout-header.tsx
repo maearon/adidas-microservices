@@ -5,6 +5,7 @@ import { ShoppingBag } from "lucide-react"
 import { useAppSelector } from "@/store/hooks"
 import { cn } from "@/lib/utils"
 import type { Session } from "@/lib/auth"
+import { ThemeToggle } from "@/components/theme/ThemeToggle"
 
 type CheckoutHeaderProps = {
   session: Session | null
@@ -41,6 +42,7 @@ export default function CheckoutHeader({ session }: CheckoutHeaderProps) {
                 </span>
               )}
             </Link>
+            <ThemeToggle />
             <span className="text-base font-medium">adiClub</span>
           </div>
         </div>
