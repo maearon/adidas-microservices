@@ -18,7 +18,7 @@ import { formatPrice } from "@/lib/utils"
 // import type { Session } from "@/lib/auth"
 import ProductPrice from "@/components/ProductCardPrice"
 import { authClient } from "@/lib/auth-client";
-import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
+// import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -351,6 +351,43 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+export function AcceptedPaymentMethods() {
+  return (
+    <div className="mt-10">
+      <h3 className="text-sm font-bold uppercase mb-2">Accepted payment methods</h3>
+
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+        {[
+          { src: "/assets/payment/download.svg", alt: "AmEx" },
+          { src: "/assets/payment/download (1).svg", alt: "Discover" },
+          { src: "/assets/payment/download (2).svg", alt: "Mastercard" },
+          { src: "/assets/payment/download (3).svg", alt: "Visa" },
+          { src: "/assets/payment/download (7).svg", alt: "Klarna" },
+          { src: "/assets/payment/download (8).svg", alt: "Google Pay" },
+          // { break: true },
+          { src: "/assets/payment/download (9).svg", alt: "ADIDAS" },
+          { src: "/assets/payment/download (10).svg", alt: "Shop Pay" },
+          { src: "/assets/payment/download (11).svg", alt: "PayPal" },
+          { src: "/assets/payment/download (12).svg", alt: "Afterpay" },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="flex items-center justify-center w-[46px] h-[28px] bg-white dark:bg-black border border-transparent"
+          >
+            <Image
+              src={item.src ?? "/placeholder.png?height=30&width=42"}
+              alt={item.alt ?? "Payment Method"}
+              width={42}
+              height={30}
+              className="object-contain max-h-[18px] grayscale transition duration-200"
+            />
+          </div>
+        ))}
       </div>
     </div>
   )
