@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
-import { connectToDatabase } from "@/lib/mongoose";
-import Address from "@/models/address.model.js";
 
 /**
  * POST /api/v1/payments/webhook/momo
