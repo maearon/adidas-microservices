@@ -1,6 +1,6 @@
 "use client"
 
-import { useAppSelector } from "@/store/hooks" // ✅ dùng hook đúng
+import { useAppSelector, useAppDispatch } from "@/store/hooks" // ✅ dùng hook đúng
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { BaseButton } from "@/components/ui/base-button"
@@ -21,12 +21,17 @@ import { authClient } from "@/lib/auth-client";
 // import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import orderService, { getCustomerIdFromSession } from "@/api/services/orderService"
+import { clearCart } from "@/store/cartSlice"
+import { useRouter } from "next/navigation"
 
 // type CheckoutPageProps = {
 //   session: Session | null
 // }
 
 export default function CheckoutPage() {
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const { 
       data: session, 
       isPending, //loading state
@@ -42,6 +47,8 @@ export default function CheckoutPage() {
   // const { value: user, status } = useSelector(selectUser)
   const userLoading = isPending
   const [hasMounted, setHasMounted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [orderError, setOrderError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     email: "",
@@ -127,10 +134,48 @@ export default function CheckoutPage() {
     return !Object.values(newErrors).some((error) => error)
   }
 
-  const handleNext = () => {
-    if (validateForm()) {
-      // Proceed to next step
-      console.log("Form is valid, proceeding...")
+  const handleNext = async () => {
+    if (!validateForm()) {
+      return
+    }
+
+    // Validate cart
+    if (!cartItems || cartItems.length === 0) {
+      setOrderError("Your cart is empty. Please add items before checkout.")
+      return
+    }
+
+    setIsSubmitting(true)
+    setOrderError(null)
+
+    try {
+      // Lấy customerId từ session
+      const customerId = getCustomerIdFromSession(session?.user)
+
+      // Gọi API tạo order
+      const response = await orderService.createOrder(cartItems, customerId)
+
+      if (response) {
+        // Clear cart sau khi order thành công
+        dispatch(clearCart())
+
+        // Redirect đến order confirmation page hoặc home
+        // Có thể pass orderId qua query params
+        if (response.orderId) {
+          router.push(`/order-confirmation?orderId=${response.orderId}`)
+        } else {
+          router.push("/order-confirmation")
+        }
+      }
+    } catch (error: unknown) {
+      console.error("Error creating order:", error)
+      setOrderError(
+        error instanceof Error 
+          ? error.message 
+          : "Failed to create order. Please try again."
+      )
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -246,6 +291,13 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
+              {/* Error Message */}
+              {orderError && (
+                <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
+                  {orderError}
+                </div>
+              )}
+
               {/* Next Button */}
               <div className="max-w-[50%]">
                 <Button
@@ -255,8 +307,9 @@ export default function CheckoutPage() {
                   border
                   shadowColorModeInWhiteTheme="black"
                   theme={isDark ? "white" : "black"}
+                  disabled={isSubmitting || cartItems.length === 0}
                 >
-                  NEXT
+                  {isSubmitting ? "PROCESSING..." : "PLACE ORDER"}
                   {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
                 </Button>
               </div>
