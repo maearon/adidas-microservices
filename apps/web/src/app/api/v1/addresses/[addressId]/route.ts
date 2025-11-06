@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { connectToDatabase } from "@/lib/mongoose";
 import { requireUserFromRequest } from "@/lib/utils/getUserFromRequest";
-import Address, { IAddress } from "@/models/Address";
+import Address from "@/models/address.model.js";
 
 /**
  * GET /api/v1/addresses/[addressId]

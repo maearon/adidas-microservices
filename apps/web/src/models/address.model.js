@@ -1,29 +1,9 @@
 export const runtime = "nodejs";
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose from "mongoose";
 
-export interface IAddress extends Document {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  street: string;
-  apartment?: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  phone: string;
-  isDefault: boolean;
-  type: "delivery" | "billing" | "both";
-  // Geo coordinates for map integration (optional)
-  latitude?: number;
-  longitude?: number;
-  // Full formatted address for display
-  formattedAddress?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+const { Schema } = mongoose;
 
-const AddressSchema = new Schema<IAddress>(
+const AddressSchema = new Schema(
   {
     userId: {
       type: String,
@@ -84,15 +64,9 @@ const AddressSchema = new Schema<IAddress>(
       enum: ["delivery", "billing", "both"],
       default: "delivery",
     },
-    latitude: {
-      type: Number,
-    },
-    longitude: {
-      type: Number,
-    },
-    formattedAddress: {
-      type: String,
-    },
+    latitude: Number,
+    longitude: Number,
+    formattedAddress: String,
   },
   {
     timestamps: true,
@@ -111,7 +85,7 @@ AddressSchema.virtual("fullName").get(function () {
 // Ensure only one default address per user
 AddressSchema.pre("save", async function (next) {
   if (this.isDefault && this.isModified("isDefault")) {
-    await mongoose.model<IAddress>("Address").updateMany(
+    await mongoose.model("Address").updateMany(
       { userId: this.userId, _id: { $ne: this._id } },
       { $set: { isDefault: false } }
     );
@@ -133,8 +107,5 @@ AddressSchema.pre("save", function (next) {
   next();
 });
 
-const Address: Model<IAddress> =
-  mongoose.models.Address || mongoose.model<IAddress>("Address", AddressSchema);
-
+const Address = mongoose.models.Address || mongoose.model("Address", AddressSchema);
 export default Address;
-
