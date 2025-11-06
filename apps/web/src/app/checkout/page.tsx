@@ -24,6 +24,7 @@ import { useTheme } from "next-themes"
 import orderService, { getCustomerIdFromSession } from "@/api/services/orderService"
 import { clearCart } from "@/store/cartSlice"
 import { useRouter } from "next/navigation"
+import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMethods"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -67,6 +68,9 @@ export default function CheckoutPage() {
     phone: "",
   })
   const [showPromoCode, setShowPromoCode] = useState(false)
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null)
+  const [selectedAddress, setSelectedAddress] = useState<any>(null)
+  const [showAddressModal, setShowAddressModal] = useState(false)
   const { 
     // theme, 
     resolvedTheme 
@@ -145,6 +149,12 @@ export default function CheckoutPage() {
       return
     }
 
+    // Validate payment method
+    if (!selectedPaymentMethod) {
+      setOrderError("Please select a payment method.")
+      return
+    }
+
     setIsSubmitting(true)
     setOrderError(null)
 
@@ -152,27 +162,61 @@ export default function CheckoutPage() {
       // Lấy customerId từ session
       const customerId = getCustomerIdFromSession(session?.user)
 
-      // Gọi API tạo order
-      const response = await orderService.createOrder(cartItems, customerId)
+      // Gọi API tạo order trước
+      const orderResponse = await orderService.createOrder(cartItems, customerId)
 
-      if (response) {
-        // Clear cart sau khi order thành công
+      if (!orderResponse || !orderResponse.orderId) {
+        throw new Error("Failed to create order")
+      }
+
+      // Nếu COD, không cần tạo payment intent
+      if (selectedPaymentMethod === "cod") {
         dispatch(clearCart())
+        router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=cod`)
+        return
+      }
 
-        // Redirect đến order confirmation page hoặc home
-        // Có thể pass orderId qua query params
-        if (response.orderId) {
-          router.push(`/order-confirmation?orderId=${response.orderId}`)
-        } else {
-          router.push("/order-confirmation")
-        }
+      // Tạo payment intent
+      const paymentResponse = await fetch("/api/v1/payments/create-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          orderId: orderResponse.orderId,
+          amount: total,
+          currency: "USD",
+          paymentMethod: selectedPaymentMethod,
+        }),
+      })
+
+      if (!paymentResponse.ok) {
+        throw new Error("Failed to create payment intent")
+      }
+
+      const paymentData = await paymentResponse.json()
+
+      // Handle different payment methods
+      if (paymentData.payUrl) {
+        // MoMo hoặc VNPay - redirect to payment gateway
+        window.location.href = paymentData.payUrl
+      } else if (paymentData.clientSecret) {
+        // Stripe - redirect to Stripe checkout hoặc handle client-side
+        // For now, redirect to confirmation (will implement Stripe Elements later)
+        dispatch(clearCart())
+        router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=${selectedPaymentMethod}`)
+      } else {
+        // PayPal or other - redirect to confirmation
+        dispatch(clearCart())
+        router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=${selectedPaymentMethod}`)
       }
     } catch (error: unknown) {
-      console.error("Error creating order:", error)
+      console.error("Error processing order:", error)
       setOrderError(
         error instanceof Error 
           ? error.message 
-          : "Failed to create order. Please try again."
+          : "Failed to process order. Please try again."
       )
     } finally {
       setIsSubmitting(false)
@@ -319,21 +363,20 @@ export default function CheckoutPage() {
           {/* Shipping Section */}
           <div>
             <h2 className="text-lg font-bold mb-4 text-gray-400">SHIPPING</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Standard delivery - Free
+            </p>
           </div>
 
           {/* Payment Section */}
-          {/* <div>
-            <h2 className="text-lg font-bold mb-4 text-gray-400">PAYMENT</h2>
-            <div className="flex space-x-2 opacity-50">
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-              <div className="w-8 h-5 bg-gray-300 rounded"></div>
-            </div>
-          </div> */}
-          <AcceptedPaymentMethods />
+          <div>
+            <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
+            <PaymentMethods
+              selectedMethod={selectedPaymentMethod}
+              onSelectMethod={setSelectedPaymentMethod}
+              country={formData.address ? "US" : "VN"} // Detect from address or default
+            />
+          </div>
         </div>
 
         {/* Right Column - Order Summary */}
