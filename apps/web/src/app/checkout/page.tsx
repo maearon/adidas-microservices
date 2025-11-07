@@ -546,27 +546,6 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {selectedPaymentMethod === "stripe" && (
-                  <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
-                    <h3 className="text-sm font-semibold">Card details</h3>
-                    {stripeError && (
-                      <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
-                        {stripeError}
-                      </div>
-                    )}
-                    <StripePaymentForm
-                      ref={stripeFormRef}
-                      amount={total}
-                      currency="usd"
-                      customerEmail={session?.user?.email || formData.email}
-                      onError={setStripeError}
-                    />
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Your payment details are encrypted and processed securely by Stripe.
-                    </p>
-                  </div>
-                )}
-
                 {/* Error Message */}
                 {orderError && (
                   <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
@@ -668,6 +647,27 @@ export default function CheckoutPage() {
                   }}
                   country={formData.country || "US"}
                 />
+
+                {selectedPaymentMethod === "stripe" && (
+                  <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+                    <h3 className="text-sm font-semibold">Card details</h3>
+                    {stripeError && (
+                      <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
+                        {stripeError}
+                      </div>
+                    )}
+                    <StripePaymentForm
+                      ref={stripeFormRef}
+                      amount={total}
+                      currency="usd"
+                      customerEmail={session?.user?.email || formData.email}
+                      onError={setStripeError}
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Your payment details are encrypted and processed securely by Stripe.
+                    </p>
+                  </div>
+                )}
 
                 {/* Error Message */}
                 {orderError && (
