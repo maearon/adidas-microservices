@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation"
 import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMethods"
 import AddressAutocomplete from "@/components/checkout/AddressAutocomplete"
 import AddressList from "@/components/checkout/AddressList"
+import { Address } from "@/types/common/address"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -162,7 +163,7 @@ export default function CheckoutPage() {
     return true
   }
 
-  const handleAddressSelect = (address: any) => {
+  const handleAddressSelect = (address: Address) => {
     setSelectedAddress(address)
     setFormData((prev) => ({
       ...prev,
@@ -179,7 +180,7 @@ export default function CheckoutPage() {
     setAddressSearchValue(address.formattedAddress || address.street || "")
   }
 
-  const handleAddressAutocompleteSelect = (address: any) => {
+  const handleAddressAutocompleteSelect = (address: Address) => {
     setFormData((prev) => ({
       ...prev,
       street: address.street || prev.street,

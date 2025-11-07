@@ -16,22 +16,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-interface Address {
-  _id: string
-  userId?: string
-  firstName: string
-  lastName: string
-  street: string
-  apartment?: string
-  city: string
-  state: string
-  zipCode: string
-  country: string
-  phone: string
-  isDefault?: boolean
-  type?: "delivery" | "billing" | "both"
-  formattedAddress?: string
-}
+// interface Address {
+//   _id: string
+//   userId?: string
+//   firstName: string
+//   lastName: string
+//   street: string
+//   apartment?: string
+//   city: string
+//   state: string
+//   zipCode: string
+//   country: string
+//   phone: string
+//   isDefault?: boolean
+//   type?: "delivery" | "billing" | "both"
+//   formattedAddress?: string
+// }
+import { Address } from "@/types/common/address"
 
 interface AddressListProps {
   selectedAddress: Address | null

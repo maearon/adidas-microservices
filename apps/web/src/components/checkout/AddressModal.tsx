@@ -13,24 +13,25 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import AddressAutocomplete from "./AddressAutocomplete"
 
-interface Address {
-  _id?: string
-  userId?: string
-  firstName: string
-  lastName: string
-  street: string
-  apartment?: string
-  city: string
-  state: string
-  zipCode: string
-  country: string
-  phone: string
-  isDefault?: boolean
-  type?: "delivery" | "billing" | "both"
-  latitude?: number
-  longitude?: number
-  formattedAddress?: string
-}
+// interface Address {
+//   _id?: string
+//   userId?: string
+//   firstName: string
+//   lastName: string
+//   street: string
+//   apartment?: string
+//   city: string
+//   state: string
+//   zipCode: string
+//   country: string
+//   phone: string
+//   isDefault?: boolean
+//   type?: "delivery" | "billing" | "both"
+//   latitude?: number
+//   longitude?: number
+//   formattedAddress?: string
+// }
+import { Address } from "@/types/common/address"
 
 interface AddressModalProps {
   open: boolean
@@ -115,7 +116,7 @@ export default function AddressModal({
     }
   }
 
-  const handleAddressSelect = (selectedAddress: any) => {
+  const handleAddressSelect = (selectedAddress: Address) => {
     setFormData((prev) => ({
       ...prev,
       street: selectedAddress.street || prev.street,
