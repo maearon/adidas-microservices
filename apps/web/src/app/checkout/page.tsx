@@ -28,6 +28,7 @@ import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMeth
 import AddressAutocomplete from "@/components/checkout/AddressAutocomplete"
 import AddressList from "@/components/checkout/AddressList"
 import { Address } from "@/types/common/address"
+import { ArrowLeft } from "lucide-react"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -514,7 +515,13 @@ export default function CheckoutPage() {
                     variant="outline"
                     onClick={handlePreviousStep}
                     className="flex-1"
+                    border
+                    showArrow={false}
+                    pressEffect={true}
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "black" : "white"}
                   >
+                    <ArrowLeft size={16} />
                     Back
                   </Button>
                   <Button
@@ -559,7 +566,13 @@ export default function CheckoutPage() {
                     variant="outline"
                     onClick={handlePreviousStep}
                     className="flex-1"
+                    border
+                    showArrow={false}
+                    pressEffect={true}
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "black" : "white"}
                   >
+                    <ArrowLeft size={16} />
                     Back
                   </Button>
                   <Button

@@ -34,6 +34,8 @@ import {
 //   formattedAddress?: string
 // }
 import { Address } from "@/types/common/address"
+import { useTheme } from "next-themes"
+import FullScreenLoader from "@/components/ui/FullScreenLoader"
 
 interface AddressListProps {
   selectedAddress: Address | null
@@ -47,6 +49,19 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
   const [editingAddress, setEditingAddress] = useState<Address | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [addressToDelete, setAddressToDelete] = useState<string | null>(null)
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
+  const [hasMounted, setHasMounted] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  
+  // Avoid hydration mismatch
+  useEffect(() => setMounted(true), [])
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   useEffect(() => {
     loadAddresses()
@@ -144,6 +159,12 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
     return <div className="text-sm text-gray-500">Loading addresses...</div>
   }
 
+  if (!hasMounted || loading) return <FullScreenLoader />
+  
+  if (!mounted) return null
+
+  const isDark = resolvedTheme === "dark"
+
   return (
     <>
       <div className="space-y-3">
@@ -213,6 +234,10 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
           variant="outline"
           onClick={openAddModal}
           className="w-full"
+          showArrow={false}
+          pressEffect={true}
+          shadowColorModeInWhiteTheme="black"
+          theme={isDark ? "white" : "black"}
         >
           <Plus className="h-4 w-4 mr-2" />
           Add New Address

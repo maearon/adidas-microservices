@@ -32,6 +32,7 @@ import AddressAutocomplete from "./AddressAutocomplete"
 //   formattedAddress?: string
 // }
 import { Address } from "@/types/common/address"
+import { useTheme } from "next-themes"
 
 interface AddressModalProps {
   open: boolean
@@ -64,6 +65,10 @@ export default function AddressModal({
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSaving, setIsSaving] = useState(false)
   const [addressSearchValue, setAddressSearchValue] = useState("")
+  const { 
+    // theme, 
+    resolvedTheme 
+  } = useTheme()
 
   useEffect(() => {
     if (open) {
@@ -158,6 +163,8 @@ export default function AddressModal({
       setIsSaving(false)
     }
   }
+
+  const isDark = resolvedTheme === "dark"
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -283,10 +290,25 @@ export default function AddressModal({
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onClose}
+              showArrow={false}
+              pressEffect={true}
+              shadowColorModeInWhiteTheme="black"
+              theme={isDark ? "white" : "black"}
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>
+            <Button 
+              type="submit" 
+              disabled={isSaving}
+              showArrow={false}
+              pressEffect={true}
+              shadowColorModeInWhiteTheme="black"
+              theme={isDark ? "white" : "black"}
+            >
               {isSaving ? "Saving..." : mode === "edit" ? "Update Address" : "Add Address"}
             </Button>
           </div>
