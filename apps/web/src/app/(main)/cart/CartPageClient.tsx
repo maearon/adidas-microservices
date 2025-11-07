@@ -275,7 +275,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 </div>
 
                 {/* Klarna Payment */}
-                <div className="flex flex-wrap items-center text-base text-gray-700 dark:text-white mt-6">
+                {/* <div className="flex flex-wrap items-center text-base text-gray-700 dark:text-white mt-6">
                   <p className="mr-1">
                     From <span className="font-bold">{<ProductPrice price={24.24} compareAtPrice={null} />}/month</span>, or 4 payments at 0% interest with
                   </p>
@@ -285,7 +285,10 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                       Learn more
                     </Link>
                   </span>
-                </div>
+                </div> */}
+                <p className="text-xs text-gray-600 dark:text-white">
+                  From $31.57/month or 4 payments at 0% interest with <strong>Klarna</strong>
+                </p>
 
                 {/* Promo Code */}
                 <div className="mb-6">
