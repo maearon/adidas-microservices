@@ -79,7 +79,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
         <main className="grow container mx-auto px-2 py-28">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-4xl font-bold mb-10">YOUR BAG IS EMPTY</h1>
-            <p className="bg-white dark:bg-black text-gray-600 dark:text-white mb-6">
+            <p className="text-gray-600 dark:text-white mb-6">
               Once you add something to your bag, it will appear here. Ready to get started?
             </p>
             <div className="max-w-[180px] w-full">
@@ -122,10 +122,13 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 <h2 className="font-bold">HI, {capitalizeTitle(current_user?.name || "USER")}!</h2>
               </div>
 
-              <h1 className="text-2xl font-bold mb-2">YOUR BAG</h1>
-              <p className="text-gray-600 dark:text-white mb-4">
-                TOTAL: ({totalItems} items) {<ProductPrice price={subtotal} compareAtPrice={null} />}
-              </p>
+              <div className="flex items-baseline gap-2 mb-2">
+                <h1 className="text-2xl font-bold tracking-tight">YOUR BAG</h1>
+                <span className="text-gray-600 dark:text-white text-sm font-normal">
+                  [{totalItems} items]
+                </span>
+              </div>
+
               <p className="text-base text-gray-500 mb-6">
                 Items in your bag are not reserved — check out now to make them yours.
               </p>

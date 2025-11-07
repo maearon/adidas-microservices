@@ -17,6 +17,7 @@ import FullScreenLoader from "@/components/ui/FullScreenLoader"
 import { formatPrice } from "@/lib/utils"
 // import type { Session } from "@/lib/auth"
 import ProductPrice from "@/components/ProductCardPrice"
+import ProductPriceSpan from "@/components/ProductCardPriceSpan"
 import { authClient } from "@/lib/auth-client";
 // import { AcceptedPaymentMethods } from "@/app/(main)/cart/CartPageClient"
 import Image from "next/image"
@@ -322,7 +323,7 @@ export default function CheckoutPage() {
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold mb-2">CHECKOUT</h1>
         <p className="text-gray-600 dark:text-white">
-          ({totalItems} items) <ProductPrice price={total} compareAtPrice={null} />
+          [{totalItems} items] <ProductPriceSpan price={total} compareAtPrice={null} />
         </p>
       </div>
 
