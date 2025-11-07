@@ -25,10 +25,14 @@ import orderService, { getCustomerIdFromSession } from "@/api/services/orderServ
 import { clearCart } from "@/store/cartSlice"
 import { useRouter } from "next/navigation"
 import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMethods"
+import AddressAutocomplete from "@/components/checkout/AddressAutocomplete"
+import AddressList from "@/components/checkout/AddressList"
 
 // type CheckoutPageProps = {
 //   session: Session | null
 // }
+
+type CheckoutStep = 1 | 2 | 3 // 1 = Address, 2 = Shipping, 3 = Payment
 
 export default function CheckoutPage() {
   const dispatch = useAppDispatch()
@@ -50,12 +54,18 @@ export default function CheckoutPage() {
   const [hasMounted, setHasMounted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [orderError, setOrderError] = useState<string | null>(null)
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>(1)
 
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
     lastName: "",
     address: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "US",
     phone: "",
     saveInfo: false,
     sameAddress: true,
@@ -71,6 +81,7 @@ export default function CheckoutPage() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null)
   const [selectedAddress, setSelectedAddress] = useState<any>(null)
   const [showAddressModal, setShowAddressModal] = useState(false)
+  const [addressSearchValue, setAddressSearchValue] = useState("")
   const { 
     // theme, 
     resolvedTheme 
@@ -127,31 +138,88 @@ export default function CheckoutPage() {
     }
   }
 
-  const validateForm = () => {
+  const validateAddressStep = () => {
     const newErrors = {
       firstName: !formData.firstName ? "Please enter your first name." : "",
       lastName: !formData.lastName ? "Please enter your last name." : "",
-      address: !formData.address ? "Please enter your delivery address." : "",
+      address: !selectedAddress && !formData.address ? "Please enter or select your delivery address." : "",
       phone: !formData.phone ? "Please enter your telephone number." : "",
     }
     setErrors(newErrors)
     return !Object.values(newErrors).some((error) => error)
   }
 
-  const handleNext = async () => {
-    if (!validateForm()) {
+  const validateShippingStep = () => {
+    // Shipping step is usually just informational, but we can add validation if needed
+    return true
+  }
+
+  const validatePaymentStep = () => {
+    if (!selectedPaymentMethod) {
+      setOrderError("Please select a payment method.")
+      return false
+    }
+    return true
+  }
+
+  const handleAddressSelect = (address: any) => {
+    setSelectedAddress(address)
+    setFormData((prev) => ({
+      ...prev,
+      firstName: address.firstName || prev.firstName,
+      lastName: address.lastName || prev.lastName,
+      street: address.street || prev.street,
+      city: address.city || prev.city,
+      state: address.state || prev.state,
+      zipCode: address.zipCode || prev.zipCode,
+      country: address.country || prev.country,
+      phone: address.phone || prev.phone,
+      address: address.formattedAddress || address.street || prev.address,
+    }))
+    setAddressSearchValue(address.formattedAddress || address.street || "")
+  }
+
+  const handleAddressAutocompleteSelect = (address: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      street: address.street || prev.street,
+      city: address.city || prev.city,
+      state: address.state || prev.state,
+      zipCode: address.zipCode || prev.zipCode,
+      country: address.country || prev.country,
+      address: address.formattedAddress || prev.address,
+    }))
+    setAddressSearchValue(address.formattedAddress || "")
+  }
+
+  const handleNextStep = () => {
+    if (currentStep === 1) {
+      if (!validateAddressStep()) {
+        return
+      }
+      setCurrentStep(2)
+    } else if (currentStep === 2) {
+      if (!validateShippingStep()) {
+        return
+      }
+      setCurrentStep(3)
+    }
+  }
+
+  const handlePreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep((currentStep - 1) as CheckoutStep)
+    }
+  }
+
+  const handlePlaceOrder = async () => {
+    if (!validatePaymentStep()) {
       return
     }
 
     // Validate cart
     if (!cartItems || cartItems.length === 0) {
       setOrderError("Your cart is empty. Please add items before checkout.")
-      return
-    }
-
-    // Validate payment method
-    if (!selectedPaymentMethod) {
-      setOrderError("Please select a payment method.")
       return
     }
 
@@ -162,8 +230,20 @@ export default function CheckoutPage() {
       // Lấy customerId từ session
       const customerId = getCustomerIdFromSession(session?.user)
 
+      // Prepare address data
+      const addressData = selectedAddress || {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        street: formData.street || formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        country: formData.country,
+        phone: formData.phone,
+      }
+
       // Gọi API tạo order trước
-      const orderResponse = await orderService.createOrder(cartItems, customerId)
+      const orderResponse = await orderService.createOrder(cartItems, customerId, addressData)
 
       if (!orderResponse || !orderResponse.orderId) {
         throw new Error("Failed to create order")
@@ -239,144 +319,248 @@ export default function CheckoutPage() {
         </p>
       </div>
 
+      {/* Step Indicator */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-4">
+          <div className={`flex items-center ${currentStep >= 1 ? "text-black dark:text-white" : "text-gray-400"}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? "bg-black dark:bg-white text-white dark:text-black" : "bg-gray-200 dark:bg-gray-700"}`}>
+              1
+            </div>
+            <span className="ml-2 font-medium">Address</span>
+          </div>
+          <div className={`w-12 h-0.5 ${currentStep >= 2 ? "bg-black dark:bg-white" : "bg-gray-300 dark:bg-gray-600"}`} />
+          <div className={`flex items-center ${currentStep >= 2 ? "text-black dark:text-white" : "text-gray-400"}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 2 ? "bg-black dark:bg-white text-white dark:text-black" : "bg-gray-200 dark:bg-gray-700"}`}>
+              2
+            </div>
+            <span className="ml-2 font-medium">Shipping</span>
+          </div>
+          <div className={`w-12 h-0.5 ${currentStep >= 3 ? "bg-black dark:bg-white" : "bg-gray-300 dark:bg-gray-600"}`} />
+          <div className={`flex items-center ${currentStep >= 3 ? "text-black dark:text-white" : "text-gray-400"}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 3 ? "bg-black dark:bg-white text-white dark:text-black" : "bg-gray-200 dark:bg-gray-700"}`}>
+              3
+            </div>
+            <span className="ml-2 font-medium">Payment</span>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {/* Left Column - Checkout Form */}
         <div className="space-y-8">
-          {/* Contact Section */}
+          {/* Contact Section - Always visible */}
           <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
             <p className="text-base text-gray-600 dark:text-white">{session?.user?.email || "guest@gmail.com"}</p>
           </div>
 
-          {/* Address Section */}
-          <div>
-            <h2 className="text-lg font-bold mb-4">ADDRESS</h2>
-            <h3 className="font-medium mb-4">Delivery address</h3>
+          {/* Step 1: Address Section */}
+          {currentStep === 1 && (
+            <div>
+              <h2 className="text-lg font-bold mb-4">ADDRESS</h2>
+              <h3 className="font-medium mb-4">Delivery address</h3>
 
-            <div className="space-y-4">
-              {/* Name Fields */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Input
-                    placeholder="First Name *"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    className={errors.firstName ? "border-red-500" : ""}
-                  />
-                  {errors.firstName && <p className="text-red-500 text-base mt-1">{errors.firstName}</p>}
-                </div>
-                <div>
-                  <Input
-                    placeholder="Last Name *"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange("lastName", e.target.value)}
-                    className={errors.lastName ? "border-red-500" : ""}
-                  />
-                  {errors.lastName && <p className="text-red-500 text-base mt-1">{errors.lastName}</p>}
-                </div>
-              </div>
-
-              {/* Address Field */}
-              <div className="relative">
-                <Input
-                  placeholder="Find delivery address *"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
-                  className={errors.address ? "border-red-500" : ""}
+              <div className="space-y-4">
+                {/* Saved Addresses List */}
+                <AddressList
+                  selectedAddress={selectedAddress}
+                  onSelectAddress={handleAddressSelect}
                 />
-                <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                {errors.address && <p className="text-red-500 text-base mt-1">{errors.address}</p>}
-              </div>
 
-              {/* Phone Field */}
-              <div>
-                <Input
-                  placeholder="Phone Number *"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className={errors.phone ? "border-red-500" : ""}
-                />
-                {errors.phone && <p className="text-red-500 text-base mt-1">{errors.phone}</p>}
-              </div>
+                <div className="text-sm text-gray-500 text-center my-4">OR</div>
 
-              {/* Checkboxes */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="saveInfo"
-                    checked={formData.saveInfo}
-                    onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, saveInfo: !!checked }))}
-                  />
-                  <label htmlFor="saveInfo" className="text-base">
-                    Save address and contact information for future orders
-                  </label>
+                {/* Manual Address Entry */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Input
+                        placeholder="First Name *"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                        className={errors.firstName ? "border-red-500" : ""}
+                      />
+                      {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+                    </div>
+                    <div>
+                      <Input
+                        placeholder="Last Name *"
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange("lastName", e.target.value)}
+                        className={errors.lastName ? "border-red-500" : ""}
+                      />
+                      {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+                    </div>
+                  </div>
+
+                  {/* Address Autocomplete */}
+                  <div>
+                    <AddressAutocomplete
+                      value={addressSearchValue}
+                      onChange={setAddressSearchValue}
+                      onSelect={handleAddressAutocompleteSelect}
+                      placeholder="Find delivery address *"
+                      country={formData.country}
+                    />
+                    {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+                  </div>
+
+                  {/* Phone Field */}
+                  <div>
+                    <Input
+                      placeholder="Phone Number *"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      className={errors.phone ? "border-red-500" : ""}
+                    />
+                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                  </div>
+
+                  {/* Checkboxes */}
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="saveInfo"
+                        checked={formData.saveInfo}
+                        onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, saveInfo: !!checked }))}
+                      />
+                      <label htmlFor="saveInfo" className="text-sm">
+                        Save address and contact information for future orders
+                      </label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="ageVerified"
+                        checked={formData.ageVerified}
+                        onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, ageVerified: !!checked }))}
+                      />
+                      <label htmlFor="ageVerified" className="text-sm font-medium">
+                        I&apos;m 13+ years old. *
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="sameAddress"
-                    checked={formData.sameAddress}
-                    onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, sameAddress: !!checked }))}
-                  />
-                  <label htmlFor="sameAddress" className="text-base font-medium">
-                    Billing and delivery address are the same
-                  </label>
-                </div>
+                {/* Error Message */}
+                {orderError && (
+                  <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
+                    {orderError}
+                  </div>
+                )}
 
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="ageVerified"
-                    checked={formData.ageVerified}
-                    onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, ageVerified: !!checked }))}
-                  />
-                  <label htmlFor="ageVerified" className="text-base font-medium">
-                    I&apos;m 13+ years old. *
-                  </label>
+                {/* Next Button */}
+                <div className="max-w-[50%]">
+                  <Button
+                    pressEffect={true}
+                    onClick={handleNextStep}
+                    fullWidth={true}
+                    border
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "white" : "black"}
+                    disabled={cartItems.length === 0}
+                  >
+                    NEXT
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </div>
-              </div>
-
-              {/* Error Message */}
-              {orderError && (
-                <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
-                  {orderError}
-                </div>
-              )}
-
-              {/* Next Button */}
-              <div className="max-w-[50%]">
-                <Button
-                  pressEffect={true}
-                  onClick={handleNext}
-                  fullWidth={true}
-                  border
-                  shadowColorModeInWhiteTheme="black"
-                  theme={isDark ? "white" : "black"}
-                  disabled={isSubmitting || cartItems.length === 0}
-                >
-                  {isSubmitting ? "PROCESSING..." : "PLACE ORDER"}
-                  {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
-                </Button>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Shipping Section */}
-          <div>
-            <h2 className="text-lg font-bold mb-4 text-gray-400">SHIPPING</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Standard delivery - Free
-            </p>
-          </div>
+          {/* Step 2: Shipping Section */}
+          {currentStep === 2 && (
+            <div>
+              <h2 className="text-lg font-bold mb-4">SHIPPING</h2>
+              
+              <div className="space-y-4">
+                <div className="p-4 border border-gray-200 dark:border-gray-700 rounded">
+                  <h3 className="font-medium mb-2">Standard Delivery</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Free</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Estimated delivery: 5-7 business days
+                  </p>
+                </div>
 
-          {/* Payment Section */}
-          <div>
-            <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
-            <PaymentMethods
-              selectedMethod={selectedPaymentMethod}
-              onSelectMethod={setSelectedPaymentMethod}
-              country={formData.address ? "US" : "VN"} // Detect from address or default
-            />
-          </div>
+                {/* Selected Address Summary */}
+                {selectedAddress && (
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded">
+                    <h3 className="text-sm font-medium mb-2">Delivery to:</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {selectedAddress.formattedAddress || `${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.zipCode}`}
+                    </p>
+                  </div>
+                )}
+
+                {/* Navigation Buttons */}
+                <div className="flex gap-4">
+                  <Button
+                    variant="outline"
+                    onClick={handlePreviousStep}
+                    className="flex-1"
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    pressEffect={true}
+                    onClick={handleNextStep}
+                    fullWidth={true}
+                    border
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "white" : "black"}
+                    className="flex-1"
+                  >
+                    NEXT
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Payment Section */}
+          {currentStep === 3 && (
+            <div>
+              <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
+              
+              <div className="space-y-4">
+                <PaymentMethods
+                  selectedMethod={selectedPaymentMethod}
+                  onSelectMethod={setSelectedPaymentMethod}
+                  country={formData.country || "US"}
+                />
+
+                {/* Error Message */}
+                {orderError && (
+                  <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
+                    {orderError}
+                  </div>
+                )}
+
+                {/* Navigation Buttons */}
+                <div className="flex gap-4">
+                  <Button
+                    variant="outline"
+                    onClick={handlePreviousStep}
+                    className="flex-1"
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    pressEffect={true}
+                    onClick={handlePlaceOrder}
+                    fullWidth={true}
+                    border
+                    shadowColorModeInWhiteTheme="black"
+                    theme={isDark ? "white" : "black"}
+                    disabled={isSubmitting || cartItems.length === 0}
+                    className="flex-1"
+                  >
+                    {isSubmitting ? "PROCESSING..." : "PLACE ORDER"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column - Order Summary */}

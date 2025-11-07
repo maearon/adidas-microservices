@@ -16,6 +16,18 @@ export interface OrderPayload {
     qty: number
     price: number
   }>
+  address?: {
+    firstName?: string
+    lastName?: string
+    street?: string
+    apartment?: string
+    city?: string
+    state?: string
+    zipCode?: string
+    country?: string
+    phone?: string
+    formattedAddress?: string
+  }
 }
 
 // Response format từ Gateway
@@ -66,7 +78,8 @@ const orderService = {
    */
   async createOrder(
     cartItems: CartItem[],
-    customerId: string
+    customerId: string,
+    address?: OrderPayload["address"]
   ): Promise<OrderResponse | undefined> {
     try {
       // Validate input
@@ -85,6 +98,7 @@ const orderService = {
       const payload: OrderPayload = {
         customerId,
         items,
+        address,
       }
 
       // Gọi API đến NestJS Gateway
