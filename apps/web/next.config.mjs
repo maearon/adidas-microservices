@@ -62,6 +62,7 @@ const nextConfig = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     JWT_SECRET: process.env.JWT_SECRET,
     GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY,
+    STRIPE_SECRET_KEY: process.env. STRIPE_SECRET_KEY,
   },
   webpack(config) {
     // 👇 Cấu hình @svgr/webpack

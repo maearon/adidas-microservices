@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppSelector, useAppDispatch } from "@/store/hooks" // ✅ dùng hook đúng
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation"
 import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMethods"
 import AddressAutocomplete, { AddressSuggestion } from "@/components/checkout/AddressAutocomplete"
 import AddressList from "@/components/checkout/AddressList"
+import StripePaymentForm, { StripePaymentFormHandle } from "@/components/checkout/StripePaymentForm"
 import { Address } from "@/types/common/address"
 import { ArrowLeft } from "lucide-react"
 
@@ -84,6 +85,8 @@ export default function CheckoutPage() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null)
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
   const [addressSearchValue, setAddressSearchValue] = useState("")
+  const stripeFormRef = useRef<StripePaymentFormHandle>(null)
+  const [stripeError, setStripeError] = useState<string | null>(null)
   const { 
     // theme, 
     resolvedTheme 
@@ -303,64 +306,44 @@ export default function CheckoutPage() {
             formattedAddress: fallbackFormattedAddress,
           }
 
-      // Gọi API tạo order trước
+      if (selectedPaymentMethod === "stripe") {
+        if (!stripeFormRef.current) {
+          throw new Error("Stripe payment form is not ready. Please try again.")
+        }
+
+        const { paymentIntentId } = await stripeFormRef.current.confirmPayment()
+
+        const orderResponse = await orderService.createOrder(
+          cartItems,
+          customerId,
+          addressData,
+          paymentIntentId,
+        )
+
+        if (!orderResponse || !orderResponse.orderId) {
+          throw new Error(
+            "Payment succeeded but order creation failed. Please contact support.",
+          )
+        }
+
+        dispatch(clearCart())
+        router.push(
+          `/order-confirmation?orderId=${orderResponse.orderId}&payment=${selectedPaymentMethod}`,
+        )
+        return
+      }
+
+      // Gọi API tạo order trước (các phương thức khác)
       const orderResponse = await orderService.createOrder(cartItems, customerId, addressData)
 
       if (!orderResponse || !orderResponse.orderId) {
         throw new Error("Failed to create order")
       }
 
-      // Nếu COD, không cần tạo payment intent
       if (selectedPaymentMethod === "cod") {
         dispatch(clearCart())
         router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=cod`)
         return
-      }
-
-      if (selectedPaymentMethod === "stripe") {
-        const lineItems = cartItems.map((item) => ({
-          name: item.name,
-          description: [
-            item.color ? `Color: ${item.color}` : null,
-            item.size ? `Size: ${item.size}` : null,
-          ]
-            .filter(Boolean)
-            .join(" • ") || undefined,
-          image: item.image,
-          price: Number(item.price) || 0,
-          quantity: item.quantity,
-        }))
-
-        if (lineItems.some((item) => !item.price || item.price <= 0)) {
-          throw new Error("One or more cart items have invalid pricing for Stripe checkout")
-        }
-
-        const stripeResponse = await fetch("/api/stripe", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId: orderResponse.orderId,
-            items: lineItems,
-            currency: "usd",
-            customerEmail: session?.user?.email || formData.email,
-          }),
-        })
-
-        if (!stripeResponse.ok) {
-          const { message } = await stripeResponse.json()
-          throw new Error(message || "Failed to start Stripe checkout")
-        }
-
-        const stripeData: { url?: string; sessionId?: string } = await stripeResponse.json()
-
-        if (stripeData.url) {
-          window.location.href = stripeData.url
-          return
-        }
-
-        throw new Error("Stripe checkout URL not available")
       }
 
       // Tạo payment intent
@@ -388,11 +371,6 @@ export default function CheckoutPage() {
       if (paymentData.payUrl) {
         // MoMo hoặc VNPay - redirect to payment gateway
         window.location.href = paymentData.payUrl
-      } else if (paymentData.clientSecret) {
-        // Stripe - redirect to Stripe checkout hoặc handle client-side
-        // For now, redirect to confirmation (will implement Stripe Elements later)
-        dispatch(clearCart())
-        router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=${selectedPaymentMethod}`)
       } else {
         // PayPal or other - redirect to confirmation
         dispatch(clearCart())
@@ -400,11 +378,14 @@ export default function CheckoutPage() {
       }
     } catch (error: unknown) {
       console.error("Error processing order:", error)
-      setOrderError(
-        error instanceof Error 
-          ? error.message 
+      const message =
+        error instanceof Error
+          ? error.message
           : "Failed to process order. Please try again."
-      )
+      setOrderError(message)
+      if (selectedPaymentMethod === "stripe") {
+        setStripeError(message)
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -565,6 +546,27 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
+                {selectedPaymentMethod === "stripe" && (
+                  <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+                    <h3 className="text-sm font-semibold">Card details</h3>
+                    {stripeError && (
+                      <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
+                        {stripeError}
+                      </div>
+                    )}
+                    <StripePaymentForm
+                      ref={stripeFormRef}
+                      amount={total}
+                      currency="usd"
+                      customerEmail={session?.user?.email || formData.email}
+                      onError={setStripeError}
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Your payment details are encrypted and processed securely by Stripe.
+                    </p>
+                  </div>
+                )}
+
                 {/* Error Message */}
                 {orderError && (
                   <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded text-red-700 dark:text-red-400 text-sm">
@@ -658,7 +660,12 @@ export default function CheckoutPage() {
               <div className="space-y-4">
                 <PaymentMethods
                   selectedMethod={selectedPaymentMethod}
-                  onSelectMethod={setSelectedPaymentMethod}
+                  onSelectMethod={(method) => {
+                    setSelectedPaymentMethod(method)
+                    if (method !== "stripe") {
+                      setStripeError(null)
+                    }
+                  }}
                   country={formData.country || "US"}
                 />
 
