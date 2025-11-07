@@ -1,3 +1,40 @@
+# TASK
+Refactor the CheckoutPage and related components to match the design images located in:
+C:\Users\manhn\Downloads\ecommerce-nestjs-zzzzz.com[05_11_25]\adidas-microservices\figma\checkout\
+
+Especially use this reference:
+- screencapture-adidas-us-checkout-payment-2025-11-06-10_57_19.png
+
+# REQUIREMENTS
+
+1. **Multi-step checkout UI**
+   - Keep the checkout in multiple steps: Address → Shipping → Payment → Review.
+   - When user goes to the next step, the previous steps’ info should still be **visible in summary form** (collapsed, not hidden).
+   - Each section should have a small header and a compact summary showing what user has chosen (e.g., selected address, shipping option, payment method).
+
+2. **Stripe payment form**
+   - Move `StripePaymentForm` to be rendered in **step 3 (Payment)**, near or below the payment method selection section.
+   - It should not appear in step 1 anymore.
+   - When “Credit/Debit Card (Stripe)” is selected, show the Stripe PaymentElement inline below it, similar to the design image.
+   - Keep error message and loading states styled consistently with other checkout UI.
+
+3. **State management**
+   - Ensure form data and selections persist between steps.
+   - Moving between steps (next/back) should not unmount and lose previously entered data.
+
+4. **Code structure**
+   - Maintain existing component separation.
+   - Avoid unnecessary re-renders of Elements or PaymentElement (keep `clientSecret` stable).
+   - Use clean Tailwind layout consistent with design.
+
+5. **Output**
+   - Update `CheckoutPage.tsx` (or `CheckoutClient.tsx` depending on your structure).
+   - Adjust where StripePaymentForm is imported and rendered.
+   - Confirm it matches the layout of the figma screenshot provided.
+
+# GOAL
+The checkout flow should visually and functionally resemble the design screenshots, with persistent information display between steps and the StripePaymentForm displayed correctly in the Payment step.
+
 # Troubleshooting Summary - Fixed 500 Error
 
 ## 🚨 **Problem Identified**

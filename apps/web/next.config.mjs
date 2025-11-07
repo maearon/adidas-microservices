@@ -63,6 +63,8 @@ const nextConfig = {
     JWT_SECRET: process.env.JWT_SECRET,
     GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY,
     STRIPE_SECRET_KEY: process.env. STRIPE_SECRET_KEY,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_NESTJS_GATEWAY_URL: process.env.NEXT_PUBLIC_NESTJS_GATEWAY_URL,
   },
   webpack(config) {
     // 👇 Cấu hình @svgr/webpack
