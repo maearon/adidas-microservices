@@ -35,11 +35,10 @@ import {
 // }
 import { Address } from "@/types/common/address"
 import { useTheme } from "next-themes"
-import FullScreenLoader from "@/components/ui/FullScreenLoader"
 
 interface AddressListProps {
   selectedAddress: Address | null
-  onSelectAddress: (address: Address) => void
+  onSelectAddress: (address: Address | null) => void
 }
 
 export default function AddressList({ selectedAddress, onSelectAddress }: AddressListProps) {
@@ -49,18 +48,11 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
   const [editingAddress, setEditingAddress] = useState<Address | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [addressToDelete, setAddressToDelete] = useState<string | null>(null)
-  const { 
-    // theme, 
-    resolvedTheme 
-  } = useTheme()
-  const [hasMounted, setHasMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  
-  // Avoid hydration mismatch
-  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
-    setHasMounted(true)
+    setMounted(true)
   }, [])
 
   useEffect(() => {
@@ -134,7 +126,7 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
         await loadAddresses()
         // Clear selection if deleted address was selected
         if (selectedAddress?._id === addressToDelete) {
-          onSelectAddress(null as any)
+          onSelectAddress(null)
         }
       }
     } catch (error) {
@@ -158,6 +150,8 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
   // if (loading) {
   //   return <div className="text-sm text-gray-500">Loading addresses...</div>
   // }
+  if (!mounted) return null
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[322px] w-full rounded-none p-6">
@@ -165,10 +159,6 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
       </div>
     )
   }
-
-  if (!hasMounted || loading) return <FullScreenLoader />
-  
-  if (!mounted) return null
 
   const isDark = resolvedTheme === "dark"
 
@@ -223,7 +213,7 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setAddressToDelete(address._id)
+                        setAddressToDelete(address._id ?? null)
                         setDeleteDialogOpen(true)
                       }}
                       className="h-8 w-8 p-0 text-red-600 hover:text-red-700"

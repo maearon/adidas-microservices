@@ -26,7 +26,7 @@ import orderService, { getCustomerIdFromSession } from "@/api/services/orderServ
 import { clearCart } from "@/store/cartSlice"
 import { useRouter } from "next/navigation"
 import PaymentMethods, { PaymentMethod } from "@/components/checkout/PaymentMethods"
-import AddressAutocomplete from "@/components/checkout/AddressAutocomplete"
+import AddressAutocomplete, { AddressSuggestion } from "@/components/checkout/AddressAutocomplete"
 import AddressList from "@/components/checkout/AddressList"
 import { Address } from "@/types/common/address"
 import { ArrowLeft } from "lucide-react"
@@ -82,8 +82,7 @@ export default function CheckoutPage() {
   })
   const [showPromoCode, setShowPromoCode] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null)
-  const [selectedAddress, setSelectedAddress] = useState<any>(null)
-  const [showAddressModal, setShowAddressModal] = useState(false)
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
   const [addressSearchValue, setAddressSearchValue] = useState("")
   const { 
     // theme, 
@@ -135,6 +134,25 @@ export default function CheckoutPage() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+    if (selectedAddress && !selectedAddress._id) {
+      const addressFieldMap: Record<string, keyof Address | null> = {
+        firstName: "firstName",
+        lastName: "lastName",
+        street: "street",
+        city: "city",
+        state: "state",
+        zipCode: "zipCode",
+        country: "country",
+        phone: "phone",
+        address: "formattedAddress",
+        email: null,
+      }
+
+      const targetField = addressFieldMap[field]
+      if (targetField) {
+        setSelectedAddress((prev) => (prev ? { ...prev, [targetField]: value } : prev))
+      }
+    }
     // Clear error when user starts typing
     if (errors[field as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
@@ -165,7 +183,12 @@ export default function CheckoutPage() {
     return true
   }
 
-  const handleAddressSelect = (address: Address) => {
+  const handleAddressSelect = (address: Address | null) => {
+    if (!address) {
+      setSelectedAddress(null)
+      return
+    }
+
     setSelectedAddress(address)
     setFormData((prev) => ({
       ...prev,
@@ -182,7 +205,26 @@ export default function CheckoutPage() {
     setAddressSearchValue(address.formattedAddress || address.street || "")
   }
 
-  const handleAddressAutocompleteSelect = (address: Address) => {
+  const handleAddressAutocompleteSelect = (address: AddressSuggestion) => {
+    const normalizedAddress: Address = {
+      _id: undefined,
+      userId: undefined,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      street: address.street,
+      apartment: "",
+      city: address.city,
+      state: address.state,
+      zipCode: address.zipCode,
+      country: address.country,
+      phone: formData.phone,
+      isDefault: false,
+      type: "delivery",
+      latitude: address.latitude,
+      longitude: address.longitude,
+      formattedAddress: address.formattedAddress,
+    }
+
     setFormData((prev) => ({
       ...prev,
       street: address.street || prev.street,
@@ -192,6 +234,7 @@ export default function CheckoutPage() {
       country: address.country || prev.country,
       address: address.formattedAddress || prev.address,
     }))
+    setSelectedAddress(normalizedAddress)
     setAddressSearchValue(address.formattedAddress || "")
   }
 
@@ -239,16 +282,26 @@ export default function CheckoutPage() {
       const customerId = getCustomerIdFromSession(session?.user)
 
       // Prepare address data
-      const addressData = selectedAddress || {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        street: formData.street || formData.address,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
-        phone: formData.phone,
-      }
+      const fallbackFormattedAddress =
+        formData.address ||
+        [formData.street, formData.city, formData.state, formData.zipCode, formData.country]
+          .filter(Boolean)
+          .join(", ")
+
+      const addressData: Address = selectedAddress
+        ? selectedAddress
+        : {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            street: formData.street || formData.address,
+            apartment: "",
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode,
+            country: formData.country,
+            phone: formData.phone,
+            formattedAddress: fallbackFormattedAddress,
+          }
 
       // Gọi API tạo order trước
       const orderResponse = await orderService.createOrder(cartItems, customerId, addressData)
@@ -262,6 +315,52 @@ export default function CheckoutPage() {
         dispatch(clearCart())
         router.push(`/order-confirmation?orderId=${orderResponse.orderId}&payment=cod`)
         return
+      }
+
+      if (selectedPaymentMethod === "stripe") {
+        const lineItems = cartItems.map((item) => ({
+          name: item.name,
+          description: [
+            item.color ? `Color: ${item.color}` : null,
+            item.size ? `Size: ${item.size}` : null,
+          ]
+            .filter(Boolean)
+            .join(" • ") || undefined,
+          image: item.image,
+          price: Number(item.price) || 0,
+          quantity: item.quantity,
+        }))
+
+        if (lineItems.some((item) => !item.price || item.price <= 0)) {
+          throw new Error("One or more cart items have invalid pricing for Stripe checkout")
+        }
+
+        const stripeResponse = await fetch("/api/stripe", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: orderResponse.orderId,
+            items: lineItems,
+            currency: "usd",
+            customerEmail: session?.user?.email || formData.email,
+          }),
+        })
+
+        if (!stripeResponse.ok) {
+          const { message } = await stripeResponse.json()
+          throw new Error(message || "Failed to start Stripe checkout")
+        }
+
+        const stripeData: { url?: string; sessionId?: string } = await stripeResponse.json()
+
+        if (stripeData.url) {
+          window.location.href = stripeData.url
+          return
+        }
+
+        throw new Error("Stripe checkout URL not available")
       }
 
       // Tạo payment intent
@@ -316,6 +415,12 @@ export default function CheckoutPage() {
   if (!mounted) return null
 
   const isDark = resolvedTheme === "dark"
+  const derivedAddressSummary =
+    selectedAddress?.formattedAddress ||
+    formData.address ||
+    [formData.street, formData.city, formData.state, formData.zipCode, formData.country].filter(Boolean).join(", ")
+
+  const derivedPhone = selectedAddress?.phone || formData.phone
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -501,12 +606,15 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Selected Address Summary */}
-                {selectedAddress && (
+                {derivedAddressSummary && (
                   <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded">
                     <h3 className="text-sm font-medium mb-2">Delivery to:</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {selectedAddress.formattedAddress || `${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.zipCode}`}
+                      {derivedAddressSummary}
                     </p>
+                    {derivedPhone && (
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Phone: {derivedPhone}</p>
+                    )}
                   </div>
                 )}
 

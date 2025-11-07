@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import AddressAutocomplete from "./AddressAutocomplete"
+import AddressAutocomplete, { AddressSuggestion } from "./AddressAutocomplete"
 
 // interface Address {
 //   _id?: string
@@ -122,7 +122,7 @@ export default function AddressModal({
     }
   }
 
-  const handleAddressSelect = (selectedAddress: Address) => {
+  const handleAddressSelect = (selectedAddress: AddressSuggestion) => {
     setFormData((prev) => ({
       ...prev,
       street: selectedAddress.street || prev.street,
@@ -169,9 +169,8 @@ export default function AddressModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      {/* <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="max-w-2xl max-h-[90vh] overflow-y-auto"> */}
       <DialogContent
-        className="max-w-md sm:max-w-2xl max-h-[90vh] overflow: visible bg-white dark:bg-black rounded-none"
+        className="max-w-md sm:max-w-2xl max-h-[90vh] overflow-visible bg-white dark:bg-black rounded-none"
       >
         <DialogHeader>
           <DialogTitle>{mode === "edit" ? "Edit Address" : "Add New Address"}</DialogTitle>
@@ -182,7 +181,7 @@ export default function AddressModal({
           </DialogDescription>
         </DialogHeader>
         {/* Close button - Square border style */}
-        <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+        <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-50 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
             className="w-12 h-12 border border-border flex items-center 
