@@ -22,6 +22,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import { newArrivalProducts as newArrivalProductsTab } from "@/data/fake-new-arrival-products"
 import { CartItem } from "@/types/cart"
 import ProductPrice from "@/components/ProductCardPrice"
+import { useTheme } from "next-themes"
 
 interface CartPageClientProps {
   session: Session | null;
@@ -35,6 +36,11 @@ export default function CartPageClient({ session }: CartPageClientProps) {
   const current_user = session?.user
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.cart.items)
+  const { 
+      // theme, 
+      resolvedTheme 
+    } = useTheme()
+    const [mounted, setMounted] = useState(false)
 
   // Function to remove item from cart
   const handleRemoveItem = (id: number) => {
@@ -62,11 +68,21 @@ export default function CartPageClient({ session }: CartPageClientProps) {
     dispatch(updateQuantity({ id, quantity: newQuantity }))
   }
 
+  const handleNext = () => {
+    // Placeholder for promo code application logic
+    alert("Promo code applied!")
+  }
+
   // Calculate totals
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   )
+  const originalTotal = cartItems.reduce(
+    (sum, item) => sum + (Number(item.compareAtPrice) || Number(item.price) || 0) * item.quantity,
+    0
+  )
+  const saleAmount = originalTotal - subtotal
   const salesTax = subtotal * 0.12
   const total = subtotal + salesTax
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
@@ -108,6 +124,8 @@ export default function CartPageClient({ session }: CartPageClientProps) {
     { id: 3, name: "Ultraboost 1.0 Shoes", price: "$190", image: "/placeholder.png?height=300&width=250" },
     { id: 4, name: "Gazelle Indoor Shoes", price: "$100", image: "/placeholder.png?height=300&width=250" },
   ]
+
+  const isDark = resolvedTheme === "dark"
 
   // Cart with items view
   return (
@@ -254,8 +272,14 @@ export default function CartPageClient({ session }: CartPageClientProps) {
             {/* Right column - Order summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-4">
-                <h2 className="text-lg font-bold mb-4">ORDER SUMMARY</h2>
-                <div className="space-y-2 mb-4">
+                {/* <h2 className="text-lg font-bold mb-4">ORDER SUMMARY</h2> */}
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-bold">ORDER SUMMARY</h2>
+                  {/* <BaseButton variant="link" className="text-base font-bold underline">
+                    EDIT
+                  </BaseButton> */}
+                </div>
+                {/* <div className="space-y-2 mb-4">
                   <div className="flex justify-between">
                     <span>{totalItems} Items</span>
                     <span>{<ProductPrice price={subtotal} compareAtPrice={null} />}</span>
@@ -272,7 +296,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                 <div className="flex justify-between font-bold border-t border-b py-4 mb-4">
                   <span>Total</span>
                   <span>{<ProductPrice price={total} compareAtPrice={null} />}</span>
-                </div>
+                </div> */}
 
                 {/* Klarna Payment */}
                 {/* <div className="flex flex-wrap items-center text-base text-gray-700 dark:text-white mt-6">
@@ -286,9 +310,40 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                     </Link>
                   </span>
                 </div> */}
-                <p className="text-xs text-gray-600 dark:text-white">
+                {/* <p className="text-xs text-gray-600 dark:text-white">
                   From $31.57/month or 4 payments at 0% interest with <strong>Klarna</strong>
-                </p>
+                </p> */}
+
+                {/* Order Summary */}
+                <div className="space-y-2 mb-6">
+                  <div className="flex justify-between text-base">
+                    <span>{totalItems} items</span>
+                    <span><ProductPrice price={subtotal} compareAtPrice={null} /></span>
+                  </div>
+                  <div className="flex justify-between text-base">
+                    <span>Original price</span>
+                    <span><ProductPrice price={originalTotal} compareAtPrice={null} /></span>
+                  </div>
+                  <div className="flex justify-between text-base">
+                    <span>Sales Tax</span>
+                    <span><ProductPrice price={salesTax} compareAtPrice={null} /></span>
+                  </div>
+                  <div className="flex justify-between text-base">
+                    <span>Delivery</span>
+                    <span>Free</span>
+                  </div>
+                  <div className="flex justify-between text-base">
+                    <span>Sale</span>
+                    <span className="text-red-600">-<ProductPrice price={saleAmount} compareAtPrice={null} /></span>
+                  </div>
+                  <div className="flex justify-between font-bold text-lg border-t pt-2">
+                    <span>Total</span>
+                    <span><ProductPrice price={total} compareAtPrice={null} /></span>
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-white">
+                    From $31.57/month or 4 payments at 0% interest with <strong>Klarna</strong>
+                  </p>
+                </div>
 
                 {/* Promo Code */}
                 <div className="mb-6">
@@ -297,8 +352,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                     onClick={() => setShowPromoCode(!showPromoCode)}
                     className="w-full justify-start"
                   >
-                    {/* <Tag className="mr-2 h-4 w-4" />
-                    Image /assets/payment/promo-code.svg 24 x 14 */}
+                    {/*  <Tag className="mr-2 h-4 w-4" />  */}
                     <Image
                       src="/assets/payment/promo-code.svg"
                       alt="Promo Code"
@@ -310,8 +364,19 @@ export default function CartPageClient({ session }: CartPageClientProps) {
                   </BaseButton>
                   {showPromoCode && (
                     <div className="mt-2 flex">
-                      <Input placeholder="Enter promo code" className="rounded-r-none" />
-                      <Button className="rounded-l-none bg-black text-white">APPLY</Button>
+                      <Input placeholder="Enter your promo code" className="rounded-r-none" />
+                      {/*  <Button className="rounded-l-none bg-black text-white">APPLY</Button>  */}
+                      <Button
+                        pressEffect={true}
+                        onClick={handleNext}
+                        fullWidth={false}
+                        border
+                        shadowColorModeInWhiteTheme="black"
+                        theme={isDark ? "white" : "black"}
+                      >
+                        APPLY
+                        {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
+                      </Button>
                     </div>
                   )}
                 </div>
