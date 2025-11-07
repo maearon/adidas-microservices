@@ -477,7 +477,7 @@ export default function CheckoutPage() {
                     disabled={cartItems.length === 0}
                   >
                     NEXT
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
                   </Button>
                 </div>
               </div>
@@ -527,7 +527,7 @@ export default function CheckoutPage() {
                     className="flex-1"
                   >
                     NEXT
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
                   </Button>
                 </div>
               </div>

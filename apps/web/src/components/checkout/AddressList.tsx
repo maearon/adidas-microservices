@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { BaseButton } from "@/components/ui/base-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Pencil, Trash2, Plus } from "lucide-react"
@@ -182,15 +183,15 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
                     </p>
                   </div>
                   <div className="flex gap-2 ml-4" onClick={(e) => e.stopPropagation()}>
-                    <Button
+                    <BaseButton
                       variant="ghost"
                       size="sm"
                       onClick={() => openEditModal(address)}
                       className="h-8 w-8 p-0"
                     >
                       <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
+                    </BaseButton>
+                    <BaseButton
                       variant="ghost"
                       size="sm"
                       onClick={() => {
@@ -200,7 +201,7 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
                       className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                     >
                       <Trash2 className="h-4 w-4" />
-                    </Button>
+                    </BaseButton>
                   </div>
                 </div>
               </CardContent>
