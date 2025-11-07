@@ -439,6 +439,17 @@ export default function CheckoutPage() {
                       </label>
                     </div>
                   </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="sameAddress"
+                      checked={formData.sameAddress}
+                      onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, sameAddress: !!checked }))}
+                    />
+                    <label htmlFor="sameAddress" className="text-base font-medium">
+                      Billing and delivery address are the same
+                    </label>
+                  </div>
                 </div>
 
                 {/* Error Message */}
