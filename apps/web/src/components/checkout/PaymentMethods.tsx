@@ -249,10 +249,9 @@ export default function PaymentMethods({
       )}
 
       {/* Gift Card */}
-      <div>
+      <div className="p-4 flex items-center gap-3">
         <Checkbox
           id="useGiftCard"
-          className="mb-2"
         />
         <label htmlFor="useGiftCard" className="text-sm font-medium">
           Use an adidas gift card

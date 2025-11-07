@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { BaseButton } from "@/components/ui/base-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Pencil, Trash2, Plus } from "lucide-react"
+import { Pencil, Trash2, Plus, Loader2 } from "lucide-react"
 import AddressModal from "./AddressModal"
 import {
   AlertDialog,
@@ -155,8 +155,15 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
     setModalOpen(true)
   }
 
+  // if (loading) {
+  //   return <div className="text-sm text-gray-500">Loading addresses...</div>
+  // }
   if (loading) {
-    return <div className="text-sm text-gray-500">Loading addresses...</div>
+    return (
+      <div className="flex items-center justify-center min-h-[248px] w-full rounded-2xl bg-white p-6 shadow-xl">
+        <Loader2 className="text-black dark:text-white size-8 animate-spin" />
+      </div>
+    )
   }
 
   if (!hasMounted || loading) return <FullScreenLoader />
