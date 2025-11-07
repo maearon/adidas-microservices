@@ -33,6 +33,7 @@ import AddressAutocomplete from "./AddressAutocomplete"
 // }
 import { Address } from "@/types/common/address"
 import { useTheme } from "next-themes"
+import { X } from "lucide-react"
 
 interface AddressModalProps {
   open: boolean
@@ -168,7 +169,10 @@ export default function AddressModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      {/* <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto"> */}
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
+        className="max-w-md sm:max-w-2xl max-h-[90vh] overflow: visible bg-white dark:bg-black rounded-none"
+      >
         <DialogHeader>
           <DialogTitle>{mode === "edit" ? "Edit Address" : "Add New Address"}</DialogTitle>
           <DialogDescription>
@@ -177,6 +181,16 @@ export default function AddressModal({
               : "Add a new delivery address for your orders"}
           </DialogDescription>
         </DialogHeader>
+        {/* Close button - Square border style */}
+        <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+          <button
+            onClick={onClose}
+            className="w-12 h-12 border border-border flex items-center 
+            justify-center cursor-pointer transition-colors duration-150"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

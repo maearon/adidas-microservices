@@ -160,8 +160,8 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
   // }
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[248px] w-full rounded-2xl bg-white p-6 shadow-xl">
-        <Loader2 className="text-black dark:text-white size-8 animate-spin" />
+      <div className="flex items-center justify-center min-h-[322px] w-full rounded-none bg-white dark:bg-black p-6">
+        <Loader2 className="text-black dark:text-white size-24 animate-spin" />
       </div>
     )
   }
