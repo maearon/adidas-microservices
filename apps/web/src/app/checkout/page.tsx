@@ -212,6 +212,11 @@ export default function CheckoutPage() {
     }
   }
 
+  const handleNext = () => {
+    // Placeholder for promo code application logic
+    alert("Promo code applied!")
+  }
+
   const handlePlaceOrder = async () => {
     if (!validatePaymentStep()) {
       return
