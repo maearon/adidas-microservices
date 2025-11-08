@@ -7,7 +7,7 @@ import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
-import { Search, ArrowRight, Tag } from "lucide-react"
+import { Search, ArrowRight, Tag, ChevronDown } from "lucide-react"
 // import { useSelector } from "react-redux"
 // import { selectUser } from "@/store/sessionSlice"
 // import { CartItem } from "@/types/cart"
@@ -461,20 +461,28 @@ export default function CheckoutPage() {
                 {session?.user?.email || "guest@gmail.com"}
               </p>
 
-              <select
-                value={locale}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                  handleLocaleChange(e.target.value)
-                }
-                className="appearance-none border border-black dark:border-white focus:border-black dark:focus:border-white
-                py-2 pl-4 pr-10 rounded-none outline-none"
-              >
-                <option value="US">🇺🇸 United States</option>
-                <option value="VN">🇻🇳 Việt Nam</option>
-                <option value="JP">🇯🇵 Japan</option>
-                <option value="DE">🇩🇪 Germany</option>
-                <option value="FR">🇫🇷 France</option>
-              </select>
+              <div className="relative">
+                <select
+                  value={locale}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    handleLocaleChange(e.target.value)
+                  }
+                  className="appearance-none
+                  border border-black dark:border-white 
+                  focus:border-black dark:focus:border-white py-2 pl-4 pr-10 
+                  rounded-none outline-none"
+                >
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown
+                  size={16}
+                  className="absolute right-3 top-3 pointer-events-none"
+                />
+              </div>
             </div>
           </div>
 
