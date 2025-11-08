@@ -451,6 +451,7 @@ export default function CheckoutPage() {
           {/* Step 1: Address Section */}
           {(currentStep === 1 || currentStep === 2 || currentStep === 3) && (
             <div>
+              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
               <h2 className="text-lg font-bold mb-4">ADDRESS</h2>
               <h3 className="font-medium mb-4">Delivery address</h3>
 
@@ -575,7 +576,7 @@ export default function CheckoutPage() {
           {/* Step 2: Shipping Section */}
           {(currentStep === 2 || currentStep === 3) ? (
             <div>
-              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
               <h2 className="text-lg font-bold mb-4">SHIPPING</h2>
               
               <div className="space-y-4">
@@ -641,7 +642,7 @@ export default function CheckoutPage() {
           {/* Step 3: Payment Section */}
           {currentStep === 3 ? (
             <div>
-              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
               <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
               
               <div className="space-y-4">
