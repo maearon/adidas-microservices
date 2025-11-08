@@ -682,7 +682,7 @@ export default function CheckoutPage() {
                       setStripeError(null)
                     }
                   }}
-                  country={formData.country || "US"}
+                  country={locale || formData.country || "US"}
                   stripeForm={
                     <StripePaymentForm
                       ref={stripeFormRef}
@@ -755,7 +755,7 @@ export default function CheckoutPage() {
                       src={img.src ?? "/placeholder.png"}
                       alt={img.alt ?? "Payment Method"}
                       fill
-                      className="object-contain grayscale"
+                      className="object-contain dark:invert grayscale"
                     />
                   </div>
                 ))}
