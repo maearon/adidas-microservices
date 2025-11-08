@@ -472,11 +472,11 @@ export default function CheckoutPage() {
                   focus:border-black dark:focus:border-white py-2 pl-4 pr-10 
                   rounded-none outline-none"
                 >
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
+                  <option value="US">🇺🇸 United States</option>
+                  <option value="VN">🇻🇳 Việt Nam</option>
+                  <option value="JP">🇯🇵 Japan</option>
+                  <option value="DE">🇩🇪 Germany</option>
+                  <option value="FR">🇫🇷 France</option>
                 </select>
                 <ChevronDown
                   size={16}
