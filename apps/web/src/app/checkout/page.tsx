@@ -414,7 +414,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Step Indicator */}
-      <div className="flex justify-center mb-8">
+      {/* <div className="flex justify-center mb-8">
         <div className="flex items-center gap-4">
           <div className={`flex items-center ${currentStep >= 1 ? "text-black dark:text-white" : "text-gray-400"}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? "bg-black dark:bg-white text-white dark:text-black" : "bg-gray-200 dark:bg-gray-700"}`}>
@@ -437,11 +437,11 @@ export default function CheckoutPage() {
             <span className="ml-2 font-medium">Payment</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {/* Left Column - Checkout Form */}
-        <div className="space-y-8">
+        <div className="space-y-12">
           {/* Contact Section - Always visible */}
           <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
@@ -451,7 +451,7 @@ export default function CheckoutPage() {
           {/* Step 1: Address Section */}
           {(currentStep === 1 || currentStep === 2 || currentStep === 3) && (
             <div>
-              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4">ADDRESS</h2>
               <h3 className="font-medium mb-4">Delivery address</h3>
 
@@ -576,7 +576,7 @@ export default function CheckoutPage() {
           {/* Step 2: Shipping Section */}
           {(currentStep === 2 || currentStep === 3) ? (
             <div>
-              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4">SHIPPING</h2>
               
               <div className="space-y-4">
@@ -642,7 +642,7 @@ export default function CheckoutPage() {
           {/* Step 3: Payment Section */}
           {currentStep === 3 ? (
             <div>
-              <div className="opacity-40 h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
               
               <div className="space-y-4">
