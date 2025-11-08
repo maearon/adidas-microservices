@@ -201,7 +201,7 @@ export default function ProductCard({
           {!shouldHideDetails && (
           <div
             className={cn(
-              "pb-1 space-y-1 relative bg-white dark:bg-black",
+              "pb-1 space-y-1 relative bg-white dark:bg-black sm:min-h-[124px]",
               hasVariants && !isMobile && "transition-transform duration-200 group-hover:translate-y-8",
               hasVariantPanel &&
                 "group-hover:border-x group-hover:border-b group-hover:border-black dark:group-hover:border-white -ml-px -mr-px",

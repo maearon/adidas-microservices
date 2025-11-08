@@ -153,7 +153,7 @@ export default function ProductCarousel({
         </>
       )}
 
-        {showIndicators && totalSlides > 1 && (
+        {(showIndicators && totalSlides > 1) ? (
           <div className="mt-6 mx-auto w-full h-1 bg-gray-200 flex overflow-hidden">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <div
@@ -166,6 +166,8 @@ export default function ProductCarousel({
               />
             ))}
           </div>
+        ) : (
+          <div className="mt-6" />
         )}
       </div>
     </section>
