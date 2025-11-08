@@ -453,26 +453,29 @@ export default function CheckoutPage() {
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
             <p className="text-base text-gray-600 dark:text-white">{session?.user?.email || "guest@gmail.com"}</p>
           </div> */}
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-lg font-bold">CONTACT</h2>
+          <div className="mb-4">
+            <h2 className="text-lg font-bold mb-1">CONTACT</h2>
+
+            <div className="flex items-center justify-between">
               <p className="text-base text-gray-600 dark:text-white">
                 {session?.user?.email || "guest@gmail.com"}
               </p>
-            </div>
 
-            {/* Dropdown chọn quốc gia */}
-            <select
-              value={locale}
-              onChange={(e) => handleLocaleChange(e.target.value)}
-              className="text-gray-800 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-none px-3 py-2 text-sm focus:outline-none"
-            >
-              <option value="US">🇺🇸 United States</option>
-              <option value="VN">🇻🇳 Việt Nam</option>
-              <option value="JP">🇯🇵 Japan</option>
-              <option value="DE">🇩🇪 Germany</option>
-              <option value="FR">🇫🇷 France</option>
-            </select>
+              <select
+                value={locale}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  handleLocaleChange(e.target.value)
+                }
+                className="appearance-none border border-black dark:border-white focus:border-black dark:focus:border-white
+                py-2 pl-4 pr-10 rounded-none outline-none"
+              >
+                <option value="US">🇺🇸 United States</option>
+                <option value="VN">🇻🇳 Việt Nam</option>
+                <option value="JP">🇯🇵 Japan</option>
+                <option value="DE">🇩🇪 Germany</option>
+                <option value="FR">🇫🇷 France</option>
+              </select>
+            </div>
           </div>
 
           {/* Step 1: Address Section */}
@@ -736,7 +739,7 @@ export default function CheckoutPage() {
             <div className="opacity-40 pointer-events-none select-none">
               <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">PAYMENT</h2>
-              <div className="flex items-center gap-2 mb-4">
+              {/* <div className="flex items-center gap-2 mb-4">
                 {[
                   { src: "/assets/payment/download.svg", alt: "AmEx" },
                   { src: "/assets/payment/download (1).svg", alt: "Discover" },
@@ -759,7 +762,8 @@ export default function CheckoutPage() {
                     />
                   </div>
                 ))}
-              </div>
+              </div> */}
+              <AcceptedPaymentMethods />
             </div>
           )
           }
@@ -875,8 +879,8 @@ export default function CheckoutPage() {
 
 export function AcceptedPaymentMethods() {
   return (
-    <div className="mt-10">
-      <h3 className="text-sm font-bold uppercase mb-2">Accepted payment methods</h3>
+    <div className="mb-10">
+      {/* <h3 className="text-sm font-bold uppercase mb-2">Accepted payment methods</h3> */}
 
       <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
         {[
@@ -894,14 +898,14 @@ export function AcceptedPaymentMethods() {
         ].map((item, idx) => (
           <div
             key={idx}
-            className="flex items-center justify-center w-[46px] h-[28px] bg-white dark:bg-black border border-transparent"
+            className="flex items-center justify-center w-12 h-8 bg-white dark:bg-black border border-transparent"
           >
             <Image
-              src={item.src ?? "/placeholder.png?height=30&width=42"}
+              src={item.src ?? "/placeholder.png?height=32&width=48"}
               alt={item.alt ?? "Payment Method"}
               width={42}
               height={30}
-              className="object-contain max-h-[18px] grayscale transition duration-200"
+              className="object-contain max-h-8 dark:invert grayscale"
             />
           </div>
         ))}
