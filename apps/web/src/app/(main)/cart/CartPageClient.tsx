@@ -224,7 +224,7 @@ export default function CartPageClient({ session }: CartPageClientProps) {
               ))}
 
               {/* Top Picks */}
-              <section className="container mx-auto px-2">
+              <section className="container">
                 <h2 className="text-xl font-bold mb-4">{t?.topPicks || "TOP PICKS FOR YOU"}</h2>
         
                 <ProductCarousel

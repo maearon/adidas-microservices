@@ -95,7 +95,7 @@ export default function ProductCarousel({
   const offset = `-${(100 / products.length) * itemsPerView * currentSlide}%`
 
   return (
-    <section className="container mx-auto px-4 py-0">
+    <section className="container py-0">
       <CarouselTitle title={title} />
 
       <div
