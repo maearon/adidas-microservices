@@ -218,11 +218,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <ExpandableImageGallery variant={variant} product={product} images={variant?.image_urls || []} productName={product.name} tags={product?.tags || []}/>
 
           {/* Expandable Sections */}
-          <div className="hidden lg:block mt-[80px] sm:px-[20px]">
+          <div className="hidden lg:block mt-[80px] sm:mx-[19%]">
             {/* Expandable Sections - Full Width Below Main Content */}
             <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
               {/* Reviews */}
-              <div className="border-b px-[30px]">
+              <div className="border-b px-8">
                 <button
                   onClick={() => toggleSection("reviews")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -280,7 +280,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Description */}
-              <div className="border-b px-[30px]">
+              <div className="border-b px-8">
                 <button
                   onClick={() => toggleSection("description")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -316,7 +316,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Details */}
-              <div className="border-b px-[30px]">
+              <div className="border-b px-8">
                 <button
                   onClick={() => toggleSection("details")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -358,7 +358,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </div>
 
               {/* Highlights */}
-              <div className="border-b px-[30px]">
+              <div className="border-b px-8">
                 <button
                   onClick={() => toggleSection("highlights")}
                   className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -689,16 +689,16 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         </aside>
 
         {/* Expandable Sections */}
-        <div className="block lg:hidden mt-[80px] sm:px-[20px]">
+        <div className="block lg:hidden mt-[80px] sm:mx-[19%]">
           {/* Expandable Sections - Full Width Below Main Content */}
           <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
             {/* Reviews */}
-            <div className="border-b px-[30px]">
+            <div className="border-b px-8">
               <button
                 onClick={() => toggleSection("reviews")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
               >
-                <span>Reviews ({productDetails.reviewCount})</span>
+                <span>{t?.reviews || "Reviews"} ({productDetails.reviewCount})</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm sm:text-base font-bold">{productDetails.rating.toFixed(1)}</span>
                   <div className="flex">
@@ -736,12 +736,12 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                     </div>
                   </div>
                   <Button
-                    border
                     theme="transparent"
+                    border={true}
                     href={`/${slugify(product.name || "product")}/${variant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
                     pressEffect={false}
                     shadow={false}
-                    className="bg-transparent border border-black dark:border-white text-black py-3 rounded-none font-semibold hover:bg-gray-100 transition-colors"
+                    className="bg-transparent hover:bg-gray-100"
                   >
                     {t?.writeAReview || "WRITE A REVIEW"}
                   </Button>
@@ -751,7 +751,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Description */}
-            <div className="border-b px-[30px]">
+            <div className="border-b px-8">
               <button
                 onClick={() => toggleSection("description")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -765,10 +765,10 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                   {/* Cột trái: Text */}
                   <div>
                     <h4 className="text-lg font-extrabold tracking-wide uppercase">
-                      {t?.descTitle}
+                      {product?.data?.description?.descTitle || t?.descTitle}
                     </h4>
                     <p className="text-gray-600 dark:text-white leading-relaxed">
-                      {t?.descText || productDetails.description}
+                      {product?.data?.description?.descText || t?.descText}
                     </p>
                   </div>
 
@@ -787,7 +787,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Details */}
-            <div className="border-b px-[30px]">
+            <div className="border-b px-8">
               <button
                 onClick={() => toggleSection("details")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -796,22 +796,31 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 {expandedSections.details ? <ChevronUp /> : <ChevronDown />}
               </button>
               {expandedSections.details && (
+                // <div className="pb-6">
+                //   <ul className="space-y-2">
+                //     {(
+                //       (product.data.details || [
+                //         "regularFit",
+                //         "laceClosure",
+                //         "hybridTouchUpper",
+                //         "adidasPrimeknitCollar",
+                //         "sprintframe360FirmGroundOutsole",
+                //         "imported",
+                //         "productColor",
+                //         "productCode",
+                //       ]) as const
+                //     ).map((key, i) => (
+                //       <li key={i} className="text-gray-600 dark:text-white">
+                //         • {t?.[key] || key}
+                //       </li>
+                //     ))}
+                //   </ul>
+                // </div>
                 <div className="pb-6">
                   <ul className="space-y-2">
-                    {(
-                      [
-                        "regularFit",
-                        "laceClosure",
-                        "hybridTouchUpper",
-                        "adidasPrimeknitCollar",
-                        "sprintframe360FirmGroundOutsole",
-                        "imported",
-                        "productColor",
-                        "productCode",
-                      ] as const
-                    ).map((key, i) => (
+                    {(product?.data?.details ?? []).map((line, i) => (
                       <li key={i} className="text-gray-600 dark:text-white">
-                        • {t?.[key] || key}
+                        • {line}
                       </li>
                     ))}
                   </ul>
@@ -820,7 +829,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             </div>
 
             {/* Highlights */}
-            <div className="border-b px-[30px]">
+            <div className="border-b px-8">
               <button
                 onClick={() => toggleSection("highlights")}
                 className="w-full flex justify-between items-center py-6 text-left font-bold text-lg"
@@ -830,7 +839,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </button>
               {expandedSections.highlights && (
                 <div className="pb-6">
-                  <ul className="space-y-6">
+                  {/* <ul className="space-y-6">
                     {[
                       { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
                       { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
@@ -842,6 +851,27 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                         <p className="text-gray-600 dark:text-white">{h.text}</p>
                       </li>
                     ))}
+                  </ul> */}
+                  <ul className="space-y-6">
+                    {product?.data?.highlights?.length > 0
+                      ? product?.data?.highlights.map((h, i) => (
+                          <li key={i}>
+                            <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                            <p className="text-gray-600 dark:text-white">{h.text}</p>
+                          </li>
+                        ))
+                      : [ // fallback đến file lang
+                          { title: t?.accelerateStronger, text: t?.accelerateStrongerText },
+                          { title: t?.fitLikeMessi, text: t?.fitLikeMessiText },
+                          { title: t?.dribbleFast, text: t?.dribbleFastText },
+                          { title: t?.experienceLevel, text: t?.experienceLevelText }
+                        ].map((h, i) => (
+                          <li key={i}>
+                            <h4 className="text-lg font-extrabold tracking-wide">{h.title}</h4>
+                            <p className="text-gray-600 dark:text-white">{h.text}</p>
+                          </li>
+                        ))
+                    }
                   </ul>
                 </div>
               )}
