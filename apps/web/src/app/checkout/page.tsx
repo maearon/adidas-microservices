@@ -465,7 +465,7 @@ export default function CheckoutPage() {
             <select
               value={locale}
               onChange={(e) => handleLocaleChange(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-transparent focus:outline-none"
+              className="text-gray-800 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-none px-3 py-2 text-sm focus:outline-none"
             >
               <option value="US">🇺🇸 United States</option>
               <option value="VN">🇻🇳 Việt Nam</option>
