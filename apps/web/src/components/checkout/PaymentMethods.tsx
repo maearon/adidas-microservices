@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,12 +10,16 @@ interface PaymentMethodsProps {
   selectedMethod: PaymentMethod | null
   onSelectMethod: (method: PaymentMethod) => void
   country?: string
+  stripeForm?: React.ReactNode  // 👈 thêm prop này
+  stripeError?: string | null  // 👈 thêm prop này
 }
 
 export default function PaymentMethods({
   selectedMethod,
   onSelectMethod,
   country = "US",
+  stripeForm = <></>,
+  stripeError = null,
 }: PaymentMethodsProps) {
   const isVietnam = country === "VN" || country === "Vietnam"
 
@@ -69,6 +72,24 @@ export default function PaymentMethods({
               onCheckedChange={() => onSelectMethod("stripe")}
             />
             <span className="text-sm font-medium">Pay with Credit/Debit Card (Stripe)</span>
+            {/* ✅ hiện form nếu được chọn */}
+            {selectedMethod === "stripe" && (
+              <div className="mt-4">{stripeForm}</div>
+            )}
+            {selectedMethod === "stripe" && (
+              <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
+                <h3 className="text-sm font-semibold">Card details</h3>
+                {stripeError && (
+                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
+                    {stripeError}
+                  </div>
+                )}
+                {stripeForm}
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Your payment details are encrypted and processed securely by Stripe.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

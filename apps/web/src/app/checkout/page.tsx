@@ -449,7 +449,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Step 1: Address Section */}
-          {currentStep === 1 && (
+          {(currentStep === 1 || currentStep === 2 || currentStep === 3) && (
             <div>
               <h2 className="text-lg font-bold mb-4">ADDRESS</h2>
               <h3 className="font-medium mb-4">Delivery address</h3>
@@ -573,7 +573,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 2: Shipping Section */}
-          {currentStep === 2 && (
+          {(currentStep === 2 || currentStep === 3) && (
             <div>
               <h2 className="text-lg font-bold mb-4">SHIPPING</h2>
               
@@ -646,9 +646,19 @@ export default function CheckoutPage() {
                     }
                   }}
                   country={formData.country || "US"}
+                  stripeForm={
+                    <StripePaymentForm
+                      ref={stripeFormRef}
+                      amount={total}
+                      currency="usd"
+                      customerEmail={session?.user?.email || formData.email}
+                      onError={setStripeError}
+                    />
+                  } // truyền form thật vào đây
+                  stripeError={stripeError}
                 />
 
-                {selectedPaymentMethod === "stripe" && (
+                {/* {selectedPaymentMethod === "stripe" && (
                   <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
                     <h3 className="text-sm font-semibold">Card details</h3>
                     {stripeError && (
@@ -667,7 +677,7 @@ export default function CheckoutPage() {
                       Your payment details are encrypted and processed securely by Stripe.
                     </p>
                   </div>
-                )}
+                )} */}
 
                 {/* Error Message */}
                 {orderError && (
