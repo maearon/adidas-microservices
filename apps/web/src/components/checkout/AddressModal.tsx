@@ -102,7 +102,7 @@ export default function AddressModal({
           city: "",
           state: "",
           zipCode: "",
-          country: "US",
+          country: country || "US", // ✅ dùng prop truyền vào
           phone: "",
           isDefault: false,
           type: "delivery",
