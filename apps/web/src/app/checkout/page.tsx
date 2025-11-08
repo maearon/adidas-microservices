@@ -573,7 +573,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Step 2: Shipping Section */}
-          {(currentStep === 2 || currentStep === 3) && (
+          {(currentStep === 2 || currentStep === 3) ? (
             <div>
               <h2 className="text-lg font-bold mb-4">SHIPPING</h2>
               
@@ -629,10 +629,16 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
-          )}
+          ) : (
+            <div className="opacity-40 pointer-events-none select-none">
+              <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">SHIPPING</h2>
+              <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
+            </div>
+          )
+          }
 
           {/* Step 3: Payment Section */}
-          {currentStep === 3 && (
+          {currentStep === 3 ? (
             <div>
               <h2 className="text-lg font-bold mb-4">PAYMENT</h2>
               
@@ -657,27 +663,6 @@ export default function CheckoutPage() {
                   } // truyền form thật vào đây
                   stripeError={stripeError}
                 />
-
-                {/* {selectedPaymentMethod === "stripe" && (
-                  <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
-                    <h3 className="text-sm font-semibold">Card details</h3>
-                    {stripeError && (
-                      <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
-                        {stripeError}
-                      </div>
-                    )}
-                    <StripePaymentForm
-                      ref={stripeFormRef}
-                      amount={total}
-                      currency="usd"
-                      customerEmail={session?.user?.email || formData.email}
-                      onError={setStripeError}
-                    />
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Your payment details are encrypted and processed securely by Stripe.
-                    </p>
-                  </div>
-                )} */}
 
                 {/* Error Message */}
                 {orderError && (
@@ -716,7 +701,24 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
-          )}
+          ) : (
+            <div className="opacity-40 pointer-events-none select-none">
+              <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">PAYMENT</h2>
+              <div className="flex items-center gap-2 mb-4">
+                {["download.svg", "download (1).svg", "download (2).svg", "download (3).svg"].map((img, idx) => (
+                  <div key={idx} className="w-12 h-8 relative">
+                    <Image
+                      src={`/assets/payment/${img}`}
+                      alt="Card"
+                      fill
+                      className="object-contain grayscale"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+          }
         </div>
 
         {/* Right Column - Order Summary */}

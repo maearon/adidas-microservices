@@ -46,18 +46,7 @@ export default function PaymentMethods({
       {/* Credit/Debit Card (Stripe) */}
       <div>
         <h3 className="text-sm font-bold mb-2">Credit/Debit Card</h3>
-        <div className="flex items-center gap-2 mb-4">
-          {["download.svg", "download (1).svg", "download (2).svg", "download (3).svg"].map((img, idx) => (
-            <div key={idx} className="w-12 h-8 relative">
-              <Image
-                src={`/assets/payment/${img}`}
-                alt="Card"
-                fill
-                className="object-contain grayscale"
-              />
-            </div>
-          ))}
-        </div>
+
         <Card
           className={`cursor-pointer border-2 transition-all ${
             selectedMethod === "stripe"
@@ -66,16 +55,18 @@ export default function PaymentMethods({
           }`}
           onClick={() => onSelectMethod("stripe")}
         >
-          <CardContent className="p-4 flex items-center gap-3">
-            <Checkbox
-              checked={selectedMethod === "stripe"}
-              onCheckedChange={() => onSelectMethod("stripe")}
-            />
-            <span className="text-sm font-medium">Pay with Credit/Debit Card (Stripe)</span>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                checked={selectedMethod === "stripe"}
+                onCheckedChange={() => onSelectMethod("stripe")}
+              />
+              <span className="text-sm font-medium">
+                Pay with Credit/Debit Card (Stripe)
+              </span>
+            </div>
+
             {/* ✅ hiện form nếu được chọn */}
-            {selectedMethod === "stripe" && (
-              <div className="mt-4">{stripeForm}</div>
-            )}
             {selectedMethod === "stripe" && (
               <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
                 <h3 className="text-sm font-semibold">Card details</h3>
