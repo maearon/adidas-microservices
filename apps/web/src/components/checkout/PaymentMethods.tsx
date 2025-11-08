@@ -56,7 +56,7 @@ export default function PaymentMethods({
           onClick={() => onSelectMethod("stripe")}
         >
           <CardContent className="p-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-4">
               <Checkbox
                 checked={selectedMethod === "stripe"}
                 onCheckedChange={() => onSelectMethod("stripe")}
@@ -71,7 +71,7 @@ export default function PaymentMethods({
               <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
                 <h3 className="text-sm font-semibold">Card details</h3>
                 {stripeError && (
-                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2">
+                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 overflow-hidden">
                     {stripeError}
                   </div>
                 )}

@@ -631,8 +631,8 @@ export default function CheckoutPage() {
             </div>
           ) : (
             <div className="opacity-40 pointer-events-none select-none">
-              <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">SHIPPING</h2>
-              <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
+              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">SHIPPING</h2>        
             </div>
           )
           }
@@ -703,13 +703,26 @@ export default function CheckoutPage() {
             </div>
           ) : (
             <div className="opacity-40 pointer-events-none select-none">
+              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
               <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">PAYMENT</h2>
               <div className="flex items-center gap-2 mb-4">
-                {["download.svg", "download (1).svg", "download (2).svg", "download (3).svg"].map((img, idx) => (
+                {[
+                  { src: "/assets/payment/download.svg", alt: "AmEx" },
+                  { src: "/assets/payment/download (1).svg", alt: "Discover" },
+                  { src: "/assets/payment/download (2).svg", alt: "Mastercard" },
+                  { src: "/assets/payment/download (3).svg", alt: "Visa" },
+                  { src: "/assets/payment/download (7).svg", alt: "Klarna" },
+                  { src: "/assets/payment/download (8).svg", alt: "Google Pay" },
+                  // { break: true },
+                  { src: "/assets/payment/download (9).svg", alt: "ADIDAS" },
+                  { src: "/assets/payment/download (10).svg", alt: "Shop Pay" },
+                  { src: "/assets/payment/download (11).svg", alt: "PayPal" },
+                  { src: "/assets/payment/download (12).svg", alt: "Afterpay" },
+                ].map((img, idx) => (
                   <div key={idx} className="w-12 h-8 relative">
                     <Image
-                      src={`/assets/payment/${img}`}
-                      alt="Card"
+                      src={img.src ?? "/placeholder.png"}
+                      alt={img.alt ?? "Payment Method"}
                       fill
                       className="object-contain grayscale"
                     />
