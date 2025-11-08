@@ -39,9 +39,10 @@ import { useTheme } from "next-themes"
 interface AddressListProps {
   selectedAddress: Address | null
   onSelectAddress: (address: Address | null) => void
+  country?: string | null
 }
 
-export default function AddressList({ selectedAddress, onSelectAddress }: AddressListProps) {
+export default function AddressList({ selectedAddress, onSelectAddress, country = "US" }: AddressListProps) {
   const [addresses, setAddresses] = useState<Address[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
@@ -250,6 +251,7 @@ export default function AddressList({ selectedAddress, onSelectAddress }: Addres
         onSave={handleSaveAddress}
         address={editingAddress}
         mode={editingAddress ? "edit" : "add"}
+        country={country}
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

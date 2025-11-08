@@ -14,7 +14,7 @@ import { Search, ArrowRight, Tag } from "lucide-react"
 import { User } from "@/types/user"
 // import javaService from "@/api/services/javaService"
 import FullScreenLoader from "@/components/ui/FullScreenLoader"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, getCountryFromLocale, normalizeLocale } from "@/lib/utils"
 // import type { Session } from "@/lib/auth"
 import ProductPrice from "@/components/ProductCardPrice"
 import ProductPriceSpan from "@/components/ProductCardPriceSpan"
@@ -39,6 +39,8 @@ import { ArrowLeft } from "lucide-react"
 type CheckoutStep = 1 | 2 | 3 // 1 = Address, 2 = Shipping, 3 = Payment
 
 export default function CheckoutPage() {
+  const country = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English
+  const [locale, setLocale] = useState(getCountryFromLocale(country))
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { 
@@ -69,7 +71,7 @@ export default function CheckoutPage() {
     city: "",
     state: "",
     zipCode: "",
-    country: "US",
+    country: locale || "US",
     phone: "",
     saveInfo: false,
     sameAddress: true,
@@ -135,31 +137,35 @@ export default function CheckoutPage() {
   const total = subtotal + salesTax + delivery
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (selectedAddress && !selectedAddress._id) {
-      const addressFieldMap: Record<string, keyof Address | null> = {
-        firstName: "firstName",
-        lastName: "lastName",
-        street: "street",
-        city: "city",
-        state: "state",
-        zipCode: "zipCode",
-        country: "country",
-        phone: "phone",
-        address: "formattedAddress",
-        email: null,
-      }
+  // const handleInputChange = (field: string, value: string) => {
+  //   setFormData((prev) => ({ ...prev, [field]: value }))
+  //   if (selectedAddress && !selectedAddress._id) {
+  //     const addressFieldMap: Record<string, keyof Address | null> = {
+  //       firstName: "firstName",
+  //       lastName: "lastName",
+  //       street: "street",
+  //       city: "city",
+  //       state: "state",
+  //       zipCode: "zipCode",
+  //       country: "country",
+  //       phone: "phone",
+  //       address: "formattedAddress",
+  //       email: null,
+  //     }
 
-      const targetField = addressFieldMap[field]
-      if (targetField) {
-        setSelectedAddress((prev) => (prev ? { ...prev, [targetField]: value } : prev))
-      }
-    }
-    // Clear error when user starts typing
-    if (errors[field as keyof typeof errors]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
-    }
+  //     const targetField = addressFieldMap[field]
+  //     if (targetField) {
+  //       setSelectedAddress((prev) => (prev ? { ...prev, [targetField]: value } : prev))
+  //     }
+  //   }
+  //   // Clear error when user starts typing
+  //   if (errors[field as keyof typeof errors]) {
+  //     setErrors((prev) => ({ ...prev, [field]: "" }))
+  //   }
+  // }
+
+  const handleLocaleChange = (value: string) => {
+    setLocale(value) // chỉ set trong màn checkout
   }
 
   const validateAddressStep = () => {
@@ -443,9 +449,30 @@ export default function CheckoutPage() {
         {/* Left Column - Checkout Form */}
         <div className="space-y-12">
           {/* Contact Section - Always visible */}
-          <div>
+          {/* <div>
             <h2 className="text-lg font-bold mb-4">CONTACT</h2>
             <p className="text-base text-gray-600 dark:text-white">{session?.user?.email || "guest@gmail.com"}</p>
+          </div> */}
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-bold">CONTACT</h2>
+              <p className="text-base text-gray-600 dark:text-white">
+                {session?.user?.email || "guest@gmail.com"}
+              </p>
+            </div>
+
+            {/* Dropdown chọn quốc gia */}
+            <select
+              value={locale}
+              onChange={(e) => handleLocaleChange(e.target.value)}
+              className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-transparent focus:outline-none"
+            >
+              <option value="US">🇺🇸 United States</option>
+              <option value="VN">🇻🇳 Việt Nam</option>
+              <option value="JP">🇯🇵 Japan</option>
+              <option value="DE">🇩🇪 Germany</option>
+              <option value="FR">🇫🇷 France</option>
+            </select>
           </div>
 
           {/* Step 1: Address Section */}
@@ -460,13 +487,14 @@ export default function CheckoutPage() {
                 <AddressList
                   selectedAddress={selectedAddress}
                   onSelectAddress={handleAddressSelect}
+                  country={locale || "US"}
                 />
 
-                <div className="text-sm text-gray-500 text-center my-4">OR</div>
+                {/* <div className="text-sm text-gray-500 text-center my-4">OR</div> */}
 
                 {/* Manual Address Entry */}
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Input
                         placeholder="First Name *"
@@ -485,10 +513,10 @@ export default function CheckoutPage() {
                       />
                       {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Address Autocomplete */}
-                  <div>
+                  {/* <div>
                     <AddressAutocomplete
                       value={addressSearchValue}
                       onChange={setAddressSearchValue}
@@ -497,10 +525,10 @@ export default function CheckoutPage() {
                       country={formData.country}
                     />
                     {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-                  </div>
+                  </div> */}
 
                   {/* Phone Field */}
-                  <div>
+                  {/* <div>
                     <Input
                       placeholder="Phone Number *"
                       value={formData.phone}
@@ -508,7 +536,7 @@ export default function CheckoutPage() {
                       className={errors.phone ? "border-red-500" : ""}
                     />
                     {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-                  </div>
+                  </div> */}
 
                   {/* Checkboxes */}
                   <div className="space-y-3">
@@ -633,7 +661,7 @@ export default function CheckoutPage() {
             </div>
           ) : (
             <div className="opacity-40 pointer-events-none select-none">
-              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">SHIPPING</h2>        
             </div>
           )
@@ -706,7 +734,7 @@ export default function CheckoutPage() {
             </div>
           ) : (
             <div className="opacity-40 pointer-events-none select-none">
-              <div className="h-1 bg-gray-400 dark:bg-gray-500 rounded-none" />
+              <div className="opacity-40 h-px bg-gray-400 dark:bg-gray-500 my-8" />
               <h2 className="text-lg font-bold mb-4 text-gray-400 dark:text-gray-500">PAYMENT</h2>
               <div className="flex items-center gap-2 mb-4">
                 {[

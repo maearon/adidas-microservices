@@ -41,6 +41,7 @@ interface AddressModalProps {
   onSave: (address: Address) => Promise<void>
   address?: Address | null
   mode?: "add" | "edit"
+  country?: string | null
 }
 
 export default function AddressModal({
@@ -49,6 +50,7 @@ export default function AddressModal({
   onSave,
   address,
   mode = "add",
+  country = "US",
 }: AddressModalProps) {
   const [formData, setFormData] = useState<Address>({
     firstName: "",
@@ -58,7 +60,7 @@ export default function AddressModal({
     city: "",
     state: "",
     zipCode: "",
-    country: "US",
+    country: country || "US",
     phone: "",
     isDefault: false,
     type: "delivery",

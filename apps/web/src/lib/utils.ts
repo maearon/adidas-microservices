@@ -92,3 +92,10 @@ export const slugify = (name: unknown): string => {
     .replace(/[^\w\s-]/g, "") // bỏ ký tự đặc biệt
     .replace(/\s+/g, "-")    // khoảng trắng => dấu gạch ngang
 }
+
+// /lib/utils.ts
+export function getCountryFromLocale(locale: string): string {
+  if (!locale) return "US"
+  const parts = locale.split("_")
+  return parts.length > 1 ? parts[1].toUpperCase() : locale.toUpperCase()
+}
