@@ -218,7 +218,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           <ExpandableImageGallery variant={variant} product={product} images={variant?.image_urls || []} productName={product.name} tags={product?.tags || []}/>
 
           {/* Expandable Sections */}
-          <div className="hidden lg:block mt-[80px] sm:mx-[19%]">
+          <div className="hidden lg:block mt-[80px] sm:mx-[15%]">
             {/* Expandable Sections - Full Width Below Main Content */}
             <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
               {/* Reviews */}
@@ -446,9 +446,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
           {/* Product Carousel */}
           <div className="hidden lg:block sm:mb-[80px]">
-          <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
+          <section className="container mx-auto px-4 py-0 mb-4">
+            <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
+          </section>
           <div className="mb-[80px]"></div>
-          <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile minimalMobileForProductCard showIndicators />
+          <section className="container mx-auto px-4 py-0 mb-4">
+            <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile minimalMobileForProductCard showIndicators />
+          </section>
           <div className="mb-[80px]"></div>
           <HistoryView
             title={
@@ -689,7 +693,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         </aside>
 
         {/* Expandable Sections */}
-        <div className="block lg:hidden mt-[80px] sm:mx-[19%]">
+        <div className="block lg:hidden mt-[80px] sm:mx-[15%]">
           {/* Expandable Sections - Full Width Below Main Content */}
           <div className="max-w-none mx-0 space-y-0 my-16 border-t sm:mt-24">
             {/* Reviews */}
@@ -917,9 +921,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
         {/* Product Carousel */}
         <div className="block lg:hidden lg:block mb-[60px]">
-        <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile showIndicators={false} />
+        <section className="container mx-auto px-4 py-0 mb-4">
+          <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile showIndicators={false} />
+        </section>
         <div className="mb-[60px]"></div>
-        <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile showIndicators />
+        <section className="container mx-auto px-4 py-0 mb-4">
+          <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile showIndicators />
+        </section>
         <div className="mb-[60px]"></div>
         <HistoryView
           title={
