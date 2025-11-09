@@ -39,7 +39,7 @@ Size.create!(
 
 # One size use for balls
 Size.create!(
-  # id: 54
+  # id: 54 for p id 61
   label: "5",
   system: "ball",
   location: "GLOBAL"
