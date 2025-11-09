@@ -30,10 +30,18 @@ LOCATIONS.each do |loc|
   end
 end
 
-# One size dùng cho phụ kiện
+# One size use for accessories
 Size.create!(
   label: "One Size",
   system: "one_size",
+  location: "GLOBAL"
+)
+
+# One size use for balls
+Size.create!(
+  # id: 54
+  label: "5",
+  system: "ball",
   location: "GLOBAL"
 )
 
