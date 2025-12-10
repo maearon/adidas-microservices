@@ -435,10 +435,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     </Dialog>
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:max-w-md max-h-[95vh] overflow-y-auto bg-white dark:bg-black p-0 rounded-none">
-        <DialogHeader><DialogTitle>{""}</DialogTitle></DialogHeader>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
+        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
+      >
+        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         {/* Close button - Square border style */}
-        <div className="absolute bg-white dark:bg-black z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
+        <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-52 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
             className="w-12 h-12 border border-border flex items-center 
