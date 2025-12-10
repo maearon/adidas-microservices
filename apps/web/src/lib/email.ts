@@ -24,6 +24,11 @@ export async function sendEmail({ to, subject, text }: SendEmailValues) {
   //   console.error("Expected format: rqi_yum");
   //   throw new Error("Smtp Password Key not configured");
   // }
+
+  // git checkout 1242dc57c527178d6bffd6980c884ba4478bafd4 -- config/environments/development.rb
+  // https://myaccount.google.com/lesssecureapps
+  // https://accounts.google.com/DisplayUnlockCaptcha
+  // https://support.google.com/mail/answer/185833?hl=en
   
   const transporter = createTransporter();
 
