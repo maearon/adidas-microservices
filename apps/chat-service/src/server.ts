@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'https://adidas-clone.vercel.app'],
+  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000', 'https://adidas-clone.vercel.app', 'https://moji-phi.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
