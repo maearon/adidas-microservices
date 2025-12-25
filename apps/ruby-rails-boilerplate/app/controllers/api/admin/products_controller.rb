@@ -1,5 +1,5 @@
 class Api::Admin::ProductsController < ActionController::API
-  before_action :set_product, only: [:update, :reorder_images]
+  before_action :set_product, only: [:update, :reorder_images, :translations, :update_translations]
 
   # POST /api/admin/products
   def create
@@ -21,9 +21,44 @@ class Api::Admin::ProductsController < ActionController::API
 
     if @product.save
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
+      update_product_translations(@product, params[:product][:translations_attributes]) if params[:product][:translations_attributes]
       render 'api/admin/products/show'
     else
       render_error(@product, 'Failed to update product')
+    end
+  end
+
+  # GET /api/admin/products/:id/translations
+  def translations
+    translations = @product.product_translations.order(:locale)
+    render json: {
+      translations: translations.map { |t| { id: t.id, locale: t.locale, data: t.data } }
+    }
+  end
+
+  # POST /api/admin/products/:id/translations
+  def update_translations
+    locale = params[:locale] || 'en'
+    translation_data = params[:data]
+
+    unless translation_data.present?
+      render json: { success: false, message: 'Missing translation data' }, status: :bad_request
+      return
+    end
+
+    # Validate JSON structure
+    unless valid_translation_data?(translation_data)
+      render json: { success: false, message: 'Invalid translation data structure' }, status: :unprocessable_entity
+      return
+    end
+
+    translation = @product.product_translations.find_or_initialize_by(locale: locale)
+    translation.data = translation_data
+
+    if translation.save
+      render json: { success: true, translation: translation }
+    else
+      render json: { success: false, message: 'Failed to save translation', errors: translation.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -86,7 +121,8 @@ class Api::Admin::ProductsController < ActionController::API
           :size_id,
           :stock
         ]
-      ]
+      ],
+      translations_attributes: {}
     )
   end
 
@@ -188,6 +224,53 @@ class Api::Admin::ProductsController < ActionController::API
     else
       Rails.logger.warn "Failed to reorder images: expected #{current_images.length}, got #{reordered_images.length}"
     end
+  end
+
+  # 🌐 Update product translations
+  def update_product_translations(product, translations_attrs)
+    return unless translations_attrs.present?
+
+    translations_attrs.each do |locale, data|
+      translation = product.product_translations.find_or_initialize_by(locale: locale)
+      translation.data = data
+      translation.save
+    end
+  end
+
+  # ✅ Validate translation data structure
+  def valid_translation_data?(data)
+    return false unless data.is_a?(Hash)
+
+    # Validate sectionOrder if present
+    if data['sectionOrder'].present?
+      return false unless data['sectionOrder'].is_a?(Array)
+      
+      valid_types = %w[reviews description details highlights]
+      data['sectionOrder'].each do |section|
+        return false unless valid_types.include?(section['type'])
+        return false unless [true, false].include?(section['enabled'])
+        return false unless section['order'].is_a?(Integer)
+      end
+    end
+
+    # Validate highlights if present
+    if data['highlights'].present?
+      return false unless data['highlights'].is_a?(Array)
+      data['highlights'].each do |highlight|
+        return false unless highlight.is_a?(Hash)
+        return false if highlight['title'].blank? || highlight['text'].blank?
+      end
+    end
+
+    # Validate details if present
+    if data['details'].present?
+      return false unless data['details'].is_a?(Array)
+    end
+
+    true
+  rescue => e
+    Rails.logger.error "Translation validation error: #{e.message}"
+    false
   end
 
   # ⚠️ Render lỗi chuẩn REST

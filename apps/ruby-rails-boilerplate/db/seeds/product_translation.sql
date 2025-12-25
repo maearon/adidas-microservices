@@ -20,14 +20,14 @@ VALUES
       "descText": "Engineered for speed, tuned for Lionel Messi. These adidas Elite soccer cleats are part of a collection created to match the GOAT's on-pitch requirements. Delivering a leather-like feel, their flexible HybridTouch upper comes with a knit \"burrito\" tongue for a wider opening and comfortable fit. The Sprintframe 360 outsole is built for quick feet on dry grass surfaces."
     },
     "details": [
-      "regularFit",
-      "laceClosure",
-      "hybridTouchUpper",
-      "adidasPrimeknitCollar",
-      "sprintframe360FirmGroundOutsole",
-      "imported",
-      "productColor",
-      "productCode"
+      "Regular fit",
+      "Lace closure",
+      "HybridTouch upper",
+      "adidas Primeknit collar",
+      "Sprintframe 360 firm ground outsole",
+      "Imported",
+      "Product color: White",
+      "Product code: JP5593"
     ],
     "highlights": [
       {
@@ -36,15 +36,37 @@ VALUES
       },
       {
         "title": "FIT LIKE MESSI",
-        "text": "HybridTouch suede upper and burrito tongue match Messi’s preferred comfort and lockdown."
+        "text": "HybridTouch suede upper and burrito tongue match Messi's preferred comfort and lockdown."
       },
       {
         "title": "DRIBBLE FAST",
-        "text": "Materials tuned to Messi’s playing style deliver lightweight, cushioned control."
+        "text": "Materials tuned to Messi's playing style deliver lightweight, cushioned control."
       },
       {
         "title": "EXPERIENCE LEVEL",
         "text": "Elite Level cleats are crafted for competition at an advanced level."
+      }
+    ],
+    "sectionOrder": [
+      {
+        "type": "reviews",
+        "enabled": true,
+        "order": 0
+      },
+      {
+        "type": "description",
+        "enabled": true,
+        "order": 1
+      },
+      {
+        "type": "details",
+        "enabled": true,
+        "order": 2
+      },
+      {
+        "type": "highlights",
+        "enabled": true,
+        "order": 3
       }
     ]
   }$$
@@ -58,14 +80,14 @@ VALUES
       "descText": "Tối ưu cho tốc độ, tinh chỉnh theo phong cách thi đấu của Lionel Messi. Đôi giày bóng đá adidas Elite này được thiết kế để đáp ứng chuẩn thi đấu cao cấp theo yêu cầu của cầu thủ xuất sắc nhất thế giới. Thân giày HybridTouch mềm mại mang lại cảm giác ôm chân như da thật, kết hợp lưỡi gà dạng 'burrito' bằng dệt knit giúp mang vào dễ dàng và ôm chân êm ái. Đế Sprintframe 360 hỗ trợ bứt tốc linh hoạt và kiểm soát tuyệt vời trên mặt sân cỏ tự nhiên."
     },
     "details": [
-      "form dáng regular",
-      "dây buộc truyền thống",
-      "thân giày HybridTouch mềm và nhẹ",
-      "cổ giày adidas Primeknit linh hoạt",
-      "đế Sprintframe 360 tối ưu cho sân cỏ tự nhiên",
-      "sản phẩm nhập khẩu",
-      "màu sắc sản phẩm",
-      "mã sản phẩm"
+      "Form dáng regular",
+      "Dây buộc truyền thống",
+      "Thân giày HybridTouch mềm và nhẹ",
+      "Cổ giày adidas Primeknit linh hoạt",
+      "Đế Sprintframe 360 tối ưu cho sân cỏ tự nhiên",
+      "Sản phẩm nhập khẩu",
+      "Màu sắc sản phẩm: Trắng",
+      "Mã sản phẩm: JP5593"
     ],
     "highlights": [
       {
@@ -84,6 +106,42 @@ VALUES
         "title": "DÀNH CHO ĐẲNG CẤP CAO",
         "text": "Phiên bản Elite được chế tác cho thi đấu ở cấp độ cao, nơi từng chuyển động đều tạo khác biệt."
       }
+    ],
+    "sectionOrder": [
+      {
+        "type": "reviews",
+        "enabled": true,
+        "order": 0
+      },
+      {
+        "type": "description",
+        "enabled": true,
+        "order": 1
+      },
+      {
+        "type": "details",
+        "enabled": true,
+        "order": 2
+      },
+      {
+        "type": "highlights",
+        "enabled": true,
+        "order": 3
+      }
     ]
   }$$
 );
+
+-- Example: Update để Highlights hiển thị ở đầu (optional)
+-- UPDATE product_translations
+-- SET data = jsonb_set(
+--   jsonb_set(data, '{sectionOrder}', 
+--     jsonb_build_array(
+--       jsonb_build_object('type', 'highlights', 'enabled', true, 'order', 0),
+--       jsonb_build_object('type', 'reviews', 'enabled', true, 'order', 1),
+--       jsonb_build_object('type', 'description', 'enabled', true, 'order', 2),
+--       jsonb_build_object('type', 'details', 'enabled', true, 'order', 3)
+--     )
+--   )
+-- )
+-- WHERE product_id = 1 AND locale = 'en';
