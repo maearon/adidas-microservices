@@ -148,7 +148,7 @@ export default function ProductSections({
                   href={`/${slugify(product.name || "product")}/${productVariant?.variant_code}/submit-review?campaignId=dotcom_pdp`}
                   pressEffect={false}
                   shadow={false}
-                  className="bg-transparent hover:bg-gray-100"
+                  className="bg-transparent mb-4"
                 >
                   {translations.writeAReview || "WRITE A REVIEW"}
                 </Button>
