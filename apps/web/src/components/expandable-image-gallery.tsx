@@ -15,6 +15,7 @@ import { upperWords } from "@/utils/upper-words"
 import ProductPrice from "./ProductCardPrice"
 import Image from "next/image"
 import { formatPrice } from "@/lib/utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface ExpandableImageGalleryProps {
   images: string[]
@@ -34,6 +35,7 @@ interface Variant {
 
 
 export default function ExpandableImageGallery({ variant, images, productName, product, tags }: ExpandableImageGalleryProps) {
+  const t = useTranslations("common")
   const [showAllImages, setShowAllImages] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
@@ -181,9 +183,9 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                 onClick={() => setShowAllImages(!showAllImages)}
               >
                 {showAllImages ? (
-                  <>SHOW LESS <span className="ml-2">↑</span></>
+                  <>{t?.showLess || "SHOW LESS"} <span className="ml-2">↑</span></>
                 ) : (
-                  <>SHOW MORE <span className="ml-2">↓</span></>
+                  <>{t?.showMore || "SHOW MORE"} <span className="ml-2">↓</span></>
                 )}
               </Button>
             </div>
