@@ -183,9 +183,9 @@ export default function ExpandableImageGallery({ variant, images, productName, p
                 onClick={() => setShowAllImages(!showAllImages)}
               >
                 {showAllImages ? (
-                  <>{t?.showLess || "SHOW LESS"} <span className="ml-2">↑</span></>
+                  <>{t?.showLess || "Show less"} <span className="ml-2">↑</span></>
                 ) : (
-                  <>{t?.showMore || "SHOW MORE"} <span className="ml-2">↓</span></>
+                  <>{t?.showMore || "Show more"} <span className="ml-2">↓</span></>
                 )}
               </Button>
             </div>
