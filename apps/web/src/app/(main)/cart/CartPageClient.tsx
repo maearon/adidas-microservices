@@ -14,7 +14,7 @@ import { BaseButton } from "@/components/ui/base-button"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 // import { authClient } from "@/lib/auth-client"
-import { Session } from "@/lib/auth"
+import type { Session } from "@/lib/auth";
 import Image from "next/image"
 import ProductCarousel from "@/components/product-carousel"
 import { Product } from "@/types/product"

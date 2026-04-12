@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { UserAvatar } from "@/components/user-avatar";
-import { User } from "@/lib/auth";
+import type { User } from "@/lib/auth";
 // import { getServerSession } from "@/lib/get-session";
 import { format } from "date-fns";
 import { CalendarDaysIcon, MailIcon, ShieldIcon, UserIcon } from "lucide-react";

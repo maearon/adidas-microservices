@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/lib/auth";
+import type { User } from "@/lib/auth";
 import { authClient } from "@/lib/auth-client";
 import { LogOutIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
