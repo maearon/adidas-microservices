@@ -124,7 +124,7 @@ export default function MenPage() {
       <section className="container mx-auto px-2 py-8 text-center">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-          {t?.descriptions?.mens?.title || "MEN&apos;S SNEAKERS AND WORKOUT CLOTHES"}
+          {t?.descriptions?.mens?.title || "MEN'S SNEAKERS AND WORKOUT CLOTHES"}
         </h2>
         <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
             <p>

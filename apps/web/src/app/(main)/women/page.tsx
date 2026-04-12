@@ -125,7 +125,7 @@ export default function WomenPage() {
       <section className="container mx-auto px-2 py-8 text-center">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-          {t?.descriptions?.womens?.title || "Women&apos;s Sneakers and Workout Clothes"}</h2>
+          {t?.descriptions?.womens?.title || "Women's Sneakers and Workout Clothes"}</h2>
         <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
           <p>
             {t?.descriptions?.womens?.paragraph1 || "Look great. Feel great. Perform great. Keep your workout on track with women&apos;s sneakers that support focused training with a supportive fit and a cushioned midsole. Designed for performance and comfort, our women&apos;s workout clothes and shoes support athletes and training at every level. Experience adidas technologies that support cool, dry comfort through intense workouts. Put your fitness first with adidas women&apos;s workout shoes and running clothes that breathe, manage sweat and help you realize your fitness goals."}
