@@ -109,7 +109,7 @@ export default function KidsPageClient() {
       <section className="container mx-auto px-2 py-8 text-center">
         <div className="container mx-auto px-8 text-center">
           <h2 className="max-w-[400px] text-2xl sm:text-3xl font-bold mb-8 uppercase inline-block px-4 pt-3 tracking-wide">
-          {t?.descriptions?.kids?.title || "Kids&apos; Shoes and Activewear"}</h2>
+          {t?.descriptions?.kids?.title || "Kids' Shoes and Activewear"}</h2>
         <div className="max-w-4xl mx-auto text-base sm:text-md leading-relaxed space-y-4">
           <p>
             {t?.descriptions?.kids?.paragraph1 || "Aspiring sports stars and busy kids deserve the best. Explore kids&apos; sneakers and sportswear for active girls and boys. Fulfill their sports dreams with matching kids&apos; activewear and warm-ups that fit and feel great from the classroom to the playground, the gym, and home. Enjoy the best selection of comfy kids&apos; clothes and sneakers to keep your young athlete excited to exercise and play their best. Discover the latest trends and heritage adidas styles in kids&apos; athletic clothes, sneakers, cleats and accessories."}
