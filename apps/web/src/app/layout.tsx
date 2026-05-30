@@ -38,7 +38,13 @@ export default async function RootLayout({
   const locale = cookieStore.get("locale")?.value || "en";
   const theme = cookieStore.get("theme")?.value || "dark";
   return (
-    <html lang={locale} className={`${barlow.variable} ${htmlClass ?? ""}`}>
+    <html
+  lang={locale}
+  className={`
+    ${barlow.variable}
+    ${htmlClass ?? ""}
+  `}
+>
       <body className={barlow.variable}>
         <ReduxProvider>  
           <ReactQueryProvider>
