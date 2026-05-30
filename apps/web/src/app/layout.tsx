@@ -12,9 +12,8 @@ import { LocationModalProvider } from "@/components/modal-providers";
 import { ToastProvider } from "@/components/ToastProvider";
 
 import ChatWidget from "@/components/chat/ChatWidget";
-// import FeedbackWidget from "@/components/feedback-widget";
+import FeedbackWidget from "@/components/feedback-widget";
 import ScrollToTop from "@/components/scroll-to-top";
-import CustomCursor from "@/components/ui/CustomCursor";
 
 import ReactQueryProvider from "./ReactQueryProvider";
 import { SessionInitializer } from "./SessionInitializer";
@@ -75,10 +74,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               <SessionInitializer />
-              {/* FIX: disable custom cursor on mobile/tablet */}
-              <div className="hidden lg:block">
-                <CustomCursor />
-              </div>
+              <FeedbackWidget />
 
               {/* <Navbar /> */}
 
