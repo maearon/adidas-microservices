@@ -3,10 +3,11 @@ class Api::Admin::ProductsController < ActionController::API
 
   # POST /api/admin/products
   def create
-    @product = Product.new(product_params.except(:image, :hover_image))
+    @product = Product.new(product_params.except(:image, :hover_image, :translations_attributes))
     attach_product_images(@product, params[:product])
 
     if @product.save
+      update_product_translations(@product, params[:product][:translations_attributes]) if params[:product][:translations_attributes]
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show', status: :created
     else
@@ -16,7 +17,7 @@ class Api::Admin::ProductsController < ActionController::API
 
   # PATCH/PUT /api/admin/products/:id
   def update
-    @product.assign_attributes(product_params.except(:image, :hover_image))
+    @product.assign_attributes(product_params.except(:image, :hover_image, :translations_attributes))
     attach_product_images(@product, params[:product])
 
     if @product.save
@@ -93,6 +94,7 @@ class Api::Admin::ProductsController < ActionController::API
   def product_params
     params.require(:product).permit(
       :name,
+      :model_number,
       :description_h5,
       :description_p,
       :care,
@@ -103,6 +105,9 @@ class Api::Admin::ProductsController < ActionController::API
       :product_type,
       :franchise,
       :status,
+      :category,
+      :activity,
+      :badge,
       :image,
       :hover_image,
       variants_attributes: [
@@ -120,8 +125,7 @@ class Api::Admin::ProductsController < ActionController::API
           :size_id,
           :stock
         ]
-      ],
-      translations_attributes: {}
+      ]
     )
   end
 
