@@ -39,14 +39,13 @@ class Api::Admin::ProductsController < ActionController::API
   # POST /api/admin/products/:id/translations
   def update_translations
     locale = params[:locale] || 'en'
-    translation_data = params[:data]
+    translation_data = normalize_translation_data(params[:data])
 
     unless translation_data.present?
       render json: { success: false, message: 'Missing translation data' }, status: :bad_request
       return
     end
 
-    # Validate JSON structure
     unless valid_translation_data?(translation_data)
       render json: { success: false, message: 'Invalid translation data structure' }, status: :unprocessable_entity
       return
@@ -56,7 +55,7 @@ class Api::Admin::ProductsController < ActionController::API
     translation.data = translation_data
 
     if translation.save
-      render json: { success: true, translation: translation }
+      render json: { success: true, translation: { id: translation.id, locale: translation.locale, data: translation.data } }
     else
       render json: { success: false, message: 'Failed to save translation', errors: translation.errors.full_messages }, status: :unprocessable_entity
     end
@@ -226,19 +225,55 @@ class Api::Admin::ProductsController < ActionController::API
     end
   end
 
-  # 🌐 Update product translations
+  # 🌐 Update product translations (PATCH product[translations_attributes])
   def update_product_translations(product, translations_attrs)
     return unless translations_attrs.present?
 
-    translations_attrs.each do |locale, data|
-      translation = product.product_translations.find_or_initialize_by(locale: locale)
-      translation.data = data
-      translation.save
+    attrs = translations_attrs.respond_to?(:to_unsafe_h) ? translations_attrs.to_unsafe_h : translations_attrs
+
+    attrs.each do |locale, data|
+      normalized = normalize_translation_data(data)
+      next unless normalized.present? && valid_translation_data?(normalized)
+
+      translation = product.product_translations.find_or_initialize_by(locale: locale.to_s)
+      translation.data = normalized
+      translation.save!
     end
+  end
+
+  def normalize_translation_data(data)
+    return nil if data.blank?
+
+    hash =
+      if data.is_a?(String)
+        JSON.parse(data)
+      elsif data.respond_to?(:to_unsafe_h)
+        data.to_unsafe_h
+      else
+        data
+      end
+
+    hash = hash.deep_stringify_keys if hash.respond_to?(:deep_stringify_keys)
+
+    if hash['highlights'].is_a?(Array)
+      hash['highlights'] = hash['highlights'].reject do |h|
+        h['title'].to_s.strip.blank? && h['text'].to_s.strip.blank?
+      end
+    end
+
+    if hash['details'].is_a?(Array)
+      hash['details'] = hash['details'].map(&:to_s).reject(&:blank?)
+    end
+
+    hash
+  rescue JSON::ParserError => e
+    Rails.logger.error "Translation JSON parse error: #{e.message}"
+    nil
   end
 
   # ✅ Validate translation data structure
   def valid_translation_data?(data)
+    data = normalize_translation_data(data) if !data.is_a?(Hash)
     return false unless data.is_a?(Hash)
 
     # Validate sectionOrder if present
