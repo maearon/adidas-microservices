@@ -3,11 +3,13 @@ class Api::Admin::ProductsController < ActionController::API
 
   # POST /api/admin/products
   def create
-    @product = Product.new(product_params.except(:image, :hover_image, :translations_attributes))
+    @product = Product.new
+    assign_product_attributes(@product, product_params.except(:image, :hover_image, :translations_attributes))
     attach_product_images(@product, params[:product])
 
     if @product.save
-      update_product_translations(@product, params[:product][:translations_attributes]) if params[:product][:translations_attributes]
+      translations = translations_attrs_from_params
+      update_product_translations(@product, translations) if translations.present?
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show', status: :created
     else
@@ -17,11 +19,12 @@ class Api::Admin::ProductsController < ActionController::API
 
   # PATCH/PUT /api/admin/products/:id
   def update
-    @product.assign_attributes(product_params.except(:image, :hover_image, :translations_attributes))
+    assign_product_attributes(@product, product_params.except(:image, :hover_image, :translations_attributes))
     attach_product_images(@product, params[:product])
 
     if @product.save
-      update_product_translations(@product, params[:product][:translations_attributes]) if params[:product][:translations_attributes]
+      translations = translations_attrs_from_params
+      update_product_translations(@product, translations) if translations.present?
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show'
     else
@@ -127,6 +130,19 @@ class Api::Admin::ProductsController < ActionController::API
         ]
       ]
     )
+  end
+
+  # FE gửi category là string ("Shoes") — không gán vào belongs_to :category
+  def assign_product_attributes(product, attrs)
+    data = attrs.to_h.stringify_keys
+    category_name = data.delete('category')
+    product.assign_attributes(data)
+    product[:category] = category_name if category_name.present?
+  end
+
+  def translations_attrs_from_params
+    params.fetch(:product, ActionController::Parameters.new)
+          .permit(translations_attributes: {})[:translations_attributes]
   end
 
   # 📷 Gắn ảnh chính product
