@@ -20,8 +20,8 @@ class Api::Admin::ProductsController < ActionController::API
     attach_product_images(@product, params[:product])
 
     if @product.save
-      attach_variant_nested_images(@product, params[:product][:variants_attributes])
       update_product_translations(@product, params[:product][:translations_attributes]) if params[:product][:translations_attributes]
+      attach_variant_nested_images(@product, params[:product][:variants_attributes])
       render 'api/admin/products/show'
     else
       render_error(@product, 'Failed to update product')
@@ -114,7 +114,7 @@ class Api::Admin::ProductsController < ActionController::API
         :stock,
         :avatar,
         :hover,
-        images: [],
+        images: {},
         variant_sizes_attributes: [
           :id,
           :size_id,
