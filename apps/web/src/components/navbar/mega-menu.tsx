@@ -225,7 +225,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               onClick={onClose}
               key={index}
               href={link.href}
-              className="text-base font-medium hover:underline"
+              className="text-base font-bold hover:underline"
             >
               {link.name}
             </Link>
