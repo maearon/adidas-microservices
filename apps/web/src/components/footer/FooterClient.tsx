@@ -2,10 +2,11 @@
 
 import { useAppSelector } from "@/store/hooks"
 import { selectUser } from "@/store/sessionSlice"
-import { Facebook, Instagram, Twitter, Youtube, Music, MapPin, ChevronUp } from "lucide-react"
+import { ChevronUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import CcpaIcon from "../icons/CcpaIcon"
+import FooterSocialLinks from "@/components/footer/FooterSocialLinks"
 import { Button } from "../ui/button";
 import { localeDisplayMap, localeOptions } from "@/lib/constants/localeOptions"
 import { useEffect, useState } from "react"
@@ -48,15 +49,6 @@ export default function FooterClient({ session }: FooterClientProps) {
       : (t?.[section.sectionKey as keyof typeof t] as string) || section.sectionKey,
     items: section.items,
   }))
-
-  const socialIcons = [
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com/adidas" },
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com/adidas" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/adidas" },
-    { name: "Pinterest", icon: MapPin, href: "https://pinterest.com/adidas" },
-    { name: "TikTok", icon: Music, href: "https://tiktok.com/@adidas" },
-    { name: "YouTube", icon: Youtube, href: "https://youtube.com/adidas" },
-  ]
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -129,14 +121,14 @@ export default function FooterClient({ session }: FooterClientProps) {
           <div className="hidden md:grid grid-cols-6 gap-8 pl-14 sm:pl-14 md:pl-14 lg:pl-14 xl:pl-20 2xl:pl-20 2xl:px-20">
             {footerSections.map((section) => (
               <div key={section.title}>
-                <h3 className="font-bold mb-4 text-base">{section.title}</h3>
+                <h3 className="font-bold mb-4 text-base uppercase">{section.title}</h3>
                 <ul className="space-y-2">
                   {section.items.map((item, index) => (
                     <li key={index}>
                       {item.key === "_divider" ? (
                         <div className="h-2"></div>
                       ) : (
-                        <a href={item.href || "#"} className="text-base text-gray-300 hover:text-white hover:underline">
+                        <a href={item.href || "#"} className="text-sm text-gray-300 hover:text-white hover:underline">
                           {(t?.[item.key as keyof typeof t] as string) || item.fallback || item.key}
                         </a>
                       )}
@@ -148,23 +140,8 @@ export default function FooterClient({ session }: FooterClientProps) {
 
             {/* Follow Us Column */}
             <div>
-              <h3 className="font-bold mb-4 text-base">{t?.followUs || "FOLLOW US"}</h3>
-              <div className="space-y-3">
-                {socialIcons.map((social, index) => {
-                  const IconComponent = social.icon
-                  return (
-                    <a
-                      key={index}
-                      href={social.href}
-                      className="flex items-center justify-center w-8 h-8 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <IconComponent size={16} />
-                    </a>
-                  )
-                })}
-              </div>
+              <h3 className="mb-4 text-base font-bold uppercase">{t?.followUs || "FOLLOW US"}</h3>
+              <FooterSocialLinks className="flex flex-col gap-3" />
             </div>
           </div>
 
