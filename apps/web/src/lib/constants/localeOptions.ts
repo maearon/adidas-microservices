@@ -13,12 +13,33 @@ export const localeDisplayMap: Record<SupportedLocale, string> = {
   // en_UK: "English (UK)",
 };
 
-// Hiển thị quốc gia (map code → tên quốc gia)
+// Hiển thị quốc gia (map code → tên quốc gia, mặc định)
 export const countryDisplayMap: Record<SupportedLocale, string> = {
   en_US: "United States",
   vi_VN: "Việt Nam",
   // en_UK: "United Kingdom",
 };
+
+/** Tên quốc gia trong country picker — theo ngôn ngữ UI */
+export const countryLabelsByUiLocale: Record<
+  SupportedLocale,
+  Record<SupportedLocale, string>
+> = {
+  en_US: {
+    en_US: "United States",
+    vi_VN: "Viet Nam",
+  },
+  vi_VN: {
+    en_US: "Mỹ",
+    vi_VN: "Việt Nam",
+  },
+};
+
+export function getCountryLabels(
+  uiLocale: SupportedLocale,
+): Record<SupportedLocale, string> {
+  return countryLabelsByUiLocale[uiLocale] ?? countryLabelsByUiLocale.en_US;
+}
 
 // Map country slug → locale
 export const countryToLocaleMap: Record<string, SupportedLocale> = {

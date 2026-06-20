@@ -6,16 +6,27 @@ import { countryLabelsByUiLocale, localeOptions, SupportedLocale } from "@/lib/c
 import { setLocale } from "@/store/localeSlice";
 import { useTranslations } from "@/hooks/useTranslations"
 
+function LocaleCountryRadio({ checked }: { checked: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-black dark:border-white"
+    >
+      {checked && (
+        <span className="h-2.5 w-2.5 rounded-full bg-black dark:bg-white" />
+      )}
+    </span>
+  );
+}
+
 const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => {
   const t = useTranslations("headerNavbar")
   const dispatch = useAppDispatch()
   const locale = useAppSelector((state) => state.locale.locale)
   const [showCountrySelect, setShowCountrySelect] = useState(false)
-  const [country, setCountry] = useState<"US" | "VN">("US") // mặc định là US
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    console.log('country', country);
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowCountrySelect(false)
@@ -68,7 +79,10 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
               {t?.chooseYourCountry ?? "Choose your country"}
             </p>
             {localeOptions.map(({ value, flag }, index) => (
-              <label key={`${value}-${index}`} className="flex items-center gap-2 mb-3">
+              <label
+                key={`${value}-${index}`}
+                className="mb-3 flex cursor-pointer items-center gap-2"
+              >
                 <input
                   type="radio"
                   name="country"
@@ -77,12 +91,13 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
                     dispatch(setLocale(value as SupportedLocale));
                     document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000`
                     localStorage.setItem("NEXT_LOCALE", value)
-                    setCountry(value === "en_US" ? "US" : "VN") // Cập nhật country dựa trên locale
                     setShowCountrySelect(false)
                   }}
+                  className="sr-only"
                 />
+                <LocaleCountryRadio checked={locale === value} />
                 <Image src={flag} alt={countryLabels[value]} width={24} height={16} />
-                <span className="font-semibold">
+                <span className="text-[16px] font-semibold">
                   {countryLabels[value]}
                 </span>
               </label>
