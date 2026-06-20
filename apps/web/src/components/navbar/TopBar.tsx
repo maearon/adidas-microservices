@@ -17,8 +17,8 @@ const TopBar = () => {
 
   const messages = [
     t?.freeStandardShipping || "FREE STANDARD SHIPPING WITH ADICLUB",
-    t?.fastFreeDelivery || "FAST, FREE DELIVERY WITH PRIME",
-    t?.extraDiscount || "GET AN EXTRA 25% OFF"
+    t?.fastFreeDelivery || "FREE SHIPPING ON FIFA WORLD CUP 26™",
+    t?.extraDiscount || "SAVE $30 ON ORDERS $100+"
   ]
   
   return (
