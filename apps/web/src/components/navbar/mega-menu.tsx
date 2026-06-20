@@ -201,11 +201,19 @@ function MegaMenuSidePromo({
     <Link
       onClick={onClose}
       href={promo.href}
-      className="group block border border-gray-300 transition-colors hover:border-black dark:border-gray-600 dark:hover:border-white"
+      className="group flex h-full min-h-0 flex-col self-stretch border border-gray-300 transition-colors hover:border-black dark:border-gray-600 dark:hover:border-white"
     >
-      <Image src={promo.src} alt={promo.alt} width={240} height={320} className="h-auto w-full" />
+      <div className="relative min-h-0 flex-1 overflow-hidden">
+        <Image
+          src={promo.src}
+          alt={promo.alt}
+          fill
+          sizes="(min-width: 1024px) 260px, 40vw"
+          className="object-cover object-top"
+        />
+      </div>
       {(promo.title || promo.description) && (
-        <div className="border-t border-gray-300 p-3 transition-colors group-hover:border-black dark:border-gray-600 dark:group-hover:border-white">
+        <div className="shrink-0 border-t border-gray-300 bg-white p-4 transition-colors group-hover:border-black dark:border-gray-600 dark:bg-black dark:group-hover:border-white">
           {promo.title && (
             <p className={cn("uppercase", megaMenuBold)}>
               {promo.titleTranslationKey
@@ -214,7 +222,7 @@ function MegaMenuSidePromo({
             </p>
           )}
           {promo.description && (
-            <p className={cn("text-gray-600 dark:text-gray-400", megaMenuRegular)}>
+            <p className={cn("mt-1", megaMenuRegular)}>
               {promo.descriptionTranslationKey
                 ? (t?.[promo.descriptionTranslationKey as keyof typeof t] || promo.description)
                 : promo.description}
@@ -245,7 +253,7 @@ function MegaMenuPanel({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto w-full max-w-6xl">
-        <div className={gridClass}>
+        <div className={cn(gridClass, "min-h-0")}>
           {columns.map((column, columnIndex) => (
             <MegaMenuColumnBlock
               key={columnIndex}
