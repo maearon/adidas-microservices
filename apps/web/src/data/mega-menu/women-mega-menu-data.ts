@@ -21,7 +21,7 @@ export const womenMenuData: MenuCategory[] = [
       { name: "Pet Collection 🐈", href: "/pet", translationKey: "petCollectionWomen" },
       { name: "Balletcore 🩰", href: "/women-ballerina", translationKey: "balletcore" },
       { name: "Pride: Love Unites 🏳️‍🌈", href: "/women-pride", translationKey: "prideLoveUnites" },
-      { name: "Spend $100 Save $30", href: "/women-spend_100_save_30", translationKey: "spend100Save30" },
+      { name: "Spend $100 Save $30", href: "/women-shop", translationKey: "spend100Save30" },
     ],
   },
   {

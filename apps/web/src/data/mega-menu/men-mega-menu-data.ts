@@ -21,7 +21,7 @@ export const menMenuData: MenuCategory[] = [
       { name: "Gifts for Every Dad 🧢", href: "/men-gifts_for_dad", translationKey: "giftsForEveryDad" },
       { name: "Pet Collection 🐾", href: "/pet", translationKey: "petCollection" },
       { name: "Pride: Love Unites 🏳️‍🌈", href: "/men-pride", translationKey: "prideLoveUnites" },
-      { name: "Spend $100 Save $30", href: "/men-spend_100_save_30", translationKey: "spend100Save30" },
+      { name: "Spend $100 Save $30", href: "/men-shop", translationKey: "spend100Save30" },
     ],
   },
   {

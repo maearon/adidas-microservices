@@ -8,7 +8,7 @@ import {
   fifaWorldCupPromo,
   kidsMenuColumns,
   menMenuColumns,
-  saleMenuData,
+  saleMenuColumns,
   sportsMenuColumns,
   trendingMenuData,
   womenMenuColumns,
@@ -18,6 +18,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import {
+  GroupedColumnsMegaMenuPanel,
+  SALE_MEGA_MENU_GRID,
+} from "@/components/navbar/grouped-columns-mega-menu-panel"
 import { SportsMegaMenuPanel } from "@/components/navbar/sports-mega-menu-panel"
 
 function megaMenuGridClass(columnCount: number, hasSidePromo: boolean) {
@@ -285,6 +289,35 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
     </div>
   )
 
+  if (activeMenu === "SALE") {
+    return shell(
+      <>
+        <GroupedColumnsMegaMenuPanel
+          columns={saleMenuColumns}
+          onClose={onClose}
+          t={t}
+          gridClassName={SALE_MEGA_MENU_GRID}
+        />
+        <div className="container mx-auto px-4 pb-8">
+          <div className="mx-auto flex max-w-6xl justify-start space-x-8 border-t pt-4">
+            <Link onClick={onClose} href="/sale" className="text-base font-bold hover:underline">
+              {t?.sale || "Sale"}
+            </Link>
+            <Link onClick={onClose} href="/sale/men" className="text-base font-bold hover:underline">
+              {t?.allMensSale || "All Men's Sale"}
+            </Link>
+            <Link onClick={onClose} href="/sale/women" className="text-base font-bold hover:underline">
+              {t?.allWomensSale || "All Women's Sale"}
+            </Link>
+            <Link onClick={onClose} href="/sale/kids" className="text-base font-bold hover:underline">
+              {t?.allKidsSale || "All Kids Sale"}
+            </Link>
+          </div>
+        </div>
+      </>,
+    )
+  }
+
   if (activeMenu === "SPORTS") {
     return shell(
       <SportsMegaMenuPanel columns={sportsMenuColumns} onClose={onClose} t={t} />,
@@ -352,17 +385,6 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
           { name: t?.allMens || "All Men's", href: "/men-back_to_school" },
           { name: t?.allWomens || "All Women's", href: "/women-back_to_school" },
           { name: t?.allSchoolAccessories || "All School Accessories", href: "/back_to_school" },
-        ],
-      }
-      break
-    case "SALE":
-      config = {
-        columns: categoriesToMegaMenuColumns(saleMenuData),
-        footerLinks: [
-          { name: t?.sale || "Sale", href: "/sale" },
-          { name: t?.allMensSale || "All Men's Sale", href: "/sale/men" },
-          { name: t?.allWomensSale || "All Women's Sale", href: "/sale/women" },
-          { name: t?.allKidsSale || "All Kids Sale", href: "/sale/kids" },
         ],
       }
       break

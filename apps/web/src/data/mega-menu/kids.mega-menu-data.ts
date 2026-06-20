@@ -19,7 +19,7 @@ export const kidsMenuData: MenuCategory[] = [
       { name: "Disney Collection", href: "/kids-disney_collection", translationKey: "disneyCollection" },
       { name: "Shop FIFA World Cup™", href: "/kids-fifa_world_cup", translationKey: "shopFifaWorldCup" },
       { name: "Summer Shop ☀️", href: "/kids-summer", translationKey: "summerShop" },
-      { name: "Spend $100 Save $30", href: "/kids-spend_100_save_30", translationKey: "spend100Save30" },
+      { name: "Spend $100 Save $30", href: "/kids-shop", translationKey: "spend100Save30" },
     ],
   },
   {
