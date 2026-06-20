@@ -86,10 +86,10 @@ export default function UserAccountSlideOut({
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-40" onClick={onClose} />}
+      {isOpen && <div className="fixed inset-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-[80]" onClick={onClose} />}
 
       <div
-        className={`fixed top-0 right-0 h-full w-96 bg-white dark:bg-black text-foreground shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-96 bg-white dark:bg-black text-foreground shadow-xl transform transition-transform duration-300 ease-in-out z-[90] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
