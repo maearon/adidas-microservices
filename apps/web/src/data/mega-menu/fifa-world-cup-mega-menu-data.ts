@@ -8,14 +8,14 @@ export type FifaMenuSection = {
 }
 
 export type FifaMenuColumn = {
-  title: string
+  title?: string
   titleHref?: string
   translationKey?: string
   sections: FifaMenuSection[]
 }
 
 export const fifaWorldCupPromo = {
-  href: "/fifa_world_cup-backyard_legends",
+  href: "/fifa_world_cup_store",
   src: "/image/upload/f_auto,q_auto,fl_lossy/H24630_FY_26_WORLDCUP_3x4_FB_Messi_RGB_1402232_d_2c7f2cda83.jpg",
   alt: "Backyard Legends — Lionel Messi",
   title: "BACKYARD LEGENDS",
@@ -37,7 +37,7 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
           { name: "Lifestyle", href: "/fifa_world_cup-lifestyle", translationKey: "lifestyle" },
           { name: "USA", href: "/fifa_world_cup-usa", translationKey: "usa" },
           { name: "Road to Glory", href: "/fifa_world_cup-road_to_glory", translationKey: "roadToGlory" },
-          { name: "Irlanda", href: "/fifa_world_cup-irlanda", translationKey: "irlanda" },
+          { name: "Trionda", href: "/fifa_world_cup-trionda", translationKey: "trionda" },
           { name: "Coca-Cola", href: "/fifa_world_cup-coca_cola", translationKey: "cocaCola" },
           { name: "Thrasher x AFA", href: "/fifa_world_cup-thrasher_afa", translationKey: "thrasherAfa" },
           { name: "adidas Equipment", href: "/fifa_world_cup-equipment", translationKey: "adidasEquipment" },
@@ -71,12 +71,10 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
     ],
   },
   {
-    title: "JERSEYS & CUSTOMIZATION",
-    titleHref: "/fifa_world_cup-jerseys",
-    translationKey: "jerseysCustomization",
     sections: [
       {
         heading: "JERSEYS",
+        headingHref: "/fifa_world_cup-jerseys",
         headingTranslationKey: "jerseysHeading",
         items: [
           { name: "Home", href: "/fifa_world_cup-jerseys-home", translationKey: "jerseyHome" },
@@ -93,12 +91,10 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
     ],
   },
   {
-    title: "FAN GEAR & SHOES",
-    titleHref: "/fifa_world_cup-fan_gear",
-    translationKey: "fanGearShoes",
     sections: [
       {
         heading: "FAN GEAR",
+        headingHref: "/fifa_world_cup-fan_gear",
         headingTranslationKey: "fanGear",
         items: [
           { name: "T-Shirts & Graphics", href: "/fifa_world_cup-t-shirts_graphics", translationKey: "tShirtsGraphics" },
@@ -109,6 +105,7 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
       },
       {
         heading: "SHOES",
+        headingHref: "/fifa_world_cup-shoes",
         headingTranslationKey: "shoes",
         items: [
           { name: "Sneakers", href: "/fifa_world_cup-sneakers", translationKey: "sneakers" },
@@ -118,12 +115,10 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
     ],
   },
   {
-    title: "ACCESSORIES & ATHLETES",
-    titleHref: "/fifa_world_cup-accessories",
-    translationKey: "accessoriesAthletes",
     sections: [
       {
         heading: "ACCESSORIES",
+        headingHref: "/fifa_world_cup-accessories",
         headingTranslationKey: "accessories",
         items: [
           { name: "Soccer Balls", href: "/fifa_world_cup-soccer_balls", translationKey: "soccerBalls" },
@@ -133,6 +128,7 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
       },
       {
         heading: "ATHLETES",
+        headingHref: "/fifa_world_cup-athletes",
         headingTranslationKey: "athletes",
         items: [
           { name: "Lionel Messi", href: "/fifa_world_cup-lionel_messi", translationKey: "lionelMessi" },
@@ -145,8 +141,18 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
 ]
 
 /** Flat structure for mobile menu */
-export const fifaWorldCupMenuData: MenuCategory[] = fifaWorldCupMenuColumns.map((column) => ({
-  title: column.title,
-  titleHref: column.titleHref,
-  items: column.sections.flatMap((section) => section.items),
-}))
+export const fifaWorldCupMenuData: MenuCategory[] = fifaWorldCupMenuColumns.flatMap((column) => {
+  if (column.title) {
+    return [{
+      title: column.title,
+      titleHref: column.titleHref,
+      items: column.sections.flatMap((section) => section.items),
+    }]
+  }
+
+  return column.sections.map((section) => ({
+    title: section.heading || "",
+    titleHref: section.headingHref,
+    items: section.items,
+  }))
+})

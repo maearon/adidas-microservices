@@ -54,19 +54,21 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
             <div className="col-span-5 grid grid-cols-5 gap-8">
               {fifaWorldCupMenuColumns.map((column, columnIndex) => (
                 <div key={columnIndex} className="space-y-4">
-                  <h3 className="font-bold text-base">
-                    {column.titleHref ? (
-                      <Link onClick={onClose} href={column.titleHref} className="hover:underline">
-                        {column.translationKey
+                  {column.title && (
+                    <h3 className="font-bold text-base">
+                      {column.titleHref ? (
+                        <Link onClick={onClose} href={column.titleHref} className="hover:underline">
+                          {column.translationKey
+                            ? (t?.[column.translationKey as keyof typeof t] || column.title)
+                            : column.title}
+                        </Link>
+                      ) : (
+                        column.translationKey
                           ? (t?.[column.translationKey as keyof typeof t] || column.title)
-                          : column.title}
-                      </Link>
-                    ) : (
-                      column.translationKey
-                        ? (t?.[column.translationKey as keyof typeof t] || column.title)
-                        : column.title
-                    )}
-                  </h3>
+                          : column.title
+                      )}
+                    </h3>
+                  )}
                   {column.sections.map((section, sectionIndex) => (
                     <div key={sectionIndex} className="space-y-2">
                       {section.heading && (
@@ -107,7 +109,11 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               ))}
             </div>
             <div className="col-span-1">
-              <Link onClick={onClose} href={fifaWorldCupPromo.href} className="block">
+              <Link
+                onClick={onClose}
+                href={fifaWorldCupPromo.href}
+                className="group block border border-gray-300 transition-colors hover:border-black dark:border-gray-600 dark:hover:border-white"
+              >
                 <Image
                   src={fifaWorldCupPromo.src}
                   alt={fifaWorldCupPromo.alt}
@@ -115,12 +121,14 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
                   height={320}
                   className="w-full h-auto"
                 />
-                <p className="mt-3 font-bold text-base uppercase">
-                  {t?.[fifaWorldCupPromo.titleTranslationKey as keyof typeof t] || fifaWorldCupPromo.title}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {t?.[fifaWorldCupPromo.descriptionTranslationKey as keyof typeof t] || fifaWorldCupPromo.description}
-                </p>
+                <div className="border-t border-gray-300 p-3 transition-colors group-hover:border-black dark:border-gray-600 dark:group-hover:border-white">
+                  <p className="font-bold text-base uppercase">
+                    {t?.[fifaWorldCupPromo.titleTranslationKey as keyof typeof t] || fifaWorldCupPromo.title}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {t?.[fifaWorldCupPromo.descriptionTranslationKey as keyof typeof t] || fifaWorldCupPromo.description}
+                  </p>
+                </div>
               </Link>
             </div>
           </div>
