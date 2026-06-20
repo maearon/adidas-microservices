@@ -4,6 +4,9 @@ import Link from "next/link"
 import { useEffect, useState, type ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
+import { useTranslations } from "@/hooks/useTranslations"
+import { cn } from "@/lib/utils"
+import { Z } from "@/lib/z-index"
 
 interface TopBarDropdownProps {
   isOpen: boolean
@@ -149,7 +152,8 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
 
   const desktopBackdrop = createPortal(
     <div
-      className="fixed inset-0 z-[65] hidden bg-black/50 md:block"
+      className="fixed inset-0 hidden bg-black/50 md:block"
+      style={{ zIndex: Z.topBarBackdrop }}
       onClick={onClose}
       aria-hidden
     />,
@@ -157,14 +161,20 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
   )
 
   const desktopPanel = createPortal(
-    <div className="fixed inset-x-0 top-0 z-[70] hidden h-[611px] border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-black md:block">
+    <div
+      className="fixed inset-x-0 top-0 hidden h-[611px] border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-black md:block"
+      style={{ zIndex: Z.topBarPanel }}
+    >
       <UspPanelContent onClose={onClose} variant="desktop" />
     </div>,
     document.body,
   )
 
   const mobilePanel = createPortal(
-    <div className="fixed inset-0 z-[200] bg-white dark:bg-black md:hidden">
+    <div
+      className="fixed inset-0 bg-white dark:bg-black md:hidden"
+      style={{ zIndex: Z.topBarPanel }}
+    >
       <UspPanelContent onClose={onClose} variant="mobile" />
     </div>,
     document.body,

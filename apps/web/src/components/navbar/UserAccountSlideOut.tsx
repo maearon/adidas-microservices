@@ -14,6 +14,8 @@ import Link from "next/link"
 // import { clearTokens } from "@/lib/token"
 import { LogMeOutButton } from "@/components/auth/LogMeOutButton";
 import { useTranslations } from "@/hooks/useTranslations"
+import { Z } from "@/lib/z-index"
+import { cn } from "@/lib/utils"
 import { LogoutEverywhereButton } from "@/app/(main)/profile/logout-everywhere-button";
 
 interface UserAccountSlideOutProps {
@@ -86,12 +88,20 @@ export default function UserAccountSlideOut({
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-[80]" onClick={onClose} />}
+      {isOpen && (
+        <div
+          className="fixed inset-0 h-screen w-screen bg-black/50"
+          style={{ zIndex: Z.accountBackdrop }}
+          onClick={onClose}
+        />
+      )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-96 bg-white dark:bg-black text-foreground shadow-xl transform transition-transform duration-300 ease-in-out z-[90] ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={cn(
+          "fixed top-0 right-0 h-full w-96 bg-white text-foreground shadow-xl transition-transform duration-300 ease-in-out dark:bg-black",
+          isOpen ? "translate-x-0" : "translate-x-full",
+        )}
+        style={{ zIndex: Z.accountPanel }}
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b">

@@ -15,6 +15,7 @@ import HeaderNavbar from "./HeaderNavbar"
 import MainNavbar from "./MainNavbar"
 import UserAccountSlideOut from "./UserAccountSlideOut"
 import MobileMenuSlideOut from "./MobileMenuSideOut"
+import { Z } from "@/lib/z-index"
 import { useInitSession } from "@/api/hooks/useLoginMutation"
 import FullScreenLoader from "../ui/FullScreenLoader"
 // import { selectUser } from "@/store/sessionSlice"
@@ -102,7 +103,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     <>
       <MobileAppBanner isOpen={showAppBanner} onClose={() => setShowAppBanner(false)} />
 
-      <header className="relative z-[60] sm:border-b sm:border-gray-200">
+      <header className="relative sm:border-b sm:border-gray-200" style={{ zIndex: Z.siteHeader }}>
         {/* Top bar */}
         <TopBar />
 

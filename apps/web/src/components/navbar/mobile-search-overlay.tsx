@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import { Z } from "@/lib/z-index"
 
 interface MobileSearchOverlayProps {
   isOpen: boolean
@@ -36,7 +38,21 @@ export default function MobileSearchOverlay({
 }: MobileSearchOverlayProps) {
   const [filteredSuggestions, setFilteredSuggestions] = useState<Suggestion[]>([])
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const t = useTranslations("common")
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [isOpen])
 
   // 🔁 Debounce fetch
   useEffect(() => {
@@ -71,19 +87,19 @@ export default function MobileSearchOverlay({
     onSearch(fakeEvent)
   }
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
-  return (
+  return createPortal(
     <>
-      {/* Overlay mờ */}
-      <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50 sm:hidden" onClick={onClose} />
-
-      {/* Search panel */}
       <div
-        className={cn(
-          "fixed top-0 right-0 h-full w-full bg-white dark:bg-black z-50 transform transition-transform duration-300 sm:hidden flex flex-col",
-          isOpen ? "translate-x-0" : "translate-x-full",
-        )}
+        className="fixed inset-0 bg-black/50 sm:hidden"
+        style={{ zIndex: Z.mobileSearchBackdrop }}
+        onClick={onClose}
+      />
+
+      <div
+        className="fixed inset-0 flex flex-col bg-white dark:bg-black sm:hidden"
+        style={{ zIndex: Z.mobileSearch }}
       >
         {/* Header */}
         <div className="flex items-center bg-[#eceff1] dark:bg-black p-4 relative">
@@ -150,6 +166,7 @@ export default function MobileSearchOverlay({
           ) : null}
         </div>
       </div>
-    </>
+    </>,
+    document.body,
   )
 }

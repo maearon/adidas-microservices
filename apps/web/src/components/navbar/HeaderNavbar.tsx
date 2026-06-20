@@ -41,7 +41,7 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
   
   return (
     <div
-      className="relative z-[60] flex w-full items-center justify-end px-12 py-2 text-xs text-gray-700 dark:text-white"
+      className="relative flex w-full items-center justify-end px-12 py-2 text-xs text-gray-700 dark:text-white"
       onMouseEnter={onCloseMegaMenu}
     >
       <Link href="/sign-up" className="hover:underline mr-3">{t?.registerLink ?? "sign up"}</Link>
@@ -74,7 +74,7 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
 
         {/* Dropdown */}
         {showCountrySelect && (
-          <div className="absolute right-0 z-[70] mt-2 w-60 border bg-white p-4 shadow-xl dark:border-white dark:bg-black">
+          <div className="absolute right-0 mt-2 w-60 border bg-white p-4 shadow-xl dark:border-white dark:bg-black" style={{ zIndex: Z.headerDropdown }}>
             <p className="mb-4 text-[16px] leading-snug text-black dark:text-white">
               {t?.chooseYourCountry ?? "Choose your country"}
             </p>

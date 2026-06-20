@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -39,6 +40,7 @@ import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
 import { normalizeLocale } from "@/lib/utils"
 import { adidasCdnImage } from "@/lib/adidas-cdn"
+import { Z } from "@/lib/z-index"
 
 // ======================
 // Utils type guards
@@ -257,13 +259,17 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     setNavigationHistory((prev) => [...prev, { level, scrollPosition }])
   }
 
-  // Close on resize >= md
   useEffect(() => {
     if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
     const mediaQuery = window.matchMedia("(min-width: 768px)")
     const handleResize = () => mediaQuery.matches && onClose()
     mediaQuery.addEventListener("change", handleResize)
-    return () => mediaQuery.removeEventListener("change", handleResize)
+    return () => {
+      document.body.style.overflow = prev
+      mediaQuery.removeEventListener("change", handleResize)
+    }
   }, [isOpen, onClose])
 
   // Init menu
@@ -339,16 +345,18 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     activeRootMenu === "FIFA WORLD CUP 26™"
   if (!isOpen) return null
 
-  return (
+  const menu = (
     <>
-      {/* Overlay */}
       <div
-        className="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50"
+        className="fixed inset-0 bg-black/50 md:hidden"
+        style={{ zIndex: Z.mobileMenuBackdrop }}
         onClick={handleClose}
       />
 
-      {/* Panel */}
-      <div className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:hidden">
+      <div
+        className="fixed inset-0 flex flex-col bg-white dark:bg-black md:hidden"
+        style={{ zIndex: Z.mobileMenu }}
+      >
         {/* Header sticky top */}
         <div
           className="h-10 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white min-h-[60px]"
@@ -574,4 +582,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       </div>
     </>
   )
+
+  return createPortal(menu, document.body)
 }
