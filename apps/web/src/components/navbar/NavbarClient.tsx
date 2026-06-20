@@ -107,7 +107,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         <TopBar />
 
         {/* Desktop layout */}
-        <div className="hidden sm:block border-b border-gray-200 relative bg-white dark:bg-black text-black dark:text-white">
+        <div className="hidden sm:block border-b border-gray-200 relative overflow-visible bg-white dark:bg-black text-black dark:text-white">
           <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20">
             <Link href="/" className="flex items-center">
               <AdidasLogo />

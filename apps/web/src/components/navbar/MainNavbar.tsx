@@ -50,16 +50,19 @@ export default function MainNavbar({
   ]
   
   return (
-    <div className="grid grid-cols-3 items-center px-12 pb-2 mx-0 w-full">
-      <div></div>
-      <div className="w-full justify-self-start xl:justify-self-center">
-        <nav className="flex space-x-8 justify-center">
+    <div className="grid grid-cols-[1fr_auto_1fr] items-center px-12 pb-2 mx-0 w-full">
+      <div aria-hidden />
+      <nav className="relative z-30 flex shrink-0 items-center justify-center gap-6 xl:gap-8">
           {navItems.map((item) => (
-              <div key={item.href} onMouseEnter={() => handleMouseEnter(item.menuKey)}>
+              <div
+                key={item.href}
+                className="relative shrink-0"
+                onMouseEnter={() => handleMouseEnter(item.menuKey)}
+              >
                 <Link
                   href={item.href}
                   className={cn(
-                    "text-base py-2 whitespace-nowrap",
+                    "inline-block py-2 text-base whitespace-nowrap",
                     item.bold ? "font-bold uppercase" : "font-medium",
                     pathname === item.href && "border-b-2 border-black dark:border-white",
                     activeMenu === item.menuKey && "border-b-2 border-black dark:border-white",
@@ -69,12 +72,16 @@ export default function MainNavbar({
                 </Link>
               </div>
             ))}
-        </nav>
-      </div>
-      <div className="flex justify-end items-center space-x-4">
-        <SearchField />
+      </nav>
+      <div className="pointer-events-none flex items-center justify-end gap-4 justify-self-end">
+        <div className="pointer-events-auto">
+          <SearchField />
+        </div>
 
-        <button onClick={handleUserIconClick} className="relative cursor-pointer">
+        <button
+          onClick={handleUserIconClick}
+          className="pointer-events-auto relative cursor-pointer"
+        >
           <User className="h-5 w-5" />
           {!session?.user?.email && (
             <span className={cn(
@@ -85,7 +92,7 @@ export default function MainNavbar({
           )}
         </button>
 
-        <Link href="/wishlist" className="relative">
+        <Link href="/wishlist" className="pointer-events-auto relative">
           <Heart
             className={cn(
               "h-5 w-5",
@@ -99,24 +106,36 @@ export default function MainNavbar({
           )}
         </Link>
 
-        <Link href="/cart" className="relative group">
-          <ShoppingBag
-            className={cn(
-              "h-5 w-5",
-              cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
-            )}
-          />
-          <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
-            {cartItemsCount}
-          </span>
-          {cartItemsCount === 0 && (
-                <div className="absolute top-8 right-0 bg-white dark:bg-black text-black dark:text-white border shadow-lg p-4 rounded-none hidden group-hover:block z-10 whitespace-nowrap">
-                  <p className="font-bold">{accountT?.yourBagIsEmpty || "Your Bag is Empty"}</p>
-                </div>
+        <div className="group/bag pointer-events-auto relative">
+          <Link href="/cart" className="relative inline-flex">
+            <ShoppingBag
+              className={cn(
+                "h-5 w-5",
+                cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
               )}
-        </Link>
+            />
+            <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+              {cartItemsCount}
+            </span>
+          </Link>
+          {cartItemsCount === 0 && (
+            <div
+              className={cn(
+                "absolute right-0 top-full z-[60] mt-px hidden h-14 w-[min(520px,calc(100vw-6rem))]",
+                "items-center border border-gray-200 bg-white pl-12 pr-8 shadow-sm",
+                "group-hover/bag:block dark:border-gray-700 dark:bg-black",
+              )}
+            >
+              <p className="text-base font-bold text-black dark:text-white">
+                {accountT?.yourBagIsEmpty || "Your Bag is Empty"}
+              </p>
+            </div>
+          )}
+        </div>
 
-        <ThemeToggle />
+        <div className="pointer-events-auto">
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   )
