@@ -64,6 +64,16 @@ function buildMainCategories(t: NavigationTranslations): MenuCategory[] {
       items: [],
     },
     {
+      title: t?.fifaWorldCup26 || "FIFA WORLD CUP 26™",
+      titleHref: "/fifa_world_cup",
+      items: [],
+    },
+    {
+      title: t?.sports || "SPORTS",
+      titleHref: "/sports",
+      items: [],
+    },
+    {
       title: t?.backToSchool || "BACK TO SCHOOL🔥",
       titleHref: "/back_to_school",
       items: [],
@@ -170,6 +180,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     if (category.title === (t?.men || "MEN")) menuKey = "MEN"
     else if (category.title === (t?.women || "WOMEN")) menuKey = "WOMEN"
     else if (category.title === (t?.kids || "KIDS")) menuKey = "KIDS"
+    else if (category.title === (t?.fifaWorldCup26 || "FIFA WORLD CUP 26™")) menuKey = "FIFA WORLD CUP 26™"
     else if (category.title === (t?.backToSchool || "BACK TO SCHOOL🔥")) menuKey = "BACK TO SCHOOL🔥"
     else if (category.title === (t?.sale || "SALE")) menuKey = "SALE"
     else if (category.title === (t?.newTrending || "NEW & TRENDING")) menuKey = "NEW & TRENDING"

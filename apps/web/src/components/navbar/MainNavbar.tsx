@@ -37,12 +37,13 @@ export default function MainNavbar({
   const accountT = useTranslations("account")
 
   const navItems = [
-    { name: t?.men || "MEN", href: "/men" },
-    { name: t?.women || "WOMEN", href: "/women" },
-    { name: t?.kids || "KIDS", href: "/kids" },
-    { name: t?.backToSchool || "BACK TO SCHOOL🔥", href: "/back_to_school" },
-    { name: t?.sale || "SALE", href: "/sale" },
-    { name: t?.newTrending || "NEW & TRENDING", href: "/trending" },
+    { name: t?.men || "MEN", href: "/men", menuKey: "MEN", bold: true },
+    { name: t?.women || "WOMEN", href: "/women", menuKey: "WOMEN", bold: true },
+    { name: t?.kids || "KIDS", href: "/kids", menuKey: "KIDS", bold: true },
+    { name: t?.fifaWorldCup26 || "FIFA WORLD CUP 26™", href: "/fifa_world_cup", menuKey: "FIFA WORLD CUP 26™", bold: false },
+    { name: t?.sports || "SPORTS", href: "/sports", menuKey: "SPORTS", bold: false },
+    { name: t?.sale || "SALE", href: "/sale", menuKey: "SALE", bold: false },
+    { name: t?.newTrending || "NEW & TRENDING", href: "/trending", menuKey: "NEW & TRENDING", bold: false },
   ]
   
   return (
@@ -50,24 +51,21 @@ export default function MainNavbar({
       <div></div>
       <div className="w-full justify-self-start xl:justify-self-center">
         <nav className="flex space-x-8 justify-center">
-          {navItems.map((item, index) => {
-            const originalName = ["MEN", "WOMEN", "KIDS", "BACK TO SCHOOL🔥", "SALE", "NEW & TRENDING"][index]
-            return (
-              <div key={item.href} onMouseEnter={() => handleMouseEnter(originalName)}>
+          {navItems.map((item) => (
+              <div key={item.href} onMouseEnter={() => handleMouseEnter(item.menuKey)}>
                 <Link
                   href={item.href}
                   className={cn(
                     "text-base py-2 whitespace-nowrap",
-                    (originalName === "MEN" || originalName === "WOMEN" || originalName === "KIDS") ? "font-bold uppercase" : "font-medium",
+                    item.bold ? "font-bold uppercase" : "font-medium",
                     pathname === item.href && "border-b-2 border-black dark:border-white",
-                    activeMenu === originalName && "border-b-2 border-black dark:border-white",
+                    activeMenu === item.menuKey && "border-b-2 border-black dark:border-white",
                   )}
                 >
                   {item.name}
                 </Link>
               </div>
-            )
-          })}
+            ))}
         </nav>
       </div>
       <div className="flex justify-end items-center space-x-4">

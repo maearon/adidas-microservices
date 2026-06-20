@@ -46,6 +46,8 @@ export interface NavigationTranslations {
   women: string;
   kids: string;
   backToSchool: string;
+  fifaWorldCup26: string;
+  sports: string;
   sale: string;
   newTrending: string;
 }

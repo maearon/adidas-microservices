@@ -1,6 +1,6 @@
 "use client"
 
-import { backToSchoolMenuData, kidsMenuData, menMenuData, saleMenuData, trendingMenuData, womenMenuData } from "@/data/mega-menu"
+import { backToSchoolMenuData, fifaWorldCupMenuColumns, fifaWorldCupPromo, kidsMenuData, menMenuData, saleMenuData, trendingMenuData, womenMenuData } from "@/data/mega-menu"
 import { MenuCategory, Nullable } from "@/types/common"
 import Link from "next/link"
 import Image from "next/image"
@@ -42,6 +42,92 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
   ]
 
   if (!activeMenu) return null
+
+  if (activeMenu === "FIFA WORLD CUP 26™") {
+    return (
+      <div
+        className="absolute left-0 right-0 bg-white dark:bg-black text-foreground border-t border-gray-200 shadow-lg z-50"
+        onMouseLeave={onClose}
+      >
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-6 gap-8">
+            <div className="col-span-5 grid grid-cols-5 gap-8">
+              {fifaWorldCupMenuColumns.map((column, columnIndex) => (
+                <div key={columnIndex} className="space-y-4">
+                  <h3 className="font-bold text-base">
+                    {column.titleHref ? (
+                      <Link onClick={onClose} href={column.titleHref} className="hover:underline">
+                        {column.translationKey
+                          ? (t?.[column.translationKey as keyof typeof t] || column.title)
+                          : column.title}
+                      </Link>
+                    ) : (
+                      column.translationKey
+                        ? (t?.[column.translationKey as keyof typeof t] || column.title)
+                        : column.title
+                    )}
+                  </h3>
+                  {column.sections.map((section, sectionIndex) => (
+                    <div key={sectionIndex} className="space-y-2">
+                      {section.heading && (
+                        section.headingHref ? (
+                          <Link
+                            onClick={onClose}
+                            href={section.headingHref}
+                            className="block font-bold text-base hover:underline"
+                          >
+                            {section.headingTranslationKey
+                              ? (t?.[section.headingTranslationKey as keyof typeof t] || section.heading)
+                              : section.heading}
+                          </Link>
+                        ) : (
+                          <p className="font-bold text-base">
+                            {section.headingTranslationKey
+                              ? (t?.[section.headingTranslationKey as keyof typeof t] || section.heading)
+                              : section.heading}
+                          </p>
+                        )
+                      )}
+                      {section.items.length > 0 && (
+                        <ul className="space-y-2">
+                          {section.items.map((item, itemIndex) => (
+                            <li key={itemIndex}>
+                              <Link onClick={onClose} href={item.href} className="text-base hover:underline">
+                                {item.translationKey
+                                  ? (t?.[item.translationKey as keyof typeof t] || item.name)
+                                  : item.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div className="col-span-1">
+              <Link onClick={onClose} href={fifaWorldCupPromo.href} className="block">
+                <Image
+                  src={fifaWorldCupPromo.src}
+                  alt={fifaWorldCupPromo.alt}
+                  width={240}
+                  height={320}
+                  className="w-full h-auto"
+                />
+                <p className="mt-3 font-bold text-base uppercase">
+                  {t?.[fifaWorldCupPromo.titleTranslationKey as keyof typeof t] || fifaWorldCupPromo.title}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {t?.[fifaWorldCupPromo.descriptionTranslationKey as keyof typeof t] || fifaWorldCupPromo.description}
+                </p>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   // Tất cả dữ liệu MEN, WOMEN, KIDS, SALE, TRENDING... bạn đã cung cấp sẽ nằm ở đây
   // -- omitted for brevity --

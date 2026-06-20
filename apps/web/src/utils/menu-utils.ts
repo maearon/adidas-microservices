@@ -3,6 +3,7 @@ import { menMenuData } from "@/data/mega-menu/men-mega-menu-data"
 import { womenMenuData } from "@/data/mega-menu/women-mega-menu-data"
 import { kidsMenuData } from "@/data/mega-menu/kids.mega-menu-data"
 import { backToSchoolMenuData } from "@/data/mega-menu/back-to-school-mega-menu-data"
+import { fifaWorldCupMenuData } from "@/data/mega-menu/fifa-world-cup-mega-menu-data"
 import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
@@ -121,6 +122,7 @@ export const mainMenuData: Record<string, MenuCategory[]> = {
   WOMEN: womenMenuDataWithColor,
   KIDS: kidsMenuDataWithColor,
   "BACK TO SCHOOL🔥": sanitizeMenuTitles(backToSchoolMenuData),
+  "FIFA WORLD CUP 26™": sanitizeMenuTitles(fifaWorldCupMenuData),
   "NEW & TRENDING": sanitizeMenuTitles(trendingMenuData),
   SALE: sanitizeMenuTitles(saleMenuData),
 }

@@ -1,4 +1,5 @@
 export * from "./back-to-school-mega-menu-data"
+export * from "./fifa-world-cup-mega-menu-data"
 export * from "./kids.mega-menu-data"
 export * from "./men-mega-menu-data"
 export * from "./sale-mega-menu-data"
