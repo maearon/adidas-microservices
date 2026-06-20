@@ -1,4 +1,12 @@
 import { MenuCategory } from "@/types/common";
+import { buildGenderMegaMenuColumns } from "./mega-menu-columns";
+
+/** Prime banner — cột NEW & TRENDING (adidas.com/us MEN, World Cup season) */
+export const menMegaMenuBanner = {
+  href: "/men-prime_delivery",
+  src: "https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/bwp_adidas_content_slot_navigation_d_dfbf3d31ce.png",
+  alt: "Fast, free delivery with Prime",
+};
 
 export const menMenuData: MenuCategory[] = [
   {
@@ -98,3 +106,7 @@ export const menMenuData: MenuCategory[] = [
     ],
   },
 ];
+
+export const menMenuColumns = buildGenderMegaMenuColumns(menMenuData, {
+  shopByColorAfterHeading: "CLOTHING",
+});

@@ -1,3 +1,4 @@
+export * from "./mega-menu-columns"
 export * from "./back-to-school-mega-menu-data"
 export * from "./fifa-world-cup-mega-menu-data"
 export * from "./kids.mega-menu-data"

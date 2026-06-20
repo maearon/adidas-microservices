@@ -1,4 +1,5 @@
 import { MenuCategory } from "@/types/common";
+import { buildGenderMegaMenuColumns } from "./mega-menu-columns";
 
 /** Prime banner — cột NEW & TRENDING (adidas.com/us WOMEN, World Cup season) */
 export const womenMegaMenuBanner = {
@@ -111,3 +112,7 @@ export const womenMenuData: MenuCategory[] = [
     ],
   },
 ];
+
+export const womenMenuColumns = buildGenderMegaMenuColumns(womenMenuData, {
+  shopByColorAfterHeading: "CLOTHING",
+});

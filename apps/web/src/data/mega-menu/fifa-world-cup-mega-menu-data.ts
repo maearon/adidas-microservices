@@ -1,4 +1,5 @@
-import { MenuCategory } from "@/types/common";
+import { MenuCategory, MegaMenuColumn } from "@/types/common";
+import { flattenMegaMenuColumns } from "./mega-menu-columns";
 
 export type FifaMenuSection = {
   heading?: string
@@ -7,12 +8,7 @@ export type FifaMenuSection = {
   items: { name: string; href: string; translationKey?: string }[]
 }
 
-export type FifaMenuColumn = {
-  title?: string
-  titleHref?: string
-  translationKey?: string
-  sections: FifaMenuSection[]
-}
+export type FifaMenuColumn = MegaMenuColumn
 
 export const fifaWorldCupPromo = {
   href: "/fifa_world_cup_store",
@@ -141,18 +137,4 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
 ]
 
 /** Flat structure for mobile menu */
-export const fifaWorldCupMenuData: MenuCategory[] = fifaWorldCupMenuColumns.flatMap((column) => {
-  if (column.title) {
-    return [{
-      title: column.title,
-      titleHref: column.titleHref,
-      items: column.sections.flatMap((section) => section.items),
-    }]
-  }
-
-  return column.sections.map((section) => ({
-    title: section.heading || "",
-    titleHref: section.headingHref,
-    items: section.items,
-  }))
-})
+export const fifaWorldCupMenuData: MenuCategory[] = flattenMegaMenuColumns(fifaWorldCupMenuColumns)

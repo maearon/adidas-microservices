@@ -96,8 +96,8 @@ function buildMobileGenderMenu(data: MenuCategory[], gender: "men" | "women" | "
       {
         title: "Sports",
         translationKey: "sports",
-        titleHref: getColumn(data, "SHOP BY SPORT")?.titleHref,
-        items: getColumn(data, "SHOP BY SPORT")?.items ?? [],
+        titleHref: getColumn(data, "SPORTS")?.titleHref,
+        items: getColumn(data, "SPORTS")?.items ?? [],
       },
       {
         title: "Shop by Age",

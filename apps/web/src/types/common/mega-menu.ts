@@ -1,11 +1,46 @@
 // types/common/mega-menu.ts
 
+export type MegaMenuLink = {
+  name: string
+  href: string
+  translationKey?: string
+}
+
+export type MegaMenuSection = {
+  heading?: string
+  headingHref?: string
+  headingTranslationKey?: string
+  items: MegaMenuLink[]
+}
+
+/** Desktop mega menu column — one equal grid column; may stack multiple sections */
+export type MegaMenuColumn = {
+  title?: string
+  titleHref?: string
+  translationKey?: string
+  sections: MegaMenuSection[]
+  /** Prime banner below section links */
+  showPrimeBanner?: boolean
+  /** Shop by Color block at bottom of column */
+  showShopByColor?: boolean
+}
+
+export type MegaMenuPromo = {
+  href: string
+  src: string
+  alt: string
+  title?: string
+  titleTranslationKey?: string
+  description?: string
+  descriptionTranslationKey?: string
+}
+
 // MenuCategory: category có thể có submenu (items)
 export interface MenuCategory {
   title: string
   titleHref?: string      // link chính cho category
   description?: string    // optional description
-  items: { name: string; href: string; translationKey?: string }[]
+  items: MegaMenuLink[]
   translationKey?: string
 }
 
