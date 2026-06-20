@@ -16,7 +16,6 @@ import type {
   NavigationHistory,
   NavigationTranslations,
 } from "@/types/common"
-import { capitalizeWordsCountry } from "@/utils/upper-words"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
   localeDisplayMap,
@@ -35,10 +34,8 @@ import {
   type MobileNavNode,
 } from "@/data/mobile-menu/mobile-nav-data"
 import { useTranslations } from "@/hooks/useTranslations"
-import LocaleModal from "@/components/footer/LocaleModal"
 import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
-import { normalizeLocale } from "@/lib/utils"
 import { adidasCdnImage } from "@/lib/adidas-cdn"
 import { Z } from "@/lib/z-index"
 
@@ -263,11 +260,17 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     if (!isOpen) return
     const prev = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    window.dispatchEvent(
+      new CustomEvent("adidas:mobile-menu", { detail: { open: true } }),
+    )
     const mediaQuery = window.matchMedia("(min-width: 768px)")
     const handleResize = () => mediaQuery.matches && onClose()
     mediaQuery.addEventListener("change", handleResize)
     return () => {
       document.body.style.overflow = prev
+      window.dispatchEvent(
+        new CustomEvent("adidas:mobile-menu", { detail: { open: false } }),
+      )
       mediaQuery.removeEventListener("change", handleResize)
     }
   }, [isOpen, onClose])
@@ -406,7 +409,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         </div>
 
         {/* Content scrollable */}
-        <div className="flex-1 overflow-y-auto mobile-menu-content">
+        <div className="mobile-menu-content min-h-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y">
           {isMainMenu ? (
             <div>
               {/* Main Categories */}
@@ -556,10 +559,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
         {/* Footer sticky (only level 1) */}
         {isMainMenu && (
-        <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-white">
+        <div className="sticky bottom-0 z-10 shrink-0 border-t border-gray-200 bg-white dark:border-white dark:bg-black">
           <button
+            type="button"
             onClick={() => setIsLocaleModalOpen(true)}
-            className="w-full h-14 flex items-center justify-between pl-5 pr-4 cursor-pointer"
+            className="flex h-14 w-full cursor-pointer items-center justify-between pl-5 pr-4"
           >
             <div className="flex items-center gap-3">
               <Image
@@ -571,14 +575,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <span className="font-medium">{localeDisplayMap[locale]}</span>
             </div>
           </button>
-
-          <LocationModal
-            isOpen={isLocaleModalOpen}
-            onClose={() => setIsLocaleModalOpen(false)}
-            onLocationSelect={selectLocation}
-          />
         </div>
         )}
+
+        <LocationModal
+          isOpen={isLocaleModalOpen}
+          onClose={() => setIsLocaleModalOpen(false)}
+          onLocationSelect={selectLocation}
+        />
       </div>
     </>
   )

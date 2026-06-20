@@ -1,10 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { ArrowRight, X } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { createPortal } from "react-dom"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "@/components/adidas-logo"
+import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 import { toast } from "react-toastify"
 import { useTranslations } from "@/hooks/useTranslations"
 import { Z } from "@/lib/z-index"
@@ -45,11 +46,21 @@ export default function FeedbackWidget() {
   const [mounted, setMounted] = React.useState(false)
   const [isClosed, setIsClosed] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [rating, setRating] = React.useState<number | null>(null)
   const [improvement, setImprovement] = React.useState("")
 
   React.useEffect(() => {
     setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<{ open: boolean }>).detail
+      setMobileMenuOpen(Boolean(detail?.open))
+    }
+    window.addEventListener("adidas:mobile-menu", handler)
+    return () => window.removeEventListener("adidas:mobile-menu", handler)
   }, [])
 
   React.useEffect(() => {
@@ -96,17 +107,11 @@ export default function FeedbackWidget() {
           className="hidden self-center sm:flex"
         />
 
-        <div className="flex h-svh min-h-0 w-full flex-col bg-white shadow-2xl dark:bg-black sm:w-[448px]">
-          <div className="flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-4 dark:border-gray-700 sm:px-6">
+        <div className="relative flex h-svh min-h-0 w-full flex-col overflow-visible bg-white shadow-2xl dark:bg-black sm:w-[448px]">
+          <AdidasCloseButton variant="corner" onClick={closePanel} ariaLabel="Close feedback" />
+
+          <div className="flex shrink-0 items-center border-b border-gray-200 px-4 py-4 dark:border-gray-700 sm:px-6">
             <AdidasLogo />
-            <button
-              type="button"
-              onClick={closePanel}
-              className="p-1"
-              aria-label="Close feedback"
-            >
-              <X className="h-5 w-5" strokeWidth={1.25} />
-            </button>
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -214,7 +219,7 @@ export default function FeedbackWidget() {
 
   return (
     <>
-      {!isOpen && (
+      {!isOpen && !mobileMenuOpen && (
         <FeedbackTab
           onClick={openPanel}
           label={feedbackLabel}

@@ -194,8 +194,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   return step !== "activate" ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
-        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
+      <DialogContent
+        hideCloseButton
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="relative w-[95vw] max-h-[95vh] overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
         <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
@@ -427,8 +429,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     </Dialog>
   ) : (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}
-        className="w-[95vw] sm:max-w-md max-h-[95vh] overflow: visible bg-white dark:bg-black p-0 rounded-none"
+      <DialogContent
+        hideCloseButton
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="relative w-[95vw] max-h-[95vh] overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
         <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />

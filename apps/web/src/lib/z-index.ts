@@ -12,6 +12,8 @@ export const Z = {
   feedbackTab: 350,
   feedbackBackdrop: 360,
   feedbackPanel: 370,
+  modalBackdrop: 420,
+  modalContent: 430,
   accountBackdrop: 400,
   accountPanel: 410,
   fullScreenLoader: 9999,

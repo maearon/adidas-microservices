@@ -63,7 +63,11 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="sm:max-w-md p-0 bg-white dark:bg-black">
+      <DialogContent
+        hideCloseButton
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="relative overflow-visible sm:max-w-md rounded-none bg-white p-0 dark:bg-black"
+      >
         <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
         <div className="relative p-8">
