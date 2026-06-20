@@ -252,5 +252,19 @@
   "belgium": "Belgium",
   "chile": "Chile",
   "peru": "Peru",
-  "sweden": "Sweden"
+  "sweden": "Sweden",
+  "shopAll": "Shop all",
+  "allTeams": "All Teams",
+  "primeDelivery": "PRIME DELIVERY",
+  "primeDeliveryDesc": "Fast, free delivery, now on adidas",
+  "mensSale": "Men's Sale",
+  "womensSale": "Women's Sale",
+  "kidsSale": "Kids Sale",
+  "menNav": "Men",
+  "womenNav": "Women",
+  "kidsNav": "Kids",
+  "shoesNav": "Shoes",
+  "accessoriesNav": "Accessories",
+  "finalSale": "Final Sale",
+  "petCollectionWC": "Pet Collection"
 }

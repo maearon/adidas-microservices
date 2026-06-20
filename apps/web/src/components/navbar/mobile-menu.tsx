@@ -23,12 +23,22 @@ import {
   SupportedLocale,
 } from "@/lib/constants/localeOptions"
 import { setLocale } from "@/store/localeSlice"
-import { colorMappingClass, colorMappingSymbol, mainMenuData } from "@/utils/menu-utils"
+import { colorMappingClass, colorMappingSymbol } from "@/utils/menu-utils"
+import {
+  fifaWorldCupPromo,
+  getPrimePromoHref,
+  isMobileNavGroup,
+  mobileMainMenuData,
+  primeDeliveryPromo,
+  type MobileNavGroup,
+  type MobileNavNode,
+} from "@/data/mobile-menu/mobile-nav-data"
 import { useTranslations } from "@/hooks/useTranslations"
 import LocaleModal from "@/components/footer/LocaleModal"
 import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
-import { normalizeLocale } from "@/lib/utils"; 
+import { normalizeLocale } from "@/lib/utils"
+import { adidasCdnImage } from "@/lib/adidas-cdn"
 
 // ======================
 // Utils type guards
@@ -74,8 +84,8 @@ function buildMainCategories(t: NavigationTranslations): MenuCategory[] {
       items: [],
     },
     {
-      title: t?.backToSchool || "BACK TO SCHOOL🔥",
-      titleHref: "/back_to_school",
+      title: t?.newTrending || "NEW & TRENDING",
+      titleHref: "/trending",
       items: [],
     },
     {
@@ -83,15 +93,103 @@ function buildMainCategories(t: NavigationTranslations): MenuCategory[] {
       titleHref: "/sale",
       items: [],
     },
-    {
-      title: t?.newTrending || "NEW & TRENDING",
-      titleHref: "/trending",
-      items: [],
-    }
   ]
 }
 
+function isBoldMainCategory(title: string, t: NavigationTranslations) {
+  return [
+    t?.men || "MEN",
+    t?.women || "WOMEN",
+    t?.kids || "KIDS",
+    t?.fifaWorldCup26 || "FIFA WORLD CUP 26™",
+  ].includes(title)
+}
+
+function getMenuKey(category: MenuCategory, t: NavigationTranslations): string | null {
+  if (category.title === (t?.men || "MEN")) return "MEN"
+  if (category.title === (t?.women || "WOMEN")) return "WOMEN"
+  if (category.title === (t?.kids || "KIDS")) return "KIDS"
+  if (category.title === (t?.fifaWorldCup26 || "FIFA WORLD CUP 26™")) return "FIFA WORLD CUP 26™"
+  if (category.title === (t?.sale || "SALE")) return "SALE"
+  if (category.title === (t?.newTrending || "NEW & TRENDING")) return "NEW & TRENDING"
+  return null
+}
+
+function translateMegaLabel(
+  megaMenuT: Record<string, string> | null | undefined,
+  label: string,
+  translationKey?: string,
+) {
+  if (translationKey && megaMenuT?.[translationKey]) {
+    return megaMenuT[translationKey]
+  }
+  const normalized = label.toLowerCase().replace(/\s+/g, "").replace(/&/g, "").replace(/🔥/g, "")
+  return megaMenuT?.[normalized] || label
+}
+
+type MobileMenuSpotlightProps = {
+  href: string
+  title: string
+  description: string
+  imageSrc: string
+  imageAlt: string
+  onClose: () => void
+  /** Messi 3:4 portrait vs Prime square tile */
+  imageAspect?: "3/4" | "1/1"
+}
+
+/** adidas.com mobile nav spotlight — text block + full-height image */
+function MobileMenuSpotlight({
+  href,
+  title,
+  description,
+  imageSrc,
+  imageAlt,
+  onClose,
+  imageAspect = "1/1",
+}: MobileMenuSpotlightProps) {
+  const imageWidth = imageAspect === "3/4" ? 121 : 141
+  const imageHeight = 161
+  const imageSrcOptimized = adidasCdnImage(imageSrc, {
+    width: imageWidth,
+    height: imageHeight,
+  })
+
+  return (
+    <Link
+      href={href}
+      onClick={onClose}
+      className="flex h-[161px] w-full border-y border-gray-200 dark:border-gray-700"
+    >
+      <div className="flex min-w-0 flex-1 flex-col justify-center py-8 pl-14 pr-10">
+        <span className="mb-1 block text-left text-base font-bold leading-6">{title}</span>
+        <span className="block text-left text-sm leading-5 text-foreground">{description}</span>
+      </div>
+      <div
+        className={cn(
+          "relative h-full shrink-0 overflow-hidden",
+          imageAspect === "3/4" ? "w-[121px]" : "w-[141px]",
+        )}
+      >
+        <Image
+          src={imageSrcOptimized}
+          alt={imageAlt}
+          width={imageWidth * 2}
+          height={imageHeight * 2}
+          className="h-full w-full object-cover object-center"
+          quality={90}
+          draggable={false}
+        />
+      </div>
+    </Link>
+  )
+}
+
 const USE_EMOJI_SWATCH = true // config
+
+function MobileMenuChevron() {
+  return <ChevronRight className="h-6 w-6 shrink-0 text-black dark:text-white" strokeWidth={1.25} />
+}
 
 function getColorSwatch(itemName: string, categoryTitle: string) {
   if (categoryTitle.toLowerCase().includes("color")) {
@@ -126,6 +224,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const [navigationHistory, setNavigationHistory] = useState<
     NavigationHistory[]
   >([])
+  const [activeRootMenu, setActiveRootMenu] = useState<string | null>(null)
 
   const dispatch = useAppDispatch()
   const locale = useAppSelector((s) => s.locale.locale)
@@ -171,26 +270,20 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     if (isOpen) {
       setCurrentLevel({ title: t?.menu || "MENU", items: buildMainCategories(t) })
       setNavigationHistory([])
+      setActiveRootMenu(null)
     }
   }, [isOpen, t])
 
   const handleCategoryClick = (category: MenuCategory) => {
-    // Map category title to menu data key
-    let menuKey = category.title
-    if (category.title === (t?.men || "MEN")) menuKey = "MEN"
-    else if (category.title === (t?.women || "WOMEN")) menuKey = "WOMEN"
-    else if (category.title === (t?.kids || "KIDS")) menuKey = "KIDS"
-    else if (category.title === (t?.fifaWorldCup26 || "FIFA WORLD CUP 26™")) menuKey = "FIFA WORLD CUP 26™"
-    else if (category.title === (t?.backToSchool || "BACK TO SCHOOL🔥")) menuKey = "BACK TO SCHOOL🔥"
-    else if (category.title === (t?.sale || "SALE")) menuKey = "SALE"
-    else if (category.title === (t?.newTrending || "NEW & TRENDING")) menuKey = "NEW & TRENDING"
-    
-    const menuData = mainMenuData[menuKey]
-    if (menuData?.length > 0) {
+    const menuKey = getMenuKey(category, t)
+    const menuData = menuKey ? mobileMainMenuData[menuKey] : undefined
+
+    if ((menuData?.length ?? 0) > 0) {
+      setActiveRootMenu(menuKey)
       pushToHistory(currentLevel)
       setCurrentLevel({
         title: category.title,
-        items: menuData,
+        items: menuData as MenuItem[],
         parentTitle: currentLevel.title,
       })
     } else if (category.titleHref) {
@@ -199,16 +292,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }
   }
 
-  const handleSubcategoryClick = (subcategory: MenuCategory) => {
+  const handleSubcategoryClick = (subcategory: MobileNavGroup | MenuCategory) => {
     if (subcategory.items?.length > 0) {
       pushToHistory(currentLevel)
       setCurrentLevel({
         title: subcategory.title,
-        items: subcategory.items.map((i) => ({
-          title: i.name,
-          titleHref: i.href,
-          items: [],
-        })),
+        items: subcategory.items as MenuItem[],
         parentTitle: currentLevel.title,
       })
     } else if (subcategory.titleHref) {
@@ -234,10 +323,19 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const handleClose = () => {
     setCurrentLevel({ title: t?.menu || "MENU", items: [] })
     setNavigationHistory([])
+    setActiveRootMenu(null)
     onClose()
   }
 
   const isMainMenu = currentLevel.title === (t?.menu || "MENU")
+  const showGenderPromo =
+    !isMainMenu &&
+    navigationHistory.length === 1 &&
+    ["MEN", "WOMEN", "KIDS"].includes(activeRootMenu ?? "")
+  const showFifaPromo =
+    !isMainMenu &&
+    navigationHistory.length === 1 &&
+    activeRootMenu === "FIFA WORLD CUP 26™"
   if (!isOpen) return null
 
   return (
@@ -265,7 +363,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <div className="w-10" />
           )}
 
-          <div className="flex-1 flex justify-center pointer-events-none">
+          <div
+            className={cn(
+              "flex-1 flex pointer-events-none",
+              isMainMenu ? "justify-center" : "justify-start",
+            )}
+          >
             {isMainMenu ? (
               <Link
                 href="/"
@@ -276,7 +379,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <AdidasLogo />
               </Link>
             ) : (
-              <h2 className="text-lg font-bold uppercase text-center">
+              <h2 className="pl-2 text-left text-lg font-bold uppercase">
                 {currentLevel.title}
               </h2>
             )}
@@ -302,19 +405,17 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <button
                   key={cat.title}
                   onClick={() => handleCategoryClick(cat)}
-                  className="w-full flex items-center justify-between p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
+                  className="w-full flex items-center justify-between py-4 pl-5 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
                 >
                   <span
                     className={cn(
                       "text-lg uppercase",
-                      [t?.men || "MEN", t?.women || "WOMEN", t?.kids || "KIDS"].includes(cat.title)
-                        ? "font-bold"
-                        : "font-medium"
+                      isBoldMainCategory(cat.title, t) ? "font-bold" : "font-medium"
                     )}
                   >
                     {cat.title}
                   </span>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                  <MobileMenuChevron />
                 </button>
               ))}
 
@@ -361,7 +462,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     key={item.name}
                     href={item.href || "#"}
                     onClick={handleClose}
-                    className="block p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
+                    className="block py-4 pl-5 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
                   >
                     <span className="text-base">{item.name}</span>
                   </Link>
@@ -373,68 +474,23 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {currentLevel.items.map((item, i) => {
                 if (isLocaleMenuItem(item)) {
                   return null
-                  // const isSelected = item.value === locale
-                  // return (
-                  //   <label
-                  //     key={item.value}
-                  //     className={cn(
-                  //       "w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer",
-                  //       isSelected
-                  //         ? "bg-gray-100 dark:bg-gray-700 font-semibold"
-                  //         : "hover:bg-gray-50 dark:hover:bg-gray-500"
-                  //     )}
-                  //   >
-                  //     <div className="flex items-center gap-3">
-                  //       <input
-                  //         type="radio"
-                  //         name="country"
-                  //         checked={isSelected}
-                  //         onChange={() => {
-                  //           dispatch(setLocale(item.value as SupportedLocale))
-                  //           document.cookie = `NEXT_LOCALE=${item.value}; path=/; max-age=31536000`
-                  //           localStorage.setItem("NEXT_LOCALE", item.value)
-                  //           setCountry(
-                  //             item.value === "en_US" ? "US" : "VN"
-                  //           )
-                  //           handleClose()
-                  //         }}
-                  //         className="hidden"
-                  //       />
-                  //       <Image
-                  //         src={item?.flag || "/flag/us-show.svg"}
-                  //         alt={item?.title || "Country Flag"}
-                  //         width={24}
-                  //         height={16}
-                  //       />
-                  //       <span
-                  //         className={isSelected ? "font-bold" : "font-normal"}
-                  //       >
-                  //         {item.title}
-                  //       </span>
-                  //     </div>
-                  //     <div className="w-4 h-4 border-2 rounded-full flex items-center justify-center">
-                  //       {isSelected && (
-                  //         <div className="w-2 h-2 bg-black dark:bg-white rounded-full" />
-                  //       )}
-                  //     </div>
-                  //   </label>
-                  // )
                 }
 
-                if (isMenuCategory(item) && item.items?.length > 0) {
+                if (isMobileNavGroup(item as MobileNavNode) || (isMenuCategory(item) && item.items?.length > 0)) {
+                  const group = item as MobileNavGroup
                   return (
                     <button
                       key={i}
-                      onClick={() => handleSubcategoryClick(item)}
-                      className="w-full flex items-center justify-between p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
+                      onClick={() => handleSubcategoryClick(group)}
+                      className="w-full flex items-center justify-between py-4 pl-14 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
                     >
                       <div className="flex items-center">
                         <span className="text-base mr-3">
-                          {megaMenuT?.[item.title.toLowerCase().replace(/\s+/g, '').replace(/&/g, '').replace(/🔥/g, '') as keyof typeof megaMenuT] || item.title}
+                          {translateMegaLabel(megaMenuT, group.title, group.translationKey)}
                         </span>
-                        {getColorSwatch(item.title, currentLevel.title)}
+                        {getColorSwatch(group.title, currentLevel.title)}
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                      <MobileMenuChevron />
                     </button>
                   )
                 }
@@ -443,28 +499,48 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   ? item.href
                   : (item as MenuCategory).titleHref
 
+                const leafName = isMenuLeaf(item) ? item.name : (item as MenuCategory).title
+                const leafKey = isMenuLeaf(item) ? item.translationKey : (item as MobileNavGroup).translationKey
+
                 return (
                   <Link
                     key={i}
                     href={href || "#"}
                     onClick={handleClose}
-                    className="block p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
+                    className="block py-4 pl-14 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
                   >
-                    <div className="flex items-center">           
+                    <div className="flex items-center">
                       <span className="text-base mr-3">
-                        {isMenuLeaf(item) 
-                          ? (item.translationKey ? (megaMenuT?.[item.translationKey as keyof typeof megaMenuT] || item.name) : item.name)
-                          : (megaMenuT?.[item.title.toLowerCase().replace(/\s+/g, '').replace(/&/g, '').replace(/🔥/g, '') as keyof typeof megaMenuT] || item.title)
-                        }
+                        {translateMegaLabel(megaMenuT, leafName, leafKey)}
                       </span>
-                      {getColorSwatch(
-                        isMenuLeaf(item) ? item.name : item.title,
-                        currentLevel.title
-                      )}
+                      {getColorSwatch(leafName, currentLevel.title)}
                     </div>
                   </Link>
                 )
               })}
+
+              {showGenderPromo && (
+                <MobileMenuSpotlight
+                  href={getPrimePromoHref(activeRootMenu ?? "MEN")}
+                  title={translateMegaLabel(megaMenuT, primeDeliveryPromo.title, primeDeliveryPromo.titleTranslationKey) ?? primeDeliveryPromo.title}
+                  description={translateMegaLabel(megaMenuT, primeDeliveryPromo.description, primeDeliveryPromo.descriptionTranslationKey) ?? primeDeliveryPromo.description}
+                  imageSrc={primeDeliveryPromo.imageSrc}
+                  imageAlt="Prime delivery"
+                  onClose={handleClose}
+                />
+              )}
+
+              {showFifaPromo && (
+                <MobileMenuSpotlight
+                  href={fifaWorldCupPromo.href}
+                  title={translateMegaLabel(megaMenuT, fifaWorldCupPromo.title, fifaWorldCupPromo.titleTranslationKey) ?? fifaWorldCupPromo.title}
+                  description={translateMegaLabel(megaMenuT, fifaWorldCupPromo.description, fifaWorldCupPromo.descriptionTranslationKey) ?? fifaWorldCupPromo.description}
+                  imageSrc={fifaWorldCupPromo.src}
+                  imageAlt={fifaWorldCupPromo.alt}
+                  imageAspect="3/4"
+                  onClose={handleClose}
+                />
+              )}
             </div>
           )}
         </div>
@@ -474,7 +550,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="sticky bottom-0 bg-white dark:bg-black border-t border-gray-200 dark:border-white">
           <button
             onClick={() => setIsLocaleModalOpen(true)}
-            className="w-full h-14 flex items-center justify-between px-4 cursor-pointer"
+            className="w-full h-14 flex items-center justify-between pl-5 pr-4 cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <Image
