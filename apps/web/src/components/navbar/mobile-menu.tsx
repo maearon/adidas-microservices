@@ -110,6 +110,7 @@ function getMenuKey(category: MenuCategory, t: NavigationTranslations): string |
   if (category.title === (t?.women || "WOMEN")) return "WOMEN"
   if (category.title === (t?.kids || "KIDS")) return "KIDS"
   if (category.title === (t?.fifaWorldCup26 || "FIFA WORLD CUP 26™")) return "FIFA WORLD CUP 26™"
+  if (category.title === (t?.sports || "SPORTS")) return "SPORTS"
   if (category.title === (t?.sale || "SALE")) return "SALE"
   if (category.title === (t?.newTrending || "NEW & TRENDING")) return "NEW & TRENDING"
   return null

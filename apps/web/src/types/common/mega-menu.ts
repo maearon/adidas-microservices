@@ -11,6 +11,8 @@ export type MegaMenuSection = {
   headingHref?: string
   headingTranslationKey?: string
   items: MegaMenuLink[]
+  /** One blank line after this group — adidas SPORTS column spacing */
+  gapAfter?: boolean
 }
 
 /** Desktop mega menu column — one equal grid column; may stack multiple sections */
@@ -23,6 +25,10 @@ export type MegaMenuColumn = {
   showPrimeBanner?: boolean
   /** Shop by Color block at bottom of column */
   showShopByColor?: boolean
+  /** Bold link at column bottom (e.g. All Soccer) */
+  footerLink?: MegaMenuLink
+  /** Empty horizontal grid column before Other Sports */
+  horizontalSpacer?: boolean
 }
 
 export type MegaMenuPromo = {

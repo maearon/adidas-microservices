@@ -2,6 +2,7 @@ import { menMenuData } from "@/data/mega-menu/men-mega-menu-data"
 import { womenMenuData } from "@/data/mega-menu/women-mega-menu-data"
 import { kidsMenuData } from "@/data/mega-menu/kids.mega-menu-data"
 import { saleMenuData } from "@/data/mega-menu/sale-mega-menu-data"
+import { sportsMenuData } from "@/data/mega-menu/sports-mega-menu-data"
 import { trendingMenuData } from "@/data/mega-menu/trending-mega-menu-data"
 import { fifaWorldCupMenuColumns, fifaWorldCupPromo } from "@/data/mega-menu/fifa-world-cup-mega-menu-data"
 import type { MenuCategory } from "@/types/common"
@@ -322,6 +323,7 @@ export const mobileMainMenuData: Record<string, MobileNavGroup[]> = {
   WOMEN: buildMobileGenderMenu(womenMenuData, "women"),
   KIDS: buildMobileGenderMenu(kidsMenuData, "kids"),
   "FIFA WORLD CUP 26™": mobileFifaMenu,
+  SPORTS: sportsMenuData as MobileNavGroup[],
   SALE: saleMenuData as MobileNavGroup[],
   "NEW & TRENDING": trendingMenuData as MobileNavGroup[],
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import {
   backToSchoolMenuData,
   categoriesToMegaMenuColumns,
@@ -8,13 +9,23 @@ import {
   kidsMenuColumns,
   menMenuColumns,
   saleMenuData,
+  sportsMenuColumns,
   trendingMenuData,
   womenMenuColumns,
 } from "@/data/mega-menu"
 import type { MegaMenuColumn, MegaMenuPromo, MegaMenuSection, Nullable } from "@/types/common"
 import Link from "next/link"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import { SportsMegaMenuPanel } from "@/components/navbar/sports-mega-menu-panel"
+
+function megaMenuGridClass(columnCount: number, hasSidePromo: boolean) {
+  const slots = columnCount + (hasSidePromo ? 1 : 0)
+  if (slots >= 7) return "grid-cols-7"
+  if (slots <= 5) return "grid-cols-5"
+  return "grid-cols-6"
+}
 
 type MegaMenuProps = {
   activeMenu: Nullable<string>
@@ -106,8 +117,12 @@ function MegaMenuColumnBlock({
   onClose: () => void
   t: ReturnType<typeof useTranslations>
 }) {
+  if (column.horizontalSpacer) {
+    return null
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="flex h-full flex-col space-y-4">
       {column.title && (
         <h3 className="text-base font-bold">
           {column.titleHref ? (
@@ -149,6 +164,18 @@ function MegaMenuColumnBlock({
               className="h-auto w-full"
             />
           </div>
+        </Link>
+      )}
+
+      {column.footerLink && (
+        <Link
+          onClick={onClose}
+          href={column.footerLink.href}
+          className="mt-auto pt-4 text-base font-bold hover:underline"
+        >
+          {column.footerLink.translationKey
+            ? (t?.[column.footerLink.translationKey as keyof typeof t] || column.footerLink.name)
+            : column.footerLink.name}
         </Link>
       )}
     </div>
@@ -203,36 +230,43 @@ function MegaMenuPanel({
   t: ReturnType<typeof useTranslations>
 }) {
   const { columns, footerLinks, gender, sidePromo } = config
+  const contentColumns = columns.filter((column) => !column.horizontalSpacer)
+  const gridClass = cn(
+    "grid items-stretch gap-8",
+    megaMenuGridClass(contentColumns.length, Boolean(sidePromo)),
+  )
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-6 gap-8">
-        {columns.map((column, columnIndex) => (
-          <MegaMenuColumnBlock
-            key={columnIndex}
-            column={column}
-            gender={gender}
-            onClose={onClose}
-            t={t}
-          />
-        ))}
-        {sidePromo && <MegaMenuSidePromo promo={sidePromo} onClose={onClose} t={t} />}
-      </div>
-
-      {footerLinks.length > 0 && (
-        <div className="mt-12 flex justify-start space-x-8 border-t pt-4">
-          {footerLinks.map((link, index) => (
-            <Link
-              onClick={onClose}
-              key={index}
-              href={link.href}
-              className="text-base font-bold hover:underline"
-            >
-              {link.name}
-            </Link>
+      <div className="mx-auto w-full max-w-6xl">
+        <div className={gridClass}>
+          {columns.map((column, columnIndex) => (
+            <MegaMenuColumnBlock
+              key={columnIndex}
+              column={column}
+              gender={gender}
+              onClose={onClose}
+              t={t}
+            />
           ))}
+          {sidePromo && <MegaMenuSidePromo promo={sidePromo} onClose={onClose} t={t} />}
         </div>
-      )}
+
+        {footerLinks.length > 0 && (
+          <div className="mt-12 flex justify-start space-x-8 border-t pt-4">
+            {footerLinks.map((link, index) => (
+              <Link
+                onClick={onClose}
+                key={index}
+                href={link.href}
+                className="text-base font-bold hover:underline"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -241,6 +275,21 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
   const t = useTranslations("megaMenu")
 
   if (!activeMenu) return null
+
+  const shell = (content: ReactNode) => (
+    <div
+      className="absolute left-0 right-0 z-50 border-t border-gray-200 bg-white text-foreground shadow-lg dark:border-gray-700 dark:bg-black"
+      onMouseLeave={onClose}
+    >
+      {content}
+    </div>
+  )
+
+  if (activeMenu === "SPORTS") {
+    return shell(
+      <SportsMegaMenuPanel columns={sportsMenuColumns} onClose={onClose} t={t} />,
+    )
+  }
 
   let config: MegaMenuPanelConfig | null = null
 
@@ -327,12 +376,5 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
       return null
   }
 
-  return (
-    <div
-      className="absolute left-0 right-0 z-50 border-t border-gray-200 bg-white text-foreground shadow-lg dark:border-gray-700 dark:bg-black"
-      onMouseLeave={onClose}
-    >
-      <MegaMenuPanel config={config} onClose={onClose} t={t} />
-    </div>
-  )
+  return shell(<MegaMenuPanel config={config} onClose={onClose} t={t} />)
 }
