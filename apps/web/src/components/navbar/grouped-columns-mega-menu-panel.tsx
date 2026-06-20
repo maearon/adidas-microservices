@@ -13,6 +13,8 @@ export const SPORTS_MEGA_MENU_GRID =
 export const SALE_MEGA_MENU_GRID =
   "grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.95fr)] items-stretch gap-x-8"
 
+export const TRENDING_MEGA_MENU_GRID = "grid grid-cols-5 items-stretch gap-x-8"
+
 function translateColumnTitle(
   t: ReturnType<typeof useTranslations>,
   column: MegaMenuColumn,

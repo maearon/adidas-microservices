@@ -10,7 +10,7 @@ import {
   menMenuColumns,
   saleMenuColumns,
   sportsMenuColumns,
-  trendingMenuData,
+  trendingMenuColumns,
   womenMenuColumns,
 } from "@/data/mega-menu"
 import type { MegaMenuColumn, MegaMenuPromo, MegaMenuSection, Nullable } from "@/types/common"
@@ -21,6 +21,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import {
   GroupedColumnsMegaMenuPanel,
   SALE_MEGA_MENU_GRID,
+  TRENDING_MEGA_MENU_GRID,
 } from "@/components/navbar/grouped-columns-mega-menu-panel"
 import { SportsMegaMenuPanel } from "@/components/navbar/sports-mega-menu-panel"
 
@@ -324,6 +325,17 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
     )
   }
 
+  if (activeMenu === "NEW & TRENDING") {
+    return shell(
+      <GroupedColumnsMegaMenuPanel
+        columns={trendingMenuColumns}
+        onClose={onClose}
+        t={t}
+        gridClassName={TRENDING_MEGA_MENU_GRID}
+      />,
+    )
+  }
+
   let config: MegaMenuPanelConfig | null = null
 
   switch (activeMenu) {
@@ -386,12 +398,6 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
           { name: t?.allWomens || "All Women's", href: "/women-back_to_school" },
           { name: t?.allSchoolAccessories || "All School Accessories", href: "/back_to_school" },
         ],
-      }
-      break
-    case "NEW & TRENDING":
-      config = {
-        columns: categoriesToMegaMenuColumns(trendingMenuData),
-        footerLinks: [],
       }
       break
     default:
