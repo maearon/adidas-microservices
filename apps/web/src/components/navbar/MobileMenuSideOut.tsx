@@ -5,6 +5,9 @@ import AdidasLogo from "../adidas-logo"
 import type { Session } from "@/lib/auth"
 import { cn } from "@/lib/utils"
 
+const NOTIFICATION_BADGE =
+  "absolute flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
+
 interface MobileMenuSlideOutProps {
   session: Session | null;
   loginBadgeAnimate: boolean;
@@ -45,7 +48,7 @@ export default function MobileMenuSlideOut({
             )}
           />
           {wishlistItemsCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
               {wishlistItemsCount}
             </span>
           )}
@@ -62,7 +65,8 @@ export default function MobileMenuSlideOut({
           <User className="h-5 w-5" />
           {!session?.user?.email && (
             <span className={cn(
-              "absolute -top-3 -right-2 bg-[#FFD619] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold transition-transform duration-100",
+              NOTIFICATION_BADGE,
+              "-top-3 -right-2 transition-transform duration-100",
               loginBadgeAnimate && "animate-bounce",
             )}>1</span>
           )}
@@ -77,11 +81,9 @@ export default function MobileMenuSlideOut({
               cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
             )}
           />
-          {cartItemsCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {cartItemsCount}
-            </span>
-          )}
+          <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+            {cartItemsCount}
+          </span>
         </Link>
       </div>
     </div>
