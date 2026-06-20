@@ -1,11 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { X } from "lucide-react"
 import { useEffect, useState, type ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { useTranslations } from "@/hooks/useTranslations"
-import { cn } from "@/lib/utils"
+import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 
 interface TopBarDropdownProps {
   isOpen: boolean
@@ -73,16 +71,11 @@ function UspPanelContent({
         isDesktop ? "px-16 pb-20 pt-6" : "overflow-y-auto px-4 pb-10 pt-4",
       )}
     >
-      <div className={cn("flex shrink-0 justify-end", !isDesktop && "mb-6")}>
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex h-10 w-10 items-center justify-center border border-black dark:border-white"
-          aria-label="Close"
-        >
-          <X className="h-5 w-5" strokeWidth={1.25} />
-        </button>
-      </div>
+      <AdidasCloseButton
+        variant="panel"
+        onClick={onClose}
+        wrapperClassName="absolute right-4 top-4 z-10 md:right-8 md:top-6"
+      />
 
       <div
         className={cn(

@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { ArrowRight, X } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import AdidasLogo from "@/components/adidas-logo"
+import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 import { toast } from "react-toastify"
 import { useTranslations } from "@/hooks/useTranslations"
 
@@ -85,16 +86,13 @@ export default function FeedbackWidget() {
         />
 
         <div className="flex h-svh min-h-0 min-w-0 flex-1 flex-col bg-white shadow-2xl dark:bg-black sm:max-w-md sm:w-[28rem]">
-          <div className="flex shrink-0 items-center justify-between border-b p-6">
+          <div className="relative flex shrink-0 items-start justify-between border-b p-6">
             <AdidasLogo />
-            <button
-              type="button"
+            <AdidasCloseButton
+              variant="panel"
               onClick={togglePanel}
-              className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-900"
-              aria-label="Close feedback"
-            >
-              <X className="h-5 w-5" />
-            </button>
+              ariaLabel="Close feedback"
+            />
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto p-6">
