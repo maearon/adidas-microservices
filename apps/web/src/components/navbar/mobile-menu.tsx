@@ -37,6 +37,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import LocationModal from "@/components//location-modal"
 import { useLocationModal } from "@/hooks/useLocationModal"
 import { adidasCdnImage } from "@/lib/adidas-cdn"
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 import { Z } from "@/lib/z-index"
 
 // ======================
@@ -256,18 +257,19 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     setNavigationHistory((prev) => [...prev, { level, scrollPosition }])
   }
 
+  useBodyScrollLock(isOpen)
+
   useEffect(() => {
     if (!isOpen) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
+
     window.dispatchEvent(
       new CustomEvent("adidas:mobile-menu", { detail: { open: true } }),
     )
+
     const mediaQuery = window.matchMedia("(min-width: 768px)")
     const handleResize = () => mediaQuery.matches && onClose()
     mediaQuery.addEventListener("change", handleResize)
     return () => {
-      document.body.style.overflow = prev
       window.dispatchEvent(
         new CustomEvent("adidas:mobile-menu", { detail: { open: false } }),
       )

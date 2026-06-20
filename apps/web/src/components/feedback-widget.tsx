@@ -8,6 +8,7 @@ import AdidasLogo from "@/components/adidas-logo"
 import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 import { toast } from "react-toastify"
 import { useTranslations } from "@/hooks/useTranslations"
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 import { Z } from "@/lib/z-index"
 
 const FEEDBACK_TAB_CLASS =
@@ -63,14 +64,7 @@ export default function FeedbackWidget() {
     return () => window.removeEventListener("adidas:mobile-menu", handler)
   }, [])
 
-  React.useEffect(() => {
-    if (!isOpen) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [isOpen])
+  useBodyScrollLock(isOpen)
 
   const openPanel = () => setIsOpen(true)
   const closePanel = () => setIsOpen(false)
@@ -107,11 +101,14 @@ export default function FeedbackWidget() {
           className="hidden self-center sm:flex"
         />
 
-        <div className="relative flex h-svh min-h-0 w-full flex-col overflow-visible bg-white shadow-2xl dark:bg-black sm:w-[448px]">
-          <AdidasCloseButton variant="corner" onClick={closePanel} ariaLabel="Close feedback" />
-
-          <div className="flex shrink-0 items-center border-b border-gray-200 px-4 py-4 dark:border-gray-700 sm:px-6">
+        <div className="relative flex h-svh min-h-0 w-full flex-col bg-white shadow-2xl dark:bg-black sm:w-[448px]">
+          <div className="relative flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-4 dark:border-gray-700 sm:px-6">
             <AdidasLogo />
+            <AdidasCloseButton
+              variant="panel"
+              onClick={closePanel}
+              ariaLabel="Close feedback"
+            />
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6">

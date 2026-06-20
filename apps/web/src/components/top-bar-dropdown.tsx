@@ -7,6 +7,7 @@ import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 import { useTranslations } from "@/hooks/useTranslations"
 import { cn } from "@/lib/utils"
 import { Z } from "@/lib/z-index"
+import { lockBodyScroll, unlockBodyScroll } from "@/lib/body-scroll-lock"
 
 interface TopBarDropdownProps {
   isOpen: boolean
@@ -139,13 +140,10 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
     if (!isOpen) return
 
     const mq = window.matchMedia("(max-width: 767px)")
-    if (mq.matches) {
-      document.body.style.overflow = "hidden"
-    }
+    if (!mq.matches) return
 
-    return () => {
-      document.body.style.overflow = ""
-    }
+    lockBodyScroll()
+    return () => unlockBodyScroll()
   }, [isOpen])
 
   if (!isOpen || !mounted) return null

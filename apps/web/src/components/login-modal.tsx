@@ -193,16 +193,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   
 
   return step !== "activate" ? (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
       <DialogContent
         hideCloseButton
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="relative w-[95vw] max-h-[95vh] overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
+        className="relative overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
-        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
-
-        <div className="p-6 sm:p-8">
+        <div className="max-h-[min(90dvh,640px)] overflow-x-hidden overflow-y-auto p-6 sm:p-8">
           {/* adiClub Logo */}
           <div className="flex items-center space-x-4">
           <AdidasLogo className="w-15 h-auto" />
@@ -428,14 +426,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       </DialogContent>
     </Dialog>
   ) : (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
       <DialogContent
         hideCloseButton
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="relative w-[95vw] max-h-[95vh] overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
+        className="relative overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
-        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
+        <div className="max-h-[min(90dvh,640px)] overflow-x-hidden overflow-y-auto">
 
         {step === "activate" ? (
           <div className="p-6 sm:p-8 text-center">
@@ -460,6 +458,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             {/* ... như bạn đang có */}
           </div>
         )}
+        </div>
       </DialogContent>
     </Dialog>
   )

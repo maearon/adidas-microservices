@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
 import { countryDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
@@ -62,15 +62,14 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
       <DialogContent
         hideCloseButton
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="relative overflow-visible sm:max-w-md rounded-none bg-white p-0 dark:bg-black"
+        className="relative overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
-        <DialogHeader><DialogTitle></DialogTitle></DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
-        <div className="relative p-8">
+        <div className="max-h-[min(90dvh,640px)] overflow-x-hidden overflow-y-auto p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-black dark:text-white mb-2">

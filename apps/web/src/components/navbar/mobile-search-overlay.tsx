@@ -5,6 +5,7 @@ import { createPortal } from "react-dom"
 import { ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 import { Z } from "@/lib/z-index"
 
 interface MobileSearchOverlayProps {
@@ -45,14 +46,7 @@ export default function MobileSearchOverlay({
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    if (!isOpen) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [isOpen])
+  useBodyScrollLock(isOpen)
 
   // 🔁 Debounce fetch
   useEffect(() => {
