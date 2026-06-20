@@ -40,7 +40,7 @@ export default function MainNavbar({
     { name: t?.men || "MEN", href: "/men", menuKey: "MEN", bold: true },
     { name: t?.women || "WOMEN", href: "/women", menuKey: "WOMEN", bold: true },
     { name: t?.kids || "KIDS", href: "/kids", menuKey: "KIDS", bold: true },
-    { name: t?.fifaWorldCup26 || "FIFA WORLD CUP 26™", href: "/fifa_world_cup", menuKey: "FIFA WORLD CUP 26™", bold: false },
+    { name: t?.fifaWorldCup26 || "FIFA WORLD CUP 26™", href: "/fifa_world_cup", menuKey: "FIFA WORLD CUP 26™", bold: true },
     { name: t?.sports || "SPORTS", href: "/sports", menuKey: "SPORTS", bold: false },
     { name: t?.sale || "SALE", href: "/sale", menuKey: "SALE", bold: false },
     { name: t?.newTrending || "NEW & TRENDING", href: "/trending", menuKey: "NEW & TRENDING", bold: false },
