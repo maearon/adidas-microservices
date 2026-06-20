@@ -15,23 +15,23 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
   const t = useTranslations("megaMenu")
   
   const colorItems = [
-    { name: t?.black || "Black", color: "bg-black" },
-    { name: t?.grey || "Grey", color: "bg-gray-500" },
-    { name: t?.white || "White", color: "bg-white border border-gray-300" },
-    { name: t?.brown || "Brown", color: "bg-amber-800" },
-    { name: t?.red || "Red", color: "bg-red-500" },
-    { name: t?.pink || "Pink", color: "bg-pink-300" },
-    { name: t?.orange || "Orange", color: "bg-orange-500" },
-    { name: t?.yellow || "Yellow", color: "bg-yellow-400" },
-    { name: t?.green || "Green", color: "bg-green-500" },
-    { name: t?.blue || "Blue", color: "bg-blue-500" },
-    { name: t?.purple || "Purple", color: "bg-purple-500" },
+    { slug: "black", name: t?.black || "Black", color: "bg-black" },
+    { slug: "grey", name: t?.grey || "Grey", color: "bg-gray-500" },
+    { slug: "white", name: t?.white || "White", color: "bg-white border border-gray-300" },
+    { slug: "brown", name: t?.brown || "Brown", color: "bg-amber-800" },
+    { slug: "red", name: t?.red || "Red", color: "bg-red-500" },
+    { slug: "pink", name: t?.pink || "Pink", color: "bg-pink-300" },
+    { slug: "orange", name: t?.orange || "Orange", color: "bg-orange-500" },
+    { slug: "yellow", name: t?.yellow || "Yellow", color: "bg-yellow-400" },
+    { slug: "green", name: t?.green || "Green", color: "bg-green-500" },
+    { slug: "blue", name: t?.blue || "Blue", color: "bg-blue-500" },
+    { slug: "purple", name: t?.purple || "Purple", color: "bg-purple-500" },
   ]
 
   const getShopByColorItems = (gender: string) => [
     ...colorItems.map((color) => ({
       name: color.name,
-      href: `/${gender}-${color.name.toLowerCase()}`,
+      href: `/${gender}-${color.slug}`,
     })),
     { 
       name: gender === 'men' ? (t?.allMensText || "All Men's") : 
@@ -138,12 +138,12 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
               {["MEN", "WOMEN", "KIDS"].includes(activeMenu) && menuData[0].title === "NEW & TRENDING" && (
                 <Link
                   onClick={onClose}
-                  href={`/${activeMenu.toLowerCase()}-superstar`}
+                  href={`/${activeMenu.toLowerCase()}-prime`}
                   className="text-blue-600 underline font-semibold"
                 >
                   <div className="mt-4">
                     <Image
-                      src="/assets/nav/originals_fw25_superstar_topnav_launch_d_331db9ccb5.jpg"
+                      src="/image/upload/f_auto,q_auto,fl_lossy/bwp_adidas_content_slot_navigation_d_dfbf3d31ce.png"
                       alt="Sale promotion"
                       width={150}
                       height={100}
