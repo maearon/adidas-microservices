@@ -24,6 +24,7 @@ import {
   TRENDING_MEGA_MENU_GRID,
 } from "@/components/navbar/grouped-columns-mega-menu-panel"
 import { SportsMegaMenuPanel } from "@/components/navbar/sports-mega-menu-panel"
+import { megaMenuBold, megaMenuRegular } from "@/components/navbar/mega-menu-styles"
 
 function megaMenuGridClass(columnCount: number, hasSidePromo: boolean) {
   const slots = columnCount + (hasSidePromo ? 1 : 0)
@@ -87,18 +88,18 @@ function MegaMenuSectionBlock({
           <Link
             onClick={onClose}
             href={section.headingHref}
-            className="block text-base font-bold hover:underline"
+            className={cn("block hover:underline", megaMenuBold)}
           >
             {translateSectionHeading(t, section)}
           </Link>
         ) : (
-          <p className="text-base font-bold">{translateSectionHeading(t, section)}</p>
+          <p className={megaMenuBold}>{translateSectionHeading(t, section)}</p>
         ))}
       {section.items.length > 0 && (
         <ul className="space-y-2">
           {section.items.map((item, itemIndex) => (
             <li key={itemIndex}>
-              <Link onClick={onClose} href={item.href} className="text-base hover:underline">
+              <Link onClick={onClose} href={item.href} className={cn("hover:underline", megaMenuRegular)}>
                 {item.translationKey
                   ? (t?.[item.translationKey as keyof typeof t] || item.name)
                   : item.name}
@@ -129,7 +130,7 @@ function MegaMenuColumnBlock({
   return (
     <div className="flex h-full flex-col space-y-4">
       {column.title && (
-        <h3 className="text-base font-bold">
+        <h3 className={megaMenuBold}>
           {column.titleHref ? (
             <Link onClick={onClose} href={column.titleHref} className="hover:underline">
               {translateColumnTitle(t, column)}
@@ -146,7 +147,7 @@ function MegaMenuColumnBlock({
 
       {column.showShopByColor && gender && (
         <div className="pt-4">
-          <h3 className="mb-2 text-base font-bold">
+          <h3 className={cn("mb-2", megaMenuBold)}>
             <Link onClick={onClose} href={`/${gender}-black`} className="hover:underline">
               {t?.shopByColor || "SHOP BY COLOR 🎨"}
             </Link>
@@ -158,7 +159,7 @@ function MegaMenuColumnBlock({
         <Link
           onClick={onClose}
           href={`/${gender}-prime_delivery`}
-          className="font-semibold text-blue-600 underline"
+          className={cn(megaMenuBold, "text-blue-600 underline")}
         >
           <div className="mt-4">
             <Image
@@ -176,7 +177,7 @@ function MegaMenuColumnBlock({
         <Link
           onClick={onClose}
           href={column.footerLink.href}
-          className="mt-auto pt-4 text-base font-bold hover:underline"
+          className={cn("mt-auto pt-4 hover:underline", megaMenuBold)}
         >
           {column.footerLink.translationKey
             ? (t?.[column.footerLink.translationKey as keyof typeof t] || column.footerLink.name)
@@ -206,14 +207,14 @@ function MegaMenuSidePromo({
       {(promo.title || promo.description) && (
         <div className="border-t border-gray-300 p-3 transition-colors group-hover:border-black dark:border-gray-600 dark:group-hover:border-white">
           {promo.title && (
-            <p className="text-base font-bold uppercase">
+            <p className={cn("uppercase", megaMenuBold)}>
               {promo.titleTranslationKey
                 ? (t?.[promo.titleTranslationKey as keyof typeof t] || promo.title)
                 : promo.title}
             </p>
           )}
           {promo.description && (
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className={cn("text-gray-600 dark:text-gray-400", megaMenuRegular)}>
               {promo.descriptionTranslationKey
                 ? (t?.[promo.descriptionTranslationKey as keyof typeof t] || promo.description)
                 : promo.description}
@@ -264,7 +265,7 @@ function MegaMenuPanel({
                 onClick={onClose}
                 key={index}
                 href={link.href}
-                className="text-base font-bold hover:underline"
+                className={cn("hover:underline", megaMenuBold)}
               >
                 {link.name}
               </Link>
@@ -301,16 +302,16 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
         />
         <div className="container mx-auto px-4 pb-8">
           <div className="mx-auto flex max-w-6xl justify-start space-x-8 border-t pt-4">
-            <Link onClick={onClose} href="/sale" className="text-base font-bold hover:underline">
+            <Link onClick={onClose} href="/sale" className={cn("hover:underline", megaMenuBold)}>
               {t?.sale || "Sale"}
             </Link>
-            <Link onClick={onClose} href="/sale/men" className="text-base font-bold hover:underline">
+            <Link onClick={onClose} href="/sale/men" className={cn("hover:underline", megaMenuBold)}>
               {t?.allMensSale || "All Men's Sale"}
             </Link>
-            <Link onClick={onClose} href="/sale/women" className="text-base font-bold hover:underline">
+            <Link onClick={onClose} href="/sale/women" className={cn("hover:underline", megaMenuBold)}>
               {t?.allWomensSale || "All Women's Sale"}
             </Link>
-            <Link onClick={onClose} href="/sale/kids" className="text-base font-bold hover:underline">
+            <Link onClick={onClose} href="/sale/kids" className={cn("hover:underline", megaMenuBold)}>
               {t?.allKidsSale || "All Kids Sale"}
             </Link>
           </div>

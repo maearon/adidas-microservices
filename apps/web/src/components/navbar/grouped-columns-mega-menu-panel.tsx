@@ -3,6 +3,8 @@
 import type { MegaMenuColumn } from "@/types/common"
 import Link from "next/link"
 import type { useTranslations } from "@/hooks/useTranslations"
+import { megaMenuBold, megaMenuRegular } from "@/components/navbar/mega-menu-styles"
+import { cn } from "@/lib/utils"
 
 /** One empty line between link groups — matches adidas nav spacing */
 const GROUP_GAP = "h-[1.625rem] shrink-0"
@@ -65,7 +67,7 @@ export function GroupedColumnsMegaMenuPanel({
             return (
               <div key={columnIndex} className="flex min-w-0 flex-col">
                 {column.title && (
-                  <h3 className="mb-4 text-base font-bold">
+                  <h3 className={cn("mb-4", megaMenuBold)}>
                     {column.titleHref ? (
                       <Link onClick={onClose} href={column.titleHref} className="hover:underline">
                         {translateColumnTitle(t, column)}
@@ -86,7 +88,7 @@ export function GroupedColumnsMegaMenuPanel({
                               <Link
                                 onClick={onClose}
                                 href={linkItem.href}
-                                className="block text-base leading-snug hover:underline"
+                                className={cn("block hover:underline", megaMenuRegular)}
                               >
                                 {translateLink(t, linkItem.translationKey, linkItem.name)}
                               </Link>
@@ -103,7 +105,7 @@ export function GroupedColumnsMegaMenuPanel({
                   <Link
                     onClick={onClose}
                     href={column.footerLink.href}
-                    className="mt-auto block pt-4 text-base font-bold hover:underline"
+                    className={cn("mt-auto block pt-4 hover:underline", megaMenuBold)}
                   >
                     {translateLink(t, column.footerLink.translationKey, column.footerLink.name)}
                   </Link>
