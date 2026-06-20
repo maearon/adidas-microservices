@@ -6,6 +6,8 @@ import { ThemeToggle } from "../theme/ThemeToggle"
 import type { Session } from "@/lib/auth"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/hooks/useTranslations"
+import { EmptyBagPopover } from "@/components/navbar/empty-bag-popover"
+import { useState } from "react"
 
 const NOTIFICATION_BADGE =
   "absolute flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
@@ -36,6 +38,7 @@ export default function MainNavbar({
   const pathname = usePathname()
   const t = useTranslations("navigation")
   const accountT = useTranslations("account")
+  const [bagHover, setBagHover] = useState(false)
 
   const navItems = [
     { name: t?.men || "MEN", href: "/men", menuKey: "MEN", bold: true },
@@ -48,7 +51,8 @@ export default function MainNavbar({
   ]
   
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center px-12 pb-2 mx-0 w-full">
+    <div className="relative mx-0 w-full">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-12 pb-2">
       <div aria-hidden />
       <nav className="relative z-30 flex shrink-0 items-center justify-center gap-6 xl:gap-8">
           {navItems.map((item) => (
@@ -104,8 +108,12 @@ export default function MainNavbar({
           )}
         </Link>
 
-        <div className="group/bag pointer-events-auto relative">
-          <Link href="/cart" className="relative inline-flex">
+        <div
+          className="pointer-events-auto relative flex min-h-12 items-center"
+          onMouseEnter={() => setBagHover(true)}
+          onMouseLeave={() => setBagHover(false)}
+        >
+          <Link href="/cart" className="relative inline-flex" aria-label="Go to bag">
             <ShoppingBag
               className={cn(
                 "h-5 w-5",
@@ -116,17 +124,9 @@ export default function MainNavbar({
               {cartItemsCount}
             </span>
           </Link>
-          {cartItemsCount === 0 && (
-            <div
-              className={cn(
-                "absolute right-0 top-full z-[60] mt-px hidden h-14 w-[min(520px,calc(100vw-6rem))]",
-                "items-center border border-gray-200 bg-white pl-12 pr-8 shadow-sm",
-                "group-hover/bag:block dark:border-gray-700 dark:bg-black",
-              )}
-            >
-              <p className="text-base font-bold text-black dark:text-white">
-                {accountT?.yourBagIsEmpty || "Your Bag is Empty"}
-              </p>
+          {cartItemsCount === 0 && bagHover && (
+            <div className="absolute right-0 top-full z-[60] translate-x-2 translate-y-2">
+              <EmptyBagPopover message={accountT?.yourBagIsEmpty || "Your Bag is Empty"} />
             </div>
           )}
         </div>
@@ -134,6 +134,7 @@ export default function MainNavbar({
         <div className="pointer-events-auto">
           <ThemeToggle />
         </div>
+      </div>
       </div>
     </div>
   )
