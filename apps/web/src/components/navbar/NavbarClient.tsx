@@ -102,7 +102,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     <>
       <MobileAppBanner isOpen={showAppBanner} onClose={() => setShowAppBanner(false)} />
 
-      <header className="relative sm:border-b sm:border-gray-200">
+      <header className="relative z-[60] sm:border-b sm:border-gray-200">
         {/* Top bar */}
         <TopBar />
 

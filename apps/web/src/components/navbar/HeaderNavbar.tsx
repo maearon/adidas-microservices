@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { localeOptions, SupportedLocale } from "@/lib/constants/localeOptions";
+import { countryLabelsByUiLocale, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions";
 import { setLocale } from "@/store/localeSlice";
-import { useTranslations } from "@/hooks/useTranslations";
-import { normalizeLocale } from "@/lib/utils"; 
+import { useTranslations } from "@/hooks/useTranslations"
 
 const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => {
   const t = useTranslations("headerNavbar")
@@ -25,6 +24,9 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
+  const activeLocale = localeOptions.find((opt) => opt.value === locale)
+  const countryLabels = countryLabelsByUiLocale[locale] ?? countryLabelsByUiLocale.en_US
   
   return (
     <div
@@ -46,11 +48,10 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
           type="button"
         >
           {(() => {
-            const activeLocale = localeOptions.find((opt) => opt.value === locale)
             return (
               <>
                 <Image
-                  src={activeLocale?.flag || "/flag/us-show.svg"}
+                  src={activeLocale?.flagShow || "/flag/us-show.svg"}
                   alt={activeLocale?.label || "Country Flag"}
                   width={24}
                   height={16}
@@ -62,8 +63,11 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
 
         {/* Dropdown */}
         {showCountrySelect && (
-          <div className="absolute right-0 z-[70] mt-2 w-60 border bg-white p-4 shadow-xl dark:bg-black">
-            {localeOptions.map(({ value, label, flag }, index) => (
+          <div className="absolute right-0 z-[70] mt-2 w-60 border bg-white p-4 shadow-xl dark:border-white dark:bg-black">
+            <p className="mb-4 text-[16px] leading-snug text-black dark:text-white">
+              {t?.chooseYourCountry ?? "Choose your country"}
+            </p>
+            {localeOptions.map(({ value, flag }, index) => (
               <label key={`${value}-${index}`} className="flex items-center gap-2 mb-3">
                 <input
                   type="radio"
@@ -77,18 +81,18 @@ const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => 
                     setShowCountrySelect(false)
                   }}
                 />
-                <Image src={flag} alt={label} width={24} height={16} />
+                <Image src={flag} alt={countryLabels[value]} width={24} height={16} />
                 <span className="font-semibold">
-                  {label}
+                  {countryLabels[value]}
                 </span>
               </label>
             ))}
 
             <button
               onClick={() => setShowCountrySelect(false)}
-              className="mt-2 w-full bg-black dark:bg-white text-white dark:text-black py-2 font-bold"
+              className="mt-2 w-full bg-black py-2 font-bold text-white dark:bg-white dark:text-black"
             >
-              Save
+              {t?.save ?? "Save"}
             </button>
           </div>
         )}

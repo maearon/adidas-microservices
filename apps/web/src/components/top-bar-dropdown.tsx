@@ -1,7 +1,9 @@
 "use client"
 
+import Link from "next/link"
 import { X } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState, type ReactNode } from "react"
+import { createPortal } from "react-dom"
 import { useTranslations } from "@/hooks/useTranslations"
 
 interface TopBarDropdownProps {
@@ -9,87 +11,151 @@ interface TopBarDropdownProps {
   onClose: () => void
 }
 
-export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps) {
+function UspSection({
+  title,
+  description,
+  actions,
+}: {
+  title: string
+  description: string
+  actions: ReactNode
+}) {
+  return (
+    <div>
+      <h2 className="mb-3 text-base font-bold uppercase leading-snug text-black dark:text-white md:mb-4">
+        {title}
+      </h2>
+      <p className="mb-4 text-base leading-relaxed text-gray-700 dark:text-gray-300 md:mb-6">
+        {description}
+      </p>
+      <div className="flex flex-wrap gap-x-6 gap-y-2">{actions}</div>
+    </div>
+  )
+}
+
+function UspLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      onClick={(e) => e.stopPropagation()}
+      className="text-base font-bold uppercase text-black underline hover:no-underline dark:text-white"
+    >
+      {children}
+    </Link>
+  )
+}
+
+function UspPanelContent({ onClose }: { onClose: () => void }) {
   const t = useTranslations("topbar")
 
+  return (
+    <>
+      <div className="flex justify-end px-4 pt-4 md:px-8 md:pt-6">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-10 w-10 items-center justify-center border border-black dark:border-white"
+          aria-label="Close"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="px-4 pb-8 md:px-16 md:pb-12">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
+          <UspSection
+            title={t?.extraDiscountTitle ?? "SAVE $30 ON ORDERS $100+"}
+            description={
+              t?.extraDiscountDescription ??
+              "Save $30 on orders $100+ with code DEAL. Exclusions apply."
+            }
+            actions={
+              <UspLink href="/sale">{t?.shopNow ?? "SHOP NOW"}</UspLink>
+            }
+          />
+
+          <UspSection
+            title={t?.freeStandardShippingTitle ?? "FREE STANDARD SHIPPING WITH ADICLUB"}
+            description={
+              t?.freeStandardShippingDescription ??
+              "Sign up for adiClub to enjoy free standard shipping and earn points on every order."
+            }
+            actions={
+              <UspLink href="/join">{t?.joinAdiClubFree ?? "JOIN ADICLUB FOR FREE"}</UspLink>
+            }
+          />
+
+          <UspSection
+            title={t?.fifaShippingTitle ?? "FREE SHIPPING ON FIFA WORLD CUP 26™"}
+            description={
+              t?.fifaShippingDescription ??
+              "Get free shipping on all FIFA World Cup 26™ gear. Limited time offer."
+            }
+            actions={
+              <>
+                <UspLink href="/help">{t?.termsApply ?? "TERMS APPLY"}</UspLink>
+                <UspLink href="/fifa_world_cup">{t?.shopNow ?? "SHOP NOW"}</UspLink>
+              </>
+            }
+          />
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps) {
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
-    if (isOpen) {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const mq = window.matchMedia("(max-width: 767px)")
+    if (mq.matches) {
       document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "unset"
     }
 
     return () => {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = ""
     }
   }, [isOpen])
 
   if (!isOpen) return null
 
+  const desktopBackdrop =
+    mounted &&
+    createPortal(
+      <div
+        className="fixed inset-0 z-[55] hidden bg-black/50 md:block"
+        onClick={onClose}
+        aria-hidden
+      />,
+      document.body,
+    )
+
+  const mobilePanel =
+    mounted &&
+    createPortal(
+      <div className="fixed inset-0 z-[200] bg-white dark:bg-black md:hidden">
+        <UspPanelContent onClose={onClose} />
+      </div>,
+      document.body,
+    )
+
   return (
     <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 z-40 transition-opacity duration-200 ${
-          isOpen ? "bg-[rgba(0,0,0,0.5)]" : "bg-opacity-0"
-        }`}
-        onClick={onClose}
-      />
+      {desktopBackdrop}
 
-      {/* Dropdown Panel */}
-      <div
-        className={`
-          fixed inset-0 bg-white dark:bg-black z-50 
-          md:absolute md:top-0 md:left-0 md:right-0 md:inset-auto
-          transform transition-transform duration-200 ease-out
-          ${isOpen ? "translate-y-0" : "-translate-y-full"}
-        `}
-      >
-        {/* Mobile: Full screen, Desktop: Slide from top */}
-        <div className="h-full md:h-auto">
-          {/* Close button - Square border style */}
-          <div className="flex justify-end p-4 md:p-6">
-            <button
-              onClick={onClose}
-              className="w-10 h-10 border border-border flex items-center justify-center 
-              cursor-pointer transition-colors duration-150"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Content - 2 columns on desktop, stacked on mobile */}
-          <div className="px-4 pb-8 md:px-16 md:pb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-6xl mx-auto">
-              {/* adiClub Section */}
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
-                  {t?.freeStandardShippingTitle || "FREE STANDARD SHIPPING WITH ADICLUB"}
-                </h2>
-                <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
-                  {t?.freeStandardShippingDescription || "Sign up for adiClub to enjoy free standard shipping and earn points on every order."}
-                </p>
-                <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
-                  {t?.joinAdiClubFree || "JOIN ADICLUB FOR FREE"}
-                </button>
-              </div>
-
-              {/* Prime Section */}
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
-                  {t?.fastFreeDeliveryTitle || "FAST, FREE DELIVERY WITH PRIME"}
-                </h2>
-                <p className="text-gray-700 dark:text-white mb-6 md:mb-8 leading-relaxed">
-                  {t?.fastFreeDeliveryDescription || "Get fast, free delivery on eligible items with Prime."}
-                </p>
-                <button className="text-black dark:text-white font-bold underline hover:no-underline transition-all duration-150">
-                  {t?.fastFreePrimeDelivery || "FAST, FREE PRIME DELIVERY"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Desktop: panel trong flow, đẩy header xuống */}
+      <div className="hidden border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-black md:block">
+        <UspPanelContent onClose={onClose} />
       </div>
+
+      {mobilePanel}
     </>
   )
 }

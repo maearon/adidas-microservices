@@ -2,11 +2,14 @@
   "freeStandardShipping": "FREE STANDARD SHIPPING WITH ADICLUB",
   "fastFreeDelivery": "FREE SHIPPING ON FIFA WORLD CUP 26™",
   "extraDiscount": "SAVE $30 ON ORDERS $100+",
+  "extraDiscountTitle": "SAVE $30 ON ORDERS $100+",
+  "extraDiscountDescription": "Save $30 on orders $100+ with code DEAL. Exclusions apply.",
+  "shopNow": "SHOP NOW",
   "freeStandardShippingTitle": "FREE STANDARD SHIPPING WITH ADICLUB",
   "freeStandardShippingDescription": "Sign up for adiClub to enjoy free standard shipping and earn points on every order.",
   "joinAdiClubFree": "JOIN ADICLUB FOR FREE",
-  "fastFreeDeliveryTitle": "FAST, FREE DELIVERY WITH PRIME",
-  "fastFreeDeliveryDescription": "Get fast, free delivery on eligible items with Prime.",
-  "fastFreePrimeDelivery": "FAST, FREE PRIME DELIVERY",
+  "fifaShippingTitle": "FREE SHIPPING ON FIFA WORLD CUP 26™",
+  "fifaShippingDescription": "Get free shipping on all FIFA World Cup 26™ gear. Limited time offer.",
+  "termsApply": "TERMS APPLY",
   "getHelpWithOrder": "GET HELP WITH YOUR ORDER - HELP"
 }
