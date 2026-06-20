@@ -1,8 +1,9 @@
 'use client'
 
 import type React from "react"
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import MegaMenu from "./mega-menu"
 import LoginModal from "../login-modal"
 import AdidasLogo from "../adidas-logo"
@@ -23,6 +24,12 @@ import FullScreenLoader from "../ui/FullScreenLoader"
 import type { Session } from "@/lib/auth"
 import { useRouter } from "next/navigation"
 import { useAppSelector } from "@/store/hooks"
+import { useHeaderScrollHide } from "@/hooks/useHeaderScrollHide"
+
+const HEADER_SLIDE_TRANSITION = {
+  duration: 0.28,
+  ease: [0.25, 0.1, 0.25, 1] as const,
+}
 
 interface NavbarClientProps {
   session: Session | null;
@@ -76,6 +83,35 @@ export default function NavbarClient({ session }: NavbarClientProps) {
   const handleMouseEnter = (menuName: string) => setActiveMenu(menuName)
   const handleMouseLeave = () => setActiveMenu(null)
 
+  const suppressHeaderHide =
+    Boolean(activeMenu) ||
+    showMobileMenu ||
+    showMobileSearch ||
+    showUserSlideOut ||
+    showLoginModal
+
+  const isHeaderVisible = useHeaderScrollHide(!suppressHeaderHide)
+  const headerRef = useRef<HTMLElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+
+    const updateHeight = () => setHeaderHeight(el.offsetHeight)
+    updateHeight()
+
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasMounted])
+
+  useEffect(() => {
+    if (!isHeaderVisible && activeMenu) {
+      handleMouseLeave()
+    }
+  }, [isHeaderVisible, activeMenu])
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
@@ -103,7 +139,14 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     <>
       <MobileAppBanner isOpen={showAppBanner} onClose={() => setShowAppBanner(false)} />
 
-      <header className="relative sm:border-b sm:border-gray-200" style={{ zIndex: Z.siteHeader }}>
+      <motion.header
+        ref={headerRef}
+        className="fixed top-0 left-0 right-0 w-full bg-white dark:bg-black sm:border-b sm:border-gray-200"
+        style={{ zIndex: Z.siteHeader }}
+        initial={false}
+        animate={{ y: isHeaderVisible ? 0 : "-100%" }}
+        transition={HEADER_SLIDE_TRANSITION}
+      >
         {/* Top bar */}
         <TopBar />
 
@@ -145,7 +188,13 @@ export default function NavbarClient({ session }: NavbarClientProps) {
           handleMobileSearchClick={handleMobileSearchClick}
         />
 
-      </header>
+      </motion.header>
+
+      <div
+        aria-hidden
+        className="pointer-events-none shrink-0"
+        style={{ height: headerHeight || "var(--site-header-height)" }}
+      />
 
       <MobileMenu isOpen={showMobileMenu} onClose={() => setShowMobileMenu(false)} />
       <MobileSearchOverlay
