@@ -1,4 +1,4 @@
-/** Footer social links — replace `/public/icons/social/*.svg` with copies from adidas.com DevTools for pixel-perfect match. */
+/** Footer social links — SVG files in /public/icons/social/ must use fill="#fff" (not currentColor). */
 export const FOOTER_SOCIAL_LINKS = [
   {
     name: "Facebook",

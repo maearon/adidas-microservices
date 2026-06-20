@@ -1,11 +1,10 @@
-import Image from "next/image"
 import { FOOTER_SOCIAL_LINKS } from "@/components/footer/footer-social-icons"
 
 type FooterSocialLinksProps = {
   className?: string
 }
 
-/** adidas.com footer — 32px white icons from /public/icons/social/ */
+/** Local SVGs must use fill="#fff" — currentColor does not work in <img>. */
 export default function FooterSocialLinks({ className }: FooterSocialLinksProps) {
   return (
     <ul className={className}>
@@ -18,7 +17,8 @@ export default function FooterSocialLinks({ className }: FooterSocialLinksProps)
             aria-label={name}
             className="inline-flex transition-opacity hover:opacity-70"
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={iconSrc}
               alt=""
               width={32}
