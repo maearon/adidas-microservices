@@ -32,14 +32,14 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
     sections: [
       {
         items: [
-          { name: "Pet Collection", href: "/fifa_world_cup-pet_collection", translationKey: "petCollection" },
-          { name: "Retro Team Kits", href: "/fifa_world_cup-retro_team_kits", translationKey: "retroTeamKits" },
-          { name: "Lifestyle", href: "/fifa_world_cup-lifestyle", translationKey: "lifestyle" },
-          { name: "USA", href: "/fifa_world_cup-usa", translationKey: "usa" },
-          { name: "Road to Glory", href: "/fifa_world_cup-road_to_glory", translationKey: "roadToGlory" },
-          { name: "Trionda", href: "/fifa_world_cup-trionda", translationKey: "trionda" },
-          { name: "Coca-Cola", href: "/fifa_world_cup-coca_cola", translationKey: "cocaCola" },
-          { name: "Thrasher x AFA", href: "/fifa_world_cup-thrasher_afa", translationKey: "thrasherAfa" },
+          { name: "Pet Collection", href: "/pet", translationKey: "petCollectionWC" },
+          { name: "Retro Team Kits", href: "/fifa_world_cup-retro", translationKey: "retroTeamKits" },
+          { name: "Lifestyle", href: "/casual-fifa_world_cup", translationKey: "lifestyle" },
+          { name: "USA", href: "/usa", translationKey: "usa" },
+          { name: "Road to Glory", href: "/soccer-shoes", translationKey: "roadToGlory" },
+          { name: "Trionda", href: "/trionda", translationKey: "trionda" },
+          { name: "Coca-Cola", href: "/coca_cola", translationKey: "cocaCola" },
+          { name: "Thrasher x AFA", href: "/thrasher", translationKey: "thrasherAfa" },
           { name: "adidas Equipment", href: "/fifa_world_cup-equipment", translationKey: "adidasEquipment" },
         ],
       },
@@ -84,7 +84,7 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
       },
       {
         heading: "CUSTOMIZE YOUR JERSEY",
-        headingHref: "/fifa_world_cup-customize",
+        headingHref: "/fifa_world_cup-jerseys-personalisable",
         headingTranslationKey: "customizeYourJersey",
         items: [],
       },
@@ -97,10 +97,10 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
         headingHref: "/fifa_world_cup-fan_gear",
         headingTranslationKey: "fanGear",
         items: [
-          { name: "T-Shirts & Graphics", href: "/fifa_world_cup-t-shirts_graphics", translationKey: "tShirtsGraphics" },
+          { name: "T-Shirts & Graphics", href: "/fifa_world_cup-t_shirts", translationKey: "tShirtsGraphics" },
           { name: "Shorts", href: "/fifa_world_cup-shorts", translationKey: "shorts" },
           { name: "Pants", href: "/fifa_world_cup-pants", translationKey: "pants" },
-          { name: "Tracksuits", href: "/fifa_world_cup-tracksuits", translationKey: "tracksuits" },
+          { name: "Tracksuits", href: "/fifa_world_cup-track_suits", translationKey: "tracksuits" },
         ],
       },
       {
@@ -108,8 +108,8 @@ export const fifaWorldCupMenuColumns: FifaMenuColumn[] = [
         headingHref: "/fifa_world_cup-shoes",
         headingTranslationKey: "shoes",
         items: [
-          { name: "Sneakers", href: "/fifa_world_cup-sneakers", translationKey: "sneakers" },
-          { name: "Cleats", href: "/fifa_world_cup-cleats", translationKey: "cleats" },
+          { name: "Sneakers", href: "/fifa_world_cup-athletic_sneakers", translationKey: "sneakers" },
+          { name: "Cleats", href: "/soccer-shoes", translationKey: "cleats" },
         ],
       },
     ],
