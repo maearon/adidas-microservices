@@ -10,7 +10,7 @@ import { EmptyBagPopover } from "@/components/navbar/empty-bag-popover"
 import { useState } from "react"
 
 const NOTIFICATION_BADGE =
-  "absolute flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
+  "absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
 
 interface MainNavbarProps {
   session: Session | null;
@@ -82,19 +82,19 @@ export default function MainNavbar({
 
         <button
           onClick={handleUserIconClick}
-          className="pointer-events-auto relative cursor-pointer"
+          className="pointer-events-auto relative inline-flex cursor-pointer"
         >
           <User className="h-5 w-5" />
           {!session?.user?.email && (
             <span className={cn(
               NOTIFICATION_BADGE,
-              "-top-3 -right-2 transition-transform duration-100",
+              "transition-transform duration-100",
               loginBadgeAnimate && "animate-bounce",
             )}>1</span>
           )}
         </button>
 
-        <Link href="/wishlist" className="pointer-events-auto relative">
+        <Link href="/wishlist" className="pointer-events-auto relative inline-flex">
           <Heart
             className={cn(
               "h-5 w-5",
@@ -102,7 +102,7 @@ export default function MainNavbar({
             )}
           />
           {wishlistItemsCount > 0 && (
-            <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+            <span className={NOTIFICATION_BADGE}>
               {wishlistItemsCount}
             </span>
           )}
@@ -120,7 +120,7 @@ export default function MainNavbar({
                 cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
               )}
             />
-            <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+            <span className={NOTIFICATION_BADGE}>
               {cartItemsCount}
             </span>
           </Link>

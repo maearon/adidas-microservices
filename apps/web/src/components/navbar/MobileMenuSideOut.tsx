@@ -6,7 +6,7 @@ import type { Session } from "@/lib/auth"
 import { cn } from "@/lib/utils"
 
 const NOTIFICATION_BADGE =
-  "absolute flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
+  "absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#538E76] text-xs font-bold text-white"
 
 interface MobileMenuSlideOutProps {
   session: Session | null;
@@ -40,7 +40,7 @@ export default function MobileMenuSlideOut({
         <button onClick={() => setShowMobileMenu(true)}>
           <MenuIcon className="h-6 w-6" />
         </button>
-        <Link href="/wishlist" className="relative">
+        <Link href="/wishlist" className="relative inline-flex">
           <Heart
             className={cn(
               "h-5 w-5",
@@ -48,7 +48,7 @@ export default function MobileMenuSlideOut({
             )}
           />
           {wishlistItemsCount > 0 && (
-            <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+            <span className={NOTIFICATION_BADGE}>
               {wishlistItemsCount}
             </span>
           )}
@@ -61,12 +61,12 @@ export default function MobileMenuSlideOut({
       </Link>
 
       <div className="flex items-center space-x-4">
-        <button onClick={handleUserIconClick} className="relative cursor-pointer">
+        <button onClick={handleUserIconClick} className="relative inline-flex cursor-pointer">
           <User className="h-5 w-5" />
           {!session?.user?.email && (
             <span className={cn(
               NOTIFICATION_BADGE,
-              "-top-3 -right-2 transition-transform duration-100",
+              "transition-transform duration-100",
               loginBadgeAnimate && "animate-bounce",
             )}>1</span>
           )}
@@ -74,14 +74,14 @@ export default function MobileMenuSlideOut({
         <button onClick={handleMobileSearchClick}>
           <Search className="h-5 w-5" />
         </button>
-        <Link href="/cart" className="relative">
+        <Link href="/cart" className="relative inline-flex">
           <ShoppingBag
             className={cn(
               "h-5 w-5",
               cartItemsCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
             )}
           />
-          <span className={cn(NOTIFICATION_BADGE, "-top-2 -right-2")}>
+          <span className={NOTIFICATION_BADGE}>
             {cartItemsCount}
           </span>
         </Link>
