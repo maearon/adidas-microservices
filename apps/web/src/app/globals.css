@@ -76,6 +76,13 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --site-header-height: 6.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-header-height: 9.75rem;
+  }
 }
 
 .dark {

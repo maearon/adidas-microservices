@@ -7,6 +7,35 @@ import AdidasLogo from "@/components/adidas-logo"
 import { toast } from "react-toastify"
 import { useTranslations } from "@/hooks/useTranslations"
 
+const FEEDBACK_TAB_CLASS =
+  "shrink-0 rotate-180 border border-[#616363] bg-[#EBEBEB] px-6 py-2 text-base font-extrabold tracking-wider text-[#616363] transition-colors hover:bg-[#e0e0e0]"
+
+const FEEDBACK_TAB_STYLE: React.CSSProperties = {
+  writingMode: "vertical-rl",
+  textOrientation: "mixed",
+}
+
+function FeedbackTab({
+  onClick,
+  label,
+  className,
+}: {
+  onClick: () => void
+  label: string
+  className?: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(FEEDBACK_TAB_CLASS, className)}
+      style={FEEDBACK_TAB_STYLE}
+    >
+      {label}
+    </button>
+  )
+}
+
 export default function FeedbackWidget() {
   const t = useTranslations("feedback")
   const [isClosed, setIsClosed] = React.useState(false)
@@ -30,45 +59,32 @@ export default function FeedbackWidget() {
 
   if (isClosed) return null
 
+  const feedbackLabel = t?.feedback || "FEEDBACK"
+
   return (
     <>
       {!isOpen && (
-        <button
+        <FeedbackTab
           onClick={togglePanel}
-          className={cn(
-            "fixed right-0 top-1/2 z-[60] -translate-y-1/2 rotate-180",
-            "border border-[#616363] bg-[#EBEBEB] px-3 py-1 text-base font-extrabold tracking-wider text-[#616363] transition-colors sm:px-6 sm:py-2",
-          )}
-          style={{
-            writingMode: "vertical-rl",
-            textOrientation: "mixed",
-          }}
-        >
-          {t?.feedback || "FEEDBACK"}
-        </button>
+          label={feedbackLabel}
+          className="fixed right-0 top-1/2 z-[60] -translate-y-1/2"
+        />
       )}
 
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-[70] flex h-svh w-full max-w-md transition-transform duration-700 ease-in-out sm:w-[28rem]",
+          "fixed z-[70] flex h-svh min-h-svh bg-white transition-transform duration-700 ease-in-out dark:bg-black",
+          "inset-y-0 right-0 w-full max-w-[calc(100vw-0px)] sm:max-w-[calc(28rem+3.25rem)]",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <button
+        <FeedbackTab
           onClick={togglePanel}
-          className={cn(
-            "hidden shrink-0 self-center rotate-180 sm:flex",
-            "border border-[#616363] bg-[#EBEBEB] px-3 py-2 text-base font-extrabold tracking-wider text-[#616363]",
-          )}
-          style={{
-            writingMode: "vertical-rl",
-            textOrientation: "mixed",
-          }}
-        >
-          {t?.feedback || "FEEDBACK"}
-        </button>
+          label={feedbackLabel}
+          className={cn("self-center", !isOpen && "pointer-events-none opacity-0")}
+        />
 
-        <div className="flex h-full min-h-0 flex-1 flex-col bg-white shadow-2xl dark:bg-black">
+        <div className="flex h-svh min-h-0 min-w-0 flex-1 flex-col bg-white shadow-2xl dark:bg-black sm:max-w-md sm:w-[28rem]">
           <div className="flex shrink-0 items-center justify-between border-b p-6">
             <AdidasLogo />
             <button
