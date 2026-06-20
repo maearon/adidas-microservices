@@ -107,29 +107,27 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         <TopBar />
 
         {/* Desktop layout */}
-        <div className="hidden sm:block border-b border-gray-200 relative overflow-visible bg-white dark:bg-black text-black dark:text-white">
-          <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20">
+        <div className="hidden sm:block relative overflow-visible border-b border-gray-200 bg-white dark:bg-black text-black dark:text-white">
+          <div className="absolute left-8 top-1/2 z-20 -translate-y-1/2">
             <Link href="/" className="flex items-center">
               <AdidasLogo />
             </Link>
           </div>
-          
-          {/* header navbar */}
-          <HeaderNavbar />
 
-          {/* main navbar */}
-          <MainNavbar
-            session={session}
-            activeMenu={activeMenu}
-            loginBadgeAnimate={loginBadgeAnimate}
-            cartItemsCount={cartItemsCount}
-            wishlistItemsCount={wishlistItemsCount}
-            handleUserIconClick={handleUserIconClick}
-            handleMouseEnter={handleMouseEnter}
-            // handleMouseLeave={handleMouseLeave}
-            // setShowUserSlideOut={setShowUserSlideOut}
-            // setShowLoginModal={setShowLoginModal}
-          />
+          <HeaderNavbar onCloseMegaMenu={handleMouseLeave} />
+
+          <div className="relative">
+            <MainNavbar
+              session={session}
+              activeMenu={activeMenu}
+              loginBadgeAnimate={loginBadgeAnimate}
+              cartItemsCount={cartItemsCount}
+              wishlistItemsCount={wishlistItemsCount}
+              handleUserIconClick={handleUserIconClick}
+              handleMouseEnter={handleMouseEnter}
+            />
+            <MegaMenu activeMenu={activeMenu} onClose={handleMouseLeave} />
+          </div>
         </div>
 
         {/* Mobile layout */}
@@ -146,8 +144,6 @@ export default function NavbarClient({ session }: NavbarClientProps) {
           handleMobileSearchClick={handleMobileSearchClick}
         />
 
-        <MegaMenu activeMenu={activeMenu} onClose={handleMouseLeave} /> 
-        {/* Menu dropdown when hover main menu */}
       </header>
 
       <MobileMenu isOpen={showMobileMenu} onClose={() => setShowMobileMenu(false)} />

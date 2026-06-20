@@ -283,7 +283,7 @@ export default function MegaMenu({ activeMenu, onClose }: MegaMenuProps) {
 
   const shell = (content: ReactNode) => (
     <div
-      className="absolute left-0 right-0 z-50 border-t border-gray-200 bg-white text-foreground shadow-lg dark:border-gray-700 dark:bg-black"
+      className="absolute left-0 right-0 top-full z-50 border-t border-gray-200 bg-white text-foreground shadow-lg dark:border-gray-700 dark:bg-black"
       onMouseLeave={onClose}
     >
       {content}

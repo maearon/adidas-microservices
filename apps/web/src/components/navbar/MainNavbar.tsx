@@ -18,7 +18,6 @@ interface MainNavbarProps {
   wishlistItemsCount: number;
   handleUserIconClick: () => void;
   handleMouseEnter: (menuName: string) => void;
-  // handleMouseLeave: () => void;
   // setShowUserSlideOut: (value: boolean) => void;
   // setShowLoginModal: (value: boolean) => void;
 }
@@ -31,7 +30,6 @@ export default function MainNavbar({
   wishlistItemsCount,
   handleUserIconClick,
   handleMouseEnter,
-  // handleMouseLeave,
   // setShowUserSlideOut,
   // setShowLoginModal
 }: MainNavbarProps) {

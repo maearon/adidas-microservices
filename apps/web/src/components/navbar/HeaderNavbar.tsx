@@ -7,7 +7,7 @@ import { setLocale } from "@/store/localeSlice";
 import { useTranslations } from "@/hooks/useTranslations";
 import { normalizeLocale } from "@/lib/utils"; 
 
-const HeaderNavbar = () => {
+const HeaderNavbar = ({ onCloseMegaMenu }: { onCloseMegaMenu?: () => void }) => {
   const t = useTranslations("headerNavbar")
   const dispatch = useAppDispatch()
   const locale = useAppSelector((state) => state.locale.locale)
@@ -27,7 +27,10 @@ const HeaderNavbar = () => {
   }, [])
   
   return (
-    <div className="flex justify-end items-center text-xs text-gray-700 dark:text-white px-12 py-2 w-full">
+    <div
+      className="relative z-[60] flex w-full items-center justify-end px-12 py-2 text-xs text-gray-700 dark:text-white"
+      onMouseEnter={onCloseMegaMenu}
+    >
       <Link href="/sign-up" className="hover:underline mr-3">{t?.registerLink ?? "sign up"}</Link>
       <Link href="/help" className="hover:underline mr-3">{t?.helpLink ?? "help"}</Link>
       <Link href="/orders" className="hover:underline mr-3">{t?.ordersAndReturnsLink ?? "orders and returns"}</Link>
@@ -35,8 +38,12 @@ const HeaderNavbar = () => {
       <Link href="/join" className="hover:underline mr-3">{t?.joinAdiClubLink ?? "join adiClub"}</Link>
       <div className="relative" ref={dropdownRef}>
         <button
-          onClick={() => setShowCountrySelect((prev) => !prev)}
+          onClick={() => {
+            onCloseMegaMenu?.()
+            setShowCountrySelect((prev) => !prev)
+          }}
           className="flex items-center"
+          type="button"
         >
           {(() => {
             const activeLocale = localeOptions.find((opt) => opt.value === locale)
@@ -55,7 +62,7 @@ const HeaderNavbar = () => {
 
         {/* Dropdown */}
         {showCountrySelect && (
-          <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-black shadow-xl border p-4 z-50">
+          <div className="absolute right-0 z-[70] mt-2 w-60 border bg-white p-4 shadow-xl dark:bg-black">
             {localeOptions.map(({ value, label, flag }, index) => (
               <label key={`${value}-${index}`} className="flex items-center gap-2 mb-3">
                 <input
