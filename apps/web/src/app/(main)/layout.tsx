@@ -5,9 +5,9 @@ export default async function MainLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <Navbar />
-        {children}
+      <main className="flex flex-1 flex-col">{children}</main>
       <Footer />
     </div>
   );
