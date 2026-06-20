@@ -103,7 +103,7 @@ export default function FooterClient({ session }: FooterClientProps) {
       </section>
 
       {/* Bottom CTA */}
-      <div className="bg-[#007cc3] text-white py-6 hidden sm:block">
+      <div className="bg-[#538E76] text-white py-6 hidden sm:block">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
             <h3 className="text-2xl font-extrabold tracking-wide">
@@ -193,7 +193,7 @@ export default function FooterClient({ session }: FooterClientProps) {
 
             {/* Hàng 2: CTA không có padding ngang */}
             {/* Bottom CTA */}
-            <div className="bg-[#007cc3] text-white py-6 block sm:hidden">
+            <div className="bg-[#538E76] text-white py-6 block sm:hidden">
               <div className="container mx-auto px-4">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
                               <h3 className="text-2xl font-extrabold tracking-wide">
