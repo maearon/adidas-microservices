@@ -1,5 +1,12 @@
 import { MenuCategory } from "@/types/common";
 
+/** Prime banner — cột NEW & TRENDING (adidas.com/us WOMEN, World Cup season) */
+export const womenMegaMenuBanner = {
+  href: "/women-prime_delivery",
+  src: "https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/bwp_adidas_content_slot_navigation_d_dfbf3d31ce.png",
+  alt: "Fast, free delivery with Prime",
+};
+
 export const womenMenuData: MenuCategory[] = [
   {
     title: "NEW & TRENDING",
@@ -7,25 +14,31 @@ export const womenMenuData: MenuCategory[] = [
     items: [
       { name: "New Arrivals", href: "/women-new_arrivals", translationKey: "newArrivals" },
       { name: "Best Sellers", href: "/women-best_sellers", translationKey: "bestSellers" },
-      { name: "Fast, free delivery with Prime", href: "/women-prime_delivery", translationKey: "fastFreeDelivery" },
-      { name: "Taekwondo & Tokyo", href: "/women-taekwondo_tokyo", translationKey: "taekwondoTokyo" },
-      { name: "Liberty London Florals", href: "/women-liberty_london_florals", translationKey: "libertyLondonFlorals" },
-      { name: "Soft Lux: All-Day Comfort", href: "/women-soft_lux", translationKey: "softLuxAllDayComfort" },
+      { name: "Trending Now", href: "/women-trending", translationKey: "trendingNow" },
+      { name: "Shop FIFA World Cup™", href: "/women-fifa_world_cup", translationKey: "shopFifaWorldCup" },
+      { name: "Summer Shop ☀️", href: "/women-summer", translationKey: "summerShop" },
+      { name: "Pet Collection 🐈", href: "/pet", translationKey: "petCollectionWomen" },
+      { name: "Balletcore 🩰", href: "/women-ballerina", translationKey: "balletcore" },
+      { name: "Pride: Love Unites 🏳️‍🌈", href: "/women-pride", translationKey: "prideLoveUnites" },
+      { name: "Spend $100 Save $30", href: "/women-spend_100_save_30", translationKey: "spend100Save30" },
     ],
   },
   {
     title: "SHOES",
     titleHref: "/women-shoes",
     items: [
-      { name: "Running", href: "/women-running", translationKey: "running" },
-      { name: "Soccer", href: "/women-soccer", translationKey: "soccer" },
-      { name: "Sneakers", href: "/women-sneakers", translationKey: "sneakers" },
-      { name: "Golf", href: "/women-golf", translationKey: "golf" },
-      { name: "Slides & Sandals", href: "/women-slides_sandals", translationKey: "slidesSandals" },
+      { name: "Running", href: "/women-running-shoes", translationKey: "running" },
+      { name: "Soccer", href: "/women-soccer-shoes", translationKey: "soccer" },
+      { name: "Sneakers", href: "/women-athletic_sneakers", translationKey: "sneakers" },
+      { name: "Mary Janes & Flats", href: "/women-flats", translationKey: "maryJanesFlats" },
+      { name: "Golf", href: "/women-golf-shoes", translationKey: "golf" },
+      { name: "Walking", href: "/women-walking-shoes", translationKey: "walking" },
+      { name: "Slides & Sandals", href: "/women-slides", translationKey: "slidesSandals" },
       { name: "Platform Shoes", href: "/women-platform_shoes", translationKey: "platformShoes" },
-      { name: "Workout & Gym", href: "/women-workout_gym", translationKey: "workoutGym" },
-      { name: "Shoes $100 & Under", href: "/women-shoes_under_100", translationKey: "shoesUnder100" },
-      { name: "Basketball", href: "/women-basketball", translationKey: "basketball" },
+      { name: "Low Profile", href: "/women-low_profile", translationKey: "lowProfile" },
+      { name: "Workout & Gym", href: "/women-workout-shoes", translationKey: "workoutGym" },
+      { name: "Basketball", href: "/women-basketball-shoes", translationKey: "basketball" },
+      { name: "Shoes $90 & Under", href: "/women-under_90-shoes", translationKey: "shoesUnder90" },
     ],
   },
   {
@@ -33,11 +46,13 @@ export const womenMenuData: MenuCategory[] = [
     titleHref: "/women-clothing",
     items: [
       { name: "Pants", href: "/women-pants", translationKey: "pants" },
+      { name: "Shirts & Tops", href: "/women-tops", translationKey: "shirtsAndTops" },
       { name: "Dresses & Skirts", href: "/women-dresses_skirts", translationKey: "dressesSkirts" },
       { name: "Tights & Leggings", href: "/women-tights_leggings", translationKey: "tightsLeggings" },
       { name: "Plus Size", href: "/women-plus_size", translationKey: "plusSize" },
       { name: "Tracksuits", href: "/women-tracksuits", translationKey: "tracksuits" },
-      { name: "T-Shirts & Tops", href: "/women-t-shirts_tops", translationKey: "tShirtsTops" },
+      { name: "Graphic Tees", href: "/women-graphic_tees", translationKey: "graphicTees" },
+      { name: "Jerseys", href: "/women-jerseys", translationKey: "jerseys" },
       { name: "Sports Bras", href: "/women-sports_bras", translationKey: "sportsBras" },
       { name: "Shorts", href: "/women-shorts", translationKey: "shorts" },
       { name: "Hoodies & Sweatshirts", href: "/women-hoodies_sweatshirts", translationKey: "hoodiesSweatshirts" },
@@ -49,16 +64,16 @@ export const womenMenuData: MenuCategory[] = [
     titleHref: "/women-accessories",
     items: [
       { name: "Bags & Backpacks", href: "/women-bags_backpacks", translationKey: "bagsBackpacks" },
-      { name: "Balls", href: "/women-balls", translationKey: "balls" },
-      { name: "Gloves", href: "/women-gloves", translationKey: "gloves" },
-      { name: "Hats", href: "/women-hats", translationKey: "hats" },
+      { name: "Soccer Balls", href: "/women-soccer_balls", translationKey: "soccerBalls" },
+      { name: "Hats & Beanies", href: "/women-hats_beanies", translationKey: "hatsAndBeanies" },
       { name: "Socks", href: "/women-socks", translationKey: "socks" },
       { name: "Water Bottles", href: "/women-water_bottles", translationKey: "waterBottles" },
+      { name: "Sunglasses", href: "/women-sunglasses", translationKey: "sunglasses" },
     ],
   },
   {
-    title: "SHOP BY SPORT",
-    titleHref: "/women-shop_by_sport",
+    title: "SPORTS",
+    titleHref: "/women-sports",
     items: [
       { name: "Basketball", href: "/women-basketball", translationKey: "basketball" },
       { name: "Cycling", href: "/women-cycling", translationKey: "cycling" },
@@ -72,15 +87,17 @@ export const womenMenuData: MenuCategory[] = [
       { name: "Swim", href: "/women-swim", translationKey: "swim" },
       { name: "Tennis", href: "/women-tennis", translationKey: "tennis" },
       { name: "Volleyball", href: "/women-volleyball", translationKey: "volleyball" },
-      { name: "Workout & Gym", href: "/women-workout_gym", translationKey: "workoutGym" },
+      { name: "Workout & Gym", href: "/women-workout_gym", translationKey: "workoutGymSport" },
       { name: "Yoga", href: "/women-yoga", translationKey: "yoga" },
     ],
   },
   {
-    title: "SHOP BY COLLECTION",
-    titleHref: "/women-shop_by_collection",
+    title: "COLLECTIONS",
+    titleHref: "/women-collections",
     items: [
       { name: "adicolor", href: "/collections/adicolor", translationKey: "adicolor" },
+      { name: "Campus", href: "/collections/campus", translationKey: "campus" },
+      { name: "Samba Jane", href: "/collections/samba_jane", translationKey: "sambaJane" },
       { name: "Premium Collaborations", href: "/collections/premium_collaborations", translationKey: "premiumCollaborations" },
       { name: "adidas by Stella McCartney", href: "/collections/stella_mccartney", translationKey: "adidasByStellaMccartney" },
       { name: "Gazelle", href: "/collections/gazelle", translationKey: "gazelle" },
@@ -88,11 +105,9 @@ export const womenMenuData: MenuCategory[] = [
       { name: "Samba", href: "/collections/samba", translationKey: "samba" },
       { name: "Superstar", href: "/collections/superstar", translationKey: "superstar" },
       { name: "Sportswear", href: "/collections/sportswear", translationKey: "sportswear" },
-      { name: "Supernova", href: "/collections/supernova", translationKey: "supernova" },
+      { name: "Firebird", href: "/collections/firebird", translationKey: "firebird" },
       { name: "TERREX", href: "/collections/terrex", translationKey: "terrex" },
-      { name: "Ultraboost", href: "/collections/ultraboost", translationKey: "ultraboost" },
       { name: "Y-3", href: "/collections/y-3", translationKey: "y3" },
-      { name: "ZNE", href: "/collections/zne", translationKey: "zne" },
     ],
   },
 ];
