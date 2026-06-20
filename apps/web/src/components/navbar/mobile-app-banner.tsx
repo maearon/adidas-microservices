@@ -15,44 +15,49 @@ export default function MobileAppBanner({ isOpen, onClose }: MobileAppBannerProp
   if (!isOpen) return null
 
   return (
-    <div className="sm:hidden bg-background border-b border-gray-200 px-4 py-3">
-      <div className="flex items-center justify-between">
-        <button onClick={onClose} className="p-1">
-          <X className="h-5 w-5 text-gray-500" />
+    <div className="border-b border-gray-200 bg-[#ECEFF1] sm:hidden dark:border-gray-700 dark:bg-[#ECEFF1]">
+      <div className="flex items-center gap-2 px-3 py-2.5">
+        <button
+          type="button"
+          onClick={onClose}
+          className="shrink-0 p-1"
+          aria-label="Close app banner"
+        >
+          <X className="h-5 w-5 text-black" strokeWidth={1.25} />
         </button>
 
-        <div className="flex items-center space-x-3 flex-1 mx-4">
-          {/* App Icon */}
-          <div className="relative w-16 h-16 bg-black rounded-2xl overflow-hidden">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-black">
             <Image
               src="/logo-app.png"
-              alt="App Logo"
+              alt="Adidas app"
               fill
-              className="object-contain"
+              className="object-contain p-1.5"
               priority
             />
           </div>
 
-          {/* App Info */}
-          <div className="flex-1">
-            <div className="font-semibold text-base">{t?.adidasSportsStyle || "ADIDAS - SPORTS & STYLE"}</div>
-            <div className="flex items-center space-x-1 text-xs text-gray-600 dark:text-white">
-              <div className="flex">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[14px] font-bold uppercase leading-tight text-black">
+              {t?.adidasSportsStyle || "ADIDAS - SPORTS & STYLE"}
+            </p>
+            <div className="mt-0.5 flex items-center gap-1 text-[12px] leading-none text-black">
+              <span className="flex" aria-hidden>
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-yellow-400">
-                    ★
-                  </span>
+                  <span key={i}>★</span>
                 ))}
-              </div>
-              <span>548.7K</span>
+              </span>
+              <span>{t?.appRatingCount ?? "645.5K"}</span>
             </div>
           </div>
         </div>
 
-        {/* Download Button */}
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-full text-base font-semibold">
+        <a
+          href="#"
+          className="shrink-0 text-[14px] font-bold uppercase leading-none text-black underline underline-offset-2"
+        >
           {t?.download || "DOWNLOAD"}
-        </button>
+        </a>
       </div>
     </div>
   )

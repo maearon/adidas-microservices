@@ -35,7 +35,7 @@ export default function MobileMenuSlideOut({
 }: MobileMenuSlideOutProps) {
   return (
     <>
-    <div className="sm:hidden flex items-center justify-between px-[10px] sm:px-[20px] xl:px-[40px]">
+    <div className="sm:hidden flex items-center justify-between px-[10px] py-2 sm:px-[20px] xl:px-[40px]">
       <div className="flex items-center space-x-4">
         <button onClick={() => setShowMobileMenu(true)}>
           <MenuIcon className="h-6 w-6" />

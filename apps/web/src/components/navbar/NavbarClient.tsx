@@ -31,6 +31,16 @@ const HEADER_SLIDE_TRANSITION = {
   ease: [0.25, 0.1, 0.25, 1] as const,
 }
 
+function measureVisibleHeaderHeight(header: HTMLElement) {
+  let height = 0
+  for (const child of Array.from(header.children)) {
+    const style = window.getComputedStyle(child)
+    if (style.display === "none") continue
+    height += child.getBoundingClientRect().height
+  }
+  return Math.round(height)
+}
+
 interface NavbarClientProps {
   session: Session | null;
 }
@@ -98,13 +108,27 @@ export default function NavbarClient({ session }: NavbarClientProps) {
     const el = headerRef.current
     if (!el) return
 
-    const updateHeight = () => setHeaderHeight(el.offsetHeight)
+    const updateHeight = () => {
+      const height = measureVisibleHeaderHeight(el)
+      setHeaderHeight(height)
+      document.documentElement.style.setProperty("--site-header-height", `${height}px`)
+    }
+
     updateHeight()
 
     const observer = new ResizeObserver(updateHeight)
     observer.observe(el)
-    return () => observer.disconnect()
-  }, [hasMounted])
+
+    const mq = window.matchMedia("(min-width: 640px)")
+    mq.addEventListener("change", updateHeight)
+    window.addEventListener("resize", updateHeight)
+
+    return () => {
+      observer.disconnect()
+      mq.removeEventListener("change", updateHeight)
+      window.removeEventListener("resize", updateHeight)
+    }
+  }, [hasMounted, showAppBanner])
 
   useEffect(() => {
     if (!isHeaderVisible && activeMenu) {
@@ -137,8 +161,6 @@ export default function NavbarClient({ session }: NavbarClientProps) {
 
   return (
     <>
-      <MobileAppBanner isOpen={showAppBanner} onClose={() => setShowAppBanner(false)} />
-
       <motion.header
         ref={headerRef}
         className="fixed top-0 left-0 right-0 w-full bg-white dark:bg-black sm:border-b sm:border-gray-200"
@@ -147,11 +169,18 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         animate={{ y: isHeaderVisible ? 0 : "-100%" }}
         transition={HEADER_SLIDE_TRANSITION}
       >
+        {showAppBanner && (
+          <MobileAppBanner
+            isOpen={showAppBanner}
+            onClose={() => setShowAppBanner(false)}
+          />
+        )}
+
         {/* Top bar */}
         <TopBar />
 
-        {/* Desktop layout */}
-        <div className="hidden sm:block relative overflow-visible border-b border-gray-200 bg-white dark:bg-black text-black dark:text-white">
+        {/* Desktop layout — hidden on mobile so it does not affect header height */}
+        <div className="relative hidden overflow-visible border-b border-gray-200 bg-white text-black sm:block dark:bg-black dark:text-white">
           <div className="absolute left-8 top-1/2 z-20 -translate-y-1/2">
             <Link href="/" className="flex items-center">
               <AdidasLogo />
@@ -175,26 +204,27 @@ export default function NavbarClient({ session }: NavbarClientProps) {
         </div>
 
         {/* Mobile layout */}
-        <MobileMenuSlideOut
-          session={session}
-          loginBadgeAnimate={loginBadgeAnimate}
-          cartItemsCount={cartItemsCount}
-          wishlistItemsCount={wishlistItemsCount}
-          handleUserIconClick={handleUserIconClick}
-          setShowMobileMenu={setShowMobileMenu}
-          // setShowUserSlideOut={setShowUserSlideOut}
-          // setShowLoginModal={setShowLoginModal}
-          // setShowMobileSearch={setShowMobileSearch}
-          handleMobileSearchClick={handleMobileSearchClick}
-        />
+        <div className="border-b border-gray-200 sm:hidden dark:border-white">
+          <MobileMenuSlideOut
+            session={session}
+            loginBadgeAnimate={loginBadgeAnimate}
+            cartItemsCount={cartItemsCount}
+            wishlistItemsCount={wishlistItemsCount}
+            handleUserIconClick={handleUserIconClick}
+            setShowMobileMenu={setShowMobileMenu}
+            handleMobileSearchClick={handleMobileSearchClick}
+          />
+        </div>
 
       </motion.header>
 
-      <div
-        aria-hidden
-        className="pointer-events-none shrink-0"
-        style={{ height: headerHeight || "var(--site-header-height)" }}
-      />
+      {headerHeight > 0 && (
+        <div
+          aria-hidden
+          className="pointer-events-none shrink-0"
+          style={{ height: headerHeight }}
+        />
+      )}
 
       <MobileMenu isOpen={showMobileMenu} onClose={() => setShowMobileMenu(false)} />
       <MobileSearchOverlay
