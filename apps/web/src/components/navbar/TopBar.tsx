@@ -25,10 +25,10 @@ const TopBar = () => {
   ]
 
   return (
-    <div className="relative">
+    <>
       <button
         type="button"
-        className="flex w-full items-center justify-center gap-1 bg-black px-4 py-3 text-center text-base font-bold text-white"
+        className="flex h-10 w-full items-center justify-center gap-1 bg-black px-4 text-center text-base font-bold leading-none text-white"
         onClick={() => setShowTopBarDropdown((prev) => !prev)}
         aria-expanded={showTopBarDropdown}
       >
@@ -46,7 +46,7 @@ const TopBar = () => {
         isOpen={showTopBarDropdown}
         onClose={() => setShowTopBarDropdown(false)}
       />
-    </div>
+    </>
   )
 }
 

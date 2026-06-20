@@ -124,37 +124,35 @@ export default function TopBarDropdown({ isOpen, onClose }: TopBarDropdownProps)
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
-  const desktopBackdrop =
-    mounted &&
-    createPortal(
-      <div
-        className="fixed inset-0 z-[55] hidden bg-black/50 md:block"
-        onClick={onClose}
-        aria-hidden
-      />,
-      document.body,
-    )
+  const desktopBackdrop = createPortal(
+    <div
+      className="fixed inset-0 z-[65] hidden bg-black/50 md:block"
+      onClick={onClose}
+      aria-hidden
+    />,
+    document.body,
+  )
 
-  const mobilePanel =
-    mounted &&
-    createPortal(
-      <div className="fixed inset-0 z-[200] bg-white dark:bg-black md:hidden">
-        <UspPanelContent onClose={onClose} />
-      </div>,
-      document.body,
-    )
+  const desktopPanel = createPortal(
+    <div className="fixed inset-x-0 top-0 z-[70] hidden border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-black md:block">
+      <UspPanelContent onClose={onClose} />
+    </div>,
+    document.body,
+  )
+
+  const mobilePanel = createPortal(
+    <div className="fixed inset-0 z-[200] bg-white dark:bg-black md:hidden">
+      <UspPanelContent onClose={onClose} />
+    </div>,
+    document.body,
+  )
 
   return (
     <>
       {desktopBackdrop}
-
-      {/* Desktop: panel trong flow, đẩy header xuống */}
-      <div className="hidden border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-black md:block">
-        <UspPanelContent onClose={onClose} />
-      </div>
-
+      {desktopPanel}
       {mobilePanel}
     </>
   )
