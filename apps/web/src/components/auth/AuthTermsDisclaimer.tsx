@@ -1,12 +1,13 @@
 "use client"
 
 import { useTranslations } from "@/hooks/useTranslations"
+import { authDisclaimerClass } from "@/components/auth/adiclub-auth-styles"
 
 export default function AuthTermsDisclaimer() {
   const t = useTranslations("auth")
 
   return (
-    <div className="mt-6 text-xs leading-relaxed text-gray-500">
+    <div className={authDisclaimerClass}>
       <p className="mb-2">
         {t?.signMeUpToAdiclub ??
           "Sign me up to adiClub, featuring exclusive adidas offers and news"}

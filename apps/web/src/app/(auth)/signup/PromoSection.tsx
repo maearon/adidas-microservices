@@ -1,6 +1,11 @@
 'use client'
 
 import Image from "next/image"
+import {
+  authBodyClass,
+  authHeadingClass,
+  authSectionClass,
+} from "@/components/auth/adiclub-auth-styles"
 import { useTranslations } from "@/hooks/useTranslations"
 
 const PromoSection = () => {
@@ -15,7 +20,7 @@ const PromoSection = () => {
   ]
 
   return (
-    <div className="w-full bg-white py-2 lg:py-10">
+    <div className={authSectionClass}>
       <div className="mb-8 overflow-hidden">
         <Image
           src="/assets/login/account-portal-page-inline.png"
@@ -27,11 +32,11 @@ const PromoSection = () => {
         />
       </div>
 
-      <h2 className="mb-4 text-[28px] font-bold uppercase leading-tight">
+      <h2 className={`mb-4 ${authHeadingClass}`}>
         {t?.joinAdiclubGetDiscount ?? "JOIN ADICLUB. GET A 15% DISCOUNT."}
       </h2>
 
-      <p className="mb-6 text-base leading-relaxed">
+      <p className={`mb-6 ${authBodyClass}`}>
         {t?.asAdiclubMember ??
           "As an adiClub member you get rewarded with what you love for doing what you love. Sign up today and receive immediate access to these Level 1 benefits:"}
       </p>

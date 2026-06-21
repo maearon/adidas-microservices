@@ -1,15 +1,12 @@
 'use client'
 
 /**
- * Social login brand icons — local assets in /public/icons/
- * Source: https://icon-sets.iconify.design/
- *   - facebook.svg — Simple Icons (Facebook)
- *   - yahoo.svg — Simple Icons (Yahoo)
- *   - apple.svg — Simple Icons (Apple)
- *   - google.svg — Material Design Icons (Google)
+ * Social login brand icons — inline SVGs in @/components/auth/social-brand-icons
+ * Source paths: /public/icons/ (Iconify Simple Icons / MDI)
  */
 
 import LoadingButton from "@/components/ui/LoadingButton"
+import { SocialBrandIcon, type SocialBrandIconId } from "@/components/auth/social-brand-icons"
 import { useState } from "react"
 import { authClient, type ProviderId } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
@@ -25,55 +22,42 @@ type ExtendedProviderId = ProviderId | "yahoo" | "apple"
 type SocialProvider = {
   id: ExtendedProviderId
   label: string
-  /** Icon path under /public/icons — see Iconify source comment above */
-  iconSrc: string
+  iconId: SocialBrandIconId
   enabled: boolean
 }
 
 const SOCIAL_BUTTON_CLASS =
-  "border-black bg-white text-black hover:bg-white hover:text-black dark:border-white dark:bg-white dark:text-black"
+  "border-black bg-white text-black hover:bg-white hover:text-black dark:border-white dark:bg-black dark:text-white dark:hover:bg-black dark:hover:text-white"
 
 const providers: SocialProvider[] = [
   {
     id: "facebook",
     label: "Facebook",
-    iconSrc: "/icons/facebook.svg",
+    iconId: "facebook",
     enabled: true,
   },
   {
     id: "yahoo",
     label: "Yahoo",
-    iconSrc: "/icons/yahoo.svg",
+    iconId: "yahoo",
     enabled: false,
   },
   {
     id: "apple",
     label: "Apple",
-    iconSrc: "/icons/apple.svg",
+    iconId: "apple",
     enabled: false,
   },
   {
     id: "google",
     label: "Google",
-    iconSrc: "/icons/google.svg",
+    iconId: "google",
     enabled: true,
   },
 ]
 
 type SocialLoginButtonsProps = {
   callbackURL?: string
-}
-
-function SocialBrandIcon({ src }: { src: string }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt=""
-      aria-hidden
-      className="h-5 w-5 shrink-0 object-contain brightness-0"
-    />
-  )
 }
 
 const SocialLoginButtons = ({ callbackURL = "/" }: SocialLoginButtonsProps) => {
@@ -135,7 +119,7 @@ const SocialLoginButtons = ({ callbackURL = "/" }: SocialLoginButtonsProps) => {
           loading={socialLoading === provider.id}
         >
           <span className="flex h-full w-full items-center justify-center">
-            <SocialBrandIcon src={provider.iconSrc} />
+            <SocialBrandIcon id={provider.iconId} />
           </span>
         </LoadingButton>
       ))}

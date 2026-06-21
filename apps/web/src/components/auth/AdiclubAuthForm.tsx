@@ -17,13 +17,17 @@ import {
   emailValidationSchema,
   passwordValidationSchema,
 } from "@/components/auth/adiclub-auth-schemas"
+import {
+  authFieldInputClass,
+  authMutedTextClass,
+  authPasswordInputClass,
+} from "@/components/auth/adiclub-auth-styles"
 import { useCheckEmail } from "@/api/hooks/useCheckEmail"
 import { useLoginMutationBetterAuthSessionSameSite } from "@/api/hooks/useLoginMutation"
 import { useTranslations } from "@/hooks/useTranslations"
 import { authClient } from "@/lib/auth-client"
 import { fetchUser } from "@/store/sessionSlice"
 import type { AppDispatch } from "@/store/store"
-import { cn } from "@/lib/utils"
 
 type AuthStep = "email" | "login" | "register" | "activate"
 
@@ -131,7 +135,7 @@ export default function AdiclubAuthForm({
 
   if (step === "activate") {
     return (
-      <div className="text-center">
+      <div className="text-center text-foreground">
         <h2 className="mb-2 text-xl font-bold uppercase">
           {t?.activateYourAccount ?? "ACTIVATE YOUR ACCOUNT"}
         </h2>
@@ -169,13 +173,9 @@ export default function AdiclubAuthForm({
                         autoComplete="email"
                         placeholder={t?.emailAddress ?? "EMAIL ADDRESS *"}
                         aria-invalid={Boolean(errors.email && touched.email)}
-                        className={cn(
-                          "h-12 w-full px-3 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500",
-                          errors.email && touched.email
-                            ? "border-red-500 border-b-2 focus:border-red-500 focus:ring-red-500"
-                            : values.email && !errors.email
-                              ? "border-green-600 focus:border-green-600 focus:ring-green-600"
-                              : "border-black focus:ring-black",
+                        className={authFieldInputClass(
+                          Boolean(errors.email && touched.email),
+                          Boolean(values.email && !errors.email),
                         )}
                       />
                       {values.email && !errors.email && (
@@ -251,7 +251,7 @@ export default function AdiclubAuthForm({
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
-              <p className="text-sm text-gray-600">
+              <p className={authMutedTextClass}>
                 {email}
                 <button
                   type="button"
@@ -275,7 +275,7 @@ export default function AdiclubAuthForm({
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
                         placeholder={t?.password ?? "Password *"}
-                        className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                        className={authPasswordInputClass}
                       />
                     )}
                   </Field>
@@ -338,7 +338,7 @@ export default function AdiclubAuthForm({
         >
           {({ isSubmitting }) => (
             <Form className="space-y-4">
-              <p className="text-sm text-gray-600">
+              <p className={authMutedTextClass}>
                 {email}
                 <button
                   type="button"
@@ -362,7 +362,7 @@ export default function AdiclubAuthForm({
                         type={showPassword ? "text" : "password"}
                         autoComplete="new-password"
                         placeholder={t?.password ?? "Password *"}
-                        className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                        className={authPasswordInputClass}
                       />
                     )}
                   </Field>

@@ -6,6 +6,13 @@ import AdiclubLogo from "@/components/auth/AdiclubLogo"
 import AuthTermsDisclaimer from "@/components/auth/AuthTermsDisclaimer"
 import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
 import { passwordValidationSchema } from "@/components/auth/adiclub-auth-schemas"
+import {
+  authBodyClass,
+  authFieldInputClass,
+  authHeadingClass,
+  authPasswordInputClass,
+  authSectionClass,
+} from "@/components/auth/adiclub-auth-styles"
 import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik"
 import { Eye, EyeOff, X } from "lucide-react"
 import Link from "next/link"
@@ -20,7 +27,6 @@ import { authClient } from "@/lib/auth-client"
 import { fetchUser } from "@/store/sessionSlice"
 import type { AppDispatch } from "@/store/store"
 import type { AuthTranslations } from "@/types/auth"
-import { cn } from "@/lib/utils"
 
 interface SignupFormValues {
   name: string
@@ -42,17 +48,6 @@ const SignupSchema = (t: AuthTranslations) =>
         t?.validation?.passwordConfirmationRequired || "Password confirmation is required",
       ),
   })
-
-function fieldInputClass(hasError: boolean, isValid: boolean) {
-  return cn(
-    "h-12 w-full px-3 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500",
-    hasError
-      ? "border-red-500 border-b-2 focus:border-red-500 focus:ring-red-500"
-      : isValid
-        ? "border-green-600 focus:border-green-600 focus:ring-green-600"
-        : "border-black focus:ring-black",
-  )
-}
 
 const SignupForm = () => {
   const t = useTranslations("auth")
@@ -114,13 +109,13 @@ const SignupForm = () => {
   }
 
   return (
-    <div className="w-full bg-white py-2 lg:py-10">
+    <div className={authSectionClass}>
       <AdiclubLogo className="mb-8" />
 
-      <h1 className="mb-2 text-[28px] font-bold uppercase leading-tight">
+      <h1 className={`mb-2 ${authHeadingClass}`}>
         {t?.signUp ?? "SIGN UP"}
       </h1>
-      <p className="mb-6 text-base leading-relaxed">
+      <p className={`mb-6 ${authBodyClass}`}>
         {t?.enjoyMembersOnly ??
           "Enjoy members-only access to exclusive products, experiences, offers and more."}
       </p>
@@ -152,7 +147,7 @@ const SignupForm = () => {
                       type="text"
                       autoComplete="name"
                       placeholder={t?.name ?? "NAME *"}
-                      className={fieldInputClass(
+                      className={authFieldInputClass(
                         Boolean(errors.name && touched.name),
                         Boolean(values.name && !errors.name),
                       )}
@@ -197,7 +192,7 @@ const SignupForm = () => {
                       type="email"
                       autoComplete="email"
                       placeholder={t?.emailAddress ?? "EMAIL ADDRESS *"}
-                      className={fieldInputClass(
+                      className={authFieldInputClass(
                         Boolean(errors.email && touched.email),
                         Boolean(values.email && !errors.email),
                       )}
@@ -242,7 +237,7 @@ const SignupForm = () => {
                       type={showPassword.password ? "text" : "password"}
                       autoComplete="new-password"
                       placeholder={t?.password ?? "Password *"}
-                      className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                      className={authPasswordInputClass}
                     />
                   )}
                 </Field>
@@ -282,7 +277,7 @@ const SignupForm = () => {
                       type={showPassword.password_confirmation ? "text" : "password"}
                       autoComplete="new-password"
                       placeholder={t?.confirmPassword ?? "CONFIRM PASSWORD *"}
-                      className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                      className={authPasswordInputClass}
                     />
                   )}
                 </Field>

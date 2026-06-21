@@ -1,6 +1,12 @@
 'use client'
 
 import Image from "next/image"
+import {
+  authBodyClass,
+  authHeadingClass,
+  authSectionClass,
+  authSubtleTextClass,
+} from "@/components/auth/adiclub-auth-styles"
 import { useTranslations } from "@/hooks/useTranslations"
 
 const PromoSection = () => {
@@ -15,7 +21,7 @@ const PromoSection = () => {
   ]
 
   return (
-    <div className="w-full bg-white py-2 lg:py-10">
+    <div className={authSectionClass}>
       <div className="mb-8 overflow-hidden">
         <Image
           src="/assets/login/account-portal-page-inline.jpeg"
@@ -27,11 +33,11 @@ const PromoSection = () => {
         />
       </div>
 
-      <h2 className="mb-4 text-[28px] font-bold uppercase leading-tight">
+      <h2 className={`mb-4 ${authHeadingClass}`}>
         {t?.joinAdiclubToUnlock ?? "JOIN ADICLUB TO UNLOCK MORE REWARDS"}
       </h2>
 
-      <p className="mb-6 text-base leading-relaxed">
+      <p className={`mb-6 ${authBodyClass}`}>
         {t?.joinAdiclubForFree ??
           "Join adiClub for free and enjoy immediate access to these Level 1 rewards:"}
       </p>
@@ -47,7 +53,7 @@ const PromoSection = () => {
         ))}
       </ul>
 
-      <p className="text-sm leading-relaxed text-gray-700">
+      <p className={authSubtleTextClass}>
         {t?.startEarningPoints ??
           "Start earning adiClub points every time you shop, track a run on the adidas Running app and share a product review. The more points you earn, the faster you'll level up and unlock rewards such as a Birthday Gift, Free Personalisation, Priority Customer Service, Premium Event Tickets and more."}
       </p>
