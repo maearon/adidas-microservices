@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { ChevronDown, Heart, Trash2 } from "lucide-react"
+import { Heart, Trash2 } from "lucide-react"
 import ProductPrice from "@/components/ProductCardPrice"
+import CartQuantitySelect from "@/components/commerce/CartQuantitySelect"
 import type { CartItem } from "@/store/cartSlice"
 
 type CartLineItemProps = {
@@ -73,24 +74,10 @@ export default function CartLineItem({
           </div>
 
           <div className="mt-auto flex items-end justify-between gap-4 pt-4 sm:pt-6">
-            <div className="relative">
-              <select
-                value={item.quantity}
-                onChange={(e) => onUpdateQuantity(item.id, Number.parseInt(e.target.value, 10))}
-                aria-label="Qty"
-                className="h-[51px] w-[100px] appearance-none border border-foreground bg-background py-[11px] pl-[14px] pr-9 text-sm outline-none"
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                size={16}
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
-              />
-            </div>
+            <CartQuantitySelect
+              value={item.quantity}
+              onChange={(quantity) => onUpdateQuantity(item.id, quantity)}
+            />
 
             <p className="text-base font-bold text-foreground">
               <ProductPrice
