@@ -30,7 +30,12 @@ export default function WishButton({ item, className, size = 24 }: WishButtonPro
     <button onClick={handleToggleWishlist} className={cn("hover:scale-110 transition-transform", className)}>
       <Heart
         size={size}
-        className={cn("transition-colors", isWishlisted ? "fill-black text-black dark:text-black" : "text-black dark:text-black")}
+        className={cn(
+          "transition-colors",
+          isWishlisted
+            ? "fill-black text-black dark:fill-white dark:text-white"
+            : "text-black dark:text-white",
+        )}
       />
     </button>
   )

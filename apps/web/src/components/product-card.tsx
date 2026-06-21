@@ -61,13 +61,20 @@ export default function ProductCard({
     e.stopPropagation();
     dispatch(
       addToCart({
-        id: Number(product.id),
+        id: Number(currentVariant?.id ?? product.id),
+        productId: String(product.id),
+        variantId: currentVariant?.id ? String(currentVariant.id) : undefined,
         name: product.name || "Unknown Product",
-        price: product.price ?? 0, // ✅ raw number, không format
-        compareAtPrice: product.compare_at_price ?? null, // nếu cần
-        image: currentVariant?.avatar_url || "/placeholder.png",
+        price: product.price ?? 0,
+        compareAtPrice: product.compare_at_price ?? null,
+        image:
+          currentVariant?.avatar_url ||
+          product.main_image_url ||
+          product.image_url ||
+          "/placeholder.png",
         color: currentVariant?.color || "Default",
-        size: currentVariant?.sizes[0] || "M",
+        size: currentVariant?.sizes?.[0] || "M",
+        category: product.category,
       })
     );
   };
@@ -125,7 +132,7 @@ export default function ProductCard({
         <CardContent className="p-0 relative">
           {/* IMAGE WRAPPER */}
           <div className="relative">
-            <div className="relative aspect-square overflow-hidden group/image">
+            <div className="relative aspect-square overflow-hidden bg-[#EBEDEE] group/image dark:bg-neutral-900">
               <Image
                 src={productImage}
                 alt={product.name || "Product Name"}
@@ -215,18 +222,22 @@ export default function ProductCard({
             <h3 className="font-medium text-base leading-tight line-clamp-2">
               {product.name}
             </h3>
-            {product.sport && (
+            {product.category ? (
+              <p className="text-sm text-gray-600 dark:text-neutral-400">
+                {product.category}
+              </p>
+            ) : product.sport ? (
               <p className="text-gray-600 dark:text-white text-sm">
                 {product.gender ? `${product.gender}'s` : ""}{" "}
                 {product.gender && product.sport ? " " : ""}
                 {product.sport}
               </p>
-            )}
-            {hasVariants && (
+            ) : null}
+            {hasVariants ? (
               <p className="text-gray-600 dark:text-white text-sm">
                 {product.variants.length} {t?.colors || "colors"}
               </p>
-            )}
+            ) : null}
             {(product?.tags?.length || 0) > 0 && (
               <p className="text-foreground text-sm font-medium">
                 {product?.tags?.[0]}

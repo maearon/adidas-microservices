@@ -94,7 +94,7 @@ export default function MainNavbar({
           )}
         </button>
 
-        <Link href="/wishlist" className="pointer-events-auto relative inline-flex">
+        <Link href="/wishlists" className="pointer-events-auto relative inline-flex">
           <Heart
             className={cn(
               "h-5 w-5",

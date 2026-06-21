@@ -25,6 +25,8 @@ import { cn, formatPrice } from "@/lib/utils"
 import ProductPrice from "@/components/ProductCardPrice"
 import { addLastVisited } from "@/lib/recentlyViewed"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
+import { fetchRecommendations } from "@/lib/commerce/commerce-api"
+import type { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import ProductSections from "@/components/product/ProductSections"
 
@@ -57,6 +59,8 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   const [sizeError, setSizeError] = useState("")
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [currentVariant, setCurrentVariant] = useState<any>(null)
+  const [completeLookProducts, setCompleteLookProducts] = useState<Product[]>([])
+  const [alsoLikeProducts, setAlsoLikeProducts] = useState<Product[]>([])
 
   const { data: product, isLoading, error, refetch } = useProductDetail(slug, model)
 
@@ -71,6 +75,31 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     // Map API response to Product type
     if (product) addLastVisited(mapProductDataToProduct(product))
   }, [product])
+
+  useEffect(() => {
+    if (!product?.id) return
+
+    Promise.all([
+      fetchRecommendations({
+        strategy: "complete-look",
+        productId: String(product.id),
+        limit: 8,
+      }),
+      fetchRecommendations({
+        strategy: "also-like",
+        productId: String(product.id),
+        limit: 8,
+      }),
+    ])
+      .then(([completeLook, alsoLike]) => {
+        setCompleteLookProducts(completeLook.products as Product[])
+        setAlsoLikeProducts(alsoLike.products as Product[])
+      })
+      .catch(() => {
+        setCompleteLookProducts((product.related_products as Product[]) ?? [])
+        setAlsoLikeProducts((product.related_products as Product[]) ?? [])
+      })
+  }, [product?.id, product?.related_products])
 
   const variant = product?.variants.find((v) => v.variant_code === params.model)
   const [hoveredColor, setHoveredColor] = useState<string | null>(null)
@@ -87,12 +116,20 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     if (!product || !currentVariant) return
     dispatch(
       addToCart({
-        id: Number(product.id),
+        id: Number(currentVariant?.id ?? product.id),
+        productId: String(product.id),
+        variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
         name: product.name,
         price: Number(variant?.price ?? 0),
-        image: variant?.image_urls?.[0] || "/placeholder.png",
+        compareAtPrice: variant?.compare_at_price ?? null,
+        image:
+          variant?.avatar_url ||
+          variant?.image_urls?.[0] ||
+          product.main_image_url ||
+          "/placeholder.png",
         color: variant?.color,
         size: selectedSize,
+        category: product.category,
       })
     )
   }
@@ -101,10 +138,18 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     if (!product || !currentVariant) return
     dispatch(
       toggleWishlist({
-        id: Number(product.id),
+        id: Number(currentVariant?.id ?? product.id),
+        productId: String(product.id),
+        variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
         name: product.name,
         price: `$${formatPrice(variant?.price).replace("$", "")}`,
-        image: variant?.image_urls?.[0] || "/placeholder.png",
+        image:
+          variant?.avatar_url ||
+          variant?.image_urls?.[0] ||
+          product.main_image_url ||
+          "/placeholder.png",
+        category: product.category,
+        sport: product.sport,
       })
     )
   }
@@ -268,11 +313,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
           {/* Product Carousel */}
           <div className="hidden lg:block sm:mb-[80px]">
           <section className="container mx-auto px-4 py-0 mb-4">
-            <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
+            <ProductCarousel products={completeLookProducts.length ? completeLookProducts : product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile minimalMobileForProductCard showIndicators={false} />
           </section>
           <div className="mb-[80px]"></div>
           <section className="container mx-auto px-4 py-0 mb-4">
-            <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile minimalMobileForProductCard showIndicators />
+            <ProductCarousel products={alsoLikeProducts.length ? alsoLikeProducts : product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile minimalMobileForProductCard showIndicators />
           </section>
           <div className="mb-[80px]"></div>
           <HistoryView
@@ -563,11 +608,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         {/* Product Carousel */}
         <div className="block lg:hidden lg:block mb-[60px]">
         <section className="container mx-auto px-4 py-0 mb-4">
-          <ProductCarousel products={product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile showIndicators={false} />
+          <ProductCarousel products={completeLookProducts.length ? completeLookProducts : product.related_products} title={t?.completeTheLook || "COMPLETE THE LOOK"} carouselModeInMobile showIndicators={false} />
         </section>
         <div className="mb-[60px]"></div>
         <section className="container mx-auto px-4 py-0 mb-4">
-          <ProductCarousel products={product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile showIndicators />
+          <ProductCarousel products={alsoLikeProducts.length ? alsoLikeProducts : product.related_products} title={t?.youMayAlsoLike || "YOU MAY ALSO LIKE"} carouselModeInMobile showIndicators />
         </section>
         <div className="mb-[60px]"></div>
         <HistoryView

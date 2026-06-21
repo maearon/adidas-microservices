@@ -2,6 +2,8 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
 export interface CartItem {
   id: number
+  productId?: string
+  variantId?: string
   name: string
   price: number   // <-- sửa string thành number
   compareAtPrice?: number | null // <-- thêm trường này nếu cần
@@ -30,7 +32,11 @@ const cartSlice = createSlice({
     addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {
       const existingItem = state.items.find(
         (item) =>
-          item.id === action.payload.id && item.color === action.payload.color && item.size === action.payload.size,
+          (item.variantId && action.payload.variantId
+            ? item.variantId === action.payload.variantId
+            : item.id === action.payload.id) &&
+          item.color === action.payload.color &&
+          item.size === action.payload.size,
       )
 
       if (existingItem) {
@@ -39,8 +45,10 @@ const cartSlice = createSlice({
         state.items.push({ ...action.payload, quantity: 1 })
       }
     },
-    removeFromCart: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload)
+    removeFromCart: (state, action: PayloadAction<number | string>) => {
+      state.items = state.items.filter(
+        (item) => item.id !== action.payload && item.variantId !== String(action.payload),
+      )
     },
     updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
       const item = state.items.find((item) => item.id === action.payload.id)
@@ -51,8 +59,11 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = []
     },
+    setCartItems: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload
+    },
   },
 })
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions
+export const { addToCart, removeFromCart, updateQuantity, clearCart, setCartItems } = cartSlice.actions
 export default cartSlice.reducer

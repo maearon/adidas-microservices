@@ -5,45 +5,47 @@ import { ShoppingBag } from "lucide-react"
 import { useAppSelector } from "@/store/hooks"
 import { cn } from "@/lib/utils"
 import type { Session } from "@/lib/auth"
-import { ThemeToggle } from "@/components/theme/ThemeToggle"
+import { CART_PAGE_SHELL } from "@/components/commerce/commerce-page-shell"
 
 type CheckoutHeaderProps = {
   session: Session | null
 }
 
 export default function CheckoutHeader({ session }: CheckoutHeaderProps) {
-  const cartCount = useAppSelector((state) => state.cart.items.length)
-  const userName = session?.user?.name || "Guest"
+  const cartItems = useAppSelector((state) => state.cart.items)
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  const userName = session?.user?.name?.split(" ")[0] || "Guest"
+
   return (
-    <header className="border-b border-gray-200 py-4">
-      <div className="container mx-auto px-4">
-        {/* <div className="flex items-center justify-between"> */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0"> {/* For mobile */}
-          {/* Left side - Logo and greeting */}
-          <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold">
+    <header className="border-b border-border bg-background text-foreground">
+      <div className={`${CART_PAGE_SHELL} py-4 lg:py-5`}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-6 sm:gap-8">
+            <Link href="/" className="text-2xl font-bold lowercase tracking-tight">
               adidas
             </Link>
-            <span className="text-base font-medium">HI, {userName.toUpperCase()}!</span>
+            <span className="text-base font-medium uppercase">
+              Hi, {userName.toLowerCase()}!
+            </span>
           </div>
 
-          {/* Right side - Cart and adiClub */}
-          <div className="flex items-center space-x-6">
-            <Link href="/cart" className="relative">
+          <div className="flex items-center gap-6">
+            <Link href="/cart" className="relative inline-flex" aria-label="Go to bag">
               <ShoppingBag
                 className={cn(
                   "h-6 w-6",
-                  cartCount > 0 ? "fill-black text-black dark:fill-white dark:text-white" : "text-black dark:text-white"
+                  cartCount > 0
+                    ? "fill-black text-black dark:fill-white dark:text-white"
+                    : "text-black dark:text-white",
                 )}
               />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {cartCount > 0 ? (
+                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#00853e] px-1 text-[10px] font-bold text-white">
                   {cartCount}
                 </span>
-              )}
+              ) : null}
             </Link>
-            <ThemeToggle />
-            <span className="text-base font-medium">adiClub</span>
+            <span className="text-base font-bold lowercase tracking-tight">adiclub</span>
           </div>
         </div>
       </div>

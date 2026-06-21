@@ -56,6 +56,23 @@
     "shopNow": "MUA NGAY"
   },
   "topPicks": "LỰA CHỌN HÀNG ĐẦU DÀNH CHO BẠN",
+  "yourBag": "TÚI CỦA BẠN",
+  "bagEmptySubtitle": "Túi của bạn đang trống",
+  "bagEmptyCopy": "Khi bạn thêm sản phẩm vào túi, chúng sẽ hiển thị tại đây. Sẵn sàng bắt đầu chưa?",
+  "getStarted": "BẮT ĐẦU",
+  "myWishlist": "DANH SÁCH YÊU THÍCH",
+  "wishlistEmptyCopy": "Bạn chưa lưu sản phẩm nào vào danh sách yêu thích. Hãy mua sắm và thêm món yêu thích của bạn.",
+  "itemsLabel": "sản phẩm",
+  "addToBag": "Thêm vào túi",
+  "recentlyViewedItems": "CÁC MỤC ĐÃ XEM GẦN ĐÂY",
+  "wishlistAppPromoTitle": "Tận dụng danh sách yêu thích tốt hơn qua ứng dụng",
+  "wishlistAppPromoBullets": [
+    "Thông báo tức thì khi sản phẩm giảm giá hoặc sắp hết hàng",
+    "Chia sẻ danh sách yêu thích với bạn bè và gia đình",
+    "Xem sản phẩm nào đủ điều kiện nhận voucher",
+    "Nhận 50 điểm adiClub và mở khóa thêm phần thưởng với ứng dụng"
+  ],
+  "wishlistAppPromoScan": "Quét để tải ứng dụng adidas",
   "descriptions": {
     "mens": {
       "title": "GIÀY THỂ THAO VÀ TRANG PHỤC TẬP LUYỆN NAM",

@@ -9,8 +9,11 @@ export interface WishItem {
 
 export interface WishlistItem {
   id: number
+  productId?: string
+  variantId?: string
   name: string
   price: string
+  color?: string
   sport?: string
   image: string
   category?: string

@@ -40,7 +40,7 @@ export default function MobileMenuSlideOut({
         <button onClick={() => setShowMobileMenu(true)}>
           <MenuIcon className="h-6 w-6" />
         </button>
-        <Link href="/wishlist" className="relative inline-flex">
+        <Link href="/wishlists" className="relative inline-flex">
           <Heart
             className={cn(
               "h-5 w-5",

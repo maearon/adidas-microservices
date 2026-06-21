@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "../globals.css"
 import { getServerSession } from "@/lib/get-session"
 import CheckoutHeader from "@/app/checkout/checkout-header"
+import CommerceMinimalFooter from "@/components/commerce/CommerceMinimalFooter"
 
 export const metadata: Metadata = {
   title: "Checkout - Adidas",
@@ -16,44 +17,10 @@ export default async function CheckoutLayout({
 }) {
   const session = await getServerSession()
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <CheckoutHeader session={session} />
-      {children}
-      <CheckoutFooter />
+      <main className="flex-1">{children}</main>
+      <CommerceMinimalFooter />
     </div>
-  )
-}
-
-function CheckoutFooter() {
-  return (
-    <footer className="bg-gray-800 text-background py-6 mt-16">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center text-base">
-          <div className="flex items-center space-x-4">
-            <span>📞 Questions? 1-800-982-9337</span>
-            <span>|</span>
-            <span>💬 8AM ET - 11PM ET, 7 days a week</span>
-          </div>
-        </div>
-        <div className="flex justify-between items-center text-base mt-4">
-          <div className="flex items-center space-x-4">
-            <span>Your Privacy Choices</span>
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-4 bg-blue-600 rounded"></div>
-              <span>✗</span>
-            </div>
-            <span>|</span>
-            <a href="#" className="hover:underline">
-              Privacy Statement
-            </a>
-            <span>|</span>
-            <a href="#" className="hover:underline">
-              Terms and Conditions
-            </a>
-          </div>
-          <div className="text-gray-400">© 2025 adidas America Inc.</div>
-        </div>
-      </div>
-    </footer>
   )
 }
