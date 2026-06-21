@@ -61,6 +61,7 @@ model cart_items {
   created_at DateTime @db.Timestamp(6)
   updated_at DateTime @db.Timestamp(6)
   size       String?  @db.VarChar(255)
+  carts      carts    @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cart_items_cart_id")
   variants   variants @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_5e1fd37f08")
   products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rails_681a180e84")
 
@@ -71,10 +72,11 @@ model cart_items {
 }
 
 model carts {
-  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  id         BigInt       @id @default(autoincrement())
   user_id    String
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  created_at DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at DateTime     @default(now()) @db.Timestamptz(6)
+  cart_items cart_items[]
 
   @@index([user_id], map: "idx_carts_user_id")
 }

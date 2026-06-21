@@ -66,10 +66,10 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["variant_id"], name: "index_cart_items_on_variant_id"
   end
 
-  create_table "carts", id: :text, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "carts", force: :cascade do |t|
     t.text "user_id", null: false
-    t.timestamptz "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.timestamptz "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "idx_carts_user_id"
   end
 
@@ -283,6 +283,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "cart_items", "variants"
   add_foreign_key "categories", "categories", column: "parent_id", name: "categories_parent_id_fkey"

@@ -1,21 +1,13 @@
 class Cart < ApplicationRecord
-  self.primary_key = "id"
-
-  # user_id stores Better Auth UUID (text). Users live in Drizzle DB — no local belongs_to :user.
-  # cart_items.cart_id is a derived bigint bucket, not carts.id — see #cart_items_bucket_id.
-
-  def cart_items_bucket_id
-    digest = Digest::SHA256.digest(user_id.to_s)
-    digest.bytes.first(7).inject(0) { |acc, byte| (acc << 8) | byte }
-  end
+  # user_id stores Better Auth user id (text). Users live in Drizzle DB — no local belongs_to :user.
+  has_many :cart_items, dependent: :destroy
 
   def line_items
-    CartItem.where(cart_id: cart_items_bucket_id)
+    cart_items
   end
 
   def cart(product, variant, quantity, action)
-    bucket_id = cart_items_bucket_id
-    current_item = CartItem.find_or_initialize_by(cart_id: bucket_id, variant: variant)
+    current_item = cart_items.find_or_initialize_by(variant: variant)
     current_item.quantity ||= 0
     current_item.quantity = action == "edit" ? quantity.to_i : current_item.quantity + quantity.to_i
     current_item.product = product

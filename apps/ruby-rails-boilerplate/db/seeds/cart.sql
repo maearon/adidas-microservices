@@ -1,5 +1,5 @@
 CREATE TABLE carts (
-  id         TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+  id         BIGSERIAL PRIMARY KEY,
   user_id    TEXT NOT NULL,
   created_at TIMESTAMPTZ(6) NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ(6) NOT NULL DEFAULT now()

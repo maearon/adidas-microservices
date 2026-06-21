@@ -9,6 +9,17 @@ DELETE from guest_cart_items;
 
 DELETE from guest_wishes;
 DELETE from guest_wish_items;
+
+DROP TABLE IF EXISTS carts;
+
+CREATE TABLE carts (
+  id         BIGSERIAL PRIMARY KEY,
+  user_id    TEXT NOT NULL,
+  created_at TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_carts_user_id ON carts(user_id);
 -- Reference SQL for Neon (already applied manually).
 -- carts.user_id + wishes.user_id → TEXT (Better Auth UUID), no FK to users.
 
