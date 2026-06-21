@@ -15,7 +15,7 @@ const PromoSection = () => {
   ]
 
   return (
-    <div className="w-full bg-white py-8 lg:py-10">
+    <div className="w-full bg-white py-2 lg:py-10">
       <div className="mb-8 overflow-hidden">
         <Image
           src="/assets/login/account-portal-page-inline.jpeg"

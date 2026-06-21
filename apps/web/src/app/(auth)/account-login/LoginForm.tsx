@@ -11,7 +11,7 @@ const LoginForm = () => {
   const redirectTo = searchParams.get("redirect") ?? "/my-account"
 
   return (
-    <div className="w-full bg-white py-8 lg:py-10">
+    <div className="w-full bg-white py-2 lg:py-10">
       <AdiclubLogo className="mb-8" />
 
       <h1 className="mb-2 text-[28px] font-bold uppercase leading-tight">

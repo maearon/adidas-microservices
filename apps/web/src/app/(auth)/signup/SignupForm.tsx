@@ -1,139 +1,131 @@
 'use client'
 
-import AdidasLogo from "@/components/adidas-logo"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import AdiclubLogo from "@/components/auth/AdiclubLogo"
+import AuthTermsDisclaimer from "@/components/auth/AuthTermsDisclaimer"
+import SocialLoginButtons from "@/app/(auth)/account-login/SocialLoginButtons"
+import { passwordValidationSchema } from "@/components/auth/adiclub-auth-schemas"
 import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik"
 import { Eye, EyeOff, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import * as Yup from "yup"
-import ShowErrors, { normalizeFormikErrors, type ErrorMessages } from "@/components/shared/errorMessages"
 import flashMessage from "@/components/shared/flashMessages"
-import { useRouter } from "next/navigation"
-import { AxiosError } from "axios"
-import { SignupResponse, useSignupMutation } from "@/api/hooks/useSignupMutation"
-import { NetworkErrorWithCode } from "@/components/shared/handleNetworkError"
-import { Input } from "@/components/ui/input"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useDispatch } from "react-redux"
+import { useLoginMutationBetterAuthSessionSameSite } from "@/api/hooks/useLoginMutation"
 import { useTranslations } from "@/hooks/useTranslations"
-import { AuthTranslations } from "@/types/auth"
+import { authClient } from "@/lib/auth-client"
+import { fetchUser } from "@/store/sessionSlice"
+import type { AppDispatch } from "@/store/store"
+import type { AuthTranslations } from "@/types/auth"
+import { cn } from "@/lib/utils"
 
 interface SignupFormValues {
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
+  name: string
+  email: string
+  password: string
+  password_confirmation: string
 }
 
-export interface ValidationErrorItem {
-  cause?: { field?: string };
-  defaultMessage?: string;
-}
+const SignupSchema = (t: AuthTranslations) =>
+  Yup.object().shape({
+    name: Yup.string().required(t?.validation?.nameRequired || "Name is required"),
+    email: Yup.string()
+      .email(t?.validation?.emailInvalid || "Invalid email")
+      .required(t?.validation?.emailRequired || "Please enter a value"),
+    password: passwordValidationSchema(t),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref("password")], t?.validation?.passwordsMustMatch || "Passwords must match")
+      .required(
+        t?.validation?.passwordConfirmationRequired || "Password confirmation is required",
+      ),
+  })
 
-export interface ApiErrorResponse {
-  message?: string;
-  errors?: ValidationErrorItem[];
+function fieldInputClass(hasError: boolean, isValid: boolean) {
+  return cn(
+    "h-12 w-full px-3 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500",
+    hasError
+      ? "border-red-500 border-b-2 focus:border-red-500 focus:ring-red-500"
+      : isValid
+        ? "border-green-600 focus:border-green-600 focus:ring-green-600"
+        : "border-black focus:ring-black",
+  )
 }
-
-const SignupSchema = (t: AuthTranslations) => Yup.object().shape({
-  name: Yup.string().required(t?.validation?.nameRequired || "Name is required"),
-  email: Yup.string().email(t?.validation?.emailInvalid || "Invalid email").required(t?.validation?.emailRequired || "Email is required"),
-  password: Yup.string().min(6, t?.validation?.passwordMinLength || "Password must be at least 6 characters").required(t?.validation?.passwordRequired || "Password is required"),
-  password_confirmation: Yup.string()
-    .oneOf([Yup.ref("password")], t?.validation?.passwordsMustMatch || "Passwords must match")
-    .required(t?.validation?.passwordConfirmationRequired || "Password confirmation is required"),
-})
 
 const SignupForm = () => {
-  const t = useTranslations("auth");
+  const t = useTranslations("auth")
   const router = useRouter()
-  const [errors, setErrors] = useState<ErrorMessages>({})
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get("redirect") ?? "/my-account"
+  const dispatch = useDispatch<AppDispatch>()
+  const loginMutation = useLoginMutationBetterAuthSessionSameSite()
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     password_confirmation: false,
-  });
-  const signupMutation = useSignupMutation<SignupResponse>();
+  })
 
   const togglePassword = (field: "password" | "password_confirmation") => {
-    setShowPassword(prev => ({
+    setShowPassword((prev) => ({
       ...prev,
       [field]: !prev[field],
-    }));
-  };
+    }))
+  }
 
-  const handleSubmit = (values: SignupFormValues) => {
-    setErrors({})
+  const finishAuth = async () => {
+    await dispatch(fetchUser())
+    router.push(redirectTo)
+  }
 
-    const payload = {
-      user: {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        password_confirmation: values.password_confirmation,
-      },
+  const syncJwtSession = () =>
+    new Promise<void>((resolve, reject) => {
+      loginMutation.mutate(
+        { keepLoggedIn: true },
+        {
+          onSuccess: async () => {
+            await finishAuth()
+            resolve()
+          },
+          onError: reject,
+        },
+      )
+    })
+
+  const handleSubmit = async (values: SignupFormValues) => {
+    const { error } = await authClient.signUp.email({
+      email: values.email,
+      password: values.password,
+      name: values.name,
+      callbackURL: redirectTo,
+    })
+
+    if (error) {
+      flashMessage(
+        "error",
+        error.message || t?.messages?.failedToCreateAccount || "Failed to create account",
+      )
+      throw error
     }
 
-    signupMutation.mutate(payload, {
-      onSuccess: (response) => {
-        if (response?.success) {
-          flashMessage("success", response.message || t?.messages?.signupSuccessful || "Signup successful.")
-          router.push("/sign-in")
-          return
-        }
-        if (response?.errors) {
-          setErrors(response.errors)
-        }
-      },
-
-      onError: (error) => {
-        // Trường hợp lỗi mạng
-        const netErr = error as NetworkErrorWithCode
-        if (netErr.code === "ERR_NETWORK") {
-          flashMessage("error", t?.messages?.cannotConnectServer || "Cannot connect to the server. Please try again later.")
-          return
-        }
-
-        // Trường hợp lỗi từ API
-        const axiosErr = error as AxiosError<ApiErrorResponse>;
-        const resData = axiosErr.response?.data
-
-        if (Array.isArray(resData?.errors)) {
-          const fieldErrors: ErrorMessages = {}
-          resData.errors.forEach((err) => {
-            const field = err?.cause?.field || "general"
-            const message = err.defaultMessage || t?.messages?.invalidInput || "Invalid input"
-            if (!fieldErrors[field]) fieldErrors[field] = []
-            fieldErrors[field].push(message)
-          })
-          setErrors(fieldErrors)
-        } else if (resData?.message) {
-          setErrors({ general: [resData.message] })
-        } else {
-          flashMessage("error", t?.messages?.somethingWentWrongSignup || "Something went wrong during signup.")
-        }
-      },
-    })
+    flashMessage("success", t?.messages?.accountCreated ?? "Account created!")
+    await syncJwtSession()
   }
 
   return (
-    <div className="bg-background md:p-8 p-1 rounded-none">
-      <div className="flex items-center space-x-4">
-      {/* adiClub Logo */}
-      <AdidasLogo className="w-15 h-auto" />
-      <div className="w-px h-6 bg-gray-300" />
-      <div className="text-center">
-        <div className="inline-flex justify-center">
-          <span className="text-2xl font-bold">adi</span>
-          <span className="text-2xl font-bold text-blue-600 italic">club</span>
-          <div className="ml-2 w-12 h-6 border-2 border-blue-600 rounded-full relative">
-            <div className="absolute inset-0 border-2 border-blue-600 rounded-full transform rotate-12"></div>
-          </div>
-        </div>
-      </div>
-      </div>
-      
-      {/* Social Login Text */}
-      <h1 className="text-2xl font-bold mb-2 scale-x-110 origin-left">{t?.signUp || "SIGN UP"}</h1>
-      <p className="mb-4">{t?.enjoyMembersOnly || "Enjoy members-only access to exclusive products, experiences, offers and more."}</p>
+    <div className="w-full bg-white py-2 lg:py-10">
+      <AdiclubLogo className="mb-8" />
+
+      <h1 className="mb-2 text-[28px] font-bold uppercase leading-tight">
+        {t?.signUp ?? "SIGN UP"}
+      </h1>
+      <p className="mb-6 text-base leading-relaxed">
+        {t?.enjoyMembersOnly ??
+          "Enjoy members-only access to exclusive products, experiences, offers and more."}
+      </p>
+
+      <SocialLoginButtons callbackURL={redirectTo} />
 
       <Formik
         initialValues={{
@@ -145,29 +137,34 @@ const SignupForm = () => {
         validationSchema={SignupSchema(t)}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, values, setFieldValue, errors, touched }) => (
+        {({ isSubmitting, values, errors, touched }) => (
           <Form className="space-y-4">
-            {Object.keys(errors).length > 0 && <ShowErrors errorMessage={normalizeFormikErrors(errors)} />}
-
             <div>
+              <label htmlFor="signup-name" className="sr-only">
+                {t?.name ?? "NAME *"}
+              </label>
               <Field name="name">
                 {({ field }: FieldProps) => (
                   <div className="relative">
                     <Input
                       {...field}
-                      type="name"
-                      placeholder={t?.name || "NAME *"}
-                      className={`w-full ${
-                        errors.name && touched.name
-                          ? "border-red-500 focus:border-red-500"
-                          : values.name && !errors.name
-                            ? "border-green-500 focus:border-green-500"
-                            : ""
-                      }`}
+                      id="signup-name"
+                      type="text"
+                      autoComplete="name"
+                      placeholder={t?.name ?? "NAME *"}
+                      className={fieldInputClass(
+                        Boolean(errors.name && touched.name),
+                        Boolean(values.name && !errors.name),
+                      )}
                     />
                     {values.name && !errors.name && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <svg
+                          className="h-5 w-5 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          aria-hidden
+                        >
                           <path
                             fillRule="evenodd"
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -177,35 +174,42 @@ const SignupForm = () => {
                       </div>
                     )}
                     {errors.name && touched.name && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <X className="h-5 w-5 text-red-500" />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <X className="h-5 w-5 text-red-500" aria-hidden />
                       </div>
                     )}
                   </div>
                 )}
               </Field>
-              <ErrorMessage name="name" component="div" className="text-red-500 text-base mt-1" />
+              <ErrorMessage name="name" component="div" className="mt-1 text-sm text-red-500" />
             </div>
 
             <div>
+              <label htmlFor="signup-email" className="sr-only">
+                {t?.emailAddress ?? "EMAIL ADDRESS *"}
+              </label>
               <Field name="email">
                 {({ field }: FieldProps) => (
                   <div className="relative">
                     <Input
                       {...field}
+                      id="signup-email"
                       type="email"
-                      placeholder={t?.emailAddress || "EMAIL ADDRESS *"}
-                      className={`w-full ${
-                        errors.email && touched.email
-                          ? "border-red-500 focus:border-red-500"
-                          : values.email && !errors.email
-                            ? "border-green-500 focus:border-green-500"
-                            : ""
-                      }`}
+                      autoComplete="email"
+                      placeholder={t?.emailAddress ?? "EMAIL ADDRESS *"}
+                      className={fieldInputClass(
+                        Boolean(errors.email && touched.email),
+                        Boolean(values.email && !errors.email),
+                      )}
                     />
                     {values.email && !errors.email && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <svg
+                          className="h-5 w-5 text-green-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          aria-hidden
+                        >
                           <path
                             fillRule="evenodd"
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -215,73 +219,94 @@ const SignupForm = () => {
                       </div>
                     )}
                     {errors.email && touched.email && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <X className="h-5 w-5 text-red-500" />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <X className="h-5 w-5 text-red-500" aria-hidden />
                       </div>
                     )}
                   </div>
                 )}
               </Field>
-              <ErrorMessage name="email" component="div" className="text-red-500 text-base mt-1" />
+              <ErrorMessage name="email" component="div" className="mt-1 text-sm text-red-500" />
             </div>
 
-            {/* <div>
-              <Field
+            <div>
+              <label htmlFor="signup-password" className="sr-only">
+                {t?.password ?? "Password *"}
+              </label>
+              <div className="relative">
+                <Field name="password">
+                  {({ field }: FieldProps) => (
+                    <Input
+                      {...field}
+                      id="signup-password"
+                      type={showPassword.password ? "text" : "password"}
+                      autoComplete="new-password"
+                      placeholder={t?.password ?? "Password *"}
+                      className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                    />
+                  )}
+                </Field>
+                <button
+                  type="button"
+                  onClick={() => togglePassword("password")}
+                  className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center text-xs uppercase"
+                >
+                  {showPassword.password ? (
+                    <>
+                      <EyeOff className="mr-1 inline-block h-4 w-4" /> {t?.hide ?? "HIDE"}
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="mr-1 inline-block h-4 w-4" /> {t?.show ?? "SHOW"}
+                    </>
+                  )}
+                </button>
+              </div>
+              <ErrorMessage
                 name="password"
-                type="password"
-                placeholder="PASSWORD *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                component="div"
+                className="mt-1 text-sm text-red-500"
               />
-              <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
-            </div> */}
-
-            <div className="relative">
-              <Field name="password">
-                {({ field }: FieldProps) => (
-                  <Input {...field} type={showPassword.password ? "text" : "password"} placeholder={t?.password || "PASSWORD *"} />
-                )}
-              </Field>
-              <button
-                type="button"
-                onClick={() => togglePassword("password")}
-                className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
-              >
-                {showPassword.password ? (
-                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
-                ) : (
-                  <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
-                )}
-              </button>
-              <ErrorMessage name="password" component="div" className="text-red-500 text-base mt-1" />
             </div>
 
-            {/* <div>
-              <Field
+            <div>
+              <label htmlFor="signup-password-confirmation" className="sr-only">
+                {t?.confirmPassword ?? "CONFIRM PASSWORD *"}
+              </label>
+              <div className="relative">
+                <Field name="password_confirmation">
+                  {({ field }: FieldProps) => (
+                    <Input
+                      {...field}
+                      id="signup-password-confirmation"
+                      type={showPassword.password_confirmation ? "text" : "password"}
+                      autoComplete="new-password"
+                      placeholder={t?.confirmPassword ?? "CONFIRM PASSWORD *"}
+                      className="h-12 w-full border-black px-3 pr-20 placeholder:text-sm placeholder:font-normal placeholder:uppercase placeholder:tracking-wide placeholder:text-neutral-500 focus:ring-black"
+                    />
+                  )}
+                </Field>
+                <button
+                  type="button"
+                  onClick={() => togglePassword("password_confirmation")}
+                  className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center text-xs uppercase"
+                >
+                  {showPassword.password_confirmation ? (
+                    <>
+                      <EyeOff className="mr-1 inline-block h-4 w-4" /> {t?.hide ?? "HIDE"}
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="mr-1 inline-block h-4 w-4" /> {t?.show ?? "SHOW"}
+                    </>
+                  )}
+                </button>
+              </div>
+              <ErrorMessage
                 name="password_confirmation"
-                type="password"
-                placeholder="CONFIRM PASSWORD *"
-                className="w-full border border-border p-3 rounded-none focus:outline-hidden focus:ring-2 focus:ring-black"
+                component="div"
+                className="mt-1 text-sm text-red-500"
               />
-              <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
-            </div> */}
-            <div className="relative">
-              <Field name="password_confirmation">
-                {({ field }: FieldProps) => (
-                  <Input {...field} type={showPassword.password_confirmation ? "text" : "password"} placeholder={t?.confirmPassword || "CONFIRM PASSWORD *"} />
-                )}
-              </Field>
-              <button
-                type="button"
-                onClick={() => togglePassword("password_confirmation")}
-                className="absolute top-3 right-3 text-gray-600 dark:text-white text-xs"
-              >
-                {showPassword.password_confirmation ? (
-                  <><EyeOff className="inline-block w-4 h-4 mr-1" /> {t?.hide || "HIDE"}</>
-                ) : (
-                  <><Eye className="inline-block w-4 h-4 mr-1" /> {t?.show || "SHOW"}</>
-                )}
-              </button>
-              <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-base mt-1" />
             </div>
 
             <Button
@@ -290,30 +315,28 @@ const SignupForm = () => {
               showArrow
               pressEffect
               shadow
-              loading={isSubmitting || signupMutation.isPending}
+              loading={isSubmitting || loginMutation.isPending}
               type="submit"
-              className="w-full py-3 font-semibold transition-colors"
+              className="h-12 w-full py-3 font-semibold uppercase"
             >
-              {t?.createMyAccount || "CREATE MY ACCOUNT"}
+              {t?.createMyAccount ?? "CREATE MY ACCOUNT"}
             </Button>
 
-            <div className="mt-4 text-base text-gray-600 dark:text-white text-center">
-              {t?.alreadyHaveAccount || "Already have an account?"}{" "}
-              <Link href="/sign-in" className="underline text-blue-600">
-                {t?.logIn || "Log in"}
+            <div className="text-sm">
+              {t?.alreadyHaveAccount ?? "Already have an account?"}{" "}
+              <Link href="/account-login" className="underline">
+                {t?.logIn ?? "LOG IN"}
               </Link>
             </div>
 
-            <div className="mt-2 text-base text-center">
-              {t?.didntGetActivation || "Didn't get your activation email?"}{" "}
-              <Link
-                href="/account_activations/new"
-                className="underline text-blue-600"
-                
-              >
-                {t?.resendActivation || "Resend activation"}
+            <div className="text-sm">
+              {t?.didntGetActivation ?? "Didn't get your activation email?"}{" "}
+              <Link href="/account_activations/new" className="underline">
+                {t?.resendActivation ?? "Resend activation"}
               </Link>
             </div>
+
+            <AuthTermsDisclaimer />
           </Form>
         )}
       </Formik>

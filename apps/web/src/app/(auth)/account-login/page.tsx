@@ -5,7 +5,7 @@ import { Suspense } from "react"
 const LoginPage = () => {
   return (
     <div className="w-full bg-white">
-      <div className="mx-auto w-full px-12 pb-0 pt-12 sm:px-20 sm:pt-14 lg:px-28 lg:pb-1 lg:pt-16 xl:px-32">
+      <div className="mx-auto w-full px-3 pb-0 pt-2 sm:px-20 sm:pt-14 lg:px-28 lg:pb-1 lg:pt-16 xl:px-32">
         <div className="flex flex-col-reverse lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
           <div className="w-full lg:w-1/2">
             <PromoSection />

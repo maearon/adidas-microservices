@@ -1,29 +1,19 @@
-import React from "react"
 import PromoSection from "./PromoSection"
-import { getServerSession } from "@/lib/get-session";
-import { redirect } from "next/navigation"
 import SignupForm from "./SignupForm"
-import SignupPageClient from "./SignupPageClient"
+import { Suspense } from "react"
 
-const SignupPage = async () => {
-  const session = await getServerSession()
-
-  if (session?.user?.email) {
-    return <SignupPageClient isLoggedIn={true} />
-  }
-
-  if(session) redirect('/');
-
+const SignupPage = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="relative bg-background md:py-8 pt-1 pb-1">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
-            {/* Left info box */}
+    <div className="w-full bg-white">
+      <div className="mx-auto w-full px-3 pb-0 pt-2 sm:px-20 sm:pt-14 lg:px-28 lg:pb-1 lg:pt-16 xl:px-32">
+        <div className="flex flex-col-reverse lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
+          <div className="w-full lg:w-1/2">
             <PromoSection />
-
-            {/* Signup form */}
-            <SignupForm />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <Suspense fallback={null}>
+              <SignupForm />
+            </Suspense>
           </div>
         </div>
       </div>
