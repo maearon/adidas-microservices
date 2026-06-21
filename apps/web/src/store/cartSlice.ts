@@ -4,6 +4,9 @@ export interface CartItem {
   id: number
   productId?: string
   variantId?: string
+  variantCode?: string
+  slug?: string
+  url?: string
   name: string
   price: number   // <-- sửa string thành number
   compareAtPrice?: number | null // <-- thêm trường này nếu cần

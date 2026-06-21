@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma"
 import { getImageUrlsByRecord } from "@/lib/attachments"
+import { buildProductDetailUrl } from "@/lib/commerce/product-url"
 import type { CartApiItem, WishApiItem } from "@/lib/commerce/types"
 
 async function getVariantImageUrls(variantId: bigint, productId: bigint) {
@@ -44,9 +45,13 @@ export async function enrichCartLine(
     quantity,
     category: variant.products.categories?.name ?? "",
     sport: variant.products.sport ?? "",
-    url: variant.variant_code
-      ? `/${variant.products.slug}/${variant.variant_code}`
-      : undefined,
+    url: buildProductDetailUrl({
+      slug: variant.products.slug,
+      name: variant.products.name,
+      variantCode: variant.variant_code,
+    }),
+    variantCode: variant.variant_code ?? undefined,
+    slug: variant.products.slug,
   }
 }
 
@@ -72,9 +77,13 @@ export async function enrichWishLine(variantId: bigint): Promise<WishApiItem | n
     color: variant.color ?? "",
     category: variant.products.categories?.name ?? "",
     sport: variant.products.sport ?? "",
-    url: variant.variant_code
-      ? `/${variant.products.slug}/${variant.variant_code}`
-      : undefined,
+    url: buildProductDetailUrl({
+      slug: variant.products.slug,
+      name: variant.products.name,
+      variantCode: variant.variant_code,
+    }),
+    variantCode: variant.variant_code ?? undefined,
+    slug: variant.products.slug,
   }
 }
 

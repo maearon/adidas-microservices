@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import ProductPrice from "@/components/ProductCardPrice"
 import AddToBagButton from "@/components/commerce/AddToBagButton"
+import { resolveCommerceItemUrl } from "@/lib/commerce/product-url"
 import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
 import type { WishlistItem } from "@/types/wish"
 
@@ -21,11 +22,12 @@ export default function WishlistProductCard({
   onAddToBag,
 }: WishlistProductCardProps) {
   const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0
+  const productUrl = resolveCommerceItemUrl(item)
 
   return (
     <article className="flex w-full flex-col">
       <div className="relative mb-4 aspect-square w-full overflow-hidden bg-[#EBEDEE] dark:bg-neutral-900">
-        <Link href={item.url ?? "#"} className="block h-full w-full">
+        <Link href={productUrl} className="block h-full w-full">
           <Image
             src={item.image || "/placeholder.png"}
             alt={item.name}
@@ -44,7 +46,9 @@ export default function WishlistProductCard({
 
       <div className="flex w-full flex-1 flex-col space-y-1">
         <h2 className="text-sm font-bold leading-snug text-foreground">
-          <Link href={item.url ?? "#"}>{item.name}</Link>
+          <Link href={productUrl} className="hover:underline">
+            {item.name}
+          </Link>
         </h2>
         <p className="text-sm font-bold text-foreground">
           <ProductPrice price={price} />

@@ -1,7 +1,8 @@
 // 📁 @/lib/mappers/product-to-wishlist.ts
 
-import type { Product } from "@/types/product";
-import type { WishlistItem } from "@/types/wish";
+import { buildProductDetailUrl } from "@/lib/commerce/product-url"
+import type { Product } from "@/types/product"
+import type { WishlistItem } from "@/types/wish"
 
 /**
  * Map a full Product object to a WishlistItem
@@ -9,10 +10,19 @@ import type { WishlistItem } from "@/types/wish";
  */
 export function mapProductToWishlistItem(product: Product): WishlistItem {
   const variant = product.variants?.[0]
+  const url = buildProductDetailUrl({
+    url: product.url,
+    slug: product.slug,
+    name: product.name,
+    variantCode: variant?.variant_code,
+  })
+
   return {
     id: Number(variant?.id ?? product.id),
     productId: String(product.id),
     variantId: variant?.id ? String(variant.id) : undefined,
+    variantCode: variant?.variant_code,
+    slug: product.slug,
     name: product.name || "Unknown Product",
     sport: product.sport,
     price: String(product.price),
@@ -23,6 +33,6 @@ export function mapProductToWishlistItem(product: Product): WishlistItem {
       product.image_url ||
       "/placeholder.png",
     category: product.category,
-    url: product.url,
+    url,
   }
 }

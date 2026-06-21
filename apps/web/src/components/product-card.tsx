@@ -11,6 +11,7 @@ import { addToCart } from "@/store/cartSlice";
 import WishButton from "./wish-button";
 import ProductVariantCarousel from "./ProductVariantCarousel";
 import { mapProductToWishlistItem } from "@/lib/mappers/product-to-wishlist";
+import { buildProductDetailUrl } from "@/lib/commerce/product-url";
 import { slugify } from "@/utils/slugify";
 import type { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
@@ -64,6 +65,13 @@ export default function ProductCard({
         id: Number(currentVariant?.id ?? product.id),
         productId: String(product.id),
         variantId: currentVariant?.id ? String(currentVariant.id) : undefined,
+        variantCode: currentVariant?.variant_code,
+        slug: product.slug,
+        url: buildProductDetailUrl({
+          slug: product.slug,
+          name: product.name,
+          variantCode: currentVariant?.variant_code,
+        }),
         name: product.name || "Unknown Product",
         price: product.price ?? 0,
         compareAtPrice: product.compare_at_price ?? null,

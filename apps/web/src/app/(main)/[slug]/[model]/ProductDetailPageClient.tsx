@@ -26,6 +26,7 @@ import ProductPrice from "@/components/ProductCardPrice"
 import { addLastVisited } from "@/lib/recentlyViewed"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
 import { fetchRecommendations } from "@/lib/commerce/commerce-api"
+import { buildProductDetailUrl } from "@/lib/commerce/product-url"
 import type { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import ProductSections from "@/components/product/ProductSections"
@@ -119,6 +120,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         id: Number(currentVariant?.id ?? product.id),
         productId: String(product.id),
         variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
+        variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        slug: product.slug,
+        url: buildProductDetailUrl({
+          slug: product.slug,
+          name: product.name,
+          variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        }),
         name: product.name,
         price: Number(variant?.price ?? 0),
         compareAtPrice: variant?.compare_at_price ?? null,
@@ -141,6 +149,13 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         id: Number(currentVariant?.id ?? product.id),
         productId: String(product.id),
         variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
+        variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        slug: product.slug,
+        url: buildProductDetailUrl({
+          slug: product.slug,
+          name: product.name,
+          variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        }),
         name: product.name,
         price: `$${formatPrice(variant?.price).replace("$", "")}`,
         image:

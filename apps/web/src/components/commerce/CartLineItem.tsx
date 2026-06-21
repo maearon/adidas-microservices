@@ -1,9 +1,11 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Heart, Trash2 } from "lucide-react"
 import ProductPrice from "@/components/ProductCardPrice"
 import CartQuantitySelect from "@/components/commerce/CartQuantitySelect"
+import { resolveCommerceItemUrl } from "@/lib/commerce/product-url"
 import type { CartItem } from "@/store/cartSlice"
 
 type CartLineItemProps = {
@@ -19,10 +21,15 @@ export default function CartLineItem({
   onMoveToWishlist,
   onUpdateQuantity,
 }: CartLineItemProps) {
+  const productUrl = resolveCommerceItemUrl(item)
+
   return (
     <article className="border border-border bg-background">
       <div className="flex">
-        <div className="relative h-[180px] w-[180px] shrink-0 overflow-hidden bg-[#EBEDEE] dark:bg-neutral-900 sm:h-[238px] sm:w-[238px]">
+        <Link
+          href={productUrl}
+          className="relative h-[180px] w-[180px] shrink-0 overflow-hidden bg-[#EBEDEE] dark:bg-neutral-900 sm:h-[238px] sm:w-[238px]"
+        >
           <Image
             src={item.image || "/placeholder.png"}
             alt={item.name}
@@ -30,12 +37,16 @@ export default function CartLineItem({
             sizes="238px"
             className="object-cover"
           />
-        </div>
+        </Link>
 
         <div className="flex min-w-0 flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex flex-1 gap-3 sm:gap-4">
             <div className="min-w-0 flex-1 space-y-1">
-              <h3 className="text-base font-bold leading-snug text-foreground">{item.name}</h3>
+              <h3 className="text-base font-bold leading-snug text-foreground">
+                <Link href={productUrl} className="hover:underline">
+                  {item.name}
+                </Link>
+              </h3>
               {item.color ? (
                 <p className="text-sm leading-snug text-foreground">{item.color}</p>
               ) : null}
