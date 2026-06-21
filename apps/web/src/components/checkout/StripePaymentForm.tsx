@@ -17,6 +17,7 @@ import {
 } from "@stripe/react-stripe-js"
 import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export type StripePaymentConfirmation = {
   paymentIntentId: string
@@ -39,6 +40,8 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
     { amount, currency = "usd", customerEmail, className, onError },
     ref,
   ) {
+    const t = useTranslations("commerce")
+    const stripeT = t?.stripe
     const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     const stripePromise = useMemo(
       () => (publishableKey ? loadStripe(publishableKey) : null),
@@ -54,7 +57,8 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
     useEffect(() => {
       if (!stripePromise) {
         onError?.(
-          "Stripe publishable key is missing. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.",
+          stripeT?.keyMissing ??
+            "Stripe publishable key is missing. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.",
         )
         return
       }
@@ -83,7 +87,7 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
         .then(async (response) => {
           if (!response.ok) {
             const data = await response.json().catch(() => ({}))
-            throw new Error(data?.message || "Unable to initialise Stripe payment.")
+            throw new Error(data?.message || (stripeT?.initFailed ?? "Unable to initialise Stripe payment."))
           }
           return response.json() as Promise<{
             clientSecret?: string
@@ -93,7 +97,9 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
         .then((data) => {
           if (!isMounted) return
           if (!data.clientSecret) {
-            throw new Error("Stripe client secret is missing from response.")
+            throw new Error(
+              stripeT?.clientSecretMissing ?? "Stripe client secret is missing from response.",
+            )
           }
           setClientSecret(data.clientSecret)
           setPaymentIntentId(data.paymentIntentId ?? null)
@@ -105,7 +111,7 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
           const message =
             error instanceof Error
               ? error.message
-              : "Failed to initialise Stripe payment."
+              : (stripeT?.initError ?? "Failed to initialise Stripe payment.")
           onError?.(message)
           setInitialised(false)
           setClientSecret(null)
@@ -120,12 +126,13 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
       return () => {
         isMounted = false
       }
-    }, [amount, currency, customerEmail, stripePromise, onError, clientSecret])
+    }, [amount, currency, customerEmail, stripePromise, onError, clientSecret, stripeT])
 
     if (!publishableKey) {
       return (
         <div className="border border-red-500 bg-red-50 text-red-600 px-4 py-3 text-sm">
-          Stripe publishable key is not configured. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.
+          {stripeT?.keyNotConfigured ??
+            "Stripe publishable key is not configured. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY."}
         </div>
       )
     }
@@ -133,7 +140,7 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
     if (!stripePromise) {
       return (
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-          <Loader2 className="h-4 w-4 animate-spin" /> Preparing Stripe...
+          <Loader2 className="h-4 w-4 animate-spin" /> {stripeT?.preparing ?? "Preparing Stripe..."}
         </div>
       )
     }
@@ -141,7 +148,8 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
     if (!clientSecret || !initialised) {
       return (
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-          <Loader2 className="h-4 w-4 animate-spin" /> Preparing secure payment form...
+          <Loader2 className="h-4 w-4 animate-spin" />{" "}
+          {stripeT?.preparingForm ?? "Preparing secure payment form..."}
         </div>
       )
     }
@@ -171,7 +179,8 @@ const StripePaymentFormInner = forwardRef<StripePaymentFormHandle, StripePayment
         </Elements>
         {isLoading && (
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <Loader2 className="h-3 w-3 animate-spin" /> Updating payment form...
+            <Loader2 className="h-3 w-3 animate-spin" />{" "}
+            {stripeT?.updatingForm ?? "Updating payment form..."}
           </div>
         )}
       </div>
@@ -186,6 +195,8 @@ type StripePaymentElementProps = {
 
 const StripePaymentElement = forwardRef<StripePaymentFormHandle, StripePaymentElementProps>(
   function StripePaymentElement({ paymentIntentId, onError }, ref) {
+    const t = useTranslations("commerce")
+    const stripeT = t?.stripe
     const stripe = useStripe()
     const elements = useElements()
     const [isConfirming, setIsConfirming] = useState(false)
@@ -193,7 +204,10 @@ const StripePaymentElement = forwardRef<StripePaymentFormHandle, StripePaymentEl
     useImperativeHandle(ref, () => ({
       async confirmPayment() {
         if (!stripe || !elements) {
-          throw new Error("Stripe has not finished loading yet. Please try again in a moment.")
+          throw new Error(
+            stripeT?.notLoaded ??
+              "Stripe has not finished loading yet. Please try again in a moment.",
+          )
         }
 
         setIsConfirming(true)
@@ -210,14 +224,14 @@ const StripePaymentElement = forwardRef<StripePaymentFormHandle, StripePaymentEl
         setIsConfirming(false)
 
         if (error) {
-          const message = error.message || "Card authorisation failed."
+          const message = error.message || (stripeT?.cardFailed ?? "Card authorisation failed.")
           onError?.(message)
           throw new Error(message)
         }
 
         const intentId = paymentIntent?.id ?? paymentIntentId
         if (!intentId) {
-          const message = "Payment intent could not be confirmed."
+          const message = stripeT?.intentNotConfirmed ?? "Payment intent could not be confirmed."
           onError?.(message)
           throw new Error(message)
         }
@@ -240,6 +254,3 @@ const StripePaymentElement = forwardRef<StripePaymentFormHandle, StripePaymentEl
 )
 
 export default StripePaymentFormInner
-
-
-

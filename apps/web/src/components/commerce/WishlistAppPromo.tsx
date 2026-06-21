@@ -30,10 +30,10 @@ function PromoArrow() {
 }
 
 export default function WishlistAppPromo() {
-  const t = useTranslations("categoryPages")
+  const t = useTranslations("commerce")
 
-  const bullets = Array.isArray(t?.wishlistAppPromoBullets)
-    ? t.wishlistAppPromoBullets
+  const bullets = Array.isArray(t?.wishlist?.appPromoBullets)
+    ? t.wishlist.appPromoBullets
     : [
         "Instant notifications on items on sale or low in stock",
         "Share your wishlist with friends and family",
@@ -49,7 +49,7 @@ export default function WishlistAppPromo() {
       />
       <div className="relative">
       <h2 className="mb-5 max-w-xl text-xl font-bold leading-tight sm:text-[28px]">
-        {t?.wishlistAppPromoTitle ?? "Get more from your wishlist through the app"}
+        {t?.wishlist?.appPromoTitle ?? "Get more from your wishlist through the app"}
       </h2>
 
       <ul className="mb-10 max-w-2xl space-y-3 text-sm sm:text-base">
@@ -64,7 +64,7 @@ export default function WishlistAppPromo() {
       <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-end gap-4">
           <p className="max-w-[240px] text-sm font-bold leading-snug sm:text-base">
-            {t?.wishlistAppPromoScan ?? "Scan to download the adidas app"}
+            {t?.wishlist?.appPromoScan ?? "Scan to download the adidas app"}
           </p>
           <PromoArrow />
         </div>
@@ -72,7 +72,7 @@ export default function WishlistAppPromo() {
         <div className="shrink-0 bg-white p-1">
           <Image
             src="/assets/wishlist/adidas-app-qr.png"
-            alt="QR code to download the adidas app"
+            alt={t?.wishlist?.appQrAlt ?? "QR code to download the adidas app"}
             width={120}
             height={120}
             className="h-[120px] w-[120px] object-contain"

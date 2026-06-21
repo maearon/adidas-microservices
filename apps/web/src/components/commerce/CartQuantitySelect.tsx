@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export const CART_QUANTITY_MAX = 15
 
@@ -14,6 +15,7 @@ type CartQuantitySelectProps = {
 }
 
 export default function CartQuantitySelect({ value, onChange }: CartQuantitySelectProps) {
+  const t = useTranslations("commerce")
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
@@ -41,7 +43,7 @@ export default function CartQuantitySelect({ value, onChange }: CartQuantitySele
     <div ref={rootRef} className="relative w-[100px]">
       <button
         type="button"
-        aria-label="Qty"
+        aria-label={t?.cart?.qty ?? "Qty"}
         aria-expanded={open}
         aria-haspopup="listbox"
         onClick={() => setOpen((prev) => !prev)}
@@ -62,7 +64,7 @@ export default function CartQuantitySelect({ value, onChange }: CartQuantitySele
         <ul
           ref={listRef}
           role="listbox"
-          aria-label="Select quantity"
+          aria-label={t?.cart?.selectQuantity ?? "Select quantity"}
           className="absolute left-0 top-[50px] z-20 max-h-[188px] w-full overflow-y-auto border border-foreground bg-background [scrollbar-color:#767677_#eceff1] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-[10px] [&::-webkit-scrollbar-button]:block [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#767677] [&::-webkit-scrollbar-track]:bg-[#eceff1]"
         >
           {QUANTITIES.map((num) => (

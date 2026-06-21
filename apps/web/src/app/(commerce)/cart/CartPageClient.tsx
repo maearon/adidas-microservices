@@ -22,7 +22,7 @@ import type { CartItem } from "@/types/cart"
 import type { Product } from "@/types/product"
 
 export default function CartPageClient() {
-  const t = useTranslations("categoryPages")
+  const t = useTranslations("commerce")
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.cart.items)
   const [topPicks, setTopPicks] = useState<Product[]>([])
@@ -45,21 +45,21 @@ export default function CartPageClient() {
 
   const bagTitle = (
     <h1 className={`mb-2 ${CART_TITLE_CLASS}`}>
-      {t?.yourBag ?? "YOUR BAG"}{" "}
+      {t?.cart?.yourBag ?? "YOUR BAG"}{" "}
       <span className={CART_TITLE_COUNT_CLASS}>
-        ({totalItems} {t?.itemsLabel ?? "items"})
+        ({totalItems} {t?.cart?.items ?? "items"})
       </span>
     </h1>
   )
 
   const shippingBanner = (
     <div className="mb-8 bg-[#C5D5E3] px-4 py-4 text-sm text-foreground dark:bg-neutral-800">
-      <p className="font-bold uppercase">Free shipping unlocked</p>
+      <p className="font-bold uppercase">{t?.cart?.freeShippingTitle ?? "Free shipping unlocked"}</p>
       <p className="mt-1 leading-relaxed">
-        Your FIFA World Cup 26™ gear unlocks free shipping with any method on your entire bag,
-        be ready for the next match.{" "}
+        {t?.cart?.freeShippingCopy ??
+          "Your FIFA World Cup 26™ gear unlocks free shipping with any method on your entire bag, be ready for the next match."}{" "}
         <button type="button" className="underline">
-          Terms apply
+          {t?.cart?.termsApply ?? "Terms apply"}
         </button>
       </p>
     </div>
@@ -69,7 +69,7 @@ export default function CartPageClient() {
     topPicks.length > 0 ? (
       <section className="mt-10 border-t border-border pt-8">
         <h2 className={`${COMMERCE_SECTION_TITLE_CLASS} mb-6`}>
-          {t?.topPicks ?? "TOP PICKS FOR YOU"}
+          {t?.cart?.topPicks ?? "TOP PICKS FOR YOU"}
         </h2>
         <ProductCarousel products={topPicks} showIndicators />
       </section>
@@ -78,7 +78,7 @@ export default function CartPageClient() {
   const recentlyViewedSection = (
     <div className="mt-10 border-t border-border pt-8">
       <HistoryView
-        title={t?.recentlyViewedItems ?? "RECENTLY VIEWED ITEMS"}
+        title={t?.cart?.recentlyViewed ?? "RECENTLY VIEWED ITEMS"}
         showIndicatorsInProductCarousel
       />
     </div>
@@ -90,10 +90,10 @@ export default function CartPageClient() {
         {bagTitle}
 
         <p className="mb-2 text-base font-bold text-foreground">
-          {t?.bagEmptySubtitle ?? "Your bag is empty"}
+          {t?.cart?.emptySubtitle ?? "Your bag is empty"}
         </p>
         <p className="mb-8 max-w-2xl text-sm text-foreground sm:text-base">
-          {t?.bagEmptyCopy ??
+          {t?.cart?.emptyCopy ??
             "Once you add something to your bag, it will appear here. Ready to get started?"}
         </p>
 
@@ -107,7 +107,7 @@ export default function CartPageClient() {
             href="/"
             className="h-12 w-full normal-case"
           >
-            {t?.getStarted ?? "Get started"}
+            {t?.cart?.getStarted ?? "GET STARTED"}
           </Button>
         </div>
 
@@ -124,7 +124,8 @@ export default function CartPageClient() {
         <div>
           {bagTitle}
           <p className="mb-6 text-sm text-foreground sm:text-base">
-            Items in your bag are not reserved — check out now to make them yours.
+            {t?.cart?.notReserved ??
+              "Items in your bag are not reserved — check out now to make them yours."}
           </p>
 
           {shippingBanner}

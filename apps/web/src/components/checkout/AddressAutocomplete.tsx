@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export interface AddressSuggestion {
   formattedAddress: string
@@ -28,10 +29,12 @@ export default function AddressAutocomplete({
   value,
   onChange,
   onSelect,
-  placeholder = "Find delivery address *",
+  placeholder,
   country = "US",
   className = "",
 }: AddressAutocompleteProps) {
+  const t = useTranslations("commerce")
+  const resolvedPlaceholder = placeholder ?? t?.address?.findAddress ?? "Find delivery address *"
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -83,7 +86,6 @@ export default function AddressAutocomplete({
     const newValue = e.target.value
     onChange(newValue)
 
-    // Debounce search
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -111,7 +113,7 @@ export default function AddressAutocomplete({
               setShowSuggestions(true)
             }
           }}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           className="pr-10"
         />
         <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
@@ -120,7 +122,9 @@ export default function AddressAutocomplete({
       {showSuggestions && suggestions.length > 0 && (
         <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
           {isLoading && (
-            <div className="p-3 text-sm text-gray-500">Searching...</div>
+            <div className="p-3 text-sm text-gray-500">
+              {t?.address?.searching ?? "Searching..."}
+            </div>
           )}
           {suggestions.map((address, index) => (
             <button
@@ -140,4 +144,3 @@ export default function AddressAutocomplete({
     </div>
   )
 }
-

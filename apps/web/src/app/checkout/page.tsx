@@ -34,6 +34,7 @@ import AddressList from "@/components/checkout/AddressList"
 import StripePaymentForm, { StripePaymentFormHandle } from "@/components/checkout/StripePaymentForm"
 import { Address } from "@/types/common/address"
 import { ArrowLeft } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 // type CheckoutPageProps = {
 //   session: Session | null
@@ -42,6 +43,7 @@ import { ArrowLeft } from "lucide-react"
 type CheckoutStep = 1 | 2 | 3 // 1 = Address, 2 = Shipping, 3 = Payment
 
 export default function CheckoutPage() {
+  const t = useTranslations("commerce")
   const country = useAppSelector((state) => state.locale.locale) || normalizeLocale(navigator.language) // Mặc định là US English
   const [locale, setLocale] = useState(getCountryFromLocale(country))
   const dispatch = useAppDispatch()
@@ -171,11 +173,15 @@ export default function CheckoutPage() {
   }
 
   const validateAddressStep = () => {
+    const err = t?.errors
     const newErrors = {
-      firstName: !formData.firstName ? "Please enter your first name." : "",
-      lastName: !formData.lastName ? "Please enter your last name." : "",
-      address: !selectedAddress && !formData.address ? "Please enter or select your delivery address." : "",
-      phone: !formData.phone ? "Please enter your telephone number." : "",
+      firstName: !formData.firstName ? (err?.firstName ?? "Please enter your first name.") : "",
+      lastName: !formData.lastName ? (err?.lastName ?? "Please enter your last name.") : "",
+      address:
+        !selectedAddress && !formData.address
+          ? (err?.address ?? "Please enter or select your delivery address.")
+          : "",
+      phone: !formData.phone ? (err?.phone ?? "Please enter your telephone number.") : "",
     }
     setErrors(newErrors)
     return !Object.values(newErrors).some((error) => error)
@@ -188,7 +194,7 @@ export default function CheckoutPage() {
 
   const validatePaymentStep = () => {
     if (!selectedPaymentMethod) {
-      setOrderError("Please select a payment method.")
+      setOrderError(t?.errors?.paymentMethod ?? "Please select a payment method.")
       return false
     }
     return true
@@ -270,8 +276,7 @@ export default function CheckoutPage() {
   }
 
   const handleNext = () => {
-    // Placeholder for promo code application logic
-    alert("Promo code applied!")
+    alert(t?.checkout?.promoApplied ?? "Promo code applied!")
   }
 
   const handlePlaceOrder = async () => {
@@ -281,7 +286,7 @@ export default function CheckoutPage() {
 
     // Validate cart
     if (!cartItems || cartItems.length === 0) {
-      setOrderError("Your cart is empty. Please add items before checkout.")
+      setOrderError(t?.errors?.cartEmpty ?? "Your cart is empty. Please add items before checkout.")
       return
     }
 
@@ -316,7 +321,9 @@ export default function CheckoutPage() {
 
       if (selectedPaymentMethod === "stripe") {
         if (!stripeFormRef.current) {
-          throw new Error("Stripe payment form is not ready. Please try again.")
+          throw new Error(
+            t?.errors?.stripeNotReady ?? "Stripe payment form is not ready. Please try again.",
+          )
         }
 
         const { paymentIntentId } = await stripeFormRef.current.confirmPayment()
@@ -330,7 +337,8 @@ export default function CheckoutPage() {
 
         if (!orderResponse || !orderResponse.orderId) {
           throw new Error(
-            "Payment succeeded but order creation failed. Please contact support.",
+            t?.errors?.orderAfterPayment ??
+              "Payment succeeded but order creation failed. Please contact support.",
           )
         }
 
@@ -345,7 +353,7 @@ export default function CheckoutPage() {
       const orderResponse = await orderService.createOrder(cartItems, customerId, addressData)
 
       if (!orderResponse || !orderResponse.orderId) {
-        throw new Error("Failed to create order")
+        throw new Error(t?.errors?.createOrderFailed ?? "Failed to create order")
       }
 
       if (selectedPaymentMethod === "cod") {
@@ -370,7 +378,7 @@ export default function CheckoutPage() {
       })
 
       if (!paymentResponse.ok) {
-        throw new Error("Failed to create payment intent")
+        throw new Error(t?.errors?.createPaymentIntentFailed ?? "Failed to create payment intent")
       }
 
       const paymentData = await paymentResponse.json()
@@ -389,7 +397,7 @@ export default function CheckoutPage() {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to process order. Please try again."
+          : (t?.errors?.processOrderFailed ?? "Failed to process order. Please try again.")
       setOrderError(message)
       if (selectedPaymentMethod === "stripe") {
         setStripeError(message)
@@ -410,13 +418,15 @@ export default function CheckoutPage() {
     [formData.street, formData.city, formData.state, formData.zipCode, formData.country].filter(Boolean).join(", ")
 
   const derivedPhone = selectedAddress?.phone || formData.phone
+  const itemLabel = totalItems === 1 ? (t?.cart?.item ?? "item") : (t?.cart?.items ?? "items")
+  const countries = t?.checkout?.countries
 
   return (
     <div className={CART_PAGE_SHELL}>
       <div className="mb-10 text-center">
-        <h1 className={CART_TITLE_CLASS}>CHECKOUT</h1>
+        <h1 className={CART_TITLE_CLASS}>{t?.checkout?.title ?? "CHECKOUT"}</h1>
         <p className={`mt-3 ${CART_TITLE_COUNT_CLASS} text-foreground`}>
-          ({totalItems} {totalItems === 1 ? "item" : "items"}){" "}
+          ({totalItems} {itemLabel}){" "}
           <ProductPriceSpan price={total} compareAtPrice={null} />
         </p>
       </div>
@@ -429,11 +439,13 @@ export default function CheckoutPage() {
             <p className="text-base text-gray-600 dark:text-white">{session?.user?.email || "guest@gmail.com"}</p>
           </div> */}
           <div className="pb-8">
-            <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>Contact</h2>
+            <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>
+              {t?.checkout?.contact ?? "Contact"}
+            </h2>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-base text-foreground">
-                {session?.user?.email || "guest@gmail.com"}
+                {session?.user?.email || (t?.checkout?.guestEmail ?? "guest@gmail.com")}
               </p>
 
               <div className="relative">
@@ -447,11 +459,11 @@ export default function CheckoutPage() {
                   focus:border-black dark:focus:border-white py-2 pl-4 pr-10 
                   rounded-none outline-none"
                 >
-                  <option value="US">🇺🇸 United States</option>
-                  <option value="VN">🇻🇳 Việt Nam</option>
-                  <option value="JP">🇯🇵 Japan</option>
-                  <option value="DE">🇩🇪 Germany</option>
-                  <option value="FR">🇫🇷 France</option>
+                  <option value="US">{countries?.US ?? "🇺🇸 United States"}</option>
+                  <option value="VN">{countries?.VN ?? "🇻🇳 Việt Nam"}</option>
+                  <option value="JP">{countries?.JP ?? "🇯🇵 Japan"}</option>
+                  <option value="DE">{countries?.DE ?? "🇩🇪 Germany"}</option>
+                  <option value="FR">{countries?.FR ?? "🇫🇷 France"}</option>
                 </select>
                 <ChevronDown
                   size={16}
@@ -465,8 +477,12 @@ export default function CheckoutPage() {
           {(currentStep === 1 || currentStep === 2 || currentStep === 3) && (
             <div>
               <div className="my-8 h-px bg-border" />
-              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>Address</h2>
-              <h3 className="mb-4 text-base font-bold text-foreground">Delivery address</h3>
+              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>
+                {t?.checkout?.address ?? "Address"}
+              </h2>
+              <h3 className="mb-4 text-base font-bold text-foreground">
+                {t?.checkout?.deliveryAddress ?? "Delivery address"}
+              </h3>
 
               <div className="space-y-4">
                 {/* Saved Addresses List */}
@@ -533,7 +549,8 @@ export default function CheckoutPage() {
                         onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, saveInfo: !!checked }))}
                       />
                       <label htmlFor="saveInfo" className="text-sm">
-                        Save address and contact information for future orders
+                        {t?.checkout?.saveInfo ??
+                          "Save address and contact information for future orders"}
                       </label>
                     </div>
 
@@ -544,7 +561,7 @@ export default function CheckoutPage() {
                         onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, ageVerified: !!checked }))}
                       />
                       <label htmlFor="ageVerified" className="text-sm font-medium">
-                        I&apos;m 13+ years old. *
+                        {t?.checkout?.ageVerified ?? "I'm 13+ years old. *"}
                       </label>
                     </div>
                   </div>
@@ -556,7 +573,7 @@ export default function CheckoutPage() {
                       onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, sameAddress: !!checked }))}
                     />
                     <label htmlFor="sameAddress" className="text-base font-medium">
-                      Billing and delivery address are the same
+                      {t?.checkout?.sameAddress ?? "Billing and delivery address are the same"}
                     </label>
                   </div>
                 </div>
@@ -582,7 +599,7 @@ export default function CheckoutPage() {
                     disabled={cartItems.length === 0}
                     className="h-14 normal-case"
                   >
-                    Next
+                    {t?.checkout?.next ?? "Next"}
                   </Button>
                 </div>
               </div>
@@ -593,26 +610,35 @@ export default function CheckoutPage() {
           {(currentStep === 2 || currentStep === 3) ? (
             <div>
               <div className="my-8 h-px bg-border" />
-              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>Shipping</h2>
+              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>
+                {t?.checkout?.shipping ?? "Shipping"}
+              </h2>
               
               <div className="space-y-4">
                 <div className="p-4 border border-gray-200 dark:border-gray-700 rounded">
-                  <h3 className="font-medium mb-2">Standard Delivery</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Free</p>
+                  <h3 className="font-medium mb-2">
+                    {t?.checkout?.standardDelivery ?? "Standard Delivery"}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {t?.orderSummary?.free ?? "Free"}
+                  </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Estimated delivery: 5-7 business days
+                    {t?.checkout?.estimatedDelivery ?? "Estimated delivery: 5-7 business days"}
                   </p>
                 </div>
 
-                {/* Selected Address Summary */}
                 {derivedAddressSummary && (
                   <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded">
-                    <h3 className="text-sm font-medium mb-2">Delivery to:</h3>
+                    <h3 className="text-sm font-medium mb-2">
+                      {t?.checkout?.deliveryTo ?? "Delivery to:"}
+                    </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {derivedAddressSummary}
                     </p>
                     {derivedPhone && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Phone: {derivedPhone}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {t?.checkout?.phone ?? "Phone:"} {derivedPhone}
+                      </p>
                     )}
                   </div>
                 )}
@@ -630,7 +656,7 @@ export default function CheckoutPage() {
                     theme={isDark ? "black" : "white"}
                   >
                     <ArrowLeft size={16} />
-                    Back
+                    {t?.checkout?.back ?? "Back"}
                   </Button>
                   <Button
                     pressEffect
@@ -643,7 +669,7 @@ export default function CheckoutPage() {
                     theme={isDark ? "white" : "black"}
                     className="h-14 flex-1 normal-case"
                   >
-                    Next
+                    {t?.checkout?.next ?? "Next"}
                   </Button>
                 </div>
               </div>
@@ -651,7 +677,9 @@ export default function CheckoutPage() {
           ) : (
             <div className="pointer-events-none select-none opacity-40">
               <div className="my-8 h-px bg-border" />
-              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4 text-muted-foreground`}>Shipping</h2>
+              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4 text-muted-foreground`}>
+                {t?.checkout?.shipping ?? "Shipping"}
+              </h2>
             </div>
           )
           }
@@ -660,7 +688,9 @@ export default function CheckoutPage() {
           {currentStep === 3 ? (
             <div>
               <div className="my-8 h-px bg-border" />
-              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>Payment</h2>
+              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4`}>
+                {t?.checkout?.payment ?? "Payment"}
+              </h2>
               
               <div className="space-y-4">
                 <PaymentMethods
@@ -704,7 +734,7 @@ export default function CheckoutPage() {
                     theme={isDark ? "black" : "white"}
                   >
                     <ArrowLeft size={16} />
-                    Back
+                    {t?.checkout?.back ?? "Back"}
                   </Button>
                   <Button
                     pressEffect={true}
@@ -716,7 +746,9 @@ export default function CheckoutPage() {
                     disabled={isSubmitting || cartItems.length === 0}
                     className="flex-1"
                   >
-                    {isSubmitting ? "PROCESSING..." : "PLACE ORDER"}
+                    {isSubmitting
+                      ? (t?.checkout?.processing ?? "PROCESSING...")
+                      : (t?.checkout?.placeOrder ?? "PLACE ORDER")}
                   </Button>
                 </div>
               </div>
@@ -724,7 +756,9 @@ export default function CheckoutPage() {
           ) : (
             <div className="pointer-events-none select-none opacity-40">
               <div className="my-8 h-px bg-border" />
-              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4 text-muted-foreground`}>Payment</h2>
+              <h2 className={`${CHECKOUT_STEP_TITLE_CLASS} mb-4 text-muted-foreground`}>
+                {t?.checkout?.payment ?? "Payment"}
+              </h2>
               {/* <div className="flex items-center gap-2 mb-4">
                 {[
                   { src: "/assets/payment/download.svg", alt: "AmEx" },

@@ -56,23 +56,6 @@
     "shopNow": "SHOP NOW"
   },
   "topPicks": "TOP PICKS FOR YOU",
-  "yourBag": "YOUR BAG",
-  "bagEmptySubtitle": "Your bag is empty",
-  "bagEmptyCopy": "Once you add something to your bag, it will appear here. Ready to get started?",
-  "getStarted": "GET STARTED",
-  "myWishlist": "MY WISHLIST",
-  "wishlistEmptyCopy": "You haven't saved any items to your wishlist yet. Start shopping and add your favorite items to your wishlist.",
-  "itemsLabel": "items",
-  "addToBag": "Add to bag",
-  "recentlyViewedItems": "RECENTLY VIEWED ITEMS",
-  "wishlistAppPromoTitle": "Get more from your wishlist through the app",
-  "wishlistAppPromoBullets": [
-    "Instant notifications on items on sale or low in stock",
-    "Share your wishlist with friends and family",
-    "See which wishlist items are eligible for a voucher",
-    "Get 50 adiClub points and unlock more rewards with the app"
-  ],
-  "wishlistAppPromoScan": "Scan to download the adidas app",
   "descriptions": {
     "mens": {
       "title": "MEN'S SNEAKERS AND WORKOUT CLOTHES",

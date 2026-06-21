@@ -1,15 +1,20 @@
+"use client"
+
 import Image from "next/image"
+import { useTranslations } from "@/hooks/useTranslations"
 
 type AcceptedPaymentMethodsProps = {
   showTitle?: boolean
 }
 
 export function AcceptedPaymentMethods({ showTitle = false }: AcceptedPaymentMethodsProps) {
+  const t = useTranslations("commerce")
+
   return (
     <div className="mt-8">
       {showTitle ? (
         <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-foreground">
-          Accepted payment methods
+          {t?.paymentMethods?.acceptedTitle ?? "Accepted payment methods"}
         </h3>
       ) : null}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-2">

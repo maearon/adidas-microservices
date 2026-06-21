@@ -6,6 +6,7 @@ import ProductPrice from "@/components/ProductCardPrice"
 import AddToBagButton from "@/components/commerce/AddToBagButton"
 import { resolveCommerceItemUrl } from "@/lib/commerce/product-url"
 import { AdidasCloseButton } from "@/components/ui/adidas-close-button"
+import { useTranslations } from "@/hooks/useTranslations"
 import type { WishlistItem } from "@/types/wish"
 
 type WishlistProductCardProps = {
@@ -17,12 +18,14 @@ type WishlistProductCardProps = {
 
 export default function WishlistProductCard({
   item,
-  addToBagLabel = "Add to bag",
+  addToBagLabel,
   onRemove,
   onAddToBag,
 }: WishlistProductCardProps) {
+  const t = useTranslations("commerce")
   const price = Number(String(item.price).replace(/[^0-9.-]+/g, "")) || 0
   const productUrl = resolveCommerceItemUrl(item)
+  const bagLabel = addToBagLabel ?? t?.wishlist?.addToBag ?? "Add to bag"
 
   return (
     <article className="flex w-full flex-col">
@@ -39,7 +42,7 @@ export default function WishlistProductCard({
         <AdidasCloseButton
           variant="panel"
           onClick={() => onRemove(item)}
-          ariaLabel="Remove from wishlist"
+          ariaLabel={t?.wishlist?.removeFromWishlist ?? "Remove from wishlist"}
           wrapperClassName="absolute right-0 top-0 z-10"
         />
       </div>
@@ -55,11 +58,11 @@ export default function WishlistProductCard({
         </p>
         {item.color || item.category ? (
           <p className="text-sm text-muted-foreground">
-            Color: {item.color ?? item.category}
+            {t?.wishlist?.color ?? "Color:"} {item.color ?? item.category}
           </p>
         ) : null}
         <div className="mt-auto w-full pt-3">
-          <AddToBagButton label={addToBagLabel} onClick={() => onAddToBag(item)} />
+          <AddToBagButton label={bagLabel} onClick={() => onAddToBag(item)} />
         </div>
       </div>
     </article>

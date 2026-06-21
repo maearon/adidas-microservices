@@ -12,28 +12,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import AddressAutocomplete, { AddressSuggestion } from "./AddressAutocomplete"
-
-// interface Address {
-//   _id?: string
-//   userId?: string
-//   firstName: string
-//   lastName: string
-//   street: string
-//   apartment?: string
-//   city: string
-//   state: string
-//   zipCode: string
-//   country: string
-//   phone: string
-//   isDefault?: boolean
-//   type?: "delivery" | "billing" | "both"
-//   latitude?: number
-//   longitude?: number
-//   formattedAddress?: string
-// }
 import { Address } from "@/types/common/address"
 import { useTheme } from "next-themes"
 import { X } from "lucide-react"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface AddressModalProps {
   open: boolean
@@ -52,6 +34,9 @@ export default function AddressModal({
   mode = "add",
   country = "US",
 }: AddressModalProps) {
+  const t = useTranslations("commerce")
+  const addr = t?.address
+  const validation = addr?.validation
   const [formData, setFormData] = useState<Address>({
     firstName: "",
     lastName: "",
@@ -68,10 +53,7 @@ export default function AddressModal({
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSaving, setIsSaving] = useState(false)
   const [addressSearchValue, setAddressSearchValue] = useState("")
-  const { 
-    // theme, 
-    resolvedTheme 
-  } = useTheme()
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     if (open) {
@@ -102,7 +84,7 @@ export default function AddressModal({
           city: "",
           state: "",
           zipCode: "",
-          country: country || "US", // ✅ dùng prop truyền vào
+          country: country || "US",
           phone: "",
           isDefault: false,
           type: "delivery",
@@ -111,7 +93,7 @@ export default function AddressModal({
       }
       setErrors({})
     }
-  }, [open, address, mode])
+  }, [open, address, mode, country])
 
   const handleInputChange = (field: keyof Address, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -140,13 +122,27 @@ export default function AddressModal({
 
   const validate = () => {
     const newErrors: Record<string, string> = {}
-    if (!formData.firstName) newErrors.firstName = "First name is required"
-    if (!formData.lastName) newErrors.lastName = "Last name is required"
-    if (!formData.street) newErrors.street = "Street address is required"
-    if (!formData.city) newErrors.city = "City is required"
-    if (!formData.state) newErrors.state = "State is required"
-    if (!formData.zipCode) newErrors.zipCode = "Zip code is required"
-    if (!formData.phone) newErrors.phone = "Phone number is required"
+    if (!formData.firstName) {
+      newErrors.firstName = validation?.firstNameRequired ?? "First name is required"
+    }
+    if (!formData.lastName) {
+      newErrors.lastName = validation?.lastNameRequired ?? "Last name is required"
+    }
+    if (!formData.street) {
+      newErrors.street = validation?.streetRequired ?? "Street address is required"
+    }
+    if (!formData.city) {
+      newErrors.city = validation?.cityRequired ?? "City is required"
+    }
+    if (!formData.state) {
+      newErrors.state = validation?.stateRequired ?? "State is required"
+    }
+    if (!formData.zipCode) {
+      newErrors.zipCode = validation?.zipCodeRequired ?? "Zip code is required"
+    }
+    if (!formData.phone) {
+      newErrors.phone = validation?.phoneRequired ?? "Phone number is required"
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -175,14 +171,17 @@ export default function AddressModal({
         className="max-w-md sm:max-w-2xl max-h-[90vh] overflow-visible bg-white dark:bg-black rounded-none"
       >
         <DialogHeader>
-          <DialogTitle>{mode === "edit" ? "Edit Address" : "Add New Address"}</DialogTitle>
+          <DialogTitle>
+            {mode === "edit"
+              ? (addr?.editTitle ?? "Edit Address")
+              : (addr?.addTitle ?? "Add New Address")}
+          </DialogTitle>
           <DialogDescription>
             {mode === "edit"
-              ? "Update your delivery address information"
-              : "Add a new delivery address for your orders"}
+              ? (addr?.editDescription ?? "Update your delivery address information")
+              : (addr?.addDescription ?? "Add a new delivery address for your orders")}
           </DialogDescription>
         </DialogHeader>
-        {/* Close button - Square border style */}
         <div className="absolute bg-white dark:bg-black border border-black dark:border-white z-50 right-0 transform translate-x-[30%] translate-y-[-30%]">
           <button
             onClick={onClose}
@@ -197,7 +196,7 @@ export default function AddressModal({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Input
-                placeholder="First Name *"
+                placeholder={addr?.firstName ?? "First Name *"}
                 value={formData.firstName}
                 onChange={(e) => handleInputChange("firstName", e.target.value)}
                 className={errors.firstName ? "border-red-500" : ""}
@@ -208,7 +207,7 @@ export default function AddressModal({
             </div>
             <div>
               <Input
-                placeholder="Last Name *"
+                placeholder={addr?.lastName ?? "Last Name *"}
                 value={formData.lastName}
                 onChange={(e) => handleInputChange("lastName", e.target.value)}
                 className={errors.lastName ? "border-red-500" : ""}
@@ -224,7 +223,7 @@ export default function AddressModal({
               value={addressSearchValue}
               onChange={setAddressSearchValue}
               onSelect={handleAddressSelect}
-              placeholder="Find delivery address *"
+              placeholder={addr?.findAddress ?? "Find delivery address *"}
               country={formData.country}
               className={errors.street ? "border-red-500" : ""}
             />
@@ -235,7 +234,7 @@ export default function AddressModal({
 
           <div>
             <Input
-              placeholder="Apartment, suite, etc. (optional)"
+              placeholder={addr?.apartment ?? "Apartment, suite, etc. (optional)"}
               value={formData.apartment || ""}
               onChange={(e) => handleInputChange("apartment", e.target.value)}
             />
@@ -244,7 +243,7 @@ export default function AddressModal({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Input
-                placeholder="City *"
+                placeholder={addr?.city ?? "City *"}
                 value={formData.city}
                 onChange={(e) => handleInputChange("city", e.target.value)}
                 className={errors.city ? "border-red-500" : ""}
@@ -255,7 +254,7 @@ export default function AddressModal({
             </div>
             <div>
               <Input
-                placeholder="State *"
+                placeholder={addr?.state ?? "State *"}
                 value={formData.state}
                 onChange={(e) => handleInputChange("state", e.target.value)}
                 className={errors.state ? "border-red-500" : ""}
@@ -269,7 +268,7 @@ export default function AddressModal({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Input
-                placeholder="Zip Code *"
+                placeholder={addr?.zipCode ?? "Zip Code *"}
                 value={formData.zipCode}
                 onChange={(e) => handleInputChange("zipCode", e.target.value)}
                 className={errors.zipCode ? "border-red-500" : ""}
@@ -280,7 +279,7 @@ export default function AddressModal({
             </div>
             <div>
               <Input
-                placeholder="Phone Number *"
+                placeholder={addr?.phoneNumber ?? "Phone Number *"}
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
                 className={errors.phone ? "border-red-500" : ""}
@@ -299,32 +298,36 @@ export default function AddressModal({
                 onCheckedChange={(checked) => handleInputChange("isDefault", !!checked)}
               />
               <label htmlFor="isDefault" className="text-sm">
-                Set as default address
+                {addr?.setDefault ?? "Set as default address"}
               </label>
             </div>
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={onClose}
               showArrow={false}
               pressEffect={true}
               shadowColorModeInWhiteTheme="black"
               theme={isDark ? "white" : "black"}
             >
-              Cancel
+              {addr?.cancel ?? "Cancel"}
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSaving}
               showArrow={false}
               pressEffect={true}
               shadowColorModeInWhiteTheme="black"
               theme={isDark ? "white" : "black"}
             >
-              {isSaving ? "Saving..." : mode === "edit" ? "Update Address" : "Add Address"}
+              {isSaving
+                ? (addr?.saving ?? "Saving...")
+                : mode === "edit"
+                  ? (addr?.update ?? "Update Address")
+                  : (addr?.add ?? "Add Address")}
             </Button>
           </div>
         </form>
@@ -332,4 +335,3 @@ export default function AddressModal({
     </Dialog>
   )
 }
-

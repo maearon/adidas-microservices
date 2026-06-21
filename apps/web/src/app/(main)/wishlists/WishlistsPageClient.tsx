@@ -13,7 +13,7 @@ import type { WishlistItem } from "@/types/wish"
 
 export default function WishlistsPageClient() {
   const dispatch = useAppDispatch()
-  const t = useTranslations("categoryPages")
+  const t = useTranslations("commerce")
   const wishlistItems = useAppSelector((state) => state.wishlist.items)
   const { data: authSession } = authClient.useSession()
   const authUserId = authSession?.user?.id
@@ -61,7 +61,7 @@ export default function WishlistsPageClient() {
     <div className="border-t border-border pb-8 pt-8">
       <div className={`${WISHLIST_PAGE_SHELL} border-t border-border pb-8 pt-8`}>
         <HistoryView
-          title={t?.recentlyViewedItems ?? "RECENTLY VIEWED ITEMS"}
+          title={t?.cart?.recentlyViewed ?? "RECENTLY VIEWED ITEMS"}
           showIndicatorsInProductCarousel
         />
       </div>
@@ -74,13 +74,13 @@ export default function WishlistsPageClient() {
         {pageShell(
           <>
             <h1 className="mb-4 text-2xl font-bold uppercase tracking-tight text-foreground sm:text-[28px]">
-              {t?.myWishlist ?? "MY WISHLIST"}{" "}
+              {t?.wishlist?.title ?? "MY WISHLIST"}{" "}
               <span className="font-normal normal-case">
-                (0 {t?.itemsLabel ?? "items"})
+                (0 {t?.cart?.items ?? "items"})
               </span>
             </h1>
             <p className="mb-8 max-w-3xl text-sm text-foreground sm:text-base">
-              {t?.wishlistEmptyCopy ??
+              {t?.wishlist?.emptyCopy ??
                 "You haven't saved any items to your wishlist yet. Start shopping and add your favorite items to your wishlist."}
             </p>
             <div className="mb-10">
@@ -98,9 +98,9 @@ export default function WishlistsPageClient() {
       {pageShell(
         <>
           <h1 className="mb-8 text-2xl font-bold uppercase tracking-tight text-foreground sm:text-[28px]">
-            {t?.myWishlist ?? "MY WISHLIST"}{" "}
+            {t?.wishlist?.title ?? "MY WISHLIST"}{" "}
             <span className="font-normal normal-case">
-              ({wishlistItems.length} {t?.itemsLabel ?? "items"})
+              ({wishlistItems.length} {t?.cart?.items ?? "items"})
             </span>
           </h1>
 
@@ -109,7 +109,7 @@ export default function WishlistsPageClient() {
               <WishlistProductCard
                 key={`${item.id}-${item.variantId ?? "default"}`}
                 item={item}
-                addToBagLabel={t?.addToBag ?? "Add to bag"}
+                addToBagLabel={t?.wishlist?.addToBag ?? "Add to bag"}
                 onRemove={handleRemove}
                 onAddToBag={handleAddToBag}
               />

@@ -1,6 +1,10 @@
 "use client"
 
+import { useTranslations } from "@/hooks/useTranslations"
+
 export default function CommerceTrustSignals() {
+  const t = useTranslations("commerce")
+
   return (
     <div className="mt-10 border-t border-border pt-6 text-foreground">
       <div className="mb-4 flex items-start gap-2">
@@ -19,7 +23,8 @@ export default function CommerceTrustSignals() {
           />
         </svg>
         <button type="button" className="text-left text-base underline">
-          Pay over time in interest-free installments with Affirm, Klarna or Afterpay
+          {t?.trustSignals?.installments ??
+            "Pay over time in interest-free installments with Affirm, Klarna or Afterpay"}
         </button>
       </div>
       <div className="flex items-start gap-2">
@@ -38,7 +43,7 @@ export default function CommerceTrustSignals() {
           />
         </svg>
         <button type="button" className="text-left text-base underline">
-          Free standard shipping with adiClub
+          {t?.trustSignals?.freeShipping ?? "Free standard shipping with adiClub"}
         </button>
       </div>
     </div>

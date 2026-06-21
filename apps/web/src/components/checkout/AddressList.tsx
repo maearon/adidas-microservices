@@ -16,25 +16,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-
-// interface Address {
-//   _id: string
-//   userId?: string
-//   firstName: string
-//   lastName: string
-//   street: string
-//   apartment?: string
-//   city: string
-//   state: string
-//   zipCode: string
-//   country: string
-//   phone: string
-//   isDefault?: boolean
-//   type?: "delivery" | "billing" | "both"
-//   formattedAddress?: string
-// }
 import { Address } from "@/types/common/address"
 import { useTheme } from "next-themes"
+import { useTranslations } from "@/hooks/useTranslations"
 
 interface AddressListProps {
   selectedAddress: Address | null
@@ -43,6 +27,8 @@ interface AddressListProps {
 }
 
 export default function AddressList({ selectedAddress, onSelectAddress, country = "US" }: AddressListProps) {
+  const t = useTranslations("commerce")
+  const addr = t?.address
   const [addresses, setAddresses] = useState<Address[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
@@ -66,8 +52,7 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
       if (response.ok) {
         const data = await response.json()
         setAddresses(data.addresses || [])
-        // Auto-select default address if available
-        const defaultAddress = data.addresses?.find((addr: Address) => addr.isDefault)
+        const defaultAddress = data.addresses?.find((a: Address) => a.isDefault)
         if (defaultAddress && !selectedAddress) {
           onSelectAddress(defaultAddress)
         }
@@ -82,7 +67,6 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
   const handleSaveAddress = async (addressData: Address) => {
     try {
       if (editingAddress?._id) {
-        // Update existing address
         const response = await fetch(`/api/v1/addresses/${editingAddress._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -94,7 +78,6 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
           setEditingAddress(null)
         }
       } else {
-        // Create new address
         const response = await fetch("/api/v1/addresses", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -104,7 +87,6 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
           const data = await response.json()
           await loadAddresses()
           setModalOpen(false)
-          // Auto-select newly created address
           if (data.address) {
             onSelectAddress(data.address)
           }
@@ -125,7 +107,6 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
       })
       if (response.ok) {
         await loadAddresses()
-        // Clear selection if deleted address was selected
         if (selectedAddress?._id === addressToDelete) {
           onSelectAddress(null)
         }
@@ -148,9 +129,6 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
     setModalOpen(true)
   }
 
-  // if (loading) {
-  //   return <div className="text-sm text-gray-500">Loading addresses...</div>
-  // }
   if (!mounted) return null
 
   if (loading) {
@@ -168,7 +146,7 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
       <div className="space-y-3">
         {addresses.length === 0 ? (
           <div className="text-sm text-gray-500 mb-4">
-            No saved addresses. Add one to get started.
+            {addr?.noSaved ?? "No saved addresses. Add one to get started."}
           </div>
         ) : (
           addresses.map((address) => (
@@ -190,7 +168,7 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
                       </span>
                       {address.isDefault && (
                         <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">
-                          Default
+                          {addr?.default ?? "Default"}
                         </span>
                       )}
                     </div>
@@ -238,7 +216,7 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
           theme={isDark ? "white" : "black"}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add New Address
+          {addr?.addNew ?? "Add New Address"}
         </Button>
       </div>
 
@@ -257,15 +235,16 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Address</AlertDialogTitle>
+            <AlertDialogTitle>{addr?.deleteTitle ?? "Delete Address"}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this address? This action cannot be undone.
+              {addr?.deleteDescription ??
+                "Are you sure you want to delete this address? This action cannot be undone."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{addr?.cancel ?? "Cancel"}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
-              Delete
+              {addr?.delete ?? "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -273,4 +252,3 @@ export default function AddressList({ selectedAddress, onSelectAddress, country 
     </>
   )
 }
-

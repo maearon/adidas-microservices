@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export type PaymentMethod = "stripe" | "paypal" | "momo" | "vnpay" | "cod"
 
@@ -10,8 +11,8 @@ interface PaymentMethodsProps {
   selectedMethod: PaymentMethod | null
   onSelectMethod: (method: PaymentMethod) => void
   country?: string
-  stripeForm?: React.ReactNode  // 👈 thêm prop này
-  stripeError?: string | null  // 👈 thêm prop này
+  stripeForm?: React.ReactNode
+  stripeError?: string | null
 }
 
 export default function PaymentMethods({
@@ -21,11 +22,12 @@ export default function PaymentMethods({
   stripeForm = <></>,
   stripeError = null,
 }: PaymentMethodsProps) {
+  const t = useTranslations("commerce")
+  const pm = t?.paymentMethods
   const isVietnam = country === "VN" || country === "Vietnam"
 
   return (
     <div className="space-y-6">
-      {/* Security Message */}
       <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded text-sm flex items-center gap-2">
         <svg
           className="w-4 h-4"
@@ -40,12 +42,14 @@ export default function PaymentMethods({
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
-        <span>Payments are SSL encrypted so that your credit card and payment details stay safe.</span>
+        <span>
+          {pm?.sslEncrypted ??
+            "Payments are SSL encrypted so that your credit card and payment details stay safe."}
+        </span>
       </div>
 
-      {/* Credit/Debit Card (Stripe) */}
       <div>
-        <h3 className="text-sm font-bold mb-2">Credit/Debit Card</h3>
+        <h3 className="text-sm font-bold mb-2">{pm?.creditDebitCard ?? "Credit/Debit Card"}</h3>
 
         <Card
           className={`cursor-pointer border-2 transition-all ${
@@ -62,14 +66,13 @@ export default function PaymentMethods({
                 onCheckedChange={() => onSelectMethod("stripe")}
               />
               <span className="text-sm font-medium">
-                Pay with Credit/Debit Card (Stripe)
+                {pm?.payWithStripe ?? "Pay with Credit/Debit Card (Stripe)"}
               </span>
             </div>
 
-            {/* ✅ hiện form nếu được chọn */}
             {selectedMethod === "stripe" && (
               <div className="border border-gray-200 dark:border-gray-700 p-4 space-y-4">
-                <h3 className="text-sm font-semibold">Card details</h3>
+                <h3 className="text-sm font-semibold">{pm?.cardDetails ?? "Card details"}</h3>
                 {stripeError && (
                   <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 overflow-hidden">
                     {stripeError}
@@ -77,7 +80,8 @@ export default function PaymentMethods({
                 )}
                 {stripeForm}
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Your payment details are encrypted and processed securely by Stripe.
+                  {pm?.stripeSecure ??
+                    "Your payment details are encrypted and processed securely by Stripe."}
                 </p>
               </div>
             )}
@@ -85,9 +89,8 @@ export default function PaymentMethods({
         </Card>
       </div>
 
-      {/* PayPal */}
       <div>
-        <h3 className="text-sm font-bold mb-2">PayPal</h3>
+        <h3 className="text-sm font-bold mb-2">{pm?.paypal ?? "PayPal"}</h3>
         <Card
           className={`cursor-pointer border-2 transition-all ${
             selectedMethod === "paypal"
@@ -104,22 +107,22 @@ export default function PaymentMethods({
             <div className="w-16 h-10 relative">
               <Image
                 src="/assets/payment/download (11).svg"
-                alt="PayPal"
+                alt={pm?.paypal ?? "PayPal"}
                 fill
                 className="object-contain"
               />
             </div>
-            <span className="text-sm">You will be redirected to PayPal to complete your payment.</span>
+            <span className="text-sm">
+              {pm?.paypalRedirect ?? "You will be redirected to PayPal to complete your payment."}
+            </span>
           </CardContent>
         </Card>
       </div>
 
-      {/* Vietnam Payment Methods */}
       {isVietnam && (
         <>
-          {/* MoMo */}
           <div>
-            <h3 className="text-sm font-bold mb-2">MoMo E-Wallet</h3>
+            <h3 className="text-sm font-bold mb-2">{pm?.momoWallet ?? "MoMo E-Wallet"}</h3>
             <Card
               className={`cursor-pointer border-2 transition-all ${
                 selectedMethod === "momo"
@@ -136,14 +139,13 @@ export default function PaymentMethods({
                 <div className="w-16 h-10 relative bg-pink-500 rounded flex items-center justify-center">
                   <span className="text-white font-bold text-xs">MoMo</span>
                 </div>
-                <span className="text-sm">Pay with MoMo wallet</span>
+                <span className="text-sm">{pm?.payWithMomo ?? "Pay with MoMo wallet"}</span>
               </CardContent>
             </Card>
           </div>
 
-          {/* VNPay */}
           <div>
-            <h3 className="text-sm font-bold mb-2">VNPay</h3>
+            <h3 className="text-sm font-bold mb-2">{pm?.vnpay ?? "VNPay"}</h3>
             <Card
               className={`cursor-pointer border-2 transition-all ${
                 selectedMethod === "vnpay"
@@ -160,14 +162,15 @@ export default function PaymentMethods({
                 <div className="w-16 h-10 relative bg-blue-600 rounded flex items-center justify-center">
                   <span className="text-white font-bold text-xs">VNPay</span>
                 </div>
-                <span className="text-sm">Pay with VNPay (Bank transfer, ATM, e-wallet)</span>
+                <span className="text-sm">
+                  {pm?.payWithVnpay ?? "Pay with VNPay (Bank transfer, ATM, e-wallet)"}
+                </span>
               </CardContent>
             </Card>
           </div>
 
-          {/* Cash on Delivery */}
           <div>
-            <h3 className="text-sm font-bold mb-2">Cash on Delivery</h3>
+            <h3 className="text-sm font-bold mb-2">{pm?.cashOnDelivery ?? "Cash on Delivery"}</h3>
             <Card
               className={`cursor-pointer border-2 transition-all ${
                 selectedMethod === "cod"
@@ -181,22 +184,20 @@ export default function PaymentMethods({
                   checked={selectedMethod === "cod"}
                   onCheckedChange={() => onSelectMethod("cod")}
                 />
-                <span className="text-sm font-medium">Pay when receiving goods (COD)</span>
+                <span className="text-sm font-medium">
+                  {pm?.payCod ?? "Pay when receiving goods (COD)"}
+                </span>
               </CardContent>
             </Card>
           </div>
         </>
       )}
 
-      {/* Other Payment Methods (International) */}
       {!isVietnam && (
         <div>
-          <h3 className="text-sm font-bold mb-2">Other ways to pay</h3>
+          <h3 className="text-sm font-bold mb-2">{pm?.otherWaysToPay ?? "Other ways to pay"}</h3>
           <div className="space-y-2">
-            {/* Klarna */}
-            <Card
-              className="border border-gray-200 dark:border-gray-700"
-            >
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-8 relative">
@@ -207,15 +208,14 @@ export default function PaymentMethods({
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-sm">4 Interest-Free Installments</span>
+                  <span className="text-sm">
+                    {pm?.klarnaInstallments ?? "4 Interest-Free Installments"}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Afterpay */}
-            <Card
-              className="border border-gray-200 dark:border-gray-700"
-            >
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-8 relative">
@@ -227,19 +227,19 @@ export default function PaymentMethods({
                     />
                   </div>
                   <div>
-                    <p className="text-sm font-medium">4 Interest-Free Payments by Afterpay</p>
+                    <p className="text-sm font-medium">
+                      {pm?.afterpayTitle ?? "4 Interest-Free Payments by Afterpay"}
+                    </p>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Place your order today and pay in 4 payments every 2 weeks. No interest or fees when you pay on time.
+                      {pm?.afterpayDescription ??
+                        "Place your order today and pay in 4 payments every 2 weeks. No interest or fees when you pay on time."}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Affirm */}
-            <Card
-              className="border border-gray-200 dark:border-gray-700"
-            >
+            <Card className="border border-gray-200 dark:border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-8 relative">
@@ -251,7 +251,8 @@ export default function PaymentMethods({
                     />
                   </div>
                   <span className="text-sm">
-                    Payment options depend on purchase amount. No late fees.
+                    {pm?.affirmDescription ??
+                      "Payment options depend on purchase amount. No late fees."}
                   </span>
                 </div>
               </CardContent>
@@ -260,16 +261,12 @@ export default function PaymentMethods({
         </div>
       )}
 
-      {/* Gift Card */}
       <div className="p-4 flex items-center gap-3">
-        <Checkbox
-          id="useGiftCard"
-        />
+        <Checkbox id="useGiftCard" />
         <label htmlFor="useGiftCard" className="text-sm font-medium">
-          Use an adidas gift card
+          {pm?.useGiftCard ?? "Use an adidas gift card"}
         </label>
       </div>
     </div>
   )
 }
-

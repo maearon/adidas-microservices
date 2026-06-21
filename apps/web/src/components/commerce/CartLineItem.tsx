@@ -6,6 +6,7 @@ import { Heart, Trash2 } from "lucide-react"
 import ProductPrice from "@/components/ProductCardPrice"
 import CartQuantitySelect from "@/components/commerce/CartQuantitySelect"
 import { resolveCommerceItemUrl } from "@/lib/commerce/product-url"
+import { useTranslations } from "@/hooks/useTranslations"
 import type { CartItem } from "@/store/cartSlice"
 
 type CartLineItemProps = {
@@ -21,6 +22,7 @@ export default function CartLineItem({
   onMoveToWishlist,
   onUpdateQuantity,
 }: CartLineItemProps) {
+  const t = useTranslations("commerce")
   const productUrl = resolveCommerceItemUrl(item)
 
   return (
@@ -51,12 +53,14 @@ export default function CartLineItem({
                 <p className="text-sm leading-snug text-foreground">{item.color}</p>
               ) : null}
               {item.size ? (
-                <p className="text-sm leading-snug text-foreground">Size: {item.size}</p>
+                <p className="text-sm leading-snug text-foreground">
+                  {t?.cart?.size ?? "Size:"} {item.size}
+                </p>
               ) : null}
               <div className="pt-1">
                 <Image
                   src="/assets/payment/prime-delivery.svg"
-                  alt="Prime Delivery"
+                  alt={t?.cart?.primeDelivery ?? "Prime Delivery"}
                   width={60}
                   height={16}
                   className="object-contain dark:invert"
@@ -67,7 +71,7 @@ export default function CartLineItem({
             <div className="flex shrink-0 flex-col items-center gap-4 text-foreground">
               <button
                 type="button"
-                aria-label="Remove item"
+                aria-label={t?.cart?.removeItem ?? "Remove item"}
                 onClick={() => onRemove(item.id)}
                 className="hover:opacity-70"
               >
@@ -75,7 +79,7 @@ export default function CartLineItem({
               </button>
               <button
                 type="button"
-                aria-label="Move to wishlist"
+                aria-label={t?.cart?.moveToWishlist ?? "Move to wishlist"}
                 onClick={() => onMoveToWishlist(item)}
                 className="hover:opacity-70"
               >

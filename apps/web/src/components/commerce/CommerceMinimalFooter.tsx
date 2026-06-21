@@ -1,7 +1,12 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { useTranslations } from "@/hooks/useTranslations"
 
 export default function CommerceMinimalFooter() {
+  const t = useTranslations("commerce")
+
   return (
     <footer className="mt-auto bg-[#363738] px-4 py-8 text-center text-xs text-white sm:text-sm">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-4">
@@ -29,18 +34,18 @@ export default function CommerceMinimalFooter() {
                 strokeLinecap="round"
               />
             </svg>
-            Questions?{" "}
+            {t?.footer?.questions ?? "Questions?"}{" "}
             <a href="tel:18009829337" className="hover:underline">
-              1-800-982-9337
+              {t?.footer?.phone ?? "1-800-982-9337"}
             </a>
           </span>
           <span className="hidden sm:inline">|</span>
-          <span>8AM ET – 11PM ET, 7 days a week</span>
+          <span>{t?.footer?.hours ?? "8AM ET – 11PM ET, 7 days a week"}</span>
         </p>
 
         <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
           <span className="inline-flex items-center gap-1.5">
-            Your Privacy Choices
+            {t?.footer?.privacyChoices ?? "Your Privacy Choices"}
             <Image
               src="/assets/img/ccpa-privacy-options.svg"
               alt=""
@@ -52,15 +57,15 @@ export default function CommerceMinimalFooter() {
           </span>
           <span>|</span>
           <Link href="#" className="hover:underline">
-            Privacy Statement
+            {t?.footer?.privacyStatement ?? "Privacy Statement"}
           </Link>
           <span>|</span>
           <Link href="#" className="hover:underline">
-            Terms and Conditions
+            {t?.footer?.termsAndConditions ?? "Terms and Conditions"}
           </Link>
         </p>
 
-        <p className="text-white/80">© 2024 adidas America Inc.</p>
+        <p className="text-white/80">{t?.footer?.copyright ?? "© 2024 adidas America Inc."}</p>
       </div>
     </footer>
   )
