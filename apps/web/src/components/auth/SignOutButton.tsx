@@ -2,6 +2,7 @@
 
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
+import { POST_LOGOUT_PATH } from '@/lib/auth-navigation'
 
 export const SignOutButton = () => {
   const router = useRouter()
@@ -9,7 +10,7 @@ export const SignOutButton = () => {
   const handleSignOut = async () => {
     await authClient.signOut({
       fetchOptions: {
-        onSuccess: () => router.push("/sign-in"),
+        onSuccess: () => router.push(POST_LOGOUT_PATH),
       }
     });
     router.refresh()

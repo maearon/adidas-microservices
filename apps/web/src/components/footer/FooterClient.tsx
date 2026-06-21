@@ -277,7 +277,7 @@ export default function FooterClient({ session }: FooterClientProps) {
           </div>
 
           <div className="mt-4 text-center md:text-left">
-            <div className="text-gray-400 text-base">{t?.copyright || "© 2025 adidas America, Inc."}</div>
+            <div className="text-gray-400 text-base">{t?.copyright || "© 2026 adidas America, Inc."}</div>
           </div>
         </div>
       </div>

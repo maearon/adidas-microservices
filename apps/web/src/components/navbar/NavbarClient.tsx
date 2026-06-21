@@ -18,13 +18,13 @@ import UserAccountSlideOut from "./UserAccountSlideOut"
 import MobileMenuSlideOut from "./MobileMenuSideOut"
 import { Z } from "@/lib/z-index"
 import { useInitSession } from "@/api/hooks/useLoginMutation"
-import FullScreenLoader from "../ui/FullScreenLoader"
 // import { selectUser } from "@/store/sessionSlice"
 // import { useSelector } from "react-redux"
 import type { Session } from "@/lib/auth"
 import { useRouter } from "next/navigation"
 import { useAppSelector } from "@/store/hooks"
 import { useHeaderScrollHide } from "@/hooks/useHeaderScrollHide"
+import { OPEN_LOGIN_MODAL_EVENT } from "@/lib/auth-navigation"
 
 const HEADER_SLIDE_TRANSITION = {
   duration: 0.28,
@@ -49,12 +49,7 @@ export default function NavbarClient({ session }: NavbarClientProps) {
   // const current_user = session?.user
   // const { value: userRedux, status } = useSelector(selectUser)
   // const userLoading = status === "loading"
-  const [hasMounted, setHasMounted] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
 
   const [loginBadgeAnimate, setLoginBadgeAnimate] = useState(false)
   const cartItemsCount = useAppSelector((state) =>
@@ -128,7 +123,13 @@ export default function NavbarClient({ session }: NavbarClientProps) {
       mq.removeEventListener("change", updateHeight)
       window.removeEventListener("resize", updateHeight)
     }
-  }, [hasMounted, showAppBanner])
+  }, [showAppBanner])
+
+  useEffect(() => {
+    const openLogin = () => setShowLoginModal(true)
+    window.addEventListener(OPEN_LOGIN_MODAL_EVENT, openLogin)
+    return () => window.removeEventListener(OPEN_LOGIN_MODAL_EVENT, openLogin)
+  }, [])
 
   useEffect(() => {
     if (!isHeaderVisible && activeMenu) {
@@ -154,10 +155,6 @@ export default function NavbarClient({ session }: NavbarClientProps) {
       // router.push("/sign-in")
     }
   }
-
-  if (!hasMounted 
-    // || userLoading
-  ) return <FullScreenLoader />
 
   return (
     <>

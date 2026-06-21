@@ -1,13 +1,13 @@
 "use client";
 
 import { LogIn } from "lucide-react";
-import Link from "next/link";
+import { openLoginModal } from "@/lib/auth-navigation";
 
 const SignInButton = () => {
   return (
-    <Link href="/sign-in">
+    <button type="button" onClick={openLoginModal} aria-label="Log in">
       <LogIn className="h-5 w-5" />
-    </Link>
+    </button>
   );
 };
 

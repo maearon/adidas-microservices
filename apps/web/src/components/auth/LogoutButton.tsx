@@ -1,13 +1,14 @@
 "use client";
 
 import { authClient } from '@/lib/auth-client'
+import { POST_LOGOUT_PATH } from '@/lib/auth-navigation'
 import { useRouter } from 'next/navigation';
 
 export default function LogoutButton() {
   const router = useRouter();
   const signout = async () => await authClient.signOut({
       fetchOptions: {
-        onSuccess: () => router.push("/"),
+        onSuccess: () => router.push(POST_LOGOUT_PATH),
       },
     });
   return (

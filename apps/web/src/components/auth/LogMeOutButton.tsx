@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { POST_LOGOUT_PATH } from "@/lib/auth-navigation";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
@@ -33,7 +34,7 @@ export const LogMeOutButton = () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/");
+          router.push(POST_LOGOUT_PATH);
           router.refresh();
           localStorage.clear();
           sessionStorage.clear();
@@ -42,7 +43,7 @@ export const LogMeOutButton = () => {
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
           });
           setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = POST_LOGOUT_PATH;
           }, 50);
         },
         onError: (err) => {

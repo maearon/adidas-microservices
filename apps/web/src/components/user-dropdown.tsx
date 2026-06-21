@@ -2,6 +2,7 @@
 
 import type { User } from "@/lib/auth";
 import { authClient } from "@/lib/auth-client";
+import { POST_LOGOUT_PATH } from "@/lib/auth-navigation";
 import { LogOutIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,7 +75,7 @@ function SignOutItem() {
       toast.error(error.message || "Something went wrong");
     } else {
       toast.success("Signed out successfully");
-      router.push("/sign-in");
+      router.push(POST_LOGOUT_PATH);
     }
   }
 

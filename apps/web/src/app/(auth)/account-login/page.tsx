@@ -1,29 +1,19 @@
-import { redirect } from "next/navigation";
-import LoginForm from "./LoginForm";
-import PromoSection from "./PromoSection";
-import LoginPageClient from "./LoginPageClient";
-import { getServerSession } from "@/lib/get-session";
+import LoginForm from "./LoginForm"
+import PromoSection from "./PromoSection"
+import { Suspense } from "react"
 
-const LoginPage = async () => {
-  const session = await getServerSession()
-
-  if (session?.user?.email) {
-    return <LoginPageClient isLoggedIn={true} />
-  }
-
-  if(session) redirect('/');
-
+const LoginPage = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="relative bg-background md:py-8 pt-1 pb-1">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 md:gap-8 gap-2 items-start">
-            {/* Left promo section */}
+    <div className="w-full bg-white">
+      <div className="mx-auto w-full px-12 pb-0 pt-12 sm:px-20 sm:pt-14 lg:px-28 lg:pb-1 lg:pt-16 xl:px-32">
+        <div className="flex flex-col-reverse lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
+          <div className="w-full lg:w-1/2">
             <PromoSection />
-
-            {/* Login Form section */}
-            {/* https://react.dev/learn/sharing-state-between-components#lifting-state-up-by-example */}
-            <LoginForm />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <Suspense fallback={null}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </div>
