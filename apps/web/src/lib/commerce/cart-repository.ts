@@ -1,12 +1,7 @@
 import prisma from "@/lib/prisma"
 import { enrichCartLines } from "@/lib/commerce/enrich-line-items"
+import { userCartBucketId } from "@/lib/commerce/user-cart-bucket"
 import type { StoredCartLine } from "@/lib/commerce/types"
-
-/** cart_items.cart_id is BigInt — stable bucket key from Better Auth user id (not a users FK). */
-function cartItemsCartId(betterAuthUserId: string) {
-  const hex = betterAuthUserId.replace(/-/g, "").slice(0, 16)
-  return BigInt(`0x${hex}`)
-}
 
 async function getOrCreateUserCartRecord(betterAuthUserId: string) {
   const existing = await prisma.carts.findFirst({ where: { user_id: betterAuthUserId } })
@@ -20,7 +15,7 @@ async function getOrCreateUserCartRecord(betterAuthUserId: string) {
 
 export async function replaceUserCartLines(betterAuthUserId: string, lines: StoredCartLine[]) {
   await getOrCreateUserCartRecord(betterAuthUserId)
-  const cartId = cartItemsCartId(betterAuthUserId)
+  const cartId = userCartBucketId(betterAuthUserId)
   const variantIds = lines.map((line) => BigInt(line.variantId))
 
   if (!variantIds.length) {
@@ -65,7 +60,7 @@ async function mergeStoredLinesIntoUserCart(betterAuthUserId: string, lines: Sto
   if (!lines.length) return
 
   await getOrCreateUserCartRecord(betterAuthUserId)
-  const cartId = cartItemsCartId(betterAuthUserId)
+  const cartId = userCartBucketId(betterAuthUserId)
   const now = new Date()
 
   for (const line of lines) {
@@ -113,7 +108,7 @@ export async function syncUserCart(
 }
 
 export async function getUserCartItems(betterAuthUserId: string) {
-  const cartId = cartItemsCartId(betterAuthUserId)
+  const cartId = userCartBucketId(betterAuthUserId)
   const rows = await prisma.cart_items.findMany({
     where: { cart_id: cartId },
     orderBy: { updated_at: "desc" },
@@ -129,7 +124,7 @@ export async function getUserCartItems(betterAuthUserId: string) {
 }
 
 export async function removeUserCartItem(betterAuthUserId: string, variantId: bigint) {
-  const cartId = cartItemsCartId(betterAuthUserId)
+  const cartId = userCartBucketId(betterAuthUserId)
   await prisma.cart_items.deleteMany({
     where: { cart_id: cartId, variant_id: variantId },
   })

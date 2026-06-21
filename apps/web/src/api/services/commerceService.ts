@@ -24,26 +24,48 @@ async function commerceFetch<T>(url: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
+async function withAuthRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+  let lastError: unknown
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error
+      const message = error instanceof Error ? error.message : String(error)
+      if (attempt < retries && message.includes("(401)")) {
+        await new Promise((resolve) => window.setTimeout(resolve, 300 * (attempt + 1)))
+        continue
+      }
+      throw error
+    }
+  }
+  throw lastError
+}
+
 export async function fetchCart() {
-  return commerceFetch<{ items: CartItem[] }>(CART_URL)
+  return withAuthRetry(() => commerceFetch<{ items: CartItem[] }>(CART_URL))
 }
 
 export async function syncCart(payload: SyncPayload) {
-  return commerceFetch<{ items: CartItem[]; synced?: boolean }>(CART_URL, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  })
+  return withAuthRetry(() =>
+    commerceFetch<{ items: CartItem[]; synced?: boolean }>(CART_URL, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+  )
 }
 
 export async function fetchWishlist() {
-  return commerceFetch<{ items: WishlistItem[] }>(WISHLIST_URL)
+  return withAuthRetry(() => commerceFetch<{ items: WishlistItem[] }>(WISHLIST_URL))
 }
 
 export async function syncWishlist(payload: SyncPayload) {
-  return commerceFetch<{ items: WishlistItem[]; synced?: boolean }>(WISHLIST_URL, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  })
+  return withAuthRetry(() =>
+    commerceFetch<{ items: WishlistItem[]; synced?: boolean }>(WISHLIST_URL, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+  )
 }
 
 export async function fetchRecommendations(params: {

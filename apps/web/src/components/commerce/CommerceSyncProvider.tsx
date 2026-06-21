@@ -36,6 +36,7 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
   const hydratedRef = useRef(false)
   const guestSaveReadyRef = useRef(false)
   const userPersistReadyRef = useRef(false)
+  const allowEmptyPersistRef = useRef(false)
   const userPersistTimeoutRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
     async function hydrateGuest() {
       guestSaveReadyRef.current = false
       userPersistReadyRef.current = false
+      allowEmptyPersistRef.current = false
       dispatch(setCartItems(loadGuestCartItems()))
       dispatch(setWishlistItems(loadGuestWishItems()))
       hydratedRef.current = true
@@ -68,15 +70,18 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
 
     async function hydrateLoggedIn() {
       userPersistReadyRef.current = false
+      allowEmptyPersistRef.current = false
 
       const localCart = loadGuestCartItems()
       const localWish = loadGuestWishItems()
       const guestCart = localCart.length > 0 ? localCart : cartItemsRef.current
       const guestWish = localWish.length > 0 ? localWish : wishlistItemsRef.current
 
+      let hydrateOk = false
+
       try {
         if (guestCart.length > 0 || guestWish.length > 0) {
-          const [cartRes, wishRes] = await Promise.all([
+          const [cartResult, wishResult] = await Promise.allSettled([
             syncCart({
               cartLines: cartItemsToStoredLines(guestCart),
               fullReplace: true,
@@ -86,15 +91,42 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
               fullReplace: true,
             }),
           ])
+
           if (cancelled) return
-          dispatch(setCartItems(cartRes.items))
-          dispatch(setWishlistItems(wishRes.items))
-          clearGuestCommerceKeys()
+
+          if (cartResult.status === "fulfilled") {
+            dispatch(setCartItems(cartResult.value.items))
+          } else {
+            console.error("Cart merge on login failed", cartResult.reason)
+            dispatch(setCartItems(guestCart))
+          }
+
+          if (wishResult.status === "fulfilled") {
+            dispatch(setWishlistItems(wishResult.value.items))
+          } else {
+            console.error("Wishlist merge on login failed", wishResult.reason)
+            dispatch(setWishlistItems(guestWish))
+          }
+
+          hydrateOk = cartResult.status === "fulfilled" || wishResult.status === "fulfilled"
+          if (hydrateOk) clearGuestCommerceKeys()
         } else {
-          const [cartRes, wishRes] = await Promise.all([fetchCart(), fetchWishlist()])
+          const [cartResult, wishResult] = await Promise.allSettled([fetchCart(), fetchWishlist()])
           if (cancelled) return
-          dispatch(setCartItems(cartRes.items))
-          dispatch(setWishlistItems(wishRes.items))
+
+          if (cartResult.status === "fulfilled") {
+            dispatch(setCartItems(cartResult.value.items))
+          } else {
+            console.error("Fetch cart on login failed", cartResult.reason)
+          }
+
+          if (wishResult.status === "fulfilled") {
+            dispatch(setWishlistItems(wishResult.value.items))
+          } else {
+            console.error("Fetch wishlist on login failed", wishResult.reason)
+          }
+
+          hydrateOk = cartResult.status === "fulfilled" && wishResult.status === "fulfilled"
         }
       } catch (error) {
         console.error("Commerce hydrate failed", error)
@@ -105,7 +137,10 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
       } finally {
         if (!cancelled) {
           hydratedRef.current = true
-          userPersistReadyRef.current = true
+          if (hydrateOk) {
+            userPersistReadyRef.current = true
+            allowEmptyPersistRef.current = true
+          }
         }
       }
     }
@@ -138,8 +173,14 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
     if (!authUserId) return
 
     const persistUser = () => {
+      if (!userPersistReadyRef.current) return
+
       const cartLines = cartItemsToStoredLines(cartItemsRef.current)
       const wishLines = wishItemsToStoredLines(wishlistItemsRef.current)
+
+      if (cartLines.length === 0 && wishLines.length === 0 && !allowEmptyPersistRef.current) {
+        return
+      }
 
       if (cartItemsRef.current.length > 0 && cartLines.length === 0) {
         console.error("Cart items missing productId/variantId — skipping DB sync")
@@ -172,6 +213,10 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
     userPersistTimeoutRef.current = window.setTimeout(() => {
       const cartLines = cartItemsToStoredLines(cartItems)
       const wishLines = wishItemsToStoredLines(wishlistItems)
+
+      if (cartLines.length === 0 && wishLines.length === 0 && !allowEmptyPersistRef.current) {
+        return
+      }
 
       if (cartItems.length > 0 && cartLines.length === 0) {
         console.error("Cart items missing productId/variantId — skipping DB sync")

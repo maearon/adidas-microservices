@@ -5,8 +5,8 @@ class Cart < ApplicationRecord
   # cart_items.cart_id is a derived bigint bucket, not carts.id — see #cart_items_bucket_id.
 
   def cart_items_bucket_id
-    hex = user_id.to_s.delete("-")[0, 16]
-    hex.to_i(16)
+    digest = Digest::SHA256.digest(user_id.to_s)
+    digest.bytes.first(7).inject(0) { |acc, byte| (acc << 8) | byte }
   end
 
   def line_items
