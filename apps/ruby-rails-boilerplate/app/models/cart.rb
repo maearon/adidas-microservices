@@ -1,33 +1,44 @@
 class Cart < ApplicationRecord
-  belongs_to :user, optional: true
-  has_many :cart_items, dependent: :destroy
+  self.primary_key = "id"
+
+  # user_id stores Better Auth UUID (text). Users live in Drizzle DB — no local belongs_to :user.
+  # cart_items.cart_id is a derived bigint bucket, not carts.id — see #cart_items_bucket_id.
+
+  def cart_items_bucket_id
+    hex = user_id.to_s.delete("-")[0, 16]
+    hex.to_i(16)
+  end
+
+  def line_items
+    CartItem.where(cart_id: cart_items_bucket_id)
+  end
 
   def cart(product, variant, quantity, action)
-    current_item = cart_items.find_or_initialize_by(variant: variant)
+    bucket_id = cart_items_bucket_id
+    current_item = CartItem.find_or_initialize_by(cart_id: bucket_id, variant: variant)
     current_item.quantity ||= 0
-    current_item.quantity = action == 'edit' ? quantity.to_i : current_item.quantity + quantity.to_i
+    current_item.quantity = action == "edit" ? quantity.to_i : current_item.quantity + quantity.to_i
     current_item.product = product
-    current_item.cart = self
     current_item.save
   end
 
   def list
-    cart_items
+    line_items
   end
 
   def total_item
-    cart_items.sum(:quantity)
+    line_items.sum(:quantity)
   end
 
   def total_originalvalue
-    cart_items.inject(0.0) { |sum, l| sum + l.variant.originalprice * l.quantity }
+    line_items.inject(0.0) { |sum, l| sum + l.variant.originalprice * l.quantity }
   end
 
   def total_value
-    cart_items.inject(0.0) { |sum, l| sum + l.variant.price * l.quantity }
+    line_items.inject(0.0) { |sum, l| sum + l.variant.price * l.quantity }
   end
 
   def sale
-    self.total_value - self.total_originalvalue
+    total_value - total_originalvalue
   end
 end

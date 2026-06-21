@@ -365,7 +365,7 @@ model wish_items {
 
 model wishes {
   id         BigInt       @id @default(autoincrement())
-  user_id    BigInt
+  user_id    String
   created_at DateTime     @db.Timestamp(6)
   updated_at DateTime     @db.Timestamp(6)
   wish_items wish_items[]

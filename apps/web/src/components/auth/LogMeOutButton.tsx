@@ -6,6 +6,7 @@ import { POST_LOGOUT_PATH } from "@/lib/auth-navigation";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useTranslations } from "@/hooks/useTranslations";
+import { clearSessionOnLogout } from "@/lib/clear-session-on-logout";
 import { toast } from "sonner";
 
 export const LogMeOutButton = () => {
@@ -36,12 +37,7 @@ export const LogMeOutButton = () => {
         onSuccess: () => {
           router.push(POST_LOGOUT_PATH);
           router.refresh();
-          localStorage.clear();
-          sessionStorage.clear();
-          document.cookie.split(";").forEach((cookie) => {
-            const name = cookie.split("=")[0].trim();
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-          });
+          clearSessionOnLogout();
           setTimeout(() => {
             window.location.href = POST_LOGOUT_PATH;
           }, 50);

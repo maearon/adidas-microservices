@@ -7,6 +7,7 @@ import { authClient } from "@/lib/auth-client";
 import { POST_LOGOUT_PATH } from "@/lib/auth-navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { clearSessionOnLogout } from "@/lib/clear-session-on-logout";
 import { toast } from "sonner";
 
 export function LogoutEverywhereButton() {
@@ -27,12 +28,7 @@ export function LogoutEverywhereButton() {
         onSuccess: () => {
           router.push(POST_LOGOUT_PATH);
           router.refresh();
-          localStorage.clear();
-          sessionStorage.clear();
-          document.cookie.split(";").forEach((cookie) => {
-            const name = cookie.split("=")[0].trim();
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-          });
+          clearSessionOnLogout();
           setTimeout(() => {
             window.location.href = POST_LOGOUT_PATH;
           }, 50);

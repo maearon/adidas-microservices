@@ -71,12 +71,20 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
 
       const localCart = loadGuestCartItems()
       const localWish = loadGuestWishItems()
+      const guestCart = localCart.length > 0 ? localCart : cartItemsRef.current
+      const guestWish = localWish.length > 0 ? localWish : wishlistItemsRef.current
 
       try {
-        if (localCart.length > 0 || localWish.length > 0) {
+        if (guestCart.length > 0 || guestWish.length > 0) {
           const [cartRes, wishRes] = await Promise.all([
-            syncCart({ cartLines: cartItemsToStoredLines(localCart) }),
-            syncWishlist({ wishLines: wishItemsToStoredLines(localWish) }),
+            syncCart({
+              cartLines: cartItemsToStoredLines(guestCart),
+              fullReplace: true,
+            }),
+            syncWishlist({
+              wishLines: wishItemsToStoredLines(guestWish),
+              fullReplace: true,
+            }),
           ])
           if (cancelled) return
           dispatch(setCartItems(cartRes.items))
@@ -91,8 +99,8 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
       } catch (error) {
         console.error("Commerce hydrate failed", error)
         if (!cancelled) {
-          dispatch(setCartItems(localCart))
-          dispatch(setWishlistItems(localWish))
+          dispatch(setCartItems(guestCart))
+          dispatch(setWishlistItems(guestWish))
         }
       } finally {
         if (!cancelled) {
@@ -127,6 +135,34 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
   }, [cartItems, wishlistItems, authUserId, isAuthPending])
 
   useEffect(() => {
+    if (!authUserId) return
+
+    const persistUser = () => {
+      const cartLines = cartItemsToStoredLines(cartItemsRef.current)
+      const wishLines = wishItemsToStoredLines(wishlistItemsRef.current)
+
+      if (cartItemsRef.current.length > 0 && cartLines.length === 0) {
+        console.error("Cart items missing productId/variantId — skipping DB sync")
+        return
+      }
+      if (wishlistItemsRef.current.length > 0 && wishLines.length === 0) {
+        console.error("Wishlist items missing productId/variantId — skipping DB sync")
+        return
+      }
+
+      void syncCart({ cartLines, fullReplace: true }).catch((error) => {
+        console.error("Failed to persist user cart", error)
+      })
+      void syncWishlist({ wishLines, fullReplace: true }).catch((error) => {
+        console.error("Failed to persist user wishlist", error)
+      })
+    }
+
+    window.addEventListener("pagehide", persistUser)
+    return () => window.removeEventListener("pagehide", persistUser)
+  }, [authUserId])
+
+  useEffect(() => {
     if (!hydratedRef.current || !authUserId || !userPersistReadyRef.current) return
 
     if (userPersistTimeoutRef.current) {
@@ -134,16 +170,22 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
     }
 
     userPersistTimeoutRef.current = window.setTimeout(() => {
-      void syncCart({
-        cartLines: cartItemsToStoredLines(cartItems),
-        fullReplace: true,
-      }).catch((error) => {
+      const cartLines = cartItemsToStoredLines(cartItems)
+      const wishLines = wishItemsToStoredLines(wishlistItems)
+
+      if (cartItems.length > 0 && cartLines.length === 0) {
+        console.error("Cart items missing productId/variantId — skipping DB sync")
+        return
+      }
+      if (wishlistItems.length > 0 && wishLines.length === 0) {
+        console.error("Wishlist items missing productId/variantId — skipping DB sync")
+        return
+      }
+
+      void syncCart({ cartLines, fullReplace: true }).catch((error) => {
         console.error("Failed to persist user cart", error)
       })
-      void syncWishlist({
-        wishLines: wishItemsToStoredLines(wishlistItems),
-        fullReplace: true,
-      }).catch((error) => {
+      void syncWishlist({ wishLines, fullReplace: true }).catch((error) => {
         console.error("Failed to persist user wishlist", error)
       })
     }, 500)

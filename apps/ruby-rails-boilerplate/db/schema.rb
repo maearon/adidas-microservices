@@ -275,7 +275,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   end
 
   create_table "wishes", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.text "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_wishes_on_user_id"
