@@ -1,13 +1,7 @@
 import type { CartItem } from "@/store/cartSlice"
 import type { WishlistItem } from "@/types/wish"
-import {
-  GUEST_CART_ID_KEY,
-  GUEST_CART_KEY,
-  GUEST_WISH_ID_KEY,
-  GUEST_WISH_KEY,
-  type StoredCartLine,
-  type StoredWishLine,
-} from "@/lib/commerce/types"
+import { cartLineKey, wishItemKey } from "@/lib/commerce/line-keys"
+import { GUEST_CART_KEY, GUEST_WISH_KEY, type StoredCartLine, type StoredWishLine } from "@/lib/commerce/types"
 
 function readJson<T>(key: string): T | null {
   if (typeof window === "undefined") return null
@@ -29,24 +23,16 @@ function writeJson(key: string, value: unknown) {
   }
 }
 
-export function getGuestCartId(): string | null {
-  if (typeof window === "undefined") return null
-  return localStorage.getItem(GUEST_CART_ID_KEY)
+function resolveVariantId(item: { variantId?: string; id?: number | string }) {
+  if (item.variantId) return String(item.variantId)
+  if (item.id !== undefined && item.id !== null) return String(item.id)
+  return null
 }
 
-export function setGuestCartId(id: string) {
-  if (typeof window === "undefined") return
-  localStorage.setItem(GUEST_CART_ID_KEY, id)
-}
-
-export function getGuestWishId(): string | null {
-  if (typeof window === "undefined") return null
-  return localStorage.getItem(GUEST_WISH_ID_KEY)
-}
-
-export function setGuestWishId(id: string) {
-  if (typeof window === "undefined") return
-  localStorage.setItem(GUEST_WISH_ID_KEY, id)
+function resolveProductId(item: { productId?: string; id?: number | string }) {
+  if (item.productId) return String(item.productId)
+  if (item.id !== undefined && item.id !== null) return String(item.id)
+  return null
 }
 
 export function loadGuestCartItems(): CartItem[] {
@@ -66,31 +52,59 @@ export function saveGuestWishItems(items: WishlistItem[]) {
 }
 
 export function cartItemsToStoredLines(items: CartItem[]): StoredCartLine[] {
-  return items
-    .filter((item) => item.variantId && item.productId)
-    .map((item) => ({
-      variantId: String(item.variantId),
-      productId: String(item.productId),
-      quantity: item.quantity,
-      size: item.size,
-      addedAt: Date.now(),
-    }))
+  const map = new Map<string, StoredCartLine>()
+
+  for (const item of items) {
+    const variantId = resolveVariantId(item)
+    const productId = resolveProductId(item)
+    if (!variantId || !productId) continue
+
+    const key = cartLineKey(item)
+    const existing = map.get(key)
+
+    if (existing) {
+      existing.quantity += item.quantity
+    } else {
+      map.set(key, {
+        variantId,
+        productId,
+        quantity: item.quantity,
+        size: item.size,
+        addedAt: Date.now(),
+      })
+    }
+  }
+
+  return [...map.values()]
 }
 
 export function wishItemsToStoredLines(items: WishlistItem[]): StoredWishLine[] {
-  return items
-    .filter((item) => item.variantId && item.productId)
-    .map((item) => ({
-      variantId: String(item.variantId),
-      productId: String(item.productId),
+  const map = new Map<string, StoredWishLine>()
+
+  for (const item of items) {
+    const variantId = resolveVariantId(item)
+    const productId = resolveProductId(item)
+    if (!variantId || !productId) continue
+
+    const key = wishItemKey(item)
+    if (map.has(key)) continue
+
+    map.set(key, {
+      variantId,
+      productId,
       addedAt: Date.now(),
-    }))
+    })
+  }
+
+  return [...map.values()]
 }
 
+/** Clear guest localStorage after merge into user account. */
 export function clearGuestCommerceKeys() {
   if (typeof window === "undefined") return
   localStorage.removeItem(GUEST_CART_KEY)
   localStorage.removeItem(GUEST_WISH_KEY)
-  localStorage.removeItem(GUEST_CART_ID_KEY)
-  localStorage.removeItem(GUEST_WISH_ID_KEY)
+  // legacy keys from older builds
+  localStorage.removeItem("guestCartId")
+  localStorage.removeItem("guestWishId")
 }

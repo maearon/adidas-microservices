@@ -1,6 +1,5 @@
 "use client"
 
-import { useSelector } from "react-redux"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
 import { removeFromWishlist, setWishlistItems } from "@/store/wishlistSlice"
@@ -8,7 +7,7 @@ import WishlistAppPromo from "@/components/commerce/WishlistAppPromo"
 import WishlistProductCard from "@/components/commerce/WishlistProductCard"
 import HistoryView from "@/components/HistoryView"
 import { useTranslations } from "@/hooks/useTranslations"
-import { selectUser } from "@/store/sessionSlice"
+import { authClient } from "@/lib/auth-client"
 import { WISHLIST_PAGE_SHELL } from "@/components/commerce/commerce-page-shell"
 import type { WishlistItem } from "@/types/wish"
 
@@ -16,16 +15,20 @@ export default function WishlistsPageClient() {
   const dispatch = useAppDispatch()
   const t = useTranslations("categoryPages")
   const wishlistItems = useAppSelector((state) => state.wishlist.items)
-  const { value: user } = useSelector(selectUser)
+  const { data: authSession } = authClient.useSession()
+  const authUserId = authSession?.user?.id
 
   const handleRemove = async (item: WishlistItem) => {
     dispatch(removeFromWishlist(item.id))
 
-    if (!user?.id || !item.variantId) return
+    if (!authUserId || !item.variantId) return
 
     try {
       const params = new URLSearchParams({ variantId: String(item.variantId) })
-      const res = await fetch(`/api/wishlist?${params.toString()}`, { method: "DELETE" })
+      const res = await fetch(`/api/wishlist?${params.toString()}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
       if (!res.ok) return
       const data = await res.json()
       dispatch(setWishlistItems(data.items ?? []))

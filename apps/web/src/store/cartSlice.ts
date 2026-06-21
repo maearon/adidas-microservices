@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { isSameCartLine } from "@/lib/commerce/line-keys"
 
 export interface CartItem {
   id: number
@@ -33,14 +34,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {
-      const existingItem = state.items.find(
-        (item) =>
-          (item.variantId && action.payload.variantId
-            ? item.variantId === action.payload.variantId
-            : item.id === action.payload.id) &&
-          item.color === action.payload.color &&
-          item.size === action.payload.size,
-      )
+      const existingItem = state.items.find((item) => isSameCartLine(item, action.payload))
 
       if (existingItem) {
         existingItem.quantity += 1
@@ -49,8 +43,12 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action: PayloadAction<number | string>) => {
+      const key = String(action.payload)
       state.items = state.items.filter(
-        (item) => item.id !== action.payload && item.variantId !== String(action.payload),
+        (item) =>
+          item.id !== action.payload &&
+          item.variantId !== key &&
+          String(item.variantId ?? item.id) !== key,
       )
     },
     updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {

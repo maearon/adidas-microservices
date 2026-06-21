@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
-import { requireUserFromRequest } from "@/lib/utils/getUserFromRequest";
+import { auth } from "@/lib/auth";
 
 /**
  * POST /api/v1/payments/create-intent
@@ -8,7 +8,14 @@ import { requireUserFromRequest } from "@/lib/utils/getUserFromRequest";
  */
 export async function POST(req: NextRequest) {
   try {
-    const userId = await requireUserFromRequest(req);
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: httpStatus.UNAUTHORIZED }
+      );
+    }
+
     const body = await req.json();
     const { orderId, amount, currency = "USD", paymentMethod } = body;
 

@@ -3,8 +3,6 @@ import type { WishlistItem } from "@/types/wish"
 
 export const GUEST_CART_KEY = "guestCartItems"
 export const GUEST_WISH_KEY = "guestWishItems"
-export const GUEST_CART_ID_KEY = "guestCartId"
-export const GUEST_WISH_ID_KEY = "guestWishId"
 
 export interface StoredCartLine {
   variantId: string
@@ -33,10 +31,8 @@ export interface WishApiItem extends WishlistItem {
 }
 
 export interface SyncPayload {
-  guestCartId?: string | null
-  guestWishId?: string | null
   cartLines?: StoredCartLine[]
   wishLines?: StoredWishLine[]
-  /** When true, logged-in sync replaces DB cart/wish with payload (including empty). */
+  /** When true, replaces DB cart/wish with payload (including empty). */
   fullReplace?: boolean
 }

@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { connectToDatabase } from "@/lib/mongoose";
-import { requireUserFromRequest } from "@/lib/utils/getUserFromRequest";
+import { auth } from "@/lib/auth";
 import Address from "@/models/address.model";
 
 /**
@@ -13,7 +13,15 @@ export async function PUT(req: NextRequest) {
   try {
     await connectToDatabase();
 
-    const userId = await requireUserFromRequest(req);
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: httpStatus.UNAUTHORIZED }
+      );
+    }
+
+    const userId = session.user.id;
     const body = await req.json();
     const { addressId } = body;
 

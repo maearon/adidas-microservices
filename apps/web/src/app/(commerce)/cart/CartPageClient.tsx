@@ -16,7 +16,7 @@ import {
   CART_TITLE_COUNT_CLASS,
   COMMERCE_SECTION_TITLE_CLASS,
 } from "@/components/commerce/commerce-page-shell"
-import { fetchRecommendations } from "@/lib/commerce/commerce-api"
+import { fetchRecommendations } from "@/api/services/commerceService"
 import { useTranslations } from "@/hooks/useTranslations"
 import type { CartItem } from "@/types/cart"
 import type { Product } from "@/types/product"

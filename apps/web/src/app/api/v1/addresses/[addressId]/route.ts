@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { connectToDatabase } from "@/lib/mongoose";
-import { requireUserFromRequest } from "@/lib/utils/getUserFromRequest";
+import { auth } from "@/lib/auth";
 import Address from "@/models/address.model";
 
 /**
@@ -16,7 +16,15 @@ export async function GET(
   try {
     await connectToDatabase();
 
-    const userId = await requireUserFromRequest(req);
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: httpStatus.UNAUTHORIZED }
+      );
+    }
+
+    const userId = session.user.id;
     const { addressId } = params;
 
     const address = await Address.findOne({
@@ -57,7 +65,15 @@ export async function PUT(
   try {
     await connectToDatabase();
 
-    const userId = await requireUserFromRequest(req);
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: httpStatus.UNAUTHORIZED }
+      );
+    }
+
+    const userId = session.user.id;
     const { addressId } = params;
 
     const body = await req.json();
@@ -143,7 +159,15 @@ export async function DELETE(
   try {
     await connectToDatabase();
 
-    const userId = await requireUserFromRequest(req);
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user) {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: httpStatus.UNAUTHORIZED }
+      );
+    }
+
+    const userId = session.user.id;
     const { addressId } = params;
 
     const address = await Address.findOneAndDelete({

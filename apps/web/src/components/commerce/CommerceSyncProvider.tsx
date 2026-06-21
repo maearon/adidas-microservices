@@ -7,8 +7,6 @@ import { setWishlistItems } from "@/store/wishlistSlice"
 import type { AppDispatch, RootState } from "@/store/store"
 import {
   clearGuestCommerceKeys,
-  getGuestCartId,
-  getGuestWishId,
   loadGuestCartItems,
   loadGuestWishItems,
   saveGuestCartItems,
@@ -16,114 +14,120 @@ import {
   cartItemsToStoredLines,
   wishItemsToStoredLines,
 } from "@/lib/commerce/local-storage"
-import { fetchCart, fetchWishlist, syncCart, syncWishlist } from "@/lib/commerce/commerce-api"
-import { selectUser } from "@/store/sessionSlice"
+import { fetchCart, fetchWishlist, syncCart, syncWishlist } from "@/api/services/commerceService"
+import { authClient } from "@/lib/auth-client"
 
+/**
+ * Guest: localStorage ↔ Redux only (no API, no guest DB).
+ * Logged in: DB ↔ Redux via /api/cart and /api/wishlist.
+ */
 export default function CommerceSyncProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>()
   const cartItems = useSelector((state: RootState) => state.cart.items)
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items)
-  const { value: user, status } = useSelector(selectUser)
+  const { data: authSession, isPending: isAuthPending } = authClient.useSession()
+  const authUserId = authSession?.user?.id
+
+  const cartItemsRef = useRef(cartItems)
+  const wishlistItemsRef = useRef(wishlistItems)
+  cartItemsRef.current = cartItems
+  wishlistItemsRef.current = wishlistItems
+
   const hydratedRef = useRef(false)
-  const guestPersistTimeoutRef = useRef<number | null>(null)
+  const guestSaveReadyRef = useRef(false)
+  const userPersistReadyRef = useRef(false)
   const userPersistTimeoutRef = useRef<number | null>(null)
 
   useEffect(() => {
-    if (status === "loading") return
+    if (authUserId) return
+
+    const persistGuest = () => {
+      saveGuestCartItems(cartItemsRef.current)
+      saveGuestWishItems(wishlistItemsRef.current)
+    }
+
+    window.addEventListener("pagehide", persistGuest)
+    return () => window.removeEventListener("pagehide", persistGuest)
+  }, [authUserId])
+
+  useEffect(() => {
+    if (isAuthPending) return
 
     let cancelled = false
 
-    async function hydrate() {
+    async function hydrateGuest() {
+      guestSaveReadyRef.current = false
+      userPersistReadyRef.current = false
+      dispatch(setCartItems(loadGuestCartItems()))
+      dispatch(setWishlistItems(loadGuestWishItems()))
+      hydratedRef.current = true
+      window.setTimeout(() => {
+        guestSaveReadyRef.current = true
+      }, 0)
+    }
+
+    async function hydrateLoggedIn() {
+      userPersistReadyRef.current = false
+
+      const localCart = loadGuestCartItems()
+      const localWish = loadGuestWishItems()
+
       try {
-        if (user?.id) {
-          const localCart = loadGuestCartItems()
-          const localWish = loadGuestWishItems()
-          const guestCartId = getGuestCartId()
-          const guestWishId = getGuestWishId()
-          const hasGuestData =
-            localCart.length > 0 ||
-            localWish.length > 0 ||
-            Boolean(guestCartId) ||
-            Boolean(guestWishId)
-
-          if (hasGuestData) {
-            const [cartRes, wishRes] = await Promise.all([
-              syncCart({
-                guestCartId,
-                cartLines: cartItemsToStoredLines(localCart),
-              }),
-              syncWishlist({
-                guestWishId,
-                wishLines: wishItemsToStoredLines(localWish),
-              }),
-            ])
-
-            if (cancelled) return
-
-            dispatch(setCartItems(cartRes.items))
-            dispatch(setWishlistItems(wishRes.items))
-            clearGuestCommerceKeys()
-          } else {
-            const [cartRes, wishRes] = await Promise.all([fetchCart(), fetchWishlist()])
-            if (cancelled) return
-            dispatch(setCartItems(cartRes.items))
-            dispatch(setWishlistItems(wishRes.items))
-          }
+        if (localCart.length > 0 || localWish.length > 0) {
+          const [cartRes, wishRes] = await Promise.all([
+            syncCart({ cartLines: cartItemsToStoredLines(localCart) }),
+            syncWishlist({ wishLines: wishItemsToStoredLines(localWish) }),
+          ])
+          if (cancelled) return
+          dispatch(setCartItems(cartRes.items))
+          dispatch(setWishlistItems(wishRes.items))
+          clearGuestCommerceKeys()
         } else {
-          dispatch(setCartItems(loadGuestCartItems()))
-          dispatch(setWishlistItems(loadGuestWishItems()))
+          const [cartRes, wishRes] = await Promise.all([fetchCart(), fetchWishlist()])
+          if (cancelled) return
+          dispatch(setCartItems(cartRes.items))
+          dispatch(setWishlistItems(wishRes.items))
         }
       } catch (error) {
         console.error("Commerce hydrate failed", error)
-        if (user?.id) {
-          try {
-            const [cartRes, wishRes] = await Promise.all([fetchCart(), fetchWishlist()])
-            if (!cancelled) {
-              dispatch(setCartItems(cartRes.items))
-              dispatch(setWishlistItems(wishRes.items))
-            }
-          } catch {
-            dispatch(setCartItems([]))
-            dispatch(setWishlistItems([]))
-          }
-        } else {
-          dispatch(setCartItems(loadGuestCartItems()))
-          dispatch(setWishlistItems(loadGuestWishItems()))
+        if (!cancelled) {
+          dispatch(setCartItems(localCart))
+          dispatch(setWishlistItems(localWish))
         }
       } finally {
-        hydratedRef.current = true
+        if (!cancelled) {
+          hydratedRef.current = true
+          userPersistReadyRef.current = true
+        }
       }
     }
 
     hydratedRef.current = false
-    hydrate()
+
+    if (!authUserId) {
+      hydrateGuest()
+      return () => {
+        cancelled = true
+      }
+    }
+
+    hydrateLoggedIn()
 
     return () => {
       cancelled = true
     }
-  }, [dispatch, status, user?.id])
+  }, [authUserId, isAuthPending, dispatch])
 
   useEffect(() => {
-    if (!hydratedRef.current || user?.id) return
+    if (isAuthPending || authUserId) return
+    if (!hydratedRef.current || !guestSaveReadyRef.current) return
 
-    if (guestPersistTimeoutRef.current) {
-      window.clearTimeout(guestPersistTimeoutRef.current)
-    }
-
-    guestPersistTimeoutRef.current = window.setTimeout(() => {
-      saveGuestCartItems(cartItems)
-      saveGuestWishItems(wishlistItems)
-    }, 300)
-
-    return () => {
-      if (guestPersistTimeoutRef.current) {
-        window.clearTimeout(guestPersistTimeoutRef.current)
-      }
-    }
-  }, [cartItems, wishlistItems, user?.id])
+    saveGuestCartItems(cartItems)
+    saveGuestWishItems(wishlistItems)
+  }, [cartItems, wishlistItems, authUserId, isAuthPending])
 
   useEffect(() => {
-    if (!hydratedRef.current || !user?.id) return
+    if (!hydratedRef.current || !authUserId || !userPersistReadyRef.current) return
 
     if (userPersistTimeoutRef.current) {
       window.clearTimeout(userPersistTimeoutRef.current)
@@ -149,7 +153,7 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
         window.clearTimeout(userPersistTimeoutRef.current)
       }
     }
-  }, [cartItems, wishlistItems, user?.id])
+  }, [cartItems, wishlistItems, authUserId])
 
   return children
 }

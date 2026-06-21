@@ -30,23 +30,13 @@ const dispatchRedirectToLogin = () => {
   }
 }
 
-// 🔐 Attach tokens and guest_cart_id
+// 🔐 Attach tokens
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== "undefined" && config.headers) {
       const token = getAccessToken()
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`
-      }
-
-      const guestCartId =
-        localStorage.getItem("guest_cart_id") ?? sessionStorage.getItem("guest_cart_id")
-      if (guestCartId) {
-        const url = new URL(config.url || "", BASE_URL)
-        if (!url.searchParams.has("guest_cart_id")) {
-          url.searchParams.set("guest_cart_id", guestCartId)
-          config.url = url.pathname + "?" + url.searchParams.toString()
-        }
       }
     }
     return config
