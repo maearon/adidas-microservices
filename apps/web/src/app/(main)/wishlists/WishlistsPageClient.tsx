@@ -3,12 +3,11 @@
 import { useSelector } from "react-redux"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { addToCart } from "@/store/cartSlice"
-import { removeFromWishlist } from "@/store/wishlistSlice"
+import { removeFromWishlist, setWishlistItems } from "@/store/wishlistSlice"
 import WishlistAppPromo from "@/components/commerce/WishlistAppPromo"
 import WishlistProductCard from "@/components/commerce/WishlistProductCard"
 import HistoryView from "@/components/HistoryView"
 import { useTranslations } from "@/hooks/useTranslations"
-import { getGuestWishId, setGuestWishId } from "@/lib/commerce/local-storage"
 import { selectUser } from "@/store/sessionSlice"
 import { WISHLIST_PAGE_SHELL } from "@/components/commerce/commerce-page-shell"
 import type { WishlistItem } from "@/types/wish"
@@ -22,17 +21,14 @@ export default function WishlistsPageClient() {
   const handleRemove = async (item: WishlistItem) => {
     dispatch(removeFromWishlist(item.id))
 
-    if (!item.variantId) return
+    if (!user?.id || !item.variantId) return
 
     try {
-      const guestWishId = getGuestWishId()
       const params = new URLSearchParams({ variantId: String(item.variantId) })
-      if (guestWishId && !user?.id) params.set("guestWishId", guestWishId)
-
       const res = await fetch(`/api/wishlist?${params.toString()}`, { method: "DELETE" })
       if (!res.ok) return
       const data = await res.json()
-      if (data.guestWishId) setGuestWishId(data.guestWishId)
+      dispatch(setWishlistItems(data.items ?? []))
     } catch (error) {
       console.error("Failed to remove wishlist item", error)
     }

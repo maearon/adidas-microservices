@@ -37,4 +37,6 @@ export interface SyncPayload {
   guestWishId?: string | null
   cartLines?: StoredCartLine[]
   wishLines?: StoredWishLine[]
+  /** When true, logged-in sync replaces DB cart/wish with payload (including empty). */
+  fullReplace?: boolean
 }

@@ -10,26 +10,26 @@ import {
   getGuestWishItems,
   getOrCreateGuestWish,
   getUserWishItems,
-  mergeGuestWishIntoUserWish,
   mergeStoredLinesIntoGuestWish,
-  mergeStoredWishLines,
   removeGuestWishItem,
   removeUserWishItem,
+  replaceUserWishLines,
+  syncUserWishOnLogin,
 } from "@/lib/commerce/wish-repository"
 import type { SyncPayload } from "@/lib/commerce/types"
 
 export async function GET(req: NextRequest) {
   try {
     const userId = await getUserFromRequest(req)
-    const guestWishId = req.nextUrl.searchParams.get("guestWishId")
 
     if (userId) {
-      if (guestWishId) {
-        await mergeGuestWishIntoUserWish(userId, BigInt(guestWishId))
-      }
-
       const items = await getUserWishItems(userId)
       return NextResponse.json(serializeBigInt({ items }))
+    }
+
+    const guestWishId = req.nextUrl.searchParams.get("guestWishId")
+    if (!guestWishId) {
+      return NextResponse.json(serializeBigInt({ items: [] }))
     }
 
     const wish = await getOrCreateGuestWish(guestWishId)
@@ -87,14 +87,11 @@ export async function PUT(req: NextRequest) {
     const body = (await req.json()) as SyncPayload
 
     if (userId) {
-      if (body.guestWishId) {
-        await mergeGuestWishIntoUserWish(userId, BigInt(body.guestWishId))
-      }
-      if (body.wishLines?.length) {
-        await mergeStoredWishLines(userId, body.wishLines)
-      }
+      await syncUserWishOnLogin(userId, body.guestWishId, body.wishLines ?? [], {
+        fullReplace: body.fullReplace,
+      })
       const items = await getUserWishItems(userId)
-      return NextResponse.json(serializeBigInt({ items }))
+      return NextResponse.json(serializeBigInt({ items, synced: true }))
     }
 
     const wish = await getOrCreateGuestWish(body.guestWishId)

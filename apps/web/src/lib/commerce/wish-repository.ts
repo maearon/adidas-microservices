@@ -72,8 +72,98 @@ export async function mergeGuestWishIntoUserWish(
     }
   }
 
+  await prisma.guest_wish_items.deleteMany({
+    where: { guest_wish_id: guestWishId },
+  })
   await prisma.guest_wishes.delete({ where: { id: guestWishId } })
   return userWish
+}
+
+export async function replaceUserWishLines(userId: string, lines: StoredWishLine[]) {
+  const wish = await getOrCreateUserWish(userId)
+  const variantIds = lines.map((line) => BigInt(line.variantId))
+
+  if (!variantIds.length) {
+    await prisma.wish_items.deleteMany({ where: { wish_id: wish.id } })
+    return wish
+  }
+
+  await prisma.wish_items.deleteMany({
+    where: {
+      wish_id: wish.id,
+      variant_id: { notIn: variantIds },
+    },
+  })
+
+  const now = new Date()
+  for (const line of lines) {
+    const variantId = BigInt(line.variantId)
+    const productId = BigInt(line.productId)
+    const existing = await prisma.wish_items.findFirst({
+      where: { wish_id: wish.id, variant_id: variantId },
+    })
+
+    if (!existing) {
+      await prisma.wish_items.create({
+        data: {
+          wish_id: wish.id,
+          product_id: productId,
+          variant_id: variantId,
+          created_at: now,
+          updated_at: now,
+        },
+      })
+    }
+  }
+
+  return wish
+}
+
+export async function mergeStoredLinesIntoUserWish(userId: string, lines: StoredWishLine[]) {
+  if (!lines.length) return
+
+  const wish = await getOrCreateUserWish(userId)
+  const now = new Date()
+
+  for (const line of lines) {
+    const variantId = BigInt(line.variantId)
+    const productId = BigInt(line.productId)
+    const existing = await prisma.wish_items.findFirst({
+      where: { wish_id: wish.id, variant_id: variantId },
+    })
+
+    if (!existing) {
+      await prisma.wish_items.create({
+        data: {
+          wish_id: wish.id,
+          product_id: productId,
+          variant_id: variantId,
+          created_at: now,
+          updated_at: now,
+        },
+      })
+    }
+  }
+}
+
+export async function syncUserWishOnLogin(
+  userId: string,
+  guestWishId: string | null | undefined,
+  lines: StoredWishLine[],
+  options?: { fullReplace?: boolean },
+) {
+  if (options?.fullReplace) {
+    await replaceUserWishLines(userId, lines)
+    return
+  }
+
+  if (guestWishId) {
+    await mergeGuestWishIntoUserWish(userId, BigInt(guestWishId))
+  }
+
+  if (lines.length > 0) {
+    await mergeStoredLinesIntoUserWish(userId, lines)
+  }
 }
 
 export async function mergeStoredWishLines(userId: string, lines: StoredWishLine[]) {

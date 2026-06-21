@@ -11,11 +11,11 @@ async function parseJson<T>(res: Response): Promise<T> {
 
 export async function fetchCart(guestCartId?: string | null) {
   const query = guestCartId ? `?guestCartId=${guestCartId}` : ""
-  return parseJson<{ guestCartId: string; items: CartItem[] }>(await fetch(`/api/cart${query}`))
+  return parseJson<{ guestCartId?: string; items: CartItem[] }>(await fetch(`/api/cart${query}`))
 }
 
 export async function syncCart(payload: SyncPayload) {
-  return parseJson<{ guestCartId: string; items: CartItem[] }>(
+  return parseJson<{ guestCartId?: string; items: CartItem[]; synced?: boolean }>(
     await fetch("/api/cart", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

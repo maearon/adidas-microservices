@@ -56,24 +56,72 @@ This monorepo implements a sophisticated microservices architecture designed to 
              |   (e.g., Redis or in memory)|
              +-----------------------------+
 ```
-https://www.better-auth.com/docs/concepts/database#core-schema
+## 🛒 Guest Cart & Wishlist — Login Merge Flow
+Khách chưa đăng nhập: cart/wishlist chỉ lưu **localStorage** (`guestCartItems`, `guestWishItems`). Sau khi đăng nhập, toàn bộ data guest (local + DB tạm) được **merge vào 4 bảng chính**, rồi xóa sạch guest.
+![Guest login merge flow](./docs/images/guest-login-merge-flow.png)
+### Luồng xử lý
+1. **User đăng nhập** — `CommerceSyncProvider` phát hiện session mới (`user.id`).
+2. **Kiểm tra data guest** — Còn item trong localStorage hoặc `guestCartId` / `guestWishId`?
+3. **Không có data guest** → `GET /api/cart` + `GET /api/wishlist` đọc từ DB user.
+4. **Có data guest** → `PUT /api/cart` + `PUT /api/wishlist` (song song):
+   - Merge `guest_carts` → `carts` + `cart_items`, rồi xóa `guest_carts` / `guest_cart_items`
+   - Merge `guest_wishes` → `wishes` + `wish_items`, rồi xóa `guest_wishes` / `guest_wish_items`
+   - Merge thêm data từ localStorage vào bảng user (union — không ghi đè mất item vừa merge từ guest DB)
+   - `clearGuestCommerceKeys()` — xóa toàn bộ key guest trong localStorage
+5. **Redux cập nhật** từ kết quả DB trả về.
+6. **Sau login** — mọi thay đổi cart/wishlist sync vào 4 bảng chính (debounce, `fullReplace: true`).
+### Bảng dữ liệu
+| Guest (tạm) | User (chính) |
+|-------------|--------------|
+| `guest_carts` | `carts` |
+| `guest_cart_items` | `cart_items` |
+| `guest_wishes` | `wishes` |
+| `guest_wish_items` | `wish_items` |
+### File liên quan (`apps/web`)
+| File | Vai trò |
+|------|---------|
+| `components/commerce/CommerceSyncProvider.tsx` | Hydrate Redux sau login; gọi sync hoặc fetch |
+| `lib/commerce/cart-repository.ts` | Merge/xóa guest cart; ghi `cart_items` |
+| `lib/commerce/wish-repository.ts` | Merge/xóa guest wish; ghi `wish_items` |
+| `lib/commerce/local-storage.ts` | Đọc/xóa localStorage guest |
+| `app/api/cart/route.ts` | API phân nhánh guest vs logged-in user |
+| `app/api/wishlist/route.ts` | API phân nhánh guest vs logged-in user |
+<details>
+<summary>Mermaid diagram (source)</summary>
+```mermaid
+flowchart TD
+  A[User đăng nhập] --> B{Có data guest?}
+  B -->|localStorage hoặc guestCartId/guestWishId| C[PUT /api/cart + /api/wishlist]
+  B -->|Không| D[GET từ 4 bảng chính]
+  C --> E1[Merge guest_carts → carts + cart_items]
+  C --> E2[Merge guest_wishes → wishes + wish_items]
+  C --> F[Merge localStorage vào bảng user]
+  E1 --> G[Xóa guest_carts + guest_cart_items]
+  E2 --> H[Xóa guest_wishes + guest_wish_items]
+  F --> I[clearGuestCommerceKeys - xóa localStorage]
+  G --> J[Redux cập nhật từ DB]
+  H --> J
+  I --> J
+  D --> J
 ```
-✅ 2. Authentication flows drizzle-orm neon-postgres
-🟦 A. Regular login (Email / Password)
+</details>
+---
+## 🔐 Authentication
+Schema Better Auth: [Core schema](https://www.better-auth.com/docs/concepts/database#core-schema) · Drizzle ORM + Neon Postgres
+### A. Regular login (Email / Password)
+```
 [Next.js]
-⇨ Send email/password to: POST /api/auth/login
-⇨ Spring handles authentication
-⇨ Compare password hash
-⇨ Generate JWT & return
-⇨ Save to cookie or localStorage
-🟥 B. Google OAuth2 login
+  → POST /api/auth/login (email + password)
+  → Validate credentials, tạo session
+  → Cookie session (Better Auth)
+```
+### B. Google OAuth2 login
+```
 [Next.js]
-⇨ Redirect user to Google OAuth2
-⇨ Google authenticates and redirects back to /api/auth/callback/google
-⇨ Send providerId, email, provider to Spring API
-⇨ Find or create user in DB
-⇨ Return JWT
-⇨ Save to cookie or localStorage
+  → Redirect Google OAuth2
+  → Callback /api/auth/callback/google
+  → Find or create user trong DB
+  → Cookie session (Better Auth)
 ```
 ```
 PS C:\Users\manhn\adidas-microservices\apps\web> 

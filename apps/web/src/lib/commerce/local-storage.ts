@@ -91,4 +91,6 @@ export function clearGuestCommerceKeys() {
   if (typeof window === "undefined") return
   localStorage.removeItem(GUEST_CART_KEY)
   localStorage.removeItem(GUEST_WISH_KEY)
+  localStorage.removeItem(GUEST_CART_ID_KEY)
+  localStorage.removeItem(GUEST_WISH_ID_KEY)
 }

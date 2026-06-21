@@ -8,15 +8,31 @@ import {
   clearGuestCart,
   getGuestCartItems,
   getOrCreateGuestCart,
+  getUserCartItems,
   mergeStoredCartLines,
   removeGuestCartItem,
+  removeUserCartItem,
+  replaceUserCartLines,
+  syncUserCartOnLogin,
   upsertGuestCartItem,
+  upsertUserCartItem,
 } from "@/lib/commerce/cart-repository"
 import type { SyncPayload } from "@/lib/commerce/types"
 
 export async function GET(req: NextRequest) {
   try {
+    const userId = await getUserFromRequest(req)
+
+    if (userId) {
+      const items = await getUserCartItems(userId)
+      return NextResponse.json(serializeBigInt({ items }))
+    }
+
     const guestCartId = req.nextUrl.searchParams.get("guestCartId")
+    if (!guestCartId) {
+      return NextResponse.json(serializeBigInt({ items: [] }))
+    }
+
     const cart = await getOrCreateGuestCart(guestCartId)
     const items = await getGuestCartItems(cart.id)
 
@@ -34,9 +50,22 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const userId = await getUserFromRequest(req)
     const body = await req.json()
-    const cart = await getOrCreateGuestCart(body.guestCartId)
 
+    if (userId) {
+      await upsertUserCartItem({
+        userId,
+        productId: BigInt(body.productId),
+        variantId: BigInt(body.variantId),
+        quantity: Number(body.quantity ?? 1),
+        size: body.size,
+      })
+      const items = await getUserCartItems(userId)
+      return NextResponse.json(serializeBigInt({ items }))
+    }
+
+    const cart = await getOrCreateGuestCart(body.guestCartId)
     await upsertGuestCartItem({
       guestCartId: cart.id,
       productId: BigInt(body.productId),
@@ -57,8 +86,16 @@ export async function PUT(req: NextRequest) {
   try {
     const userId = await getUserFromRequest(req)
     const body = (await req.json()) as SyncPayload
-    const cart = await getOrCreateGuestCart(body.guestCartId)
 
+    if (userId) {
+      await syncUserCartOnLogin(userId, body.guestCartId, body.cartLines ?? [], {
+        fullReplace: body.fullReplace,
+      })
+      const items = await getUserCartItems(userId)
+      return NextResponse.json(serializeBigInt({ items, synced: true }))
+    }
+
+    const cart = await getOrCreateGuestCart(body.guestCartId)
     if (body.cartLines?.length) {
       await mergeStoredCartLines(cart.id, body.cartLines)
     }
@@ -68,7 +105,6 @@ export async function PUT(req: NextRequest) {
       serializeBigInt({
         guestCartId: String(cart.id),
         items,
-        synced: Boolean(userId),
       }),
     )
   } catch (error) {
@@ -79,8 +115,19 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const userId = await getUserFromRequest(req)
     const guestCartId = req.nextUrl.searchParams.get("guestCartId")
     const variantId = req.nextUrl.searchParams.get("variantId")
+
+    if (userId) {
+      if (variantId) {
+        await removeUserCartItem(userId, BigInt(variantId))
+      } else if (req.nextUrl.searchParams.get("replace") === "true") {
+        await replaceUserCartLines(userId, [])
+      }
+      const items = await getUserCartItems(userId)
+      return NextResponse.json(serializeBigInt({ items }))
+    }
 
     if (!guestCartId) {
       return NextResponse.json({ message: "guestCartId required" }, { status: 400 })
