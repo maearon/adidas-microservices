@@ -81,34 +81,53 @@ export default function CommerceSyncProvider({ children }: { children: React.Rea
 
       try {
         if (guestCart.length > 0 || guestWish.length > 0) {
-          const [cartResult, wishResult] = await Promise.allSettled([
-            syncCart({
-              cartLines: cartItemsToStoredLines(guestCart),
-              fullReplace: true,
-            }),
-            syncWishlist({
-              wishLines: wishItemsToStoredLines(guestWish),
-              fullReplace: true,
-            }),
-          ])
+          const mergeTasks: Promise<unknown>[] = []
+          if (guestCart.length > 0) {
+            mergeTasks.push(
+              syncCart({
+                cartLines: cartItemsToStoredLines(guestCart),
+                fullReplace: false,
+              }),
+            )
+          }
+          if (guestWish.length > 0) {
+            mergeTasks.push(
+              syncWishlist({
+                wishLines: wishItemsToStoredLines(guestWish),
+                fullReplace: false,
+              }),
+            )
+          }
 
+          const mergeResults = await Promise.allSettled(mergeTasks)
+          if (cancelled) return
+
+          for (const result of mergeResults) {
+            if (result.status === "rejected") {
+              console.error("Guest merge on login failed", result.reason)
+            }
+          }
+
+          const [cartResult, wishResult] = await Promise.allSettled([fetchCart(), fetchWishlist()])
           if (cancelled) return
 
           if (cartResult.status === "fulfilled") {
             dispatch(setCartItems(cartResult.value.items))
           } else {
-            console.error("Cart merge on login failed", cartResult.reason)
+            console.error("Fetch cart after merge failed", cartResult.reason)
             dispatch(setCartItems(guestCart))
           }
 
           if (wishResult.status === "fulfilled") {
             dispatch(setWishlistItems(wishResult.value.items))
           } else {
-            console.error("Wishlist merge on login failed", wishResult.reason)
+            console.error("Fetch wishlist after merge failed", wishResult.reason)
             dispatch(setWishlistItems(guestWish))
           }
 
-          hydrateOk = cartResult.status === "fulfilled" || wishResult.status === "fulfilled"
+          hydrateOk =
+            mergeResults.some((r) => r.status === "fulfilled") &&
+            (cartResult.status === "fulfilled" || wishResult.status === "fulfilled")
           if (hydrateOk) clearGuestCommerceKeys()
         } else {
           const [cartResult, wishResult] = await Promise.allSettled([fetchCart(), fetchWishlist()])
