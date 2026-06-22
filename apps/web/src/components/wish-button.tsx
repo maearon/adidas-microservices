@@ -31,10 +31,8 @@ export default function WishButton({ item, className, size = 24 }: WishButtonPro
       <Heart
         size={size}
         className={cn(
-          "transition-colors",
-          isWishlisted
-            ? "fill-black text-black dark:fill-white dark:text-white"
-            : "text-black dark:text-white",
+          "text-black transition-colors",
+          isWishlisted && "fill-black",
         )}
       />
     </button>
