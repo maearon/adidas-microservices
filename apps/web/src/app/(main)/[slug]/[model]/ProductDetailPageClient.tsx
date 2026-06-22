@@ -531,9 +531,19 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 shadow={false}
                 showArrow={false}
                 onClick={handleToggleWishlist}
-                className="w-12 h-12 border border-border rounded-none flex items-center justify-center hover:bg-white hover:text-background transition-colors translate-y-[3px]"
+                className={cn(
+                  "h-12 w-12 shrink-0 rounded-none p-0",
+                  "border border-black bg-white text-black",
+                  "hover:bg-white hover:text-black",
+                  "dark:border-white dark:bg-black dark:text-white",
+                  "dark:hover:bg-black dark:hover:text-white",
+                  "translate-y-[3px]"
+                )}
               >
-                <Heart className={`w-[22px] h-[22px] ${isWishlisted ? "fill-current" : ""}`} />
+                <Heart
+                  className={cn("h-[22px] w-[22px]", isWishlisted && "fill-current")}
+                  strokeWidth={1.75}
+                />
               </ButtonWish>
             </div>
 
