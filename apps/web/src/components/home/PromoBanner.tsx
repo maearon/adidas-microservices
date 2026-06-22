@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+// import { ArrowRight } from "lucide-react"
 import { useTranslations } from "@/hooks/useTranslations"
 
 export default function PromoBanner() {
@@ -17,11 +17,12 @@ export default function PromoBanner() {
           {t?.promoBannerDesc ??
             "Save $30 on orders $100+ with code DEAL. Exclusions apply."}
         </p>
-        <ArrowRight
+        {/* <ArrowRight
           className="absolute right-4 top-1/2 h-8 w-8 shrink-0 -translate-y-1/2 sm:right-12"
           strokeWidth={1.25}
           aria-hidden
-        />
+        /> */}
+        <span className="text-[22px] font-thin leading-none">⟶</span>
       </Link>
     </section>
   )
