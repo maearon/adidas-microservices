@@ -27,6 +27,7 @@ import { addLastVisited } from "@/lib/recentlyViewed"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
 import { fetchRecommendations } from "@/api/services/commerceService"
 import { buildProductDetailUrl } from "@/lib/commerce/product-url"
+import { isSameWishItem } from "@/lib/commerce/line-keys"
 import type { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import ProductSections from "@/components/product/ProductSections"
@@ -50,7 +51,6 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   const wishlistItems = useAppSelector((state) => state.wishlist.items)
 
   const [selectedSize, setSelectedSize] = useState("")
-  const [selectedVariant, setSelectedVariant] = useState(0)
   const [expandedSections, setExpandedSections] = useState({
     reviews: false,
     description: false,
@@ -58,18 +58,25 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     highlights: false, // 👈 thêm
   })
   const [sizeError, setSizeError] = useState("")
-  const [isWishlisted, setIsWishlisted] = useState(false)
-  const [currentVariant, setCurrentVariant] = useState<any>(null)
   const [completeLookProducts, setCompleteLookProducts] = useState<Product[]>([])
   const [alsoLikeProducts, setAlsoLikeProducts] = useState<Product[]>([])
 
   const { data: product, isLoading, error, refetch } = useProductDetail(slug, model)
 
-  useEffect(() => {
-    if (!product) return
-    setIsWishlisted(wishlistItems.some((item) => Number(item.id) === Number(product.id)))
-    setCurrentVariant(product.variants[selectedVariant])
-  }, [product, selectedVariant, wishlistItems])
+  const modelCode = model.replace(/\.html$/i, "")
+  const variant =
+    product?.variants.find((v) => v.variant_code === modelCode) ??
+    product?.variants.find((v) => v.variant_code === model)
+  const activeVariant = variant ?? product?.variants?.[0] ?? null
+
+  const isWishlisted = activeVariant
+    ? wishlistItems.some((item) =>
+        isSameWishItem(item, {
+          id: Number(activeVariant.id ?? product?.id),
+          variantId: String(activeVariant.id ?? product?.id),
+        })
+      )
+    : false
 
   // Thêm sản phẩm vào Recently Viewed
   useEffect(() => {
@@ -102,7 +109,6 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
       })
   }, [product?.id, product?.related_products])
 
-  const variant = product?.variants.find((v) => v.variant_code === params.model)
   const [hoveredColor, setHoveredColor] = useState<string | null>(null)
   const displayColor = hoveredColor || variant?.color
   const sizes = variant?.sizes ?? []
@@ -114,28 +120,30 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
 
   const handleAddToBag = () => {
     if (!selectedSize) return setSizeError("Please select your size")
-    if (!product || !currentVariant) return
+    if (!product || !activeVariant) return
     dispatch(
       addToCart({
-        id: Number(currentVariant?.id ?? product.id),
+        id: Number(activeVariant.id ?? product.id),
         productId: String(product.id),
-        variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
-        variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        variantId: String(activeVariant.id ?? product.id),
+        variantCode: activeVariant.variant_code,
         slug: product.slug,
         url: buildProductDetailUrl({
           slug: product.slug,
           name: product.name,
-          variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+          variantCode: activeVariant.variant_code,
         }),
         name: product.name,
-        price: Number(variant?.price ?? 0),
-        compareAtPrice: variant?.compare_at_price ?? null,
+        price: Number(activeVariant.price ?? variant?.price ?? 0),
+        compareAtPrice: activeVariant.compare_at_price ?? variant?.compare_at_price ?? null,
         image:
+          activeVariant.avatar_url ||
+          activeVariant.image_urls?.[0] ||
           variant?.avatar_url ||
           variant?.image_urls?.[0] ||
           product.main_image_url ||
           "/placeholder.png",
-        color: variant?.color,
+        color: activeVariant.color ?? variant?.color,
         size: selectedSize,
         category: product.category,
       })
@@ -143,22 +151,24 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   }
 
   const handleToggleWishlist = () => {
-    if (!product || !currentVariant) return
+    if (!product || !activeVariant) return
     dispatch(
       toggleWishlist({
-        id: Number(currentVariant?.id ?? product.id),
+        id: Number(activeVariant.id ?? product.id),
         productId: String(product.id),
-        variantId: String(currentVariant?.id ?? variant?.id ?? product.id),
-        variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+        variantId: String(activeVariant.id ?? product.id),
+        variantCode: activeVariant.variant_code,
         slug: product.slug,
         url: buildProductDetailUrl({
           slug: product.slug,
           name: product.name,
-          variantCode: currentVariant?.variant_code ?? variant?.variant_code,
+          variantCode: activeVariant.variant_code,
         }),
         name: product.name,
-        price: `$${formatPrice(variant?.price).replace("$", "")}`,
+        price: `$${formatPrice(activeVariant.price ?? variant?.price).replace("$", "")}`,
         image:
+          activeVariant.avatar_url ||
+          activeVariant.image_urls?.[0] ||
           variant?.avatar_url ||
           variant?.image_urls?.[0] ||
           product.main_image_url ||
@@ -413,7 +423,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
                 onMouseLeave={() => setHoveredColor(variant?.color)} // reset when leave area
               >
                 {product.variants.map((variant) => {
-                  const isActive = variant.variant_code === params.model
+                  const isActive = variant.variant_code === modelCode
                   const size = getThumbnailSize(product.variants.length)
                   return (
                     <Link
@@ -517,6 +527,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
               </Button>
 
               <ButtonWish
+                type="button"
                 shadow={false}
                 showArrow={false}
                 onClick={handleToggleWishlist}
