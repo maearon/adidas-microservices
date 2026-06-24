@@ -4,5 +4,7 @@
   "directions": "Directions",
   "address": "Address:",
   "openCloses": "Open Closes",
-  "features": "Features"
+  "features": "Features",
+  "locationsCount": "{{count}} locations",
+  "kmAway": "{{distance}} km"
 }

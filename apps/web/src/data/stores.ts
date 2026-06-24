@@ -1,4 +1,7 @@
 import { Store } from "@/types/store";
+import { calculateDistance } from "@/utils/distance";
+
+export const PRIMARY_STORE_ID = "store-001";
 
 export const stores: Store[] = [
   {
@@ -39,4 +42,37 @@ export const stores: Store[] = [
     phone: '+84 (974) 006-807',
     features: ['click and collect', 'endless aisle', 'gift cards'],
   },
-]
+];
+
+export const PRIMARY_STORE =
+  stores.find((store) => store.id === PRIMARY_STORE_ID) ?? stores[0];
+
+export function sortStoresForDisplay(
+  storeList: Store[],
+  userLocation: { lat: number; lng: number } | null
+): Store[] {
+  const primary = storeList.find((store) => store.id === PRIMARY_STORE_ID);
+  const others = storeList.filter((store) => store.id !== PRIMARY_STORE_ID);
+
+  if (!userLocation) {
+    return primary ? [primary, ...others] : storeList;
+  }
+
+  const sortByDistance = (a: Store, b: Store) => {
+    const distanceA = calculateDistance(
+      userLocation.lat,
+      userLocation.lng,
+      a.coordinates[1],
+      a.coordinates[0]
+    );
+    const distanceB = calculateDistance(
+      userLocation.lat,
+      userLocation.lng,
+      b.coordinates[1],
+      b.coordinates[0]
+    );
+    return distanceA - distanceB;
+  };
+
+  return [...storeList].sort(sortByDistance);
+}
