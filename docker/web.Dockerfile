@@ -1,29 +1,26 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /app
 
-# Install dependencies
+# Install production dependencies only
 FROM base AS deps
 COPY apps/web/package*.json ./
-RUN npm install --only=production
+RUN npm ci --omit=dev || npm install --omit=dev
 
 # Build the app
 FROM base AS builder
 COPY apps/web/package*.json ./
+COPY apps/web/package-lock.json ./
 COPY apps/web/prisma ./prisma/
 
-# Install dependencies
-# RUN npm ci --only=production
-
-# Generate Prisma client
+ENV PRISMA_DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
 ENV DATABASE_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15
-ENV STRIPE_SECRET_KEY="sk_test_dummy_key_for_build"
-RUN npx prisma generate
+ENV STRIPE_SECRET_KEY=sk_test_dummy_key_for_build
 
-# Copy source code
+# Install deps first so prisma CLI matches package.json (^6.x), not latest npx
+RUN npm ci || npm install
+
 COPY apps/web/ .
 
-# Build TypeScript
-RUN npm install
 RUN npm run build
 
 # Production image

@@ -26,7 +26,7 @@ jobs:
         if: matrix.service == 'api-gateway' || matrix.service == 'web'
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.service == 'web' && '20' || '18' }}
+          node-version: ${{ matrix.service == 'web' && '22' || '18' }}
           cache: 'npm'
           cache-dependency-path: apps/${{ matrix.service }}/package-lock.json
 
