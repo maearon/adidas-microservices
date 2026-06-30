@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface Props {
   className?: string
@@ -24,12 +25,12 @@ const AdidasLogo = ({ className }: Props) => {
 
   return (
     <Image
-      src={isDark ? "/logo_white_transparent.png" : "/logo.png"}
+      src="/logo.svg"
       alt="Adidas logo"
       width={80}
       height={80}
       priority
-      className={className}
+      className={cn("dark:invert", className)}
     />
   )
 }
