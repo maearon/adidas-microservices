@@ -6,6 +6,7 @@
   "closeFilters": "Đóng bộ lọc",
   "appliedFilters": "Bộ lọc đã áp dụng",
   "itemsFound": "Tìm thấy {count} sản phẩm",
+  "resultsCount": "{count} kết quả",
   "showItems": "Xem sản phẩm",
   "stubHint": "Hiển thị để khớp UI — sẽ nối dữ liệu khi cập nhật schema.",
   "minimumUsd": "Tối thiểu (USD)",

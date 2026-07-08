@@ -6,6 +6,7 @@
   "closeFilters": "Close filters",
   "appliedFilters": "Applied filters",
   "itemsFound": "{count} items found",
+  "resultsCount": "{count} results",
   "showItems": "Show items",
   "stubHint": "Options shown for UI parity — data wiring comes with schema update.",
   "minimumUsd": "Minimum (USD)",

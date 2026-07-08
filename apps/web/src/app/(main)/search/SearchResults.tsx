@@ -6,12 +6,13 @@ import { useSearchProductsFeed } from "@/api/hooks/useProducts";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import ProductCard from "@/components/product-card";
 import Loading from "@/components/loading";
-import { Loader2, Filter, SlidersHorizontal } from "lucide-react";
-import { BaseButton } from "@/components/ui/base-button";
+import { Loader2 } from "lucide-react";
 import SearchFilters from "@/components/filter/search-filters";
+import FilterSortButton from "@/components/filter/filter-sort-button";
 import { SearchFilters as SearchFiltersType } from "@/types/search";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/hooks/useTranslations";
+import { countAppliedFilters } from "@/lib/filters/count-applied-filters";
 
 interface SearchResultsProps {
   query: string;
@@ -19,7 +20,6 @@ interface SearchResultsProps {
 
 export default function SearchResults({ query }: SearchResultsProps) {
   const t = useTranslations("productList");
-  const tFilter = useTranslations("filter");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -114,24 +114,17 @@ export default function SearchResults({ query }: SearchResultsProps) {
 
         {/* Right: Filter button */}
         <div className="shrink-0 flex items-center bg-white dark:bg-black text-black dark:text-white">
-          {/* Desktop button */}
-          <BaseButton
-            variant="outline"
+          <FilterSortButton
             onClick={() => setIsFiltersOpen(true)}
-            className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
-          >
-            {tFilter?.filterAndSort || t?.filterSort || "FILTER & SORT"}
-            <SlidersHorizontal className="w-4 h-4" />
-          </BaseButton>
-
-          {/* Mobile button */}
-          <BaseButton
-            variant="outline"
+            appliedCount={countAppliedFilters(filters as Record<string, unknown>)}
+            className="hidden sm:flex"
+          />
+          <FilterSortButton
             onClick={() => setIsFiltersOpen(true)}
-            className="flex sm:hidden items-center justify-center p-2 bg-white dark:bg-black text-black dark:text-white border-none"
-          >
-            <SlidersHorizontal className="w-5 h-5" />
-          </BaseButton>
+            appliedCount={countAppliedFilters(filters as Record<string, unknown>)}
+            mobileIconOnly
+            className="flex sm:hidden"
+          />
         </div>
       </div>
 

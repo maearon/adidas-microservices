@@ -15,6 +15,7 @@ import type { Product } from "@/types/product"
 import { parseSlugToFilters, generateQueryParams, type SlugFilters } from "@/utils/slug-parser"
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
+import { countAppliedFilters } from "@/lib/filters/count-applied-filters"
 
 interface CategoryPageClientProps {
   params: { slug: string }
@@ -247,6 +248,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             onSortChange={handleSortChange}
             onViewChange={handleViewChange}
             onFilterToggle={handleFilterToggle}
+            appliedFilterCount={countAppliedFilters(filters)}
           />
         </>
       )}
