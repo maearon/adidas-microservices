@@ -48,6 +48,8 @@ export interface FilterOptionsResponse {
   best_for: FacetOption[]
   surface: FacetOption[]
   width: FacetOption[]
+  features?: FacetOption[]
+  age?: FacetOption[]
   price_range: { min: number; max: number }
   total_count: number
 }

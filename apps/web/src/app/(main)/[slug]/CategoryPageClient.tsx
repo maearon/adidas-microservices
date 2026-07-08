@@ -283,6 +283,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         currentFilters={filters as Record<string, string | number | string[]>}
         totalCount={totalCount}
         facets={facets}
+        preset="plp"
       />
     </>
   );

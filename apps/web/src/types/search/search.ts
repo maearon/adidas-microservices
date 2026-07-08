@@ -14,6 +14,7 @@ export interface SearchFilters {
   best_for?: string | string[]
   surface?: string | string[]
   width?: string | string[]
+  features?: string | string[]
   min_price?: number
   max_price?: number
   /** Shoe size labels (e.g. "10", "10.5") — not page size */

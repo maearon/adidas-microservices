@@ -69,6 +69,7 @@ function serializeFilterParams(filters: ProductFilters): Record<string, string |
     "best_for",
     "surface",
     "width",
+    "features",
   ]
 
   for (const key of arrayKeys) {
