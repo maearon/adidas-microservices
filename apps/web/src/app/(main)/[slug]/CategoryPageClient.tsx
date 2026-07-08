@@ -24,6 +24,7 @@ interface CategoryPageClientProps {
 
 export default function CategoryPageClient({ params, searchParams, query }: CategoryPageClientProps) {
   const t = useTranslations("productList")
+  const tFilter = useTranslations("filter")
   
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -258,7 +259,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             {t?.noProductsMatching || "We couldn't find any products matching the current filters. Try adjusting your filters or browse other categories."}
           </p>
           <BaseButton onClick={handleFilterToggle} variant="outline" className="rounded-none">
-            Filter & Sort
+            {tFilter?.filterAndSort || "Filter & Sort"}
           </BaseButton>
         </div>
       )}

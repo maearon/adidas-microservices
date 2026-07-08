@@ -30,15 +30,16 @@ export default function ProductListToolbar({
 }: ProductListToolbarProps) {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const t = useTranslations("productList")
+  const filterT = useTranslations("filter")
 
   const sortOptions = [
-    { value: 'price_low_high', label: t?.priceLowToHigh || 'Price (low - high)' },
-    { value: 'newest', label: t?.newest || 'Newest' },
-    { value: 'top_sellers', label: t?.topSellers || 'Top Sellers' },
-    { value: 'price_high_low', label: t?.priceHighToLow || 'Price (high - low)' },
+    { value: 'price_low_high', label: filterT?.priceLowHigh || t?.priceLowToHigh || 'Price (low - high)' },
+    { value: 'newest', label: filterT?.newest || t?.newest || 'Newest' },
+    { value: 'top_sellers', label: filterT?.topSellers || t?.topSellers || 'Top Sellers' },
+    { value: 'price_high_low', label: filterT?.priceHighLow || t?.priceHighToLow || 'Price (high - low)' },
   ]
 
-  const currentSortLabel = sortOptions.find(option => option.value === currentSort)?.label || (t?.sortBy || 'Sort by')
+  const currentSortLabel = sortOptions.find(option => option.value === currentSort)?.label || (filterT?.sortBy || t?.sortBy || 'Sort by')
 
   return (
     <div className={cn("bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800", className)}>
@@ -137,7 +138,7 @@ export default function ProductListToolbar({
                 onClick={onFilterToggle}
                 className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
               >
-                {t?.filterSort || "FILTER & SORT"}
+                {filterT?.filterAndSort || t?.filterSort || "FILTER & SORT"}
                 <SlidersHorizontal className="w-4 h-4" />
               </BaseButton>
 

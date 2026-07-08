@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { parseSlugToFilters } from "@/utils/slug-parser"
 import { useTranslations } from "@/hooks/useTranslations"
+import { translateFacetLabel } from "@/lib/i18n/filter-labels"
 
 interface FilterChipsProps {
   filters: Record<string, any>
@@ -76,9 +77,16 @@ export default function FilterChips({
       brand: t?.brand || 'Brand',
       material: t?.material || 'Material',
       collection: t?.collection || 'Collection',
-      product_type: 'Product Type',
-      activity: 'Activity',
-      franchise: 'Franchise'
+      product_type: t?.category || 'Product Type',
+      activity: t?.activity || 'Activity',
+      shipping: t?.shipping || 'Shipping',
+      best_for: t?.bestFor || 'Best For',
+      surface: t?.surface || 'Surface',
+      width: t?.width || 'Width',
+      features: t?.features || 'Features',
+      age: t?.age || 'Age',
+      sort: t?.sortBy || 'Sort',
+      franchise: 'Franchise',
     }
     return labels[key] || key.charAt(0).toUpperCase() + key.slice(1)
   }
@@ -107,25 +115,9 @@ export default function FilterChips({
       ).join(' ')
     }
     
-    // Special handling for activities
-    if (key === 'activity') {
-      const activityLabels: Record<string, string> = {
-        'new_arrivals': 'New Arrivals',
-        'best_sellers': 'Best Sellers',
-        'back_to_school': 'Back to School',
-        'youth_teens': 'Youth & Teens',
-        'children': 'Children',
-        'babies_toddlers': 'Babies & Toddlers'
-      }
-      return activityLabels[value] || value.split('_').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-      ).join(' ')
-    }
-    
-    // Capitalize first letter and replace underscores with spaces
-    return value.split('_').map(word => 
+    return translateFacetLabel(t, value, value.split('_').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ')
+    ).join(' '))
   }
 
   const activeFilters = getActiveFilters()

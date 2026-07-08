@@ -11,12 +11,15 @@ import { BaseButton } from "@/components/ui/base-button";
 import SearchFilters from "@/components/filter/search-filters";
 import { SearchFilters as SearchFiltersType } from "@/types/search";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "@/hooks/useTranslations";
 
 interface SearchResultsProps {
   query: string;
 }
 
 export default function SearchResults({ query }: SearchResultsProps) {
+  const t = useTranslations("productList");
+  const tFilter = useTranslations("filter");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -83,7 +86,9 @@ export default function SearchResults({ query }: SearchResultsProps) {
             </h1>
             {products.length > 0 && (
               <p className="text-gray-600 dark:text-white break-words text-sm">
-                Showing {products.length} of {totalCount} results
+                {(t?.showingResults || "Showing {count} of {total} results")
+                  .replace("{count}", String(products.length))
+                  .replace("{total}", String(totalCount))}
               </p>
             )}
           </div>
@@ -99,7 +104,9 @@ export default function SearchResults({ query }: SearchResultsProps) {
             </h1>
             {products.length > 0 && (
               <p className="text-gray-600 dark:text-white break-words text-sm">
-                Showing {products.length} of {totalCount} results
+                {(t?.showingResults || "Showing {count} of {total} results")
+                  .replace("{count}", String(products.length))
+                  .replace("{total}", String(totalCount))}
               </p>
             )}
           </div>
@@ -113,7 +120,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
             onClick={() => setIsFiltersOpen(true)}
             className="hidden sm:flex items-center gap-2 border border-black dark:border-white bg-white dark:bg-black text-black dark:text-white rounded-none"
           >
-            FILTER & SORT
+            {tFilter?.filterAndSort || t?.filterSort || "FILTER & SORT"}
             <SlidersHorizontal className="w-4 h-4" />
           </BaseButton>
 

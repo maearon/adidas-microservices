@@ -30,6 +30,12 @@ import {
   mergeFacetOptions,
   asStringArray,
 } from "@/lib/constants/filter-options"
+import {
+  SECTION_I18N_KEYS,
+  translateFacetLabel,
+  translateFacetOptions,
+} from "@/lib/i18n/filter-labels"
+import { useTranslations } from "@/hooks/useTranslations"
 import { cn } from "@/lib/utils"
 
 export type FilterState = Record<string, string | number | string[] | undefined>
@@ -63,25 +69,6 @@ const CHIP_FIELDS = [
   "brand",
 ] as const
 
-const SECTION_TITLES: Record<FilterSectionKey, string> = {
-  sort: "Sort by",
-  shipping: "Shipping",
-  gender: "Gender",
-  age: "Age",
-  size: "Size",
-  category: "Category",
-  color: "Color",
-  best_for: "Best For",
-  sport: "Sport",
-  activity: "Activity",
-  collection: "Collection",
-  features: "Features",
-  brand: "Brand",
-  surface: "Surface",
-  width: "Width",
-  price: "Price",
-}
-
 function buildExpandedState(preset: FilterPreset): Record<FilterSectionKey, boolean> {
   const order = getSectionOrder(preset)
   const defaults = DEFAULT_EXPANDED[preset]
@@ -102,12 +89,18 @@ export default function FiltersSidebar({
   preset = "plp",
   showClearAll = true,
 }: FiltersSidebarProps) {
+  const t = useTranslations("filter")
   const sectionOrder = useMemo(() => getSectionOrder(preset), [preset])
   const [filters, setFilters] = useState<FilterState>({})
   const [expanded, setExpanded] = useState<Record<FilterSectionKey, boolean>>(() =>
     buildExpandedState(preset)
   )
   const [mounted, setMounted] = useState(false)
+
+  const sectionTitle = (section: FilterSectionKey) => {
+    const key = SECTION_I18N_KEYS[section]
+    return (key && t?.[key as keyof typeof t]) || section
+  }
 
   const priceBounds = facets?.price_range ?? { min: 0, max: 500 }
   const [priceRange, setPriceRange] = useState<[number, number]>([
@@ -133,53 +126,61 @@ export default function FiltersSidebar({
   }, [currentFilters, priceBounds.min, priceBounds.max])
 
   const genders = useMemo(
-    () => mergeFacetOptions(DEFAULT_GENDER_OPTIONS, facets?.gender),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_GENDER_OPTIONS, facets?.gender)),
+    [facets, t]
   )
   const categories = useMemo(
-    () => mergeFacetOptions(DEFAULT_CATEGORY_OPTIONS, facets?.category),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_CATEGORY_OPTIONS, facets?.category)),
+    [facets, t]
   )
   const colors = useMemo(
-    () => mergeFacetOptions(DEFAULT_COLOR_OPTIONS, facets?.colors),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_COLOR_OPTIONS, facets?.colors)),
+    [facets, t]
   )
   const collections = useMemo(
-    () => mergeFacetOptions(DEFAULT_COLLECTION_OPTIONS, facets?.collection),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_COLLECTION_OPTIONS, facets?.collection)),
+    [facets, t]
   )
   const sports = useMemo(
-    () => mergeFacetOptions(DEFAULT_SPORT_OPTIONS, facets?.sport),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_SPORT_OPTIONS, facets?.sport)),
+    [facets, t]
   )
   const activities = useMemo(
-    () => mergeFacetOptions(DEFAULT_ACTIVITY_OPTIONS, facets?.activity),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_ACTIVITY_OPTIONS, facets?.activity)),
+    [facets, t]
   )
   const brands = useMemo(
-    () => mergeFacetOptions(DEFAULT_BRAND_OPTIONS, facets?.brand),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(DEFAULT_BRAND_OPTIONS, facets?.brand)),
+    [facets, t]
   )
   const bestFor = useMemo(
-    () => mergeFacetOptions(BEST_FOR_OPTIONS, facets?.best_for),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(BEST_FOR_OPTIONS, facets?.best_for)),
+    [facets, t]
   )
   const surfaces = useMemo(
-    () => mergeFacetOptions(SURFACE_OPTIONS, facets?.surface),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(SURFACE_OPTIONS, facets?.surface)),
+    [facets, t]
   )
   const widths = useMemo(
-    () => mergeFacetOptions(WIDTH_OPTIONS, facets?.width),
-    [facets]
+    () => translateFacetOptions(t, mergeFacetOptions(WIDTH_OPTIONS, facets?.width)),
+    [facets, t]
   )
-  const ages = useMemo(() => mergeFacetOptions(AGE_OPTIONS, null), [])
-  const features = useMemo(() => mergeFacetOptions(FEATURES_OPTIONS, null), [])
-  const shipping = useMemo(
+  const ages = useMemo(() => translateFacetOptions(t, AGE_OPTIONS), [t])
+  const features = useMemo(() => translateFacetOptions(t, FEATURES_OPTIONS), [t])
+  const shipping = useMemo(() => {
+    const base = facets?.shipping?.length
+      ? facets.shipping
+      : [{ value: "prime", label: "PRIME", count: 0 }]
+    return translateFacetOptions(t, base)
+  }, [facets, t])
+
+  const sortOptions = useMemo(
     () =>
-      facets?.shipping?.length
-        ? facets.shipping
-        : [{ value: "prime", label: "PRIME", count: 0 }],
-    [facets]
+      SORT_OPTIONS.map((option) => ({
+        ...option,
+        label: translateFacetLabel(t, option.value, option.label),
+      })),
+    [t]
   )
 
   const sizeOptions = useMemo(() => {
@@ -267,19 +268,15 @@ export default function FiltersSidebar({
     const chips: { field: string; value: string; label: string }[] = []
     for (const field of CHIP_FIELDS) {
       for (const value of asStringArray(filters[field])) {
-        const ageHit = AGE_OPTIONS.find((a) => a.value === value)
         chips.push({
           field,
           value,
-          label:
-            field === "shipping" && value.toLowerCase() === "prime"
-              ? "PRIME"
-              : ageHit?.label || value,
+          label: translateFacetLabel(t, value, value),
         })
       }
     }
     return chips
-  }, [filters])
+  }, [filters, t])
 
   const facetOptionsFor = (section: FilterSectionKey): FacetOption[] => {
     switch (section) {
@@ -312,13 +309,13 @@ export default function FiltersSidebar({
 
   const renderSection = (section: FilterSectionKey) => {
     const open = Boolean(expanded[section])
-    const title = SECTION_TITLES[section]
+    const title = sectionTitle(section)
 
     if (section === "sort") {
       return (
         <Accordion key={section} title={title} open={open} onToggle={() => toggleSection(section)}>
           <div className="space-y-3 pb-2">
-            {SORT_OPTIONS.map((option) => (
+            {sortOptions.map((option) => (
               <label key={option.value} className="flex cursor-pointer items-center gap-3">
                 <input
                   type="radio"
@@ -350,7 +347,11 @@ export default function FiltersSidebar({
               <CheckboxRow
                 key={opt.value}
                 id={`shipping-${opt.value}`}
-                label={<span className="font-bold tracking-wide text-blue-600">PRIME</span>}
+                label={
+                  <span className="font-bold tracking-wide text-blue-600">
+                    {t?.prime || "PRIME"}
+                  </span>
+                }
                 count={opt.count}
                 checked={isSelected("shipping", opt.value)}
                 onCheckedChange={(c) => handleMultiToggle("shipping", opt.value, c)}
@@ -441,7 +442,7 @@ export default function FiltersSidebar({
     if (section === "price") {
       return (
         <Accordion key={section} title={title} open={open} onToggle={() => toggleSection(section)}>
-          <div className="space-y-4 pb-4">
+            <div className="space-y-4 pb-4">
             <div className="flex justify-between text-sm">
               <span>${priceRange[0]}</span>
               <span>${priceRange[1]}</span>
@@ -456,7 +457,9 @@ export default function FiltersSidebar({
             />
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block text-xs text-neutral-500">Minimum (USD)</label>
+                <label className="mb-1 block text-xs text-neutral-500">
+                  {t?.minimumUsd || "Minimum (USD)"}
+                </label>
                 <Input
                   type="number"
                   value={priceRange[0]}
@@ -471,7 +474,9 @@ export default function FiltersSidebar({
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-neutral-500">Maximum (USD)</label>
+                <label className="mb-1 block text-xs text-neutral-500">
+                  {t?.maximumUsd || "Maximum (USD)"}
+                </label>
                 <Input
                   type="number"
                   value={priceRange[1]}
@@ -505,6 +510,7 @@ export default function FiltersSidebar({
         isSelected={isSelected}
         onToggleValue={handleMultiToggle}
         stubHint={STUB_SECTIONS.has(section)}
+        stubHintText={t?.stubHint}
       />
     )
   }
@@ -517,7 +523,9 @@ export default function FiltersSidebar({
 
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white text-black shadow-xl dark:bg-black dark:text-white">
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-neutral-200 bg-white px-5 py-4 dark:border-neutral-800 dark:bg-black">
-          <h2 className="text-base font-bold uppercase tracking-wide">Filter & Sort</h2>
+          <h2 className="text-base font-bold uppercase tracking-wide">
+            {t?.filterAndSort || "Filter & Sort"}
+          </h2>
           <div className="flex items-center gap-4">
             {showClearAll && (
               <button
@@ -525,10 +533,14 @@ export default function FiltersSidebar({
                 onClick={clearAll}
                 className="text-sm underline underline-offset-2 hover:opacity-70"
               >
-                Clear all
+                {t?.clearAll || "Clear all"}
               </button>
             )}
-            <button type="button" onClick={onClose} aria-label="Close filters">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t?.closeFilters || "Close filters"}
+            >
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -537,7 +549,7 @@ export default function FiltersSidebar({
         {appliedChips.length > 0 && (
           <div className="border-b border-neutral-200 bg-neutral-50 px-5 py-3 dark:border-neutral-800 dark:bg-neutral-900">
             <p className="mb-2 text-xs font-medium uppercase tracking-wide text-neutral-600 dark:text-neutral-400">
-              Applied filters
+              {t?.appliedFilters || "Applied filters"}
             </p>
             <div className="flex flex-wrap gap-2">
               {appliedChips.map((chip) => (
@@ -561,14 +573,14 @@ export default function FiltersSidebar({
 
         <div className="absolute bottom-0 left-0 right-0 border-t border-neutral-200 bg-white px-5 py-4 dark:border-neutral-800 dark:bg-black">
           <p className="mb-3 text-center text-sm text-neutral-600 dark:text-neutral-400">
-            {liveCount} items found
+            {(t?.itemsFound || "{count} items found").replace("{count}", String(liveCount))}
           </p>
           <button
             type="button"
             onClick={applyFilters}
             className="flex w-full items-center justify-between bg-black px-4 py-3.5 text-sm font-bold text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
           >
-            <span>Show items</span>
+            <span>{t?.showItems || "Show items"}</span>
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
@@ -642,6 +654,7 @@ function FacetList({
   isSelected,
   onToggleValue,
   stubHint,
+  stubHintText,
 }: {
   title: string
   open: boolean
@@ -652,13 +665,15 @@ function FacetList({
   isSelected: (field: string, value: string) => boolean
   onToggleValue: (field: string, value: string, checked: boolean) => void
   stubHint?: boolean
+  stubHintText?: string
 }) {
   return (
     <Accordion title={title} open={open} onToggle={onToggle} count={selectedCount}>
       <div className="space-y-1 pb-2">
         {stubHint && options.every((o) => o.count === 0) && (
           <p className="mb-2 text-xs text-neutral-400">
-            Options shown for UI parity — data wiring comes with schema update.
+            {stubHintText ||
+              "Options shown for UI parity — data wiring comes with schema update."}
           </p>
         )}
         {options.map((opt) => (
