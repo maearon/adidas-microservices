@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { SlidersHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useTranslations } from "@/hooks/useTranslations"
 
 import { BaseButton } from "@/components/ui/base-button"
@@ -13,7 +12,7 @@ import { useProducts } from "@/api/hooks/useProducts"
 import Loading from "@/components/loading"
 import { FilterBar, FilterChips, ProductListToolbar, ProductListContainer, ProductListHeader } from "./components"
 import type { Product } from "@/types/product"
-import { parseSlugToFilters, generateUrlFromFilters, generateQueryParams, type SlugFilters } from "@/utils/slug-parser"
+import { parseSlugToFilters, generateQueryParams, type SlugFilters } from "@/utils/slug-parser"
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
 import { mapProductDataToProduct } from "@/lib/mappers/product-data-to-product"
 
@@ -33,7 +32,6 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   const router = useRouter()
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [currentSort, setCurrentSort] = useState('newest')
 
   const config = getCategoryConfig(params.slug)
 
@@ -43,44 +41,56 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
     return slugFilters
   })
 
+  const [currentSort, setCurrentSort] = useState(
+    () => (typeof filters.sort === "string" ? filters.sort : "newest")
+  )
+
+  // Keep sort UI in sync when filters change from sidebar
+  useEffect(() => {
+    if (typeof filters.sort === "string" && filters.sort) {
+      setCurrentSort(filters.sort)
+    }
+  }, [filters.sort])
+
   // Update filters when slug changes
   useEffect(() => {
     const slugFilters = parseSlugToFilters(params.slug)
     setFilters(slugFilters)
   }, [params.slug])
 
-  const allowedKeys: (keyof ProductQuery)[] = [
+  const allowedKeys = [
     "page", "sort", "gender", "category", "activity", "sport",
     "product_type", "size", "color", "material", "brand", "model",
-    "collection", "min_price", "max_price", "shipping"
-  ]
+    "collection", "min_price", "max_price", "shipping",
+    "best_for", "surface", "width",
+  ] as const
 
   // Merge URL params with local filters
-  const queryParams: ProductQuery = useMemo(() => {
-    const query: Partial<ProductQuery> = { slug: params.slug }
+  const queryParams = useMemo(() => {
+    const query: Record<string, unknown> = { slug: params.slug }
     const search = searchParams || {}
 
-    // Add local filters
     Object.entries(filters).forEach(([key, value]) => {
-      if (value && allowedKeys.includes(key as keyof ProductQuery)) {
-        query[key as keyof ProductQuery] = value as any
+      if (value && (allowedKeys as readonly string[]).includes(key)) {
+        query[key] = value
       }
     })
 
-    // Add URL params (these override local filters)
     for (const key of allowedKeys) {
       const value = search[key]
       if (!value) continue
 
       if (["min_price", "max_price", "page"].includes(key)) {
         const num = Number(value)
-        if (!isNaN(num)) query[key] = num as any
+        if (!isNaN(num)) query[key] = num
+      } else if (typeof value === "string" && value.includes(",")) {
+        query[key] = value.split(",").map((v) => v.trim()).filter(Boolean)
       } else {
-        query[key] = value as any
+        query[key] = value
       }
     }
 
-    return query as ProductQuery
+    return query
   }, [searchParams, params.slug, filters])
 
   const {
@@ -91,7 +101,7 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
     isFetchingNextPage,
     status,
     refetch,
-  } = useProducts(queryParams)
+  } = useProducts(queryParams as ProductQuery)
 
   // Map API response to Product type
   const products: Product[] = data?.pages.flatMap((page) =>
@@ -99,36 +109,42 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
   ) || [];
   
   const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+  const facets = data?.pages?.[0]?.facets ?? null;
 
   // Handle filter changes
   const handleFilterChange = (newFilters: Record<string, any>) => {
-    setFilters(newFilters)
-    
-    // Generate new URL based on filters
-    const newUrl = generateUrlFromFilters(newFilters as SlugFilters, params.slug)
-    
-    // Generate query parameters
-    const queryParams = generateQueryParams(newFilters as SlugFilters)
-    
-    // Build URL with query parameters
+    // Preserve slug-derived base filters unless user explicitly overrides them
+    const slugBase = parseSlugToFilters(params.slug)
+    const merged = { ...slugBase, ...newFilters }
+
+    // If user cleared everything, fall back to slug base
+    const hasAny =
+      Object.keys(newFilters).length > 0 &&
+      Object.values(newFilters).some((v) =>
+        Array.isArray(v) ? v.length > 0 : v !== undefined && v !== null && v !== ""
+      )
+
+    const finalFilters = hasAny ? merged : slugBase
+    setFilters(finalFilters)
+
+    const queryParams = generateQueryParams(finalFilters as SlugFilters)
     const urlParams = new URLSearchParams()
     Object.entries(queryParams).forEach(([key, values]) => {
-      values.forEach(value => {
-        urlParams.append(key, value)
-      })
+      // Prefer comma-joined for array filters so API parsing stays simple
+      if (values.length === 1) urlParams.set(key, values[0])
+      else if (values.length > 1) urlParams.set(key, values.join(","))
     })
-    
-    const finalUrl = urlParams.toString() ? `${newUrl}?${urlParams.toString()}` : newUrl
+
+    const base = params.slug.startsWith("/") ? params.slug : `/${params.slug}`
+    const finalUrl = urlParams.toString() ? `${base}?${urlParams.toString()}` : base
     router.push(finalUrl, { scroll: false })
   }
 
   const handleClearFilters = () => {
-    // Keep only the basic filters from slug
     const slugFilters = parseSlugToFilters(params.slug)
     setFilters(slugFilters)
-    
-    // Navigate to base slug without query params
-    router.push(params.slug, { scroll: false })
+    const base = params.slug.startsWith("/") ? params.slug : `/${params.slug}`
+    router.push(base, { scroll: false })
   }
 
   const handleRemoveFilter = (filterKey: string, value?: string) => {
@@ -204,28 +220,9 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         </div>
       )}
 
-      {/* Empty State */}
-      {isEmpty && !isError && (
-        <div className="text-center py-4">
-          <h3 className="text-lg font-semibold mb-2">{t?.noResultsFound || "No results found"}</h3>
-          <p className="text-gray-600 dark:text-white mb-4">
-            {t?.noProductsMatching || "We couldn't find any products matching the current filters. Try adjusting your filters or browse other categories."}
-          </p>
-          <div className="space-y-2">
-            <p className="text-base text-gray-500">{t?.suggestions || "Suggestions:"}</p>
-            <ul className="text-base text-gray-500 space-y-1">
-              <li>• {t?.tryDifferentFilters || "Try different filters"}</li>
-              <li>• {t?.browseOtherCategories || "Browse other categories"}</li>
-              <li>• {t?.checkSimilarProducts || "Check for similar products"}</li>
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {/* Product List */}
-      {!isError && products.length > 0 && (
+      {/* Always show filter chrome when not in error */}
+      {!isError && (
         <>
-          {/* Filter Bar */}
           <FilterBar
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -234,7 +231,6 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             totalCount={totalCount}
           />
 
-          {/* Filter Chips */}
           <FilterChips
             filters={filters}
             onRemoveFilter={handleRemoveFilter}
@@ -242,7 +238,6 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             slug={params.slug}
           />
 
-          {/* Toolbar */}
           <ProductListToolbar
             products={products}
             totalCount={totalCount}
@@ -252,17 +247,32 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
             onViewChange={handleViewChange}
             onFilterToggle={handleFilterToggle}
           />
-
-          {/* Product Grid */}
-          <InfiniteScrollContainer onBottomReached={handleLoadMore}>
-            <ProductListContainer
-              products={products}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              viewMode={viewMode}
-            />
-          </InfiniteScrollContainer>
         </>
+      )}
+
+      {/* Empty State */}
+      {isEmpty && !isError && (
+        <div className="text-center py-8">
+          <h3 className="text-lg font-semibold mb-2">{t?.noResultsFound || "No results found"}</h3>
+          <p className="text-gray-600 dark:text-white mb-4">
+            {t?.noProductsMatching || "We couldn't find any products matching the current filters. Try adjusting your filters or browse other categories."}
+          </p>
+          <BaseButton onClick={handleFilterToggle} variant="outline" className="rounded-none">
+            Filter & Sort
+          </BaseButton>
+        </div>
+      )}
+
+      {/* Product List */}
+      {!isError && products.length > 0 && (
+        <InfiniteScrollContainer onBottomReached={handleLoadMore}>
+          <ProductListContainer
+            products={products}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            viewMode={viewMode}
+          />
+        </InfiniteScrollContainer>
       )}
 
       {/* Sidebar Filters */}
@@ -271,6 +281,8 @@ export default function CategoryPageClient({ params, searchParams, query }: Cate
         onClose={() => setIsFiltersOpen(false)}
         onApplyFilters={handleFilterChange}
         currentFilters={filters as Record<string, string | number | string[]>}
+        totalCount={totalCount}
+        facets={facets}
       />
     </>
   );

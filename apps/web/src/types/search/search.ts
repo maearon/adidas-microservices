@@ -1,51 +1,31 @@
-import { Product } from "../product/product";
+import { Product } from "../product/product"
 
-// 📦 SearchFilters: filter params sent to search APIs
+/** 🔍 Query filters used in product search / filter sidebar */
 export interface SearchFilters {
-  query?: string;
-  category?: string;
-  brand?: string;
-  gender?: string;
-  sport?: string;
-  min_price?: number;
-  max_price?: number;
-  size?: number;
-  page?: number;
-  sort?: string;
-}
-
-// 📦 SearchResponse: product search result from search engine
-export interface SearchResponse {
-  products: Product[];
-  total: number;
-  page: number;
-  size: number;
-}
-
-// Search-related types
-
-// TODO: Add code here...
-
-// 📁 @types/search.ts
-
-/** 🔍 Query filters used in product search */
-export interface SearchFilters {
-  query?: string;
-  category?: string;
-  brand?: string;
-  gender?: string;
-  sport?: string;
-  min_price?: number;
-  max_price?: number;
-  size?: number;
-  page?: number;
-  sort?: string;
+  query?: string
+  category?: string | string[]
+  brand?: string | string[]
+  gender?: string | string[]
+  sport?: string | string[]
+  activity?: string | string[]
+  collection?: string | string[]
+  color?: string | string[]
+  shipping?: string | string[]
+  best_for?: string | string[]
+  surface?: string | string[]
+  width?: string | string[]
+  min_price?: number
+  max_price?: number
+  /** Shoe size labels (e.g. "10", "10.5") — not page size */
+  size?: string | string[]
+  page?: number
+  sort?: string
 }
 
 /** ✅ Standardized product search result */
 export interface SearchResponse {
-  products: Product[];
-  total: number;
-  page: number;
-  size: number;
+  products: Product[]
+  total: number
+  page: number
+  size: number
 }

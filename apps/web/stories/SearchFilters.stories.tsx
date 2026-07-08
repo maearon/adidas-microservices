@@ -8,7 +8,7 @@ const meta: Meta<typeof SearchFilters> = {
   component: SearchFilters,
   tags: ["autodocs"],
   parameters: {
-    layout: "fullscreen", // 👈 Bắt buộc để component fixed hiển thị full
+    layout: "fullscreen",
   },
   argTypes: {
     isOpen: { control: false },
@@ -28,8 +28,7 @@ export const Default: Story = {
     const [filters, setFilters] = useState<SearchFiltersType>({
       query: "",
       page: 1,
-      size: 20,
-      sort: "relevance",
+      sort: "newest",
       gender: undefined,
       category: undefined,
       sport: undefined,

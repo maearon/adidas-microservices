@@ -18,7 +18,13 @@ module Products
         sizes: size_counts,
         models: model_counts,
         collections: collection_counts,
-        price_range: price_range
+        shipping: shipping_counts,
+        # Placeholders until schema exists — empty counts keep UI stable
+        best_for: [],
+        surface: [],
+        width: [],
+        price_range: price_range,
+        total_count: @products.reorder(nil).distinct.count
       }
     end
 
@@ -86,6 +92,17 @@ module Products
         min: prices.min&.floor || 0,
         max: prices.max&.ceil || 500
       }
+    end
+
+    def shipping_counts
+      count = @products
+                .joins("INNER JOIN products_tags ON products_tags.product_id = products.id")
+                .joins("INNER JOIN tags ON tags.id = products_tags.tag_id")
+                .where("LOWER(tags.slug) IN (?) OR LOWER(tags.name) IN (?)",
+                       %w[prime_delivery prime], %w[prime_delivery prime])
+                .distinct
+                .count
+      [{ value: "prime", label: "PRIME", count: count }]
     end
   end
 end

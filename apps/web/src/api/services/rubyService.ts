@@ -6,24 +6,27 @@ import { ApiResponse } from "@/types/common/api"
 import { Product } from "@/types/product"
 
 export interface ProductQuery {
-  slug: string
+  slug?: string
   page?: number
   per_page?: number
   sort?: string
-  gender?: string
-  category?: string
-  activity?: string
-  sport?: string
-  product_type?: string
-  size?: string
-  color?: string
-  material?: string
-  brand?: string
-  model?: string
-  collection?: string
+  gender?: string | string[]
+  category?: string | string[]
+  activity?: string | string[]
+  sport?: string | string[]
+  product_type?: string | string[]
+  size?: string | string[]
+  color?: string | string[]
+  material?: string | string[]
+  brand?: string | string[]
+  model?: string | string[]
+  collection?: string | string[]
   min_price?: number
   max_price?: number
-  shipping?: string
+  shipping?: string | string[]
+  best_for?: string | string[]
+  surface?: string | string[]
+  width?: string | string[]
 }
 
 export interface ProductMeta {

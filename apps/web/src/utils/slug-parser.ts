@@ -8,7 +8,7 @@ export interface SlugFilters {
   genders?: string[]
   category?: string[] // nếu bạn chỉ cần 1 category
   categories?: string[] // nếu muốn hỗ trợ nhiều category thì thêm field này
-  limit?: number;
+  limit?: number
   sport?: string[]
   product_type?: string[]
   brand?: string[]
@@ -19,6 +19,11 @@ export interface SlugFilters {
   max_price?: number
   size?: string[]
   color?: string[]
+  shipping?: string[]
+  sort?: string
+  best_for?: string[]
+  surface?: string[]
+  width?: string[]
 }
 
 /**
@@ -179,18 +184,20 @@ export function generateUrlFromFilters(filters: SlugFilters, baseSlug: string): 
  */
 export function generateQueryParams(filters: SlugFilters): Record<string, string[]> {
   const queryParams: Record<string, string[]> = {}
-  
-  // Add filters that should be in query params (not in URL path)
+  // Keep path-derived filters in the slug; put interactive refinements in query
+  const pathKeys = new Set(["limit", "genders", "categories"])
+
   Object.entries(filters).forEach(([key, value]) => {
-    if (value && !['gender', 'category', 'sport', 'product_type', 'collection', 'activity', 'min_price', 'max_price'].includes(key)) {
-      if (Array.isArray(value)) {
-        queryParams[key] = value
-      } else {
-        queryParams[key] = [String(value)]
-      }
+    if (value === undefined || value === null || value === "") return
+    if (pathKeys.has(key)) return
+
+    if (Array.isArray(value)) {
+      if (value.length) queryParams[key] = value.map(String)
+    } else {
+      queryParams[key] = [String(value)]
     }
   })
-  
+
   return queryParams
 }
 

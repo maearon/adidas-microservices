@@ -1,464 +1,665 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { X, ChevronDown, ChevronUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useMemo, useState } from "react"
+import { X, ChevronDown, ChevronUp, ArrowRight } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
-import { useTheme } from "next-themes"
+import type { FacetOption, FilterOptionsResponse } from "@/types/product/filters"
+import {
+  SORT_OPTIONS,
+  DEFAULT_SIZE_OPTIONS,
+  DEFAULT_GENDER_OPTIONS,
+  DEFAULT_CATEGORY_OPTIONS,
+  DEFAULT_COLOR_OPTIONS,
+  BEST_FOR_OPTIONS,
+  DEFAULT_COLLECTION_OPTIONS,
+  SURFACE_OPTIONS,
+  WIDTH_OPTIONS,
+  DEFAULT_SPORT_OPTIONS,
+  mergeFacetOptions,
+  asStringArray,
+} from "@/lib/constants/filter-options"
+import { cn } from "@/lib/utils"
+
+export type FilterState = Record<string, string | number | string[] | undefined>
 
 interface FiltersSidebarProps {
   isOpen: boolean
   onClose: () => void
-  onApplyFilters: (filters: Record<string, string[] | string | number>) => void
-  currentFilters: Record<string, string[] | string | number>
+  onApplyFilters: (filters: FilterState) => void
+  currentFilters: FilterState
+  totalCount?: number
+  facets?: FilterOptionsResponse | null
 }
 
-type FiltersState = Record<string, string | number | string[] | undefined>
-type Filters = Record<string, string[] | string | number | undefined>
+type SectionKey =
+  | "sort"
+  | "shipping"
+  | "size"
+  | "gender"
+  | "category"
+  | "color"
+  | "best_for"
+  | "collection"
+  | "surface"
+  | "width"
+  | "price"
+  | "sport"
+
+const CHIP_FIELDS = [
+  "gender",
+  "category",
+  "sport",
+  "size",
+  "color",
+  "collection",
+  "shipping",
+  "best_for",
+  "surface",
+  "width",
+] as const
 
 export default function FiltersSidebar({
   isOpen,
   onClose,
   onApplyFilters,
   currentFilters,
+  totalCount = 0,
+  facets = null,
 }: FiltersSidebarProps) {
-  const [filters, setFilters] = useState<FiltersState>({})
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+  const [filters, setFilters] = useState<FilterState>({})
+  const [expanded, setExpanded] = useState<Record<SectionKey, boolean>>({
     sort: true,
-    shipping: false,
-    gender: true,
-    category: true,
-    activity: true,
-    product_type: true,
-    size: true,
+    shipping: true,
+    size: false,
+    gender: false,
+    category: false,
+    color: false,
     best_for: false,
-    sport: true,
-    color: true,
-    material: true,
-    brand: true,
-    price: true,
-    model: false,
     collection: false,
+    surface: false,
+    width: false,
+    price: false,
+    sport: false,
   })
-  const [priceRange, setPriceRange] = useState({ min: 65, max: 300 })
-  const { 
-    // theme, 
-    resolvedTheme 
-  } = useTheme()
   const [mounted, setMounted] = useState(false)
 
-  // Avoid hydration mismatch
+  const priceBounds = facets?.price_range ?? { min: 0, max: 500 }
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    priceBounds.min,
+    priceBounds.max,
+  ])
+
   useEffect(() => setMounted(true), [])
 
   useEffect(() => {
-    if (currentFilters) {
-      setFilters(currentFilters)
-    }
-  }, [currentFilters])
+    if (!currentFilters) return
+    setFilters(currentFilters)
+    const min = Number(currentFilters.min_price ?? priceBounds.min)
+    const max = Number(currentFilters.max_price ?? priceBounds.max)
+    setPriceRange([
+      Number.isFinite(min) ? min : priceBounds.min,
+      Number.isFinite(max) ? max : priceBounds.max,
+    ])
+  }, [currentFilters, priceBounds.min, priceBounds.max])
 
-  const toggleSection = (section: string) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }))
+  const genders = useMemo(
+    () => mergeFacetOptions(DEFAULT_GENDER_OPTIONS, facets?.gender),
+    [facets]
+  )
+  const categories = useMemo(
+    () => mergeFacetOptions(DEFAULT_CATEGORY_OPTIONS, facets?.category),
+    [facets]
+  )
+  const colors = useMemo(
+    () => mergeFacetOptions(DEFAULT_COLOR_OPTIONS, facets?.colors),
+    [facets]
+  )
+  const collections = useMemo(
+    () => mergeFacetOptions(DEFAULT_COLLECTION_OPTIONS, facets?.collection),
+    [facets]
+  )
+  const sports = useMemo(
+    () => mergeFacetOptions(DEFAULT_SPORT_OPTIONS, facets?.sport),
+    [facets]
+  )
+  const bestFor = useMemo(
+    () => mergeFacetOptions(BEST_FOR_OPTIONS, facets?.best_for),
+    [facets]
+  )
+  const surfaces = useMemo(
+    () => mergeFacetOptions(SURFACE_OPTIONS, facets?.surface),
+    [facets]
+  )
+  const widths = useMemo(
+    () => mergeFacetOptions(WIDTH_OPTIONS, facets?.width),
+    [facets]
+  )
+  const shipping = useMemo(
+    () =>
+      facets?.shipping?.length
+        ? facets.shipping
+        : [{ value: "prime", label: "PRIME", count: 0 }],
+    [facets]
+  )
+
+  const sizeOptions = useMemo(() => {
+    if (facets?.sizes?.length) {
+      const labels = facets.sizes.map((s) => s.label || s.value)
+      const set = new Set([...DEFAULT_SIZE_OPTIONS, ...labels])
+      return Array.from(set).sort((a, b) => Number(a) - Number(b) || a.localeCompare(b))
+    }
+    return DEFAULT_SIZE_OPTIONS
+  }, [facets])
+
+  const liveCount = facets?.total_count ?? totalCount
+
+  const toggleSection = (key: SectionKey) => {
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  const handleFilterChange = (filterType: string, value: string, checked: boolean) => {
-    setFilters((prev: FiltersState) => {
-      const newFilters = { ...prev }
+  const sectionSelectedCount = (key: string) => asStringArray(filters[key]).length
 
-      if (!newFilters[filterType]) {
-        newFilters[filterType] = []
-      }
-
+  const handleMultiToggle = (field: string, value: string, checked: boolean) => {
+    setFilters((prev) => {
+      const current = asStringArray(prev[field])
+      let next: string[]
       if (checked) {
-        const currentValues = Array.isArray(newFilters[filterType])
-          ? (newFilters[filterType] as string[])
-          : []
-
-        if (!currentValues.includes(value)) {
-          newFilters[filterType] = [...currentValues, value]
-        }
+        next = current.includes(value) ? current : [...current, value]
       } else {
-        const currentValues = Array.isArray(newFilters[filterType])
-          ? (newFilters[filterType] as string[])
-          : []
-
-        const updatedValues = currentValues.filter((v) => v !== value)
-
-        if (updatedValues.length > 0) {
-          newFilters[filterType] = updatedValues
-        } else {
-          delete newFilters[filterType]
-        }
+        next = current.filter((v) => v.toLowerCase() !== value.toLowerCase())
       }
-
-      return newFilters
+      const copy = { ...prev }
+      if (next.length) copy[field] = next
+      else delete copy[field]
+      return copy
     })
   }
 
-  const handleSortChange = (sortValue: string) => {
-    setFilters((prev: FiltersState) => ({
-      ...prev,
-      sort: sortValue,
-    }))
-  }
+  const isSelected = (field: string, value: string) =>
+    asStringArray(filters[field]).some((v) => v.toLowerCase() === value.toLowerCase())
 
-  const handlePriceChange = (type: "min" | "max", value: number) => {
-    setPriceRange((prev) => ({
-      ...prev,
-      [type]: value,
-    }))
-    setFilters((prev: FiltersState) => ({
-      ...prev,
-      min_price: type === "min" ? value : prev.min_price || priceRange.min,
-      max_price: type === "max" ? value : prev.max_price || priceRange.max,
-    }))
+  const handleSortChange = (value: string) => {
+    setFilters((prev) => ({ ...prev, sort: value }))
   }
 
   const applyFilters = () => {
-    const finalFilters = {
+    const next: FilterState = {
       ...filters,
-      min_price: priceRange.min,
-      max_price: priceRange.max,
+      min_price: priceRange[0],
+      max_price: priceRange[1],
     }
-    onApplyFilters(finalFilters)
+    onApplyFilters(next)
+    onClose()
   }
 
-  const clearAllFilters = () => {
+  const clearAll = () => {
+    // Keep nothing in local draft; parent may re-seed slug-derived filters
     setFilters({})
-    setPriceRange({ min: 65, max: 300 })
+    setPriceRange([priceBounds.min, priceBounds.max])
     onApplyFilters({})
+    onClose()
   }
 
-  const getAppliedFiltersCount = () => {
-    let count = 0
-    Object.values(filters).forEach((value: unknown) => {
-      if (Array.isArray(value)) {
-        count += value.length
-      } else if (value) {
-        count += 1
+  const removeChip = (field: string, value?: string) => {
+    if (field === "sort") {
+      setFilters((prev) => {
+        const copy = { ...prev }
+        delete copy.sort
+        return copy
+      })
+      return
+    }
+    if (value) handleMultiToggle(field, value, false)
+    else {
+      setFilters((prev) => {
+        const copy = { ...prev }
+        delete copy[field]
+        return copy
+      })
+    }
+  }
+
+  const appliedChips = useMemo(() => {
+    const chips: { field: string; value: string; label: string }[] = []
+    for (const field of CHIP_FIELDS) {
+      for (const value of asStringArray(filters[field])) {
+        chips.push({
+          field,
+          value,
+          label: field === "shipping" && value.toLowerCase() === "prime" ? "PRIME" : value,
+        })
       }
-    })
-    return count
-  }
+    }
+    return chips
+  }, [filters])
 
-  if (!isOpen) return null
-
-  const colorOptions = [
-    { value: "black", label: "Black", hex: "#000000" },
-    { value: "white", label: "White", hex: "#FFFFFF" },
-    { value: "gray", label: "Gray", hex: "#808080" },
-    { value: "blue", label: "Blue", hex: "#0000FF" },
-    { value: "red", label: "Red", hex: "#FF0000" },
-    { value: "purple", label: "Purple", hex: "#800080" },
-    { value: "pink", label: "Pink", hex: "#FFC0CB" },
-    { value: "silver", label: "Silver", hex: "#C0C0C0" },
-    { value: "green", label: "Green", hex: "#008000" },
-    { value: "cyan", label: "Cyan", hex: "#00FFFF" },
-    { value: "beige", label: "Beige", hex: "#F5F5DC" },
-  ]
-
-  const sizeOptions = [
-    "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5",
-    "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5",
-    "12", "12.5", "13", "13.5", "14", "15",
-  ]
-
-  if (!mounted) return null
-
-  const isDark = resolvedTheme === "dark"
+  if (!isOpen || !mounted) return null
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)]" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
 
-      {/* Sidebar */}
-      <div className="absolute right-0 top-0 h-full w-96 bg-white dark:bg-black text-black dark:text-white shadow-xl overflow-y-auto">
+      <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white text-black shadow-xl dark:bg-black dark:text-white">
         {/* Header */}
-        <div className="sticky top-0 bg-background border-b border-gray-200 p-4 z-10">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Filter & Sort</h2>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={clearAllFilters}
-                className="text-base text-gray-500 hover:text-gray-700 underline"
-              >
-                Clear All
-              </button>
-              <button onClick={onClose}>
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-neutral-200 bg-white px-5 py-4 dark:border-neutral-800 dark:bg-black">
+          <h2 className="text-base font-bold uppercase tracking-wide">Filter & Sort</h2>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={clearAll}
+              className="text-sm underline underline-offset-2 hover:opacity-70"
+            >
+              Clear all
+            </button>
+            <button type="button" onClick={onClose} aria-label="Close filters">
+              <X className="h-5 w-5" />
+            </button>
           </div>
         </div>
 
-        {/* Applied Filters */}
-        {getAppliedFiltersCount() > 0 && (
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-base font-medium mb-3">APPLIED FILTERS</h3>
+        {/* Applied filters */}
+        {appliedChips.length > 0 && (
+          <div className="border-b border-neutral-200 bg-neutral-50 px-5 py-3 dark:border-neutral-800 dark:bg-neutral-900">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-neutral-600 dark:text-neutral-400">
+              Applied filters
+            </p>
             <div className="flex flex-wrap gap-2">
-              {Object.entries(filters).map(([key, value]) => {
-                if (Array.isArray(value) && value.length > 0) {
-                  return value.map((item) => (
-                    <div
-                      key={`${key}-${item}`}
-                      className="flex items-center bg-gray-100 text-black rounded px-2 py-1 text-base"
-                    >
-                      <span>{item}</span>
-                      <button
-                        onClick={() => handleFilterChange(key, item, false)}
-                        className="ml-1 text-gray-500 hover:text-gray-700"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))
-                } else if (typeof value === "string" && value) {
-                  return (
-                    <div
-                      key={key}
-                      className="flex items-center bg-gray-100 text-black rounded px-2 py-1 text-base"
-                    >
-                      <span>{value}</span>
-                      <button
-                        onClick={() => setFilters((prev: Filters) => ({ ...prev, [key]: undefined }))}
-                        className="ml-1 text-gray-500 hover:text-gray-700"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  )
-                }
-                return null
-              })}
+              {appliedChips.map((chip) => (
+                <button
+                  key={`${chip.field}-${chip.value}`}
+                  type="button"
+                  onClick={() => removeChip(chip.field, chip.value)}
+                  className="inline-flex items-center gap-1.5 border border-neutral-300 bg-white px-2.5 py-1 text-sm dark:border-neutral-700 dark:bg-black"
+                >
+                  <span>{chip.label}</span>
+                  <X className="h-3 w-3" />
+                </button>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Filter Sections */}
-        <div className="p-4 space-y-6">
-          {/* Sort By */}
-          <FilterSection
-            title="SORT BY"
-            expanded={expandedSections.sort}
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto px-5 pb-28">
+          {/* Sort */}
+          <Accordion
+            title="Sort by"
+            open={expanded.sort}
             onToggle={() => toggleSection("sort")}
           >
-            {["PRICE (LOW - HIGH)", "NEWEST", "TOP SELLERS", "PRICE (HIGH - LOW)"].map((option) => (
-              <label key={option} className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="sort"
-                  value={option}
-                  checked={filters.sort === option}
-                  onChange={(e) => handleSortChange(e.target.value)}
-                  className="w-4 h-4"
-                />
-                <span className="text-base">{option}</span>
-              </label>
-            ))}
-          </FilterSection>
-
-          {/* Gender */}
-          <FilterSection
-            title="GENDER"
-            expanded={expandedSections.gender}
-            onToggle={() => toggleSection("gender")}
-          >
-            {[
-              { value: "women", label: "Women", count: 128 },
-              { value: "men", label: "Men", count: 126 },
-              { value: "unisex", label: "Unisex", count: 116 },
-              { value: "kids", label: "Kids", count: 58 },
-            ].map((option) => (
-              <label key={option.value} className="flex items-center justify-between cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    checked={(Array.isArray(filters.gender) ? filters.gender : []).includes(option.value)}
-                    onCheckedChange={(checked) =>
-                      handleFilterChange("gender", option.value, checked as boolean)
-                    }
+            <div className="space-y-3 pb-2">
+              {SORT_OPTIONS.map((option) => (
+                <label key={option.value} className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="radio"
+                    name="sort"
+                    value={option.value}
+                    checked={String(filters.sort || "") === option.value}
+                    onChange={() => handleSortChange(option.value)}
+                    className="h-4 w-4 accent-black dark:accent-white"
                   />
-                  <span className="text-base">{option.label}</span>
-                </div>
-                <span className="text-xs text-gray-500">({option.count})</span>
-              </label>
-            ))}
-          </FilterSection>
+                  <span className="text-sm">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </Accordion>
+
+          {/* Shipping */}
+          <Accordion
+            title="Shipping"
+            open={expanded.shipping}
+            onToggle={() => toggleSection("shipping")}
+            count={sectionSelectedCount("shipping")}
+          >
+            <div className="space-y-3 pb-2">
+              {shipping.map((opt) => (
+                <CheckboxRow
+                  key={opt.value}
+                  id={`shipping-${opt.value}`}
+                  label={
+                    <span className="font-bold tracking-wide text-blue-600">PRIME</span>
+                  }
+                  count={opt.count}
+                  checked={isSelected("shipping", opt.value)}
+                  onCheckedChange={(c) => handleMultiToggle("shipping", opt.value, c)}
+                />
+              ))}
+            </div>
+          </Accordion>
 
           {/* Size */}
-          <FilterSection
-            title="SIZE"
-            expanded={expandedSections.size}
+          <Accordion
+            title="Size"
+            open={expanded.size}
             onToggle={() => toggleSection("size")}
+            count={sectionSelectedCount("size")}
           >
-            <div className="grid grid-cols-5 gap-2">
-              {sizeOptions.map((size) => (
-                <button
-                  key={size}
-                  onClick={() =>
-                    handleFilterChange(
-                      "size",
-                      size,
-                      !(Array.isArray(filters.size) ? filters.size : []).includes(size)
-                    )
-                  }
-                  className={`p-2 text-base border rounded transition-colors ${
-                    (Array.isArray(filters.size) ? filters.size : []).includes(size)
-                      ? "border-border bg-black text-white"
-                      : "border-gray-300 hover:border-gray-500"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+            <div className="grid grid-cols-3 gap-2 pb-2">
+              {sizeOptions.map((size) => {
+                const active = isSelected("size", size)
+                return (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => handleMultiToggle("size", size, !active)}
+                    className={cn(
+                      "border px-2 py-2.5 text-sm transition-colors",
+                      active
+                        ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                        : "border-neutral-300 hover:border-black dark:border-neutral-700 dark:hover:border-white"
+                    )}
+                  >
+                    {size}
+                  </button>
+                )
+              })}
             </div>
-          </FilterSection>
+          </Accordion>
+
+          {/* Gender */}
+          <FacetList
+            title="Gender"
+            open={expanded.gender}
+            onToggle={() => toggleSection("gender")}
+            options={genders}
+            field="gender"
+            selectedCount={sectionSelectedCount("gender")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+          />
+
+          {/* Category */}
+          <FacetList
+            title="Category"
+            open={expanded.category}
+            onToggle={() => toggleSection("category")}
+            options={categories}
+            field="category"
+            selectedCount={sectionSelectedCount("category")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+          />
 
           {/* Color */}
-          <FilterSection
-            title="COLOR"
-            expanded={expandedSections.color}
+          <Accordion
+            title="Color"
+            open={expanded.color}
             onToggle={() => toggleSection("color")}
+            count={sectionSelectedCount("color")}
           >
-            <div className="grid grid-cols-8 gap-2">
-              {colorOptions.map((color) => (
-                <button
-                  key={color.value}
-                  onClick={() =>
-                    handleFilterChange(
-                      "color",
-                      color.value,
-                      !(Array.isArray(filters.color) ? filters.color : []).includes(color.value)
-                    )
-                  }
-                  className={`w-8 h-8 rounded border-2 transition-all ${
-                    (Array.isArray(filters.color) ? filters.color : []).includes(color.value)
-                      ? "border-border scale-110"
-                      : "border-gray-300 hover:border-gray-500"
-                  }`}
-                  style={{ backgroundColor: color.hex }}
-                  title={color.label}
-                />
+            <div className="space-y-1 pb-2">
+              {colors.map((opt) => (
+                <label
+                  key={opt.value}
+                  className="flex cursor-pointer items-center justify-between gap-3 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+                >
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      checked={isSelected("color", opt.value)}
+                      onCheckedChange={(c) =>
+                        handleMultiToggle("color", opt.value, Boolean(c))
+                      }
+                    />
+                    <span className="text-sm">{opt.label}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-neutral-500">[{opt.count}]</span>
+                    <span
+                      className="h-4 w-4 border border-neutral-300"
+                      style={{ backgroundColor: opt.hex || "#ccc" }}
+                      title={opt.label}
+                    />
+                  </div>
+                </label>
               ))}
             </div>
-          </FilterSection>
+          </Accordion>
+
+          {/* Best For — stub */}
+          <FacetList
+            title="Best For"
+            open={expanded.best_for}
+            onToggle={() => toggleSection("best_for")}
+            options={bestFor}
+            field="best_for"
+            selectedCount={sectionSelectedCount("best_for")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+            stubHint
+          />
+
+          {/* Collection */}
+          <FacetList
+            title="Collection"
+            open={expanded.collection}
+            onToggle={() => toggleSection("collection")}
+            options={collections}
+            field="collection"
+            selectedCount={sectionSelectedCount("collection")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+          />
+
+          {/* Surface — stub */}
+          <FacetList
+            title="Surface"
+            open={expanded.surface}
+            onToggle={() => toggleSection("surface")}
+            options={surfaces}
+            field="surface"
+            selectedCount={sectionSelectedCount("surface")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+            stubHint
+          />
+
+          {/* Width — stub */}
+          <FacetList
+            title="Width"
+            open={expanded.width}
+            onToggle={() => toggleSection("width")}
+            options={widths}
+            field="width"
+            selectedCount={sectionSelectedCount("width")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+            stubHint
+          />
 
           {/* Price */}
-          <FilterSection
-            title="PRICE"
-            expanded={expandedSections?.price}
+          <Accordion
+            title="Price"
+            open={expanded.price}
             onToggle={() => toggleSection("price")}
           >
-            <div className="space-y-4">
-              <div className="text-center text-base text-gray-600 dark:text-white">
-                ${priceRange.min} – ${priceRange.max}
+            <div className="space-y-4 pb-4">
+              <div className="flex justify-between text-sm">
+                <span>${priceRange[0]}</span>
+                <span>${priceRange[1]}</span>
               </div>
-              {/* Price Range */}
-              <div className="mb-6">
-                <h3 className="font-semibold mb-4">PRICE RANGE</h3>
-                <div className="px-2">
-                  <Slider
-                    value={[Number(filters.min_price) || 0, Number(filters.max_price) || 500]}
-                    onValueChange={([min, max]) => {
-                      handleFilterChange("min_price", String(min), true as boolean)
-                      handleFilterChange("max_price", String(max), true as boolean)
+              <Slider
+                value={priceRange}
+                min={priceBounds.min}
+                max={Math.max(priceBounds.max, priceBounds.min + 1)}
+                step={1}
+                onValueChange={(v) => setPriceRange([v[0], v[1]])}
+                className="py-2"
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-1 block text-xs text-neutral-500">
+                    Minimum (USD)
+                  </label>
+                  <Input
+                    type="number"
+                    value={priceRange[0]}
+                    min={priceBounds.min}
+                    max={priceRange[1]}
+                    onChange={(e) => {
+                      const n = Number(e.target.value)
+                      if (!Number.isFinite(n)) return
+                      setPriceRange([Math.min(n, priceRange[1]), priceRange[1]])
                     }}
-                    max={500}
-                    step={10}
-                    className="mb-2"
+                    className="rounded-none"
                   />
-                  <div className="flex justify-between text-base text-gray-600 dark:text-white">
-                    <span>${filters.min_price || 0}</span>
-                    <span>${filters.max_price || 500}</span>
-                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-neutral-500">
+                    Maximum (USD)
+                  </label>
+                  <Input
+                    type="number"
+                    value={priceRange[1]}
+                    min={priceRange[0]}
+                    max={priceBounds.max}
+                    onChange={(e) => {
+                      const n = Number(e.target.value)
+                      if (!Number.isFinite(n)) return
+                      setPriceRange([priceRange[0], Math.max(n, priceRange[0])])
+                    }}
+                    className="rounded-none"
+                  />
                 </div>
               </div>
-              <div className="flex gap-2">
-                <PriceInput
-                  label="Minimum"
-                  value={priceRange.min}
-                  onChange={(v) => handlePriceChange("min", v)}
-                />
-                <PriceInput
-                  label="Maximum"
-                  value={priceRange.max}
-                  onChange={(v) => handlePriceChange("max", v)}
-                />
-              </div>
             </div>
-          </FilterSection>
+          </Accordion>
+
+          {/* Sport */}
+          <FacetList
+            title="Sport"
+            open={expanded.sport}
+            onToggle={() => toggleSection("sport")}
+            options={sports}
+            field="sport"
+            selectedCount={sectionSelectedCount("sport")}
+            isSelected={isSelected}
+            onToggleValue={handleMultiToggle}
+          />
         </div>
 
-        {/* Apply Button */}
-        <div className="sticky bottom-0 bg-background border-t border-gray-200 p-4">
-          <Button
-            border
-            shadow
-            pressEffect
+        {/* Footer */}
+        <div className="absolute bottom-0 left-0 right-0 border-t border-neutral-200 bg-white px-5 py-4 dark:border-neutral-800 dark:bg-black">
+          <p className="mb-3 text-center text-sm text-neutral-600 dark:text-neutral-400">
+            {liveCount} items found
+          </p>
+          <button
+            type="button"
             onClick={applyFilters}
-            fullWidth
-            theme={isDark ? "black" : "white"}
+            className="flex w-full items-center justify-center gap-2 bg-black px-4 py-3.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
           >
-            APPLY ({getAppliedFiltersCount()})
-          </Button>
+            Show items
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
-      </div>
+      </aside>
     </div>
   )
 }
 
-function FilterSection({
+function Accordion({
   title,
-  expanded,
+  open,
   onToggle,
+  count,
   children,
 }: {
   title: string
-  expanded: boolean
+  open: boolean
   onToggle: () => void
+  count?: number
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <div className="border-b border-neutral-200 dark:border-neutral-800">
       <button
+        type="button"
         onClick={onToggle}
-        className="flex items-center justify-between w-full text-left font-medium mb-3"
+        className="flex w-full items-center justify-between py-4 text-left"
       >
-        <span>{title}</span>
-        {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+        <span className="text-sm font-bold">
+          {title}
+          {count && count > 0 ? ` (${count})` : ""}
+        </span>
+        {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
       </button>
-      {expanded && <div className="space-y-2">{children}</div>}
+      {open && children}
     </div>
   )
 }
 
-function PriceInput({
+function CheckboxRow({
+  id,
   label,
-  value,
-  onChange,
+  count,
+  checked,
+  onCheckedChange,
 }: {
-  label: string
-  value: number
-  onChange: (value: number) => void
+  id: string
+  label: React.ReactNode
+  count: number
+  checked: boolean
+  onCheckedChange: (checked: boolean) => void
 }) {
   return (
-    <div className="flex-1">
-      <label className="block text-xs text-gray-500 mb-1">{label}</label>
-      <div className="relative">
-        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-        <Input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number.parseInt(e.target.value) || value)}
-          className="pl-6"
-          min={65}
-          max={300}
+    <label
+      htmlFor={id}
+      className="flex cursor-pointer items-center justify-between gap-3 py-1.5"
+    >
+      <div className="flex items-center gap-3">
+        <Checkbox
+          id={id}
+          checked={checked}
+          onCheckedChange={(c) => onCheckedChange(Boolean(c))}
         />
+        <span className={cn("text-sm", checked && "font-bold")}>{label}</span>
       </div>
-    </div>
+      <span className="text-sm text-neutral-500">[{count}]</span>
+    </label>
+  )
+}
+
+function FacetList({
+  title,
+  open,
+  onToggle,
+  options,
+  field,
+  selectedCount,
+  isSelected,
+  onToggleValue,
+  stubHint,
+}: {
+  title: string
+  open: boolean
+  onToggle: () => void
+  options: FacetOption[]
+  field: string
+  selectedCount: number
+  isSelected: (field: string, value: string) => boolean
+  onToggleValue: (field: string, value: string, checked: boolean) => void
+  stubHint?: boolean
+}) {
+  return (
+    <Accordion title={title} open={open} onToggle={onToggle} count={selectedCount}>
+      <div className="space-y-1 pb-2">
+        {stubHint && options.every((o) => o.count === 0) && (
+          <p className="mb-2 text-xs text-neutral-400">
+            Options shown for UI parity — data wiring comes with schema update.
+          </p>
+        )}
+        {options.map((opt) => (
+          <CheckboxRow
+            key={opt.value}
+            id={`${field}-${opt.value}`}
+            label={opt.label}
+            count={opt.count}
+            checked={isSelected(field, opt.value)}
+            onCheckedChange={(c) => onToggleValue(field, opt.value, c)}
+          />
+        ))}
+      </div>
+    </Accordion>
   )
 }

@@ -32,11 +32,10 @@ export default function ProductListToolbar({
   const t = useTranslations("productList")
 
   const sortOptions = [
+    { value: 'price_low_high', label: t?.priceLowToHigh || 'Price (low - high)' },
     { value: 'newest', label: t?.newest || 'Newest' },
-    { value: 'price_low_high', label: t?.priceLowToHigh || 'Price: Low to High' },
-    { value: 'price_high_low', label: t?.priceHighToLow || 'Price: High to Low' },
     { value: 'top_sellers', label: t?.topSellers || 'Top Sellers' },
-    { value: 'relevance', label: t?.relevance || 'Relevance' }
+    { value: 'price_high_low', label: t?.priceHighToLow || 'Price (high - low)' },
   ]
 
   const currentSortLabel = sortOptions.find(option => option.value === currentSort)?.label || (t?.sortBy || 'Sort by')

@@ -104,7 +104,17 @@ module Products
       end
 
       if params[:shipping].to_s.downcase.include?("prime")
-        @scope = @scope.where(prime_shipping: true)
+        @scope = @scope
+          .joins("INNER JOIN products_tags ON products_tags.product_id = products.id")
+          .joins("INNER JOIN tags ON tags.id = products_tags.tag_id")
+          .where("LOWER(tags.slug) IN (?) OR LOWER(tags.name) IN (?)",
+                 %w[prime_delivery prime], %w[prime_delivery prime])
+      end
+
+      # Soft-accept fields until schema lands (ignored safely today)
+      %i[best_for surface width].each do |key|
+        next if params[key].blank?
+        # no-op: UI already sends these; wire when columns/tags exist
       end
     end
   end
