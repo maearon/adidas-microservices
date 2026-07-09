@@ -51,6 +51,8 @@ import chatEn from "@/locales/en_US/chat.json"
 import chatVi from "@/locales/vi_VN/chat.json"
 import commerceEn from "@/locales/en_US/commerce.json"
 import commerceVi from "@/locales/vi_VN/commerce.json"
+import sizeGuideEn from "@/locales/en_US/size-guide.json"
+import sizeGuideVi from "@/locales/vi_VN/size-guide.json"
 
 export const locales = {
   "en_US": {
@@ -80,6 +82,7 @@ export const locales = {
     pageFooter: pageFooterEn,
     chat: chatEn,
     commerce: commerceEn,
+    sizeGuide: sizeGuideEn,
   },
   "vi_VN": {
     navbar: navbarVi,
@@ -108,6 +111,7 @@ export const locales = {
     pageFooter: pageFooterVi,
     chat: chatVi,
     commerce: commerceVi,
+    sizeGuide: sizeGuideVi,
   },
 } as const
 

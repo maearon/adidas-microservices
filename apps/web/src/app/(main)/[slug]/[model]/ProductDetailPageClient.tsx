@@ -31,6 +31,7 @@ import { isSameWishItem } from "@/lib/commerce/line-keys"
 import type { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import ProductSections from "@/components/product/ProductSections"
+import SizeGuideModal from "@/components/product/SizeGuideModal"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -58,6 +59,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     highlights: false, // 👈 thêm
   })
   const [sizeError, setSizeError] = useState("")
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
   const [completeLookProducts, setCompleteLookProducts] = useState<Product[]>([])
   const [alsoLikeProducts, setAlsoLikeProducts] = useState<Product[]>([])
 
@@ -458,7 +460,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
             <div>
               <div className="flex justify-between items-center mt-[40px]">
                 <h3 className="font-bold text-base">{t?.sizes || "Sizes"}</h3>
-                <button className="text-sm underline flex items-center text-black dark:text-white hover:opacity-80">
+                <button
+                  type="button"
+                  onClick={() => setSizeGuideOpen(true)}
+                  className="text-sm underline flex items-center text-black dark:text-white hover:opacity-80"
+                >
                   <span className="mr-1">📏</span>
                   {t?.sizeGuide || "Size guide"}
                 </button>
@@ -661,6 +667,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         />
         <div id="sticky-stopper" className="h-1 w-full" /> {/* Thêm div giả để quan sát chạm đáy */}
         </div>
+      <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
       {/* </div> */}
     </main>
   )
