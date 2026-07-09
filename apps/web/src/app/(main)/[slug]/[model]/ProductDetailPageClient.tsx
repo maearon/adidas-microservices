@@ -32,6 +32,7 @@ import type { Product } from "@/types/product"
 import { useTranslations } from "@/hooks/useTranslations"
 import ProductSections from "@/components/product/ProductSections"
 import SizeGuideModal from "@/components/product/SizeGuideModal"
+import { resolveSizeGuideType } from "@/lib/size-guide-type"
 
 interface ProductDetailPageClientProps {
   params: {
@@ -114,6 +115,11 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
   const [hoveredColor, setHoveredColor] = useState<string | null>(null)
   const displayColor = hoveredColor || variant?.color
   const sizes = variant?.sizes ?? []
+  const sizeGuideType = resolveSizeGuideType({
+    category: product?.category,
+    product_type: product?.product_type,
+    name: product?.name,
+  })
 
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size)
@@ -667,7 +673,16 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
         />
         <div id="sticky-stopper" className="h-1 w-full" /> {/* Thêm div giả để quan sát chạm đáy */}
         </div>
-      <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
+      <SizeGuideModal
+        isOpen={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+        guideType={sizeGuideType}
+        availableSizes={sizes}
+        onSelectSize={(size) => {
+          handleSizeSelect(size)
+          setSizeGuideOpen(false)
+        }}
+      />
       {/* </div> */}
     </main>
   )
