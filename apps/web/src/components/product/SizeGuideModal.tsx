@@ -11,10 +11,13 @@ import {
 } from "@/lib/size-recommendation";
 import { ShoesGuideContent } from "./size-guide/ShoesGuideContent";
 import { TopsGuideContent } from "./size-guide/TopsGuideContent";
+import { MensTopsGuideContent } from "./size-guide/MensTopsGuideContent";
 import { SizeProfileView } from "./size-guide/SizeProfileView";
 import { SizeRecommendationView } from "./size-guide/SizeRecommendationView";
 
 type View = "guide" | "profile" | "recommendation";
+
+const SIZE_REC_STORAGE_KEY = "adidas_size_recommendation";
 
 const defaultProfile: SizeProfileInput = {
   heightUnit: "cm",
@@ -26,6 +29,23 @@ const defaultProfile: SizeProfileInput = {
   age: "",
   preference: "mens",
 };
+
+function readSavedRecommendation(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return localStorage.getItem(SIZE_REC_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveRecommendation(size: string) {
+  try {
+    localStorage.setItem(SIZE_REC_STORAGE_KEY, size);
+  } catch {
+    /* ignore */
+  }
+}
 
 interface SizeGuideModalProps {
   isOpen: boolean;
@@ -47,18 +67,23 @@ export default function SizeGuideModal({
   const [view, setView] = useState<View>("guide");
   const [profile, setProfile] = useState<SizeProfileInput>(defaultProfile);
   const [recommendedSize, setRecommendedSize] = useState("M");
+  const [savedRecommendedSize, setSavedRecommendedSize] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      setSavedRecommendedSize(readSavedRecommendation());
+    } else {
       setView("guide");
       setProfile(defaultProfile);
     }
   }, [isOpen]);
 
   const chartTitle =
-    guideType === "tops"
-      ? t?.chartTitleTops || "UNITEFIT TOPS SIZING"
-      : t?.chartTitle || "SIZE CHART: KIDS' SHOES";
+    guideType === "mensTops"
+      ? t?.chartTitleMensTops || "MEN'S SHIRTS & TOPS SIZING"
+      : guideType === "tops"
+        ? t?.chartTitleTops || "UNITEFIT TOPS SIZING"
+        : t?.chartTitle || "SIZE CHART: KIDS' SHOES";
 
   const handleBackToTop = () => {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -67,6 +92,8 @@ export default function SizeGuideModal({
   const handleFindSize = () => {
     const size = recommendTopSize(profile);
     setRecommendedSize(size);
+    saveRecommendation(size);
+    setSavedRecommendedSize(size);
     setView("recommendation");
   };
 
@@ -83,6 +110,7 @@ export default function SizeGuideModal({
   };
 
   const showGuideHeader = view === "guide";
+  const supportsProfile = guideType === "tops" || guideType === "mensTops";
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
@@ -142,7 +170,19 @@ export default function SizeGuideModal({
               </div>
             )}
 
-            {view === "profile" && (
+            {view === "guide" && guideType === "mensTops" && (
+              <div className="px-6">
+                <MensTopsGuideContent
+                  t={t}
+                  savedRecommendedSize={savedRecommendedSize}
+                  onStartProfile={() => setView("profile")}
+                  onEditProfile={() => setView("profile")}
+                  onBackToTop={handleBackToTop}
+                />
+              </div>
+            )}
+
+            {view === "profile" && supportsProfile && (
               <SizeProfileView
                 t={t}
                 profile={profile}
@@ -152,7 +192,7 @@ export default function SizeGuideModal({
               />
             )}
 
-            {view === "recommendation" && (
+            {view === "recommendation" && supportsProfile && (
               <SizeRecommendationView
                 t={t}
                 recommendedSize={recommendedSize}

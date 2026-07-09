@@ -119,6 +119,7 @@ export default function ProductDetailPageClient({ params }: ProductDetailPageCli
     category: product?.category,
     product_type: product?.product_type,
     name: product?.name,
+    gender: product?.gender,
   })
 
   const handleSizeSelect = (size: string) => {

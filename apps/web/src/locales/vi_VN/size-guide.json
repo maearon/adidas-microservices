@@ -2,6 +2,7 @@
   "title": "HƯỚNG DẪN CHỌN SIZE",
   "chartTitle": "BẢNG SIZE: GIÀY TRẺ EM",
   "chartTitleTops": "BẢNG SIZE ÁO UNITEFIT",
+  "chartTitleMensTops": "BẢNG SIZE ÁO & ÁO THUN NAM",
   "close": "Đóng",
   "inches": "Inch",
   "cm": "cm",
@@ -63,5 +64,13 @@
   "recommendationDesc": "Gợi ý size được tính từ thông tin bạn cung cấp và mức độ true-to-size của sản phẩm.",
   "selectSize": "Chọn size",
   "edit": "Chỉnh sửa",
-  "sizeGuideLink": "Hướng dẫn chọn size"
+  "sizeGuideLink": "Hướng dẫn chọn size",
+  "yourRecommendedSizeIs": "Size gợi ý của bạn là",
+  "recommendedSizeSavedDesc": "Được tính từ thông tin bạn đã cung cấp trước đó. Bạn có thể chỉnh sửa trong hồ sơ size.",
+  "tallTitle": "Tall (dài)",
+  "tallDesc": "Size Tall/Long dành cho nam trên 1,88 m (6'2\").",
+  "shortTitle": "Short (ngắn)",
+  "shortDesc": "Size Petite/Short dành cho nam dưới 1,75 m (5'9\").",
+  "convertYourSize": "Quy đổi size",
+  "mensHowToMeasureAlt": "Hình minh họa đo cơ thể nam"
 }

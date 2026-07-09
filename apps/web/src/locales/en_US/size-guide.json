@@ -2,6 +2,7 @@
   "title": "SIZE GUIDE",
   "chartTitle": "SIZE CHART: KIDS' SHOES",
   "chartTitleTops": "UNITEFIT TOPS SIZING",
+  "chartTitleMensTops": "MEN'S SHIRTS & TOPS SIZING",
   "close": "Close",
   "inches": "Inches",
   "cm": "cm",
@@ -63,5 +64,13 @@
   "recommendationDesc": "Your size recommendation is calculated using the information you've shared and how true to size this item is.",
   "selectSize": "Select size",
   "edit": "Edit",
-  "sizeGuideLink": "Size guide"
+  "sizeGuideLink": "Size guide",
+  "yourRecommendedSizeIs": "Your recommended size is",
+  "recommendedSizeSavedDesc": "Calculated using information you've shared previously. You can edit this information in your size profile.",
+  "tallTitle": "Tall",
+  "tallDesc": "Tall/ Long sizes are designed for men over 6'2\" and up.",
+  "shortTitle": "Short",
+  "shortDesc": "Petite/ Short sizes are designed for men up to 5'9\".",
+  "convertYourSize": "Convert your size",
+  "mensHowToMeasureAlt": "Men's body measurement guide"
 }
