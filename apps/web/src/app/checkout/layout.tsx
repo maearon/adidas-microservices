@@ -5,8 +5,8 @@ import "../globals.css"
 import { getServerSession } from "@/lib/get-session"
 import CheckoutHeader from "@/app/checkout/checkout-header"
 import CommerceMinimalFooter from "@/components/commerce/CommerceMinimalFooter"
-import commerceEn from "@/locales/en_US/commerce.json"
-import commerceVi from "@/locales/vi_VN/commerce.json"
+import commerceEn from "@/locales/en_US/commerce.json" with { type: "json" }
+import commerceVi from "@/locales/vi_VN/commerce.json" with { type: "json" }
 
 const commerceByLocale = {
   en_US: commerceEn,
