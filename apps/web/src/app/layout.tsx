@@ -10,6 +10,7 @@ import { ReduxProvider } from "@/providers/redux-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocationModalProvider } from "@/components/modal-providers";
 import { ToastProvider } from "@/components/ToastProvider";
+import { resolveRequestLocale } from "@/lib/locale.server";
 
 import ChatWidget from "@/components/chat/ChatWidget";
 import FeedbackWidget from "@/components/feedback-widget";
@@ -48,7 +49,10 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
 
-  const locale = cookieStore.get("locale")?.value || "en";
+  const initialLocale = await resolveRequestLocale(
+    cookieStore.get("NEXT_LOCALE")?.value,
+  );
+  const htmlLang = initialLocale.split("_")[0];
   // Respect stored theme but don't force 'dark' as default on server.
   // If theme is 'system' we avoid setting an explicit class so next-themes can
   // manage it on the client and prevent hydration mismatch.
@@ -58,14 +62,15 @@ export default async function RootLayout({
 
   return (
     <html
-  lang={locale}
-  className={`
+      lang={htmlLang}
+      suppressHydrationWarning
+      className={`
     ${barlow.variable}
     ${htmlClass ?? ""}
   `}
->
-      <body className={barlow.variable}>
-        <ReduxProvider>
+    >
+      <body className={barlow.variable} suppressHydrationWarning>
+        <ReduxProvider initialLocale={initialLocale}>
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"

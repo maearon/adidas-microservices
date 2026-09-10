@@ -22,6 +22,7 @@ export function useLocationModal() {
       // ✅ Nếu chưa có thì tự động detect từ browser
       const detected = normalizeLocale(navigator.language)
       localStorage.setItem("NEXT_LOCALE", detected)
+      document.cookie = `NEXT_LOCALE=${detected}; path=/; max-age=31536000`
     }
   }, [])
 
@@ -37,6 +38,7 @@ export function useLocationModal() {
     if (typeof window !== "undefined") {
       localStorage.setItem("NEXT_LOCALE", location)
       localStorage.setItem("location-modal-seen", "true")
+      document.cookie = `NEXT_LOCALE=${location}; path=/; max-age=31536000`
     }
     setIsOpen(false)
   }
