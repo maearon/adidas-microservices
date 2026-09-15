@@ -9,8 +9,14 @@ const nextConfig = {
   experimental: {
     authInterrupts: true,
   },
-  output: "standalone",
-  outputFileTracingRoot: path.join(__dirname, "../.."),
+  // Next 16.3 + Vercel adapter skips next-server.js.nft.json, which breaks
+  // standalone packaging (vercel/next.js#96646). Vercel ignores standalone anyway.
+  ...(process.env.VERCEL
+    ? {}
+    : {
+        output: "standalone",
+        outputFileTracingRoot: path.join(__dirname, "../.."),
+      }),
   typescript: {
     ignoreBuildErrors: true,
   },
