@@ -16,10 +16,10 @@ services:
     env_file:
       - ./apps/api-gateway/.env
     environment:
-      - API_JAVA_URL=http://localhost:8080
-      - API_RUBY_URL=http://localhost:3000
-      - API_PYTHON_URL=http://localhost:8000
-      - PAYMENTS_URL=http://localhost:3003
+      - API_JAVA_URL=http://api-java:8080
+      - API_RUBY_URL=http://api-ruby:3000
+      - API_PYTHON_URL=http://api-python:8000
+      - PAYMENTS_URL=http://payments:3003
 
     # volumes:
     #   - ./apps/api-gateway:/app
@@ -50,7 +50,7 @@ services:
     volumes:
       - ./apps/chat-service:/app
       - /app/node_modules
-    command: npm run dev
+    command: sh -c "npm install && npm run dev"
     networks:
       - adidas-network
 
@@ -61,10 +61,16 @@ services:
       dockerfile: docker/web.Dockerfile
     ports:
       - "3001:3001"
+    env_file:
+      - ./apps/web/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:9000
-      - NEXT_PUBLIC_AUTH0_DOMAIN=your-domain.auth0.com
-      - NEXT_PUBLIC_AUTH0_CLIENT_ID=your_auth0_client_id
+      - PORT=3001
+      - HOSTNAME=0.0.0.0
+      - DATABASE_URL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_auth_prod
+      - PRISMA_DATABASE_URL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
     # depends_on:
     #   - api-gateway
     #   - api-java
@@ -94,10 +100,10 @@ services:
       - SERVICES_USERS_BASE_URL=http://users:3001
       - SERVICES_ORDERS_BASE_URL=http://orders:3002
       - SERVICES_PAYMENTS_BASE_URL=http://payments:3003
-      - SERVICES_SEARCH_BASE_URL=http://search:3004
-      - GOOGLE_CLIENT_ID
-      - GOOGLE_CLIENT_SECRET
-      - GOOGLE_REDIRECT_URI
+      - SERVICES_SEARCH_BASE_URL=http://api-python:8000
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/oauth/google/callback}
     # command: mvn spring-boot:run
     networks:
       - adidas-network 
@@ -112,6 +118,8 @@ services:
     volumes:
       - ./apps/ruby-rails-boilerplate:/app
     working_dir: /app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - ./apps/ruby-rails-boilerplate/.env
     environment:
@@ -122,13 +130,14 @@ services:
       - NEXT_PUBLIC_STREAM_KEY=6cqupfrs4qh3
       - NEXT_PUBLIC_UPLOADTHING_APP_ID=4ccb128760a9b12e757ee0cc267c4a4f
       - POSTGRES_DATABASE=adidas_product_prod
-      - POSTGRES_HOST=ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech
-      - POSTGRES_PASSWORD=z9GYTlrXa8Qx
-      - POSTGRES_PRISMA_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/adidas_product_prod?sslmode=require&pgbouncer=true&connect_timeout=15
-      - POSTGRES_URL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/adidas_product_prod?sslmode=require
-      - POSTGRES_URL_NO_SSL=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech:5432/adidas_product_prod
-      - POSTGRES_URL_NON_POOLING=postgres://default:z9GYTlrXa8Qx@ep-bold-voice-a4yp8xc9.us-east-1.aws.neon.tech:5432/adidas_product_prod?sslmode=require
-      - POSTGRES_USER=default
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_PASSWORD=adidas_local
+      - POSTGRES_PRISMA_URL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
+      - POSTGRES_URL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
+      - POSTGRES_URL_NO_SSL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
+      - POSTGRES_URL_NON_POOLING=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
+      - POSTGRES_USER=adidas
+      - DATABASE_URL=postgresql://adidas:adidas_local@host.docker.internal:5432/adidas_product_prod
       - RAILS_MASTER_KEY=6a31ee167b28ab32ab171795d2eff778
       - STREAM_SECRET=djkppj5rnre3bfqvraufhv8asfkbtngjpx8np7xhnumnege5542sg4vvcx7wx5xq
       - WEB_CONCURRENCY=4
@@ -198,6 +207,7 @@ services:
     ports:
       - "3003:3003"
     environment:
+      - PORT=3003
       - DATABASE_URL=${DATABASE_URL}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
@@ -225,6 +235,13 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - REDIS_URL=redis://redis:6379
+      - ALLOWED_HOSTS=*
+      - DB_NAME=verceldb
+      - DB_USER=default
+      - DB_PASSWORD=z9GYTlrXa8Qx
+      - DB_HOST=ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech
+      - DB_PORT=5432
+      - DB_SSLMODE=require
     networks:
       - adidas-network
 
@@ -240,6 +257,15 @@ services:
       - redis
     environment:
       - RABBITMQ_HOST=rabbitmq
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - REDIS_URL=redis://redis:6379
+      - ALLOWED_HOSTS=*
+      - DB_NAME=verceldb
+      - DB_USER=default
+      - DB_PASSWORD=z9GYTlrXa8Qx
+      - DB_HOST=ep-bold-voice-a4yp8xc9-pooler.us-east-1.aws.neon.tech
+      - DB_PORT=5432
+      - DB_SSLMODE=require
     networks:
       - adidas-network
 

@@ -1,11 +1,18 @@
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http";
+import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
 import * as schema from "./schema";
 
 export type AppDatabase = NeonHttpDatabase<typeof schema>;
 
 let _db: AppDatabase | null = null;
+let _pool: Pool | null = null;
+
+function isNeonUrl(url: string) {
+  return url.includes("neon.tech");
+}
 
 export function getDb(): AppDatabase {
   const databaseUrl = process.env.DATABASE_URL;
@@ -13,7 +20,12 @@ export function getDb(): AppDatabase {
     throw new Error("DATABASE_URL is not configured");
   }
   if (!_db) {
-    _db = drizzle(databaseUrl, { schema });
+    if (isNeonUrl(databaseUrl)) {
+      _db = drizzleNeon(databaseUrl, { schema });
+    } else {
+      _pool = new Pool({ connectionString: databaseUrl });
+      _db = drizzlePg(_pool, { schema }) as unknown as AppDatabase;
+    }
   }
   return _db;
 }
