@@ -32,23 +32,6 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
     setSelectedLocation(locationId);
   };
 
-  // const locations = [
-  //   {
-  //     id: "vi_VN",
-  //     name: "Vietnam",
-  //     flag: "🇻🇳",
-  //   },
-  //   {
-  //     id: "en_US",
-  //     name: "United States",
-  //     flag: "🇺🇸",
-  //   },
-  // ] as const;
-
-  const handleLocationSelect = (locationId: SupportedLocale) => {
-    setSelectedLocation(locationId);
-  };
-
   const handleConfirm = () => {
     // Gọi callback được truyền vào props
     onLocationSelect(selectedLocation)
