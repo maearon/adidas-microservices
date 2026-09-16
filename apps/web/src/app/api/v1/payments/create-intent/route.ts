@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { auth } from "@/lib/auth";
+import { USD_TO_VND } from "@/lib/constants/exchange-rate";
 
 /**
  * POST /api/v1/payments/create-intent
@@ -120,7 +121,7 @@ async function createMoMoPayment(orderId: string, amount: number, currency: stri
   }
 
   // MoMo uses VND, convert if needed
-  const amountInVND = currency === "VND" ? amount : Math.round(amount * 24000); // Approximate conversion
+  const amountInVND = currency === "VND" ? amount : Math.round(amount * USD_TO_VND);
 
   const requestId = `${Date.now()}`;
   const orderInfo = `Order ${orderId}`;
@@ -191,7 +192,7 @@ async function createVNPayPayment(orderId: string, amount: number, currency: str
   }
 
   // VNPay uses VND
-  const amountInVND = currency === "VND" ? amount : Math.round(amount * 24000);
+  const amountInVND = currency === "VND" ? amount : Math.round(amount * USD_TO_VND);
 
   const vnp_Params: Record<string, string> = {
     vnp_Version: "2.1.0",

@@ -2,13 +2,11 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { format, formatDistanceToNowStrict } from "date-fns"
 import { SupportedLocale } from "./constants/localeOptions"
+import { USD_TO_VND } from "./constants/exchange-rate"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-// Tỉ giá USD → VND (có thể lấy từ API hoặc config .env)
-const USD_TO_VND = 26375
 
 /** Chuẩn hóa locale bất kỳ về SupportedLocale */
 export function normalizeLocale(input?: string | null): SupportedLocale {
