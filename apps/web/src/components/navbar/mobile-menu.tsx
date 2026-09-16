@@ -38,6 +38,7 @@ import { useTranslations } from "@/hooks/useTranslations"
 import { adidasCdnImage } from "@/lib/adidas-cdn"
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 import { Z } from "@/lib/z-index"
+import { LocaleCountryRadio } from "@/components/navbar/locale-country-radio"
 
 // ======================
 // Utils type guards
@@ -473,7 +474,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         persistLocale(item.value as SupportedLocale)
                         handleClose()
                       }}
-                      className="w-full flex items-center justify-between py-4 pl-14 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
+                      className="flex w-full items-center justify-between py-4 pl-14 pr-4 text-left hover:bg-white dark:hover:bg-black border-b border-white dark:border-black"
                     >
                       <div className="flex items-center gap-3">
                         <Image
@@ -486,9 +487,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           {item.title}
                         </span>
                       </div>
-                      {selected && (
-                        <span className="text-sm text-muted-foreground">Selected</span>
-                      )}
+                      <LocaleCountryRadio checked={selected} />
                     </button>
                   )
                 }
