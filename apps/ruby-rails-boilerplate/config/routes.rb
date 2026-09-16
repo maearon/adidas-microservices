@@ -12,9 +12,10 @@ Rails.application.routes.draw do
     get "products/:slug/:variant_code", to: "products#show"
 
     namespace :admin do
+      # Unique name: `member { post :update }` collides with resources#update and never registers.
+      post "products/:id/update", to: "products#update", as: :product_post_update
       resources :products, only: [:create, :update] do
         member do
-          post :update
           get :translations
           patch :reorder_images
           post :update_translations

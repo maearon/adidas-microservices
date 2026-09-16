@@ -16,6 +16,8 @@ class Api::Admin::ProductsController < ActionController::API
     else
       render_error(@product, 'Failed to create product')
     end
+  rescue ActionController::ParameterMissing => e
+    render json: { success: false, message: e.message }, status: :bad_request
   rescue StandardError => e
     render_exception(e, 'Failed to create product')
   end
@@ -34,6 +36,8 @@ class Api::Admin::ProductsController < ActionController::API
     else
       render_error(@product, 'Failed to update product')
     end
+  rescue ActionController::ParameterMissing => e
+    render json: { success: false, message: e.message }, status: :bad_request
   rescue StandardError => e
     render_exception(e, 'Failed to update product')
   end
