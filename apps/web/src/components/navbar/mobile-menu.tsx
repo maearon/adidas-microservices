@@ -18,6 +18,7 @@ import type {
 } from "@/types/common"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import {
+  countryDisplayMap,
   localeDisplayMap,
   localeOptions,
   SupportedLocale,
@@ -563,22 +564,23 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
         {/* Footer sticky (only level 1) */}
         {isMainMenu && (
-        <div className="sticky bottom-0 z-10 shrink-0 border-t border-gray-200 bg-white dark:border-white dark:bg-black">
+        <div className="sticky bottom-0 z-10 shrink-0 border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-black">
           <button
             type="button"
             onClick={openLocaleLevel}
-            className="flex h-14 w-full cursor-pointer items-center justify-between pl-5 pr-4"
+            className="flex h-14 w-full cursor-pointer items-center pl-5 pr-4"
           >
             <div className="flex items-center gap-3">
               <Image
                 src={localeOptions.find(c => c.value === locale)?.flag || "/flag/us.svg"}
-                alt={`${languageLabel} Flag`}
+                alt={`${countryDisplayMap[locale] ?? countryDisplayMap.en_US} Flag`}
                 width={24}
                 height={16}
               />
-              <span className="font-medium">{languageLabel}</span>
+              <span className="text-base font-normal">
+                {countryDisplayMap[locale] ?? countryDisplayMap.en_US}
+              </span>
             </div>
-            <MobileMenuChevron />
           </button>
         </div>
         )}
