@@ -5,7 +5,7 @@ class Api::Admin::ProductsController < ActionController::API
   # POST /api/admin/products
   def create
     @product = Product.new
-    assign_product_attributes(@product, product_params.except(:image, :hover_image, :translations_attributes))
+    assign_product_attributes(@product, assignable_product_params)
     attach_product_images(@product, params[:product])
 
     if @product.save
@@ -25,7 +25,7 @@ class Api::Admin::ProductsController < ActionController::API
   # PATCH/PUT /api/admin/products/:id
   # POST /api/admin/products/:id/update
   def update
-    assign_product_attributes(@product, product_params.except(:image, :hover_image, :translations_attributes))
+    assign_product_attributes(@product, assignable_product_params)
     attach_product_images(@product, params[:product])
 
     if @product.save
@@ -134,9 +134,6 @@ class Api::Admin::ProductsController < ActionController::API
         :price,
         :compare_at_price,
         :stock,
-        :avatar,
-        :hover,
-        images: {},
         variant_sizes_attributes: [
           :id,
           :size_id,
@@ -144,6 +141,44 @@ class Api::Admin::ProductsController < ActionController::API
         ]
       ]
     )
+  end
+
+  def assignable_product_params
+    attrs = product_params.except(:image, :hover_image, :translations_attributes)
+    variants = attrs[:variants_attributes] || attrs['variants_attributes']
+    return attrs unless variants
+
+    variants.each_value do |variant_attrs|
+      next unless variant_attrs.respond_to?(:delete)
+
+      %w[images avatar hover].each do |key|
+        variant_attrs.delete(key)
+        variant_attrs.delete(key.to_sym)
+      end
+    end
+    attrs
+  end
+
+  def extract_uploaded_files(value)
+    return [] if value.blank?
+    return [value] if uploaded_file?(value)
+
+    if value.is_a?(Array) && value.size == 2 && value.first.to_s.match?(/\A\d+\z/) && uploaded_file?(value.last)
+      return [value.last]
+    end
+
+    hash =
+      if value.respond_to?(:to_unsafe_h)
+        value.to_unsafe_h
+      elsif value.is_a?(Hash)
+        value
+      end
+
+    return hash.values.flat_map { |item| extract_uploaded_files(item) } if hash
+
+    return value.flat_map { |item| extract_uploaded_files(item) } if value.is_a?(Array)
+
+    []
   end
 
   # FE gửi category là string ("Shoes") — không gán vào belongs_to :category
@@ -195,13 +230,10 @@ class Api::Admin::ProductsController < ActionController::API
     variant.avatar.attach(avatar) if uploaded_file?(avatar)
     variant.hover.attach(hover) if uploaded_file?(hover)
 
-    if images.present?
-      files = images.respond_to?(:values) ? images.values : Array(images)
-      uploaded = files.select { |img| uploaded_file?(img) }
-      if uploaded.any?
-        variant.images.purge if variant.images.attached?
-        uploaded.each { |img| variant.images.attach(img) }
-      end
+    uploaded = extract_uploaded_files(images)
+    if uploaded.any?
+      variant.images.purge if variant.images.attached?
+      uploaded.each { |img| variant.images.attach(img) }
     end
   end
 
