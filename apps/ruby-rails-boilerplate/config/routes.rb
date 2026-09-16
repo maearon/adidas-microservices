@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :products, only: [:create, :update] do
         member do
+          post :update
           get :translations
           patch :reorder_images
           post :update_translations

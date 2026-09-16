@@ -1,4 +1,5 @@
 class Api::Admin::ProductsController < ActionController::API
+  before_action :set_json_format
   before_action :set_product, only: [:update, :reorder_images, :translations, :update_translations]
 
   # POST /api/admin/products
@@ -11,13 +12,16 @@ class Api::Admin::ProductsController < ActionController::API
       translations = translations_attrs_from_params
       update_product_translations(@product, translations) if translations.present?
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
-      render 'api/admin/products/show', status: :created
+      render_product_mutation(status: :created)
     else
       render_error(@product, 'Failed to create product')
     end
+  rescue StandardError => e
+    render_exception(e, 'Failed to create product')
   end
 
   # PATCH/PUT /api/admin/products/:id
+  # POST /api/admin/products/:id/update
   def update
     assign_product_attributes(@product, product_params.except(:image, :hover_image, :translations_attributes))
     attach_product_images(@product, params[:product])
@@ -26,10 +30,12 @@ class Api::Admin::ProductsController < ActionController::API
       translations = translations_attrs_from_params
       update_product_translations(@product, translations) if translations.present?
       attach_variant_nested_images(@product, params[:product][:variants_attributes])
-      render 'api/admin/products/show'
+      render_product_mutation
     else
       render_error(@product, 'Failed to update product')
     end
+  rescue StandardError => e
+    render_exception(e, 'Failed to update product')
   end
 
   # GET /api/admin/products/:id/translations
@@ -84,6 +90,10 @@ class Api::Admin::ProductsController < ActionController::API
   end
 
   private
+
+  def set_json_format
+    request.format = :json
+  end
 
   # 🧩 Tìm product theo variant_code (FE gửi ID là variant_code)
   def set_product
@@ -151,15 +161,9 @@ class Api::Admin::ProductsController < ActionController::API
 
     image = payload["image"] || payload[:image]
     hover_image  = payload["hover_image"] || payload[:hover_image]
-    if image.present?
-      product.image.purge if product.image.attached?
-      product.image.attach(image)
-    end
-
-    if hover_image.present?
-      product.hover_image.purge if product.hover_image.attached?
-      product.hover_image.attach(hover_image)
-    end
+    # attach() already replaces has_one; extra purge is a slow Cloudinary round-trip.
+    product.image.attach(image) if uploaded_file?(image)
+    product.hover_image.attach(hover_image) if uploaded_file?(hover_image)
   end
 
   # 📦 Gắn ảnh cho từng variant con (fix lỗi symbol vs integer)
@@ -184,21 +188,15 @@ class Api::Admin::ProductsController < ActionController::API
     hover  = attrs["hover"] || attrs[:hover]
     images = attrs["images"] || attrs[:images]
 
-    if avatar.present?
-      variant.avatar.purge if variant.avatar.attached?
-      variant.avatar.attach(avatar)
-    end
-
-    if hover.present?
-      variant.hover.purge if variant.hover.attached?
-      variant.hover.attach(hover)
-    end
+    variant.avatar.attach(avatar) if uploaded_file?(avatar)
+    variant.hover.attach(hover) if uploaded_file?(hover)
 
     if images.present?
-      # images là hash {"0" => file1, "1" => file2, ...}
-      variant.images.purge if variant.images.attached?
-      images.values.each do |img|
-        variant.images.attach(img)
+      files = images.respond_to?(:values) ? images.values : Array(images)
+      uploaded = files.select { |img| uploaded_file?(img) }
+      if uploaded.any?
+        variant.images.purge if variant.images.attached?
+        uploaded.each { |img| variant.images.attach(img) }
       end
     end
   end
@@ -326,6 +324,32 @@ class Api::Admin::ProductsController < ActionController::API
   rescue => e
     Rails.logger.error "Translation validation error: #{e.message}"
     false
+  end
+
+  def uploaded_file?(value)
+    value.respond_to?(:tempfile) || value.is_a?(ActionDispatch::Http::UploadedFile)
+  end
+
+  def render_product_mutation(status: :ok)
+    @product.reload
+    render json: {
+      success: true,
+      data: {
+        id: @product.id,
+        name: @product.name,
+        slug: @product.slug,
+        variants: @product.variants.map { |variant| { id: variant.id, variant_code: variant.variant_code } }
+      },
+      message: 'Product saved successfully'
+    }, status: status
+  end
+
+  def render_exception(error, message)
+    Rails.logger.error("[admin products] #{message}: #{error.class} #{error.message}\n#{error.backtrace&.first(12)&.join("\n")}")
+    render json: {
+      success: false,
+      message: "#{message}: #{error.message}"
+    }, status: :internal_server_error
   end
 
   # ⚠️ Render lỗi chuẩn REST
