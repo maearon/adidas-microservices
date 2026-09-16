@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useState, useEffect } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch } from "@/store/hooks"
 import { countryDisplayMap, localeOptions, SupportedLocale } from "@/lib/constants/localeOptions"
@@ -20,8 +20,17 @@ interface LocationModalProps {
 
 export default function LocationModal({ isOpen, onClose, onLocationSelect }: LocationModalProps) {
   const dispatch = useAppDispatch()
-  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>(useSelector((s: RootState) => s.locale.locale) || "en_US")
+  const locale = useSelector((s: RootState) => s.locale.locale) || "en_US"
+  const [selectedLocation, setSelectedLocation] = useState<SupportedLocale>(locale)
   const t = useTranslations("location")
+
+  useEffect(() => {
+    if (isOpen) setSelectedLocation(locale)
+  }, [isOpen, locale])
+
+  const handleLocationSelect = (locationId: SupportedLocale) => {
+    setSelectedLocation(locationId);
+  };
 
   // const locations = [
   //   {
@@ -68,6 +77,10 @@ export default function LocationModal({ isOpen, onClose, onLocationSelect }: Loc
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="relative overflow-visible rounded-none bg-white p-0 dark:bg-black sm:max-w-md"
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{t?.deliveryLocation || "Delivery location"}</DialogTitle>
+          <DialogDescription>{t?.pleaseChooseYour || "Please choose your delivery location"}</DialogDescription>
+        </DialogHeader>
         <AdidasCloseButton variant="corner" onClick={onClose} />
         <div className="max-h-[min(90dvh,640px)] overflow-x-hidden overflow-y-auto p-6 sm:p-8">
           {/* Header */}

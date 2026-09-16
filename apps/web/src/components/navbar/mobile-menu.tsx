@@ -34,8 +34,6 @@ import {
   type MobileNavNode,
 } from "@/data/mobile-menu/mobile-nav-data"
 import { useTranslations } from "@/hooks/useTranslations"
-import LocationModal from "@/components//location-modal"
-import { useLocationModal } from "@/hooks/useLocationModal"
 import { adidasCdnImage } from "@/lib/adidas-cdn"
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 import { Z } from "@/lib/z-index"
@@ -215,9 +213,6 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const [country, setCountry] = useState<string>("US")
-  const [isLocaleModalOpen, setIsLocaleModalOpen] = useState(false)
-  const { selectLocation } = useLocationModal()
   const [currentLevel, setCurrentLevel] = useState<MenuLevel>({
     title: "MENU",
     items: [],
@@ -229,10 +224,19 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   const dispatch = useAppDispatch()
   const locale = useAppSelector((s) => s.locale.locale)
-  const languageLabel = localeDisplayMap[locale]
+  const languageLabel = localeDisplayMap[locale] ?? localeDisplayMap.en_US
   const t = useTranslations("navigation")
   const commonT = useTranslations("common")
   const megaMenuT = useTranslations("megaMenu")
+
+  const persistLocale = (value: SupportedLocale) => {
+    dispatch(setLocale(value))
+    if (typeof window !== "undefined") {
+      localStorage.setItem("NEXT_LOCALE", value)
+      localStorage.setItem("delivery-location", value)
+      document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000`
+    }
+  }
 
   const additionalMenuItems = [
     { name: t?.myAccount || "My Account", href: "/my-account" },
@@ -242,12 +246,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     { name: t?.giftCards || "Gift Cards", href: "/gift-cards" },
     { name: t?.storeLocator || "Store Locator", href: "/stores" },
     { name: t?.mobileApps || "Mobile Apps", href: "/mobile-apps" },
-    {
-      name: languageLabel,
-      hasSubmenu: true,
-      items: localeOptions,
-      value: locale, // Add value property to match LocaleOption interface
-    },
   ]
 
   // Helper push to history
@@ -277,14 +275,15 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }
   }, [isOpen, onClose])
 
-  // Init menu
+  // Init menu when opened — do not depend on `t` (new object every render) or submenu is wiped.
   useEffect(() => {
     if (isOpen) {
       setCurrentLevel({ title: t?.menu || "MENU", items: buildMainCategories(t) })
       setNavigationHistory([])
       setActiveRootMenu(null)
     }
-  }, [isOpen, t])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset only on open/close
+  }, [isOpen])
 
   const handleCategoryClick = (category: MenuCategory) => {
     const menuKey = getMenuKey(category, t)
@@ -330,6 +329,19 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         if (menuContent) menuContent.scrollTop = prev.scrollPosition
       }, 0)
     }
+  }
+
+  const openLocaleLevel = () => {
+    pushToHistory(currentLevel)
+    setCurrentLevel({
+      title: languageLabel,
+      items: localeOptions.map((opt) => ({
+        title: opt.label,
+        value: opt.value,
+        flag: opt.flag,
+        items: [] as [],
+      })),
+    })
   }
 
   const handleClose = () => {
@@ -436,42 +448,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <div className="h-1 border-b border-gray-200 dark:border-white" />
 
               {/* Additional */}
-              {additionalMenuItems.map((item) =>
-                item.hasSubmenu ? (
-                  null // Locale handled in footer
-                  // <button
-                  //   key={item.name}
-                  //   onClick={() => {
-                  //     pushToHistory(currentLevel)
-                  //     setCurrentLevel({
-                  //       title: item.name,
-                  //       items: localeOptions.map((opt) => ({
-                  //         title: opt.label,
-                  //         value: opt.value,
-                  //         flag: opt.flag,
-                  //         items: [],
-                  //       })),
-                  //     })
-                  //   }}
-                  //   className="w-full text-left p-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black flex items-center justify-between"
-                  // >
-                  //   <div className="flex items-center space-x-2">
-                  //     <Image
-                  //       src={
-                  //         localeOptions.find((o) => o.value === locale)?.flag ||
-                  //         "/flag/us-show.svg"
-                  //       }
-                  //       alt="flag"
-                  //       width={24}
-                  //       height={16}
-                  //     />
-                  //     <span className="text-base">
-                  //       {capitalizeWordsCountry(item.name)}
-                  //     </span>
-                  //   </div>
-                  //   <ChevronRight className="w-5 h-5 text-gray-400" />
-                  // </button>
-                ) : (
+              {additionalMenuItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href || "#"}
@@ -480,14 +457,39 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   >
                     <span className="text-base">{item.name}</span>
                   </Link>
-                )
-              )}
+              ))}
             </div>
           ) : (
             <div>
               {currentLevel.items.map((item, i) => {
                 if (isLocaleMenuItem(item)) {
-                  return null
+                  const selected = item.value === locale
+                  return (
+                    <button
+                      key={item.value || i}
+                      type="button"
+                      onClick={() => {
+                        persistLocale(item.value as SupportedLocale)
+                        handleClose()
+                      }}
+                      className="w-full flex items-center justify-between py-4 pl-14 pr-4 hover:bg-white dark:hover:bg-black border-b border-white dark:border-black text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={item.flag || "/flag/us.svg"}
+                          alt={item.title}
+                          width={24}
+                          height={16}
+                        />
+                        <span className={cn("text-base", selected && "font-bold")}>
+                          {item.title}
+                        </span>
+                      </div>
+                      {selected && (
+                        <span className="text-sm text-muted-foreground">Selected</span>
+                      )}
+                    </button>
+                  )
                 }
 
                 if (isMobileNavGroup(item as MobileNavNode) || (isMenuCategory(item) && item.items?.length > 0)) {
@@ -564,27 +566,22 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="sticky bottom-0 z-10 shrink-0 border-t border-gray-200 bg-white dark:border-white dark:bg-black">
           <button
             type="button"
-            onClick={() => setIsLocaleModalOpen(true)}
+            onClick={openLocaleLevel}
             className="flex h-14 w-full cursor-pointer items-center justify-between pl-5 pr-4"
           >
             <div className="flex items-center gap-3">
               <Image
                 src={localeOptions.find(c => c.value === locale)?.flag || "/flag/us.svg"}
-                alt={`${localeDisplayMap[locale]} Flag`}
+                alt={`${languageLabel} Flag`}
                 width={24}
                 height={16}
               />
-              <span className="font-medium">{localeDisplayMap[locale]}</span>
+              <span className="font-medium">{languageLabel}</span>
             </div>
+            <MobileMenuChevron />
           </button>
         </div>
         )}
-
-        <LocationModal
-          isOpen={isLocaleModalOpen}
-          onClose={() => setIsLocaleModalOpen(false)}
-          onLocationSelect={selectLocation}
-        />
       </div>
     </>
   )
