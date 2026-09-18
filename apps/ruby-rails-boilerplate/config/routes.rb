@@ -36,6 +36,21 @@ Rails.application.routes.draw do
 
     # Product reviews
     resources :reviews, only: [:create, :update, :destroy]
+
+    resources :sessions, only: [:index]
+    delete "/logout", to: "sessions#destroy"
+    post "/login", to: "sessions#create"
+    post "/refresh", to: "sessions#refresh"
+    post "/revoke", to: "sessions#revoke"
+  end
+
+  # adidas-admin-dashboard posts /login and /refresh without the /api prefix.
+  scope format: "json" do
+    post "/login", to: "api/sessions#create"
+    post "/refresh", to: "api/sessions#refresh"
+    post "/revoke", to: "api/sessions#revoke"
+    delete "/logout", to: "api/sessions#destroy"
+    get "/sessions", to: "api/sessions#index"
   end
 
   # Health check
